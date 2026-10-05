@@ -5,3 +5,7 @@ playwright-report/
 .cache/
 *.log
 *.local
+art/cache/
+*.blend1
+art/work/
+tools/blender/__pycache__/

@@ -1,0 +1,4 @@
+Imported visual assets are CC0-1.0. Authors, sources, hashes and modifications are recorded in art-provenance.json. Poly Haven license: https://polyhaven.com/license
+MakeHuman data license: https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md
+Female skin license: https://static.makehumancommunity.org/assets/assetpacks/skins01.html
+Original VESPERWOUND work belongs to the project owner.

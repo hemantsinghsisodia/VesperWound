@@ -1,0 +1,143 @@
+import {
+  Scene, Color, FogExp2, Mesh,
+  DirectionalLight, HemisphereLight, PointLight, Vector3, CubeTexture, SRGBColorSpace,
+  Sprite, SpriteMaterial, CanvasTexture,
+  PlaneGeometry, MeshStandardNodeMaterial,
+  PMREMGenerator, type BufferGeometry, type RenderTarget, type WebGPURenderer,
+  type Object3D, type Texture, type Material,
+} from 'three/webgpu';
+import type { AssetManager } from '../assets/asset-manager';
+import type { InputFrame } from '../core/input-frame';
+import type { QualityProfile } from '../performance/quality';
+import type { ArtVariant, PreviewClip, WorldPresentation } from './presentation';
+import { PreviewActor } from './preview-actor';
+
+/** Art inspection only. Animation never controls player movement or combat state. */
+export class VisualShowcase implements WorldPresentation {
+  readonly scene = new Scene();
+  readonly target = new Vector3(-1.6, 0.035, 3.4);
+  readonly preview = new PreviewActor();
+  readonly actor = this.preview.group;
+  get clip(): PreviewClip { return this.preview.clip; }
+  private readonly handles: Array<{ release(): void }> = [];
+  private readonly geometries: BufferGeometry[] = [];
+  private readonly materials: Material[] = [];
+  private readonly textures: Texture[] = [];
+  private readonly key = new DirectionalLight(0xc8dcdf, 3.2);
+  private readonly lantern = new PointLight(0xffbb61, 1.6, 3.5, 2);
+  private readonly engine = new PointLight(0xb4e4d4, 38, 10, 2);
+  private readonly gate = new PointLight(0xffc784, 35, 10, 2);
+  private socket: Object3D | null = null;
+  private readonly steam: Sprite[] = [];
+  private reflection: RenderTarget | null = null;
+  private time = 0;
+  private disposed = false;
+
+  constructor(readonly variant: ArtVariant) {
+    this.scene.background = new Color(0x142126);
+    this.scene.fog = new FogExp2(0x142126, 0.028);
+    this.actor.position.copy(this.target); this.actor.rotation.y = 0.25;
+    this.actor.position.y -= 0.012;
+    this.scene.add(this.actor);
+    this.key.position.set(-6, 15, 8); this.key.target.position.set(0, 0, -2);
+    this.key.castShadow = true;
+    Object.assign(this.key.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
+    this.key.shadow.bias = -0.0006; this.key.shadow.normalBias = 0.035;
+    this.engine.position.set(0, 2.8, -2); this.gate.position.set(-5, 3.1, -6);
+    this.scene.add(this.key, this.key.target, new HemisphereLight(0xa5c5d6, 0x444235, 2), this.lantern, this.engine, this.gate);
+  }
+  async load(assets: AssetManager, missingFixture: boolean): Promise<void> {
+    const loaded = await Promise.allSettled([assets.model(missingFixture ? 'missing-iona' : 'iona'), assets.model('courtyard')]);
+    for (const result of loaded) if (result.status === 'fulfilled') {
+      if (this.disposed) result.value.release(); else this.handles.push(result.value);
+    }
+    const failure = loaded.find((result) => result.status === 'rejected');
+    if (this.disposed) throw new Error('Showcase load was cancelled.');
+    if (failure?.status === 'rejected') { this.dispose(); throw failure.reason; }
+    const hero = loaded[0]; const court = loaded[1];
+    if (hero?.status !== 'fulfilled' || court?.status !== 'fulfilled') throw new Error('The art collection is incomplete.');
+    this.reflectionEnvironment(assets.renderer);
+    this.preview.attach(hero.value.value); this.scene.add(court.value.value.scene);
+    this.scene.traverse((object) => {
+      if (object instanceof Mesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = !('isSkinnedMesh' in object); }
+    });
+    this.socket = hero.value.value.scene.getObjectByName('socket_lantern') ?? null;
+    if (!this.socket || !hero.value.value.scene.getObjectByName('socket_wake_hook')) throw new Error('Iona attachment points are missing.');
+    this.surfaceDetails();
+    this.update(0, { movement: { x: 0, y: 0 }, aim: { x: 0, y: 0 }, pressed: new Set(), held: new Set() }, true);
+  }
+  selectClip(name: PreviewClip): void { this.preview.selectClip(name); }
+  turn(): void { this.preview.turn(); }
+  inspection(): { feet: number[][]; gripDistances: number[] } {
+    return this.preview.inspection();
+  }
+  configure(profile: QualityProfile): void {
+    if (this.key.shadow.mapSize.x !== profile.shadowSize) { this.key.shadow.map?.dispose(); this.key.shadow.map = null; }
+    this.key.shadow.mapSize.set(profile.shadowSize, profile.shadowSize); this.key.shadow.needsUpdate = true;
+  }
+  update(dt: number, _input: InputFrame, reducedMotion: boolean): boolean {
+    this.time += dt; this.preview.update(dt);
+    this.scene.updateMatrixWorld(true);
+    this.socket?.getWorldPosition(this.lantern.position);
+    this.lantern.intensity = 1.6 + (reducedMotion ? 0 : Math.sin(this.time * 2.8) * 0.1);
+    this.engine.intensity = 38 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * 2);
+    this.steam.forEach((puff, index) => {
+      const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
+      const flue = index % 3;
+      puff.position.set((flue - 1) * 0.55 + Math.sin(index * 2.4 + phase) * 0.12,
+        [4.15, 4.7, 4.35][flue]! + phase, -2.2 + Math.cos(index * 1.7) * 0.12);
+      puff.scale.setScalar(0.35 + phase * 0.35);
+    });
+    return false;
+  }
+  interpolate(): void { /* In-place previews have no simulated movement. */ }
+  private reflectionEnvironment(renderer: WebGPURenderer): void {
+    const faces = Array.from({ length: 6 }, (_, index) => {
+      const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64;
+      const context = canvas.getContext('2d'); if (!context) throw new Error('Reflection canvas is unavailable.');
+      const gradient = context.createLinearGradient(0, 0, 0, 64);
+      gradient.addColorStop(0, index === 2 ? '#afc1c2' : '#6b878e'); gradient.addColorStop(0.48, '#41525a'); gradient.addColorStop(1, '#191f20');
+      context.fillStyle = gradient; context.fillRect(0, 0, 64, 64);
+      return canvas;
+    });
+    const texture = new CubeTexture(faces); texture.colorSpace = SRGBColorSpace; texture.needsUpdate = true;
+    const generator = new PMREMGenerator(renderer);
+    try { this.reflection = generator.fromCubemap(texture); this.scene.environment = this.reflection.texture; }
+    finally { generator.dispose(); texture.dispose(); }
+    this.scene.environmentIntensity = 0.65;
+  }
+  private surfaceDetails(): void {
+    const geometry = new PlaneGeometry(1, 1); this.geometries.push(geometry);
+    const material = new MeshStandardNodeMaterial({ color: 0x18282c, roughness: 0.12, metalness: 0.4, transparent: true, opacity: 0.32, depthWrite: false });
+    this.materials.push(material);
+    for (const [x, z, sx, sz] of [[-3, 2, 2, 0.5], [3, 3, 1.4, 0.6], [-1, -3, 0.8, 1.2], [4, -4, 1, 0.5]]) {
+      const puddle = new Mesh(geometry, material); puddle.rotation.x = -Math.PI / 2; puddle.position.set(x!, 0.045, z!); puddle.scale.set(sx!, sz!, 1); this.scene.add(puddle);
+    }
+    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64;
+    const context = canvas.getContext('2d'); if (!context) return;
+    const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 31);
+    gradient.addColorStop(0, '#d9e9e522'); gradient.addColorStop(0.5, '#d9e9e512'); gradient.addColorStop(1, '#d9e9e500');
+    context.fillStyle = gradient; context.fillRect(0, 0, 64, 64);
+    const texture = new CanvasTexture(canvas); this.textures.push(texture);
+    const steamMaterial = new SpriteMaterial({ map: texture, transparent: true, depthWrite: false, opacity: 0.65 }); this.materials.push(steamMaterial);
+    // Sprite's default quad is shared by Three.js. Own a clone so unloading this
+    // courtyard cannot dispose the replacement scene's quad during a quality swap.
+    const quad = new Sprite(steamMaterial).geometry.clone(); this.geometries.push(quad);
+    for (let i = 0; i < 12; i++) {
+      const puff = new Sprite(steamMaterial); puff.geometry = quad;
+      this.steam.push(puff); this.scene.add(puff);
+    }
+  }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1; }
+  dispose(): void {
+    if (this.disposed) return; this.disposed = true;
+    this.preview.dispose();
+    this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
+    for (const handle of this.handles) handle.release(); this.handles.length = 0;
+    for (const geometry of this.geometries) geometry.dispose();
+    for (const material of this.materials) material.dispose();
+    for (const texture of this.textures) texture.dispose();
+    this.reflection?.dispose(); this.reflection = null;
+    this.key.dispose(); this.lantern.dispose(); this.engine.dispose(); this.gate.dispose();
+  }
+}

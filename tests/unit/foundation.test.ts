@@ -77,9 +77,9 @@ describe('lifecycle and typed events', () => {
 
 describe('capabilities and validated configuration', () => {
   it('ignores all development URL flags in production', () => {
-    expect(readBootOptions(false, '?backend=webgpu-required&fixture=missing')).toEqual({ backend: 'auto', missingFixture: false });
-    expect(readBootOptions(true, '?backend=webgl2')).toEqual({ backend: 'webgl2', missingFixture: false });
-    expect(readBootOptions(true, '?backend=unknown')).toEqual({ backend: 'auto', missingFixture: false });
+    expect(readBootOptions(false, '?backend=webgpu-required&fixture=missing')).toEqual({ backend: 'auto', missingFixture: false, scene: 'showcase' });
+    expect(readBootOptions(true, '?backend=webgl2')).toEqual({ backend: 'webgl2', missingFixture: false, scene: 'showcase' });
+    expect(readBootOptions(true, '?backend=unknown')).toEqual({ backend: 'auto', missingFixture: false, scene: 'showcase' });
   });
   it('rejects invalid manifests rather than handing malformed content to loaders', () => {
     expect(() => validateManifest({ version: 2, assets: {} })).toThrow();

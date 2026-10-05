@@ -1,12 +1,12 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 
-test('sustained ten-minute desktop WebGPU measurement', async ({ page, browser }) => {
+test('foundation sustained ten-minute desktop WebGPU measurement', async ({ page, browser }) => {
   test.skip(process.env.VESPER_PERFORMANCE !== '1', 'Opt in with VESPER_PERFORMANCE=1; ten-minute hardware measurement.');
   test.setTimeout(720000);
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/?backend=webgpu-required');
+  await page.goto('/?scene=foundation&backend=webgpu-required');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   // Fixed High settings make this result comparable; adaptation cannot hide the cost.
@@ -37,4 +37,6 @@ test('sustained ten-minute desktop WebGPU measurement', async ({ page, browser }
   expect(samples.at(-1)?.references).toBe(before?.references);
   expect(samples.at(-1)?.resources).toBe(before?.resources);
   expect(samples.at(-1)?.textures).toBe(before?.textures);
+  const aggregate = metrics as { p95FrameMs: number };
+  expect(aggregate.p95FrameMs).toBeLessThanOrEqual(18.5);
 });

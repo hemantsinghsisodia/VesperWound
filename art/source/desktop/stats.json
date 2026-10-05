@@ -1,0 +1,11 @@
+{
+  "variant": "desktop",
+  "heroTriangles": 41989,
+  "clips": [
+    "idle",
+    "walk",
+    "run",
+    "attack",
+    "dodge"
+  ]
+}

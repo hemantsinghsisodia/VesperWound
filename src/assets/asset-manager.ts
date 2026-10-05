@@ -1,4 +1,4 @@
-import { Mesh, Texture, SRGBColorSpace, NoColorSpace, RepeatWrapping, type WebGPURenderer } from 'three/webgpu';
+import { Mesh, SkinnedMesh, Texture, SRGBColorSpace, NoColorSpace, RepeatWrapping, type Material, type BufferGeometry, type Skeleton, type WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader, type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
@@ -13,34 +13,44 @@ export class AssetManager {
   private readonly cache: ResourceCache<Resource>;
   private readonly pending = new Set<AbortController>();
   private manifest: AssetManifest | null = null;
+  private manifestUrl = '';
+  private disposed = false;
+  private decodes = 0;
 
-  constructor(renderer: WebGPURenderer) {
+  constructor(readonly renderer: WebGPURenderer) {
     this.ktx.detectSupport(renderer);
     this.gltf.setMeshoptDecoder(MeshoptDecoder).setKTX2Loader(this.ktx);
     this.cache = new ResourceCache((id) => this.load(id), (resource) => this.destroy(resource));
   }
-  async init(): Promise<void> {
-    this.manifest = validateManifest(await this.fetch('/assets/fixtures/manifest.json').then((response) => response.json() as Promise<unknown>));
+  async init(manifestUrl: string): Promise<void> {
+    this.manifestUrl = new URL(manifestUrl, location.href).href;
+    this.manifest = validateManifest(await this.request(this.manifestUrl, (response) => response.json() as Promise<unknown>));
   }
-  private async fetch(url: string): Promise<Response> {
+  private async request<T>(url: string, read: (response: Response) => Promise<T>): Promise<T> {
+    if (this.disposed) throw new Error('Asset manager was disposed.');
     const controller = new AbortController(); this.pending.add(controller);
     const timer = window.setTimeout(() => controller.abort(), 25000);
     try {
       const response = await fetch(url, { signal: controller.signal });
       if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
-      return response;
+      return await read(response);
     } finally { window.clearTimeout(timer); this.pending.delete(controller); }
   }
   private async load(id: string): Promise<Resource> {
     const definition = this.manifest?.assets[id];
     if (!definition) throw new Error(`Unknown asset ID: ${id}`);
     try {
-      const bytes = await this.fetch(definition.url).then((response) => response.arrayBuffer());
-      if (definition.kind === 'model') return { kind: 'model', gltf: await this.gltf.parseAsync(bytes, '/assets/fixtures/') };
-      const texture = await new Promise<Texture>((resolve, reject) => this.ktx.parse(bytes, resolve, reject));
-      texture.colorSpace = definition.colorSpace === 'srgb' ? SRGBColorSpace : NoColorSpace;
-      texture.wrapS = texture.wrapT = RepeatWrapping;
-      return { kind: 'texture', texture };
+      const url = new URL(definition.url, this.manifestUrl);
+      const bytes = await this.request(url.href, (response) => response.arrayBuffer());
+      if (this.disposed) throw new Error('Asset loading was cancelled.');
+      this.decodes++;
+      try {
+        if (definition.kind === 'model') return { kind: 'model', gltf: await this.gltf.parseAsync(bytes, new URL('.', url).href) };
+        const texture = await new Promise<Texture>((resolve, reject) => this.ktx.parse(bytes, resolve, reject));
+        texture.colorSpace = definition.colorSpace === 'srgb' ? SRGBColorSpace : NoColorSpace;
+        texture.wrapS = texture.wrapT = RepeatWrapping;
+        return { kind: 'texture', texture };
+      } finally { this.decodes--; if (this.disposed && this.decodes === 0) this.ktx.dispose(); }
     } catch (error) {
       throw new Error(`Could not load asset "${id}" (${definition.url}): ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     }
@@ -58,15 +68,19 @@ export class AssetManager {
   private destroy(resource: Resource): void {
     if (resource.kind === 'texture') { resource.texture.dispose(); return; }
     const textures = new Set<Texture>();
+    const geometries = new Set<BufferGeometry>(); const materials = new Set<Material>(); const skeletons = new Set<Skeleton>();
     resource.gltf.scene.traverse((object) => {
       if (!(object instanceof Mesh)) return;
-      object.geometry.dispose();
+      geometries.add(object.geometry);
       for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
         for (const value of Object.values(material)) if (value instanceof Texture) textures.add(value);
-        material.dispose();
+        materials.add(material);
       }
-      if ('skeleton' in object && typeof object.skeleton === 'object' && object.skeleton && 'dispose' in object.skeleton && typeof object.skeleton.dispose === 'function') object.skeleton.dispose();
+      if (object instanceof SkinnedMesh) skeletons.add(object.skeleton);
     });
+    for (const geometry of geometries) geometry.dispose();
+    for (const material of materials) material.dispose();
+    for (const skeleton of skeletons) skeleton.dispose();
     for (const texture of textures) {
       texture.dispose();
       if (texture.source.data instanceof ImageBitmap) texture.source.data.close();
@@ -75,7 +89,8 @@ export class AssetManager {
   get resourceCount(): number { return this.cache.size; }
   get referenceCount(): number { return this.cache.references; }
   dispose(): void {
+    if (this.disposed) return; this.disposed = true;
     for (const controller of this.pending) controller.abort();
-    this.pending.clear(); this.cache.dispose(); this.ktx.dispose();
+    this.pending.clear(); this.cache.dispose(); if (this.decodes === 0) this.ktx.dispose();
   }
 }

@@ -1,0 +1,57 @@
+{
+  "stats": {
+    "backend": "WebGL2",
+    "quality": "Mobile",
+    "resolution": "915 × 412",
+    "frameMs": 183.30000000000018,
+    "cpuMs": 2.9000000059604645,
+    "fps": 0,
+    "p95": 0,
+    "draws": 61,
+    "triangles": 186355,
+    "textures": 39,
+    "estimatedGpuBytes": 14881867,
+    "resources": 9,
+    "references": 2,
+    "voices": 3,
+    "overruns": 0,
+    "fixtureLoads": 1,
+    "markerX": -1.6,
+    "markerZ": 3.4,
+    "listeners": 41,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "mobile",
+    "animation": "idle",
+    "camera": "courtyard",
+    "characterTier": "mobile",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.452304371275508,
+          0.12338983582215318,
+          3.394796259968184
+        ],
+        [
+          -1.7321099072841024,
+          0.12338980568698638,
+          3.4662423353385803
+        ]
+      ],
+      "gripDistances": [
+        0.030877724151488855,
+        0.030877760839712182
+      ]
+    }
+  },
+  "errors": [],
+  "viewport": {
+    "width": 915,
+    "height": 412
+  },
+  "browser": "chrome",
+  "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Mobile Safari/537.36"
+}

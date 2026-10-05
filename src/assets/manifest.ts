@@ -10,7 +10,8 @@ export function validateManifest(value: unknown): AssetManifest {
   const definitions: Record<string, AssetDefinition> = {};
   for (const [id, item] of Object.entries(assets)) {
     if (typeof item !== 'object' || item === null || !('kind' in item) || !('url' in item)
-      || (item.kind !== 'model' && item.kind !== 'texture') || typeof item.url !== 'string' || !item.url.startsWith('/assets/')) {
+      || (item.kind !== 'model' && item.kind !== 'texture') || typeof item.url !== 'string'
+      || !item.url || item.url.startsWith('//') || /^[a-z][a-z\d+.-]*:/i.test(item.url)) {
       throw new Error(`Invalid asset definition: ${id}`);
     }
     const definition: AssetDefinition = { kind: item.kind, url: item.url };

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "assets": {
+    "iona": {
+      "kind": "model",
+      "url": "iona.glb"
+    },
+    "courtyard": {
+      "kind": "model",
+      "url": "ash-quay.glb"
+    }
+  }
+}

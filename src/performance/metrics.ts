@@ -4,6 +4,9 @@ export interface FrameStatistics {
   estimatedGpuBytes: number; resources: number; references: number; voices: number;
   overruns: number; fixtureLoads: number;
   markerX: number; markerZ: number; listeners: number; audioState: string;
+  scene: string; variant: string; animation: string; camera: string; artLoading: boolean;
+  characterTier: string; inspection: string; inspectionPaused: boolean;
+  rig?: { feet: number[][]; gripDistances: number[] };
 }
 export class FrameMetrics {
   private readonly frames: number[] = [];

@@ -6,7 +6,7 @@ test('production ignores development flags and excludes diagnostics', async ({ p
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('request', (request) => requests.push(request.url()));
   await page.addInitScript(() => { Object.defineProperty(navigator, 'gpu', { value: undefined, configurable: true }); });
-  await page.goto('/?backend=webgpu-required&fixture=missing');
+  await page.goto('/?backend=webgpu-required&fixture=missing&scene=foundation');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
@@ -14,6 +14,8 @@ test('production ignores development flags and excludes diagnostics', async ({ p
   expect(await page.evaluate(() => window.__VESPER_DEBUG__)).toBeUndefined();
   await expect(page.locator('.debug-panel, .debug-toggle')).toHaveCount(0);
   expect(requests.some((url) => url.includes('debug-tools'))).toBe(false);
-  expect(requests.some((url) => url.endsWith('/assets/fixtures/vessel.glb'))).toBe(true);
+  expect(requests.some((url) => url.endsWith('/assets/showcase/desktop/iona.glb'))).toBe(true);
+  expect(requests.some((url) => url.includes('/assets/fixtures/'))).toBe(false);
+  await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeVisible();
   expect(errors).toEqual([]);
 });

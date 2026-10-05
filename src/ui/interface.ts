@@ -1,6 +1,7 @@
 import { Lifetime } from '../core/lifetime';
 import { QUALITY_NAMES, type QualityName } from '../performance/quality';
 import type { Preferences } from '../platform/settings';
+import type { CameraView, PreviewClip, InspectionView, InspectionLighting, InspectionState } from '../world/presentation';
 
 export class Interface {
   canvas: HTMLCanvasElement;
@@ -16,7 +17,7 @@ export class Interface {
 
   constructor(readonly root: HTMLElement, preferences: Preferences) {
     root.innerHTML = `
-      <main class="experience" aria-label="Vesperwound technical courtyard">
+      <main class="experience" aria-label="Vesperwound Ash Quay">
         <canvas id="world" aria-label="The Ash Quay courtyard" tabindex="0"></canvas>
         <div class="vignette" aria-hidden="true"></div>
         <header class="masthead"><a class="wordmark" href="/" aria-label="Vesperwound home"><span class="sigil">V</span> VESPERWOUND</a>
@@ -29,9 +30,23 @@ export class Interface {
           <p class="entry-description">Beneath the evening bell,<br>something is still breathing.</p>
           <button id="start" class="primary-button" disabled>OPENING THE INTAKE<span aria-hidden="true">↗</span></button>
           <p id="load-status" class="load-status" role="status">Preparing the Works…</p>
-          <p class="entry-footnote">THE VESPER WORKS · TECHNICAL COURTYARD</p>
+          <p class="entry-footnote">THE VESPER WORKS · IONA AT ASH QUAY</p>
         </section>
         <section id="location" class="location" hidden><p class="eyebrow">THE VESPER WORKS / 01</p><h2>Ash Quay</h2><p>The last light at the intake.</p></section>
+        <section id="showcase-controls" class="showcase-controls" aria-label="Visual showcase" hidden>
+          <div class="view-buttons"><button id="view-courtyard" aria-pressed="true">Courtyard</button><button id="view-character" aria-pressed="false">Iona</button><button id="turn-character" aria-label="Turn Iona">↻</button></div>
+          <label for="animation">Animation</label><select id="animation"><option value="idle">Idle</option><option value="walk">Walk</option><option value="run">Run</option><option value="attack">Attack</option><option value="dodge">Dodge</option></select>
+          <p>IONA · MORTUARY ENGINEER</p>
+          <button id="inspection-toggle" hidden>Detailed inspection</button>
+          <div id="inspection-controls" hidden>
+            <label for="inspection-view">View</label><select id="inspection-view"><option value="full-body">Full body</option><option value="portrait">Portrait</option><option value="equipment">Equipment</option></select>
+            <label for="inspection-lighting">Lighting</label><select id="inspection-lighting"><option value="neutral">Neutral</option><option value="ash-quay">Ash Quay</option></select>
+            <button id="animation-pause" aria-pressed="false">Pause animation</button>
+            <small>Drag to orbit · Scroll or pinch to zoom</small>
+          </div>
+          <span id="art-status" role="status"></span>
+          <span id="inspection-status" role="status"></span>
+        </section>
         <div id="controls-hint" class="controls-hint" hidden><span>W A S D <small>move the light</small></span><span>SPACE / CLICK <small>release pressure</small></span><span>ESC <small>settings</small></span></div>
         <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
         <div class="session-tag"><span class="status-dot"></span><span id="session-status">INTAKE CLOSED</span></div>
@@ -67,8 +82,21 @@ export class Interface {
   bind(callbacks: {
     start(): void; pause(paused: boolean): void; retry(compatibility: boolean): void;
     preferences(values: Partial<Preferences>): void;
+    camera(view: CameraView): void; animation(clip: PreviewClip): void; turn(): void;
+    inspection(): void; inspectionView(view: InspectionView): void;
+    inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void;
   }): void {
     this.lifetime.listen(this.start, 'click', () => callbacks.start());
+    for (const view of ['courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
+      callbacks.camera(view);
+      for (const choice of ['courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
+    });
+    this.lifetime.listen(this.get('#animation'), 'change', () => callbacks.animation(this.get<HTMLSelectElement>('#animation').value as PreviewClip));
+    this.lifetime.listen(this.get('#turn-character'), 'click', () => callbacks.turn());
+    this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => callbacks.inspection());
+    this.lifetime.listen(this.get('#inspection-view'), 'change', () => callbacks.inspectionView(this.get<HTMLSelectElement>('#inspection-view').value as InspectionView));
+    this.lifetime.listen(this.get('#inspection-lighting'), 'change', () => callbacks.inspectionLighting(this.get<HTMLSelectElement>('#inspection-lighting').value as InspectionLighting));
+    this.lifetime.listen(this.get('#animation-pause'), 'click', () => callbacks.inspectionPause());
     this.lifetime.listen(this.get('#retry'), 'click', () => callbacks.retry(false));
     this.lifetime.listen(this.get('#compatibility'), 'click', () => callbacks.retry(true));
     const open = () => { if (!this.settings.open) { callbacks.pause(true); this.settings.showModal(); } };
@@ -102,8 +130,32 @@ export class Interface {
   ready(): void { this.start.disabled = false; this.start.innerHTML = 'ENTER THE WORKS <span aria-hidden="true">↗</span>'; this.status.textContent = 'The intake is open.'; this.root.dataset.state = 'ready'; }
   enter(): void {
     this.entry.hidden = true;
-    this.get('#location').hidden = false; this.get('#controls-hint').hidden = false; this.get('#touch-controls').hidden = false;
+    const showcase = this.root.dataset.scene === 'showcase';
+    this.get('#location').hidden = false; this.get('#controls-hint').hidden = showcase; this.get('#touch-controls').hidden = showcase;
+    this.get('#showcase-controls').hidden = !showcase;
     this.get('#session-status').textContent = 'PRESSURE STABLE'; this.canvas.focus(); this.root.dataset.state = 'running';
+  }
+  scene(name: 'foundation' | 'showcase'): void { this.root.dataset.scene = name; }
+  animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip; }
+  artLoading(loading: boolean, message = ''): void {
+    this.get('#art-status').textContent = message;
+    for (const selector of ['#animation', '#turn-character', '#quality']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
+  }
+  inspection(state: InspectionState, eligible: boolean): void {
+    const active = state.status === 'active';
+    this.root.dataset.inspection = state.status;
+    const button = this.get<HTMLButtonElement>('#inspection-toggle'); button.hidden = !eligible;
+    button.textContent = active ? 'Return to Ash Quay' : state.status === 'loading' ? 'Cancel inspection' : state.status === 'failed' ? 'Retry detailed inspection' : 'Detailed inspection';
+    this.get('#inspection-controls').hidden = !active;
+    this.get('#view-courtyard').hidden = active; this.get('#view-character').hidden = active;
+    this.get('#location').hidden = active || !['running', 'paused'].includes(this.root.dataset.state ?? '');
+    this.get('#inspection-status').textContent = state.status === 'loading' ? 'Preparing detailed Iona…' : state.status === 'failed' ? state.message : '';
+    if (active) {
+      this.get<HTMLSelectElement>('#inspection-view').value = state.view;
+      this.get<HTMLSelectElement>('#inspection-lighting').value = state.lighting;
+      this.get('#animation-pause').setAttribute('aria-pressed', String(state.paused));
+      this.get('#animation-pause').textContent = state.paused ? 'Resume animation' : 'Pause animation';
+    }
   }
   setPortrait(paused: boolean): void { this.rotate.hidden = !paused; }
   setPaused(paused: boolean): void { if (this.root.dataset.state === 'running' || this.root.dataset.state === 'paused') this.root.dataset.state = paused ? 'paused' : 'running'; }

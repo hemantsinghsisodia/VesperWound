@@ -1,0 +1,65 @@
+[
+  {
+    "variant": "desktop",
+    "name": "iona",
+    "triangles": 49964,
+    "rawBytes": 11098524,
+    "gzipBytes": 10591645,
+    "clips": [
+      "attack",
+      "dodge",
+      "idle",
+      "run",
+      "walk"
+    ],
+    "textures": 18
+  },
+  {
+    "variant": "desktop",
+    "name": "ash-quay",
+    "triangles": 116608,
+    "rawBytes": 9740936,
+    "gzipBytes": 8892277,
+    "clips": [],
+    "textures": 12
+  },
+  {
+    "variant": "mobile",
+    "name": "iona",
+    "triangles": 19913,
+    "rawBytes": 3889672,
+    "gzipBytes": 3585908,
+    "clips": [
+      "attack",
+      "dodge",
+      "idle",
+      "run",
+      "walk"
+    ],
+    "textures": 18
+  },
+  {
+    "variant": "mobile",
+    "name": "ash-quay",
+    "triangles": 71968,
+    "rawBytes": 3598744,
+    "gzipBytes": 2984850,
+    "clips": [],
+    "textures": 12
+  },
+  {
+    "variant": "cinematic",
+    "name": "iona",
+    "triangles": 135152,
+    "rawBytes": 18619436,
+    "gzipBytes": 17880440,
+    "clips": [
+      "attack",
+      "dodge",
+      "idle",
+      "run",
+      "walk"
+    ],
+    "textures": 18
+  }
+]

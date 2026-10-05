@@ -18,7 +18,7 @@ for (const positioning of ['legacy', 'unavailable'] as const) {
         } : undefined });
       }
     }, positioning);
-    await page.goto('/?backend=webgl2');
+    await page.goto('/?scene=foundation&backend=webgl2');
     await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
     await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
     await expect.poll(async () => page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().audioState)).toBe('running');
@@ -37,7 +37,7 @@ for (const positioning of ['legacy', 'unavailable'] as const) {
 test('courtyard initializes on WebGL2 with compressed assets and renders', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
@@ -49,7 +49,7 @@ test('courtyard initializes on WebGL2 with compressed assets and renders', async
 });
 
 test('settings pause, persist, and resume without duplicating audio', async ({ page }) => {
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await page.getByRole('button', { name: 'Open settings' }).click();
@@ -70,7 +70,7 @@ test('settings pause, persist, and resume without duplicating audio', async ({ p
 
 test('ten fixture cycles keep asset references and owned resources stable', async ({ page }) => {
   test.skip(test.info().project.name !== 'desktop', 'Run lifecycle soak once.');
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   const before = await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot());
   const snapshots = await page.evaluate(async () => {
@@ -90,7 +90,7 @@ test('ten fixture cycles keep asset references and owned resources stable', asyn
 
 test('movement cancels on blur and resumes after closing settings', async ({ page }) => {
   test.skip(test.info().project.name !== 'desktop', 'Keyboard case.');
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   const initial = await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().markerX ?? 0);
@@ -112,7 +112,7 @@ test('movement cancels on blur and resumes after closing settings', async ({ pag
 
 test('simultaneous touch inputs release on pointer cancellation', async ({ page }) => {
   test.skip(test.info().project.name !== 'mobile', 'Touch-input case.');
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await page.evaluate(() => {
@@ -138,7 +138,7 @@ test('simultaneous touch inputs release on pointer cancellation', async ({ page 
 
 test('missing content displays an actionable error', async ({ page }) => {
   await page.route('**/assets/fixtures/vessel.glb', (route) => route.fulfill({ status: 404, body: 'not found' }));
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'error');
   await expect(page.locator('#error-detail')).toContainText('vessel');
   await expect(page.locator('#error-detail')).toContainText('404');
@@ -150,7 +150,7 @@ test('missing content displays an actionable error', async ({ page }) => {
 
 test('all quality presets render without changing the fixture', async ({ page }) => {
   test.skip(test.info().project.name !== 'desktop', 'Shared graphics settings case.');
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await page.getByRole('button', { name: 'Open settings' }).click();
@@ -165,7 +165,7 @@ test('all quality presets render without changing the fixture', async ({ page })
 test('unavailable device storage does not prevent entering the courtyard', async ({ page }) => {
   test.skip(test.info().project.name !== 'desktop', 'Shared storage case.');
   await page.addInitScript(() => { Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage disabled'); } }); });
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await page.getByRole('button', { name: 'Open settings' }).click();
@@ -174,7 +174,7 @@ test('unavailable device storage does not prevent entering the courtyard', async
 
 test('required WebGPU cannot silently accept fallback', async ({ page }) => {
   await page.addInitScript(() => { Object.defineProperty(navigator, 'gpu', { value: undefined, configurable: true }); });
-  await page.goto('/?backend=webgpu-required');
+  await page.goto('/?scene=foundation&backend=webgpu-required');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'error');
   await expect(page.locator('#error-detail')).toContainText('WebGPU was required');
   await page.getByRole('button', { name: 'Use compatibility graphics' }).click();
@@ -184,7 +184,7 @@ test('required WebGPU cannot silently accept fallback', async ({ page }) => {
 
 test('phone portrait pauses and landscape restores the viewport', async ({ page }) => {
   test.skip(test.info().project.name !== 'mobile', 'Touch-layout case.');
-  await page.goto('/?backend=webgl2');
+  await page.goto('/?scene=foundation&backend=webgl2');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
   await expect(page.locator('#movement-stick')).toBeVisible();

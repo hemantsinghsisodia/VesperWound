@@ -1,15 +1,21 @@
-import { readdir, readFile, stat } from 'node:fs/promises';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
-let raw = 0, compressed = 0;
+const groups = { bootstrap: { raw: 0, gzip: 0, limit: 5 * 1024 * 1024 }, desktop: { raw: 0, gzip: 0, limit: 20 * 1024 * 1024 }, mobile: { raw: 0, gzip: 0, limit: 10 * 1024 * 1024 }, cinematic: { raw: 0, gzip: 0, limit: 40 * 1024 * 1024 } };
 async function visit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = `${directory}/${entry.name}`;
     if (entry.isDirectory()) await visit(path);
-    else { const bytes = await readFile(path); raw += (await stat(path)).size; compressed += gzipSync(bytes).byteLength; }
+    else {
+      const bytes = await readFile(path);
+      const group = path.includes('/showcase/desktop/') ? groups.desktop : path.includes('/showcase/mobile/') ? groups.mobile : path.includes('/showcase/cinematic/') ? groups.cinematic : groups.bootstrap;
+      group.raw += bytes.length; group.gzip += gzipSync(bytes).byteLength;
+    }
   }
 }
 await visit(root);
-console.log(JSON.stringify({ totalRawBytes: raw, totalGzipBytes: compressed, limitBytes: 5 * 1024 * 1024, passed: compressed <= 5 * 1024 * 1024 }, null, 2));
-if (compressed > 5 * 1024 * 1024) process.exitCode = 1;
+const report = Object.fromEntries(Object.entries(groups).map(([name, value]) => [name, { rawBytes: value.raw, gzipBytes: value.gzip, limitBytes: value.limit, passed: name === 'bootstrap' ? value.gzip <= value.limit : value.raw <= value.limit }]));
+console.log(JSON.stringify(report, null, 2));
+await writeFile('docs/qa/visual-delivery.json', JSON.stringify(report, null, 2));
+if (Object.values(report).some((group) => !group.passed)) process.exitCode = 1;

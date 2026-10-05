@@ -30,6 +30,9 @@ export class RendererAdapter {
     this.scenePass = pass(scene, camera);
     const output = this.scenePass.getTextureNode('output');
     this.bloomPass = profile.bloom ? bloom(output, 0.18, 0.35, 1.1) : null;
+    // Broad industrial glows do not require a half-resolution blur pyramid.
+    // Keep the scene at full resolution; Ultra retains the finer bloom buffer.
+    this.bloomPass?.setResolutionScale(profile.name === 'Ultra' ? 0.5 : 0.25);
     this.pipeline = new RenderPipeline(this.renderer);
     this.pipeline.outputNode = this.bloomPass ? output.add(this.bloomPass) : output;
     this.renderer.shadowMap.enabled = true;

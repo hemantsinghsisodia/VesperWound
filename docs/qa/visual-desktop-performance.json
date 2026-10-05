@@ -1,0 +1,182 @@
+{
+  "date": "2026-10-05T16:46:27.923Z",
+  "browser": "154.0.8037.95",
+  "backend": "WebGPU",
+  "build": "production",
+  "method": "External requestAnimationFrame intervals; includes display cadence, not isolated GPU timestamp queries.",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.01159999999404,
+      "frames": 1800,
+      "fps": 60.019206145966706,
+      "p95FrameMs": 16.80000000000291,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 60.0345,
+      "frames": 3602,
+      "fps": 60.018805892512994,
+      "p95FrameMs": 16.80000000000291,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 90.04320000001788,
+      "frames": 5403,
+      "fps": 60.01860576778802,
+      "p95FrameMs": 16.80000000000291,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 120.06230000001192,
+      "frames": 7205,
+      "fps": 60.01900601857255,
+      "p95FrameMs": 16.80000000000291,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 150.08570000001788,
+      "frames": 8991,
+      "fps": 59.490169249531505,
+      "p95FrameMs": 16.800000000017462,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 180.10380000001192,
+      "frames": 10554,
+      "fps": 52.59712936556175,
+      "p95FrameMs": 33.39999999999418,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 210.11920000001788,
+      "frames": 12356,
+      "fps": 60.01880589251297,
+      "p95FrameMs": 16.89999999999418,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 240.13970000001788,
+      "frames": 14136,
+      "fps": 59.294592003794925,
+      "p95FrameMs": 16.89999999999418,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 270.16330000001193,
+      "frames": 15934,
+      "fps": 59.88581770757087,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 300.178,
+      "frames": 17735,
+      "fps": 60.018805892512916,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 330.19359999999403,
+      "frames": 19537,
+      "fps": 60.01900601857255,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 360.20580000001195,
+      "frames": 21338,
+      "fps": 60.01860576778799,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 390.216099999994,
+      "frames": 23139,
+      "fps": 60.018805892513036,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 420.228,
+      "frames": 24939,
+      "fps": 59.98540355180242,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 450.2413000000119,
+      "frames": 26741,
+      "fps": 60.018805892512916,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 480.2565,
+      "frames": 28540,
+      "fps": 59.951838689586076,
+      "p95FrameMs": 16.79999999998836,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 510.277,
+      "frames": 30340,
+      "fps": 59.95263741644087,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 540.295900000006,
+      "frames": 32142,
+      "fps": 60.0188058925128,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 570.308599999994,
+      "frames": 33943,
+      "fps": 60.018805892513036,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    },
+    {
+      "elapsedSeconds": 600.3324000000059,
+      "frames": 35724,
+      "fps": 59.32644707092152,
+      "p95FrameMs": 16.800000000046566,
+      "visible": "visible"
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 600.3700999999941,
+    "frameCount": 35726,
+    "fps": 59.5091651543312,
+    "p95FrameMs": 16.800000000046566,
+    "maxFrameMs": 66.70000000001164,
+    "intervalsOver50Ms": 11
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

@@ -1,0 +1,200 @@
+[
+  {
+    "name": "Iona authored waxcloth color atlas",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-authored-waxcloth-color-atlas.png"
+  },
+  {
+    "name": "Iona brass wear color",
+    "size": [
+      512,
+      512
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-brass-wear-color.png"
+  },
+  {
+    "name": "Iona brass wear roughness",
+    "size": [
+      512,
+      512
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-brass-wear-roughness.png"
+  },
+  {
+    "name": "Iona cloth color",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-cloth-color.png"
+  },
+  {
+    "name": "Iona cloth normal",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-cloth-normal.png"
+  },
+  {
+    "name": "Iona cloth roughness",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-cloth-roughness.png"
+  },
+  {
+    "name": "Iona clothing sculpt AO",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-clothing-sculpt-ao.png"
+  },
+  {
+    "name": "Iona clothing sculpt NORMAL",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-clothing-sculpt-normal.png"
+  },
+  {
+    "name": "Iona iron wear color",
+    "size": [
+      512,
+      512
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-iron-wear-color.png"
+  },
+  {
+    "name": "Iona iron wear roughness",
+    "size": [
+      512,
+      512
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-iron-wear-roughness.png"
+  },
+  {
+    "name": "Iona leather color",
+    "size": [
+      1024,
+      1024
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-leather-color.png"
+  },
+  {
+    "name": "Iona leather normal",
+    "size": [
+      1024,
+      1024
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-leather-normal.png"
+  },
+  {
+    "name": "Iona leather roughness",
+    "size": [
+      1024,
+      1024
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-leather-roughness.png"
+  },
+  {
+    "name": "Iona porcelain wear color",
+    "size": [
+      512,
+      512
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-porcelain-wear-color.png"
+  },
+  {
+    "name": "Iona porcelain wear roughness",
+    "size": [
+      512,
+      512
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-porcelain-wear-roughness.png"
+  },
+  {
+    "name": "Iona refined swept fibre atlas",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-refined-swept-fibre-atlas.png"
+  },
+  {
+    "name": "Iona skin color authored",
+    "size": [
+      4096,
+      4096
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-skin-color-authored.png"
+  },
+  {
+    "name": "Iona skin pores authored",
+    "size": [
+      4096,
+      4096
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-skin-pores-authored.png"
+  },
+  {
+    "name": "Iona skin roughness authored",
+    "size": [
+      4096,
+      4096
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-skin-roughness-authored.png"
+  },
+  {
+    "name": "Iona swept inner hair",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\iona-swept-inner-hair.png"
+  },
+  {
+    "name": "Iona swept inner hair relief",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "Non-Color",
+    "file": "art\\textures\\iona\\iona-swept-inner-hair-relief.png"
+  },
+  {
+    "name": "middleage_eurasian_female_diffuse.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "colorSpace": "sRGB",
+    "file": "art\\textures\\iona\\middleage_eurasian_female_diffuse.png.png"
+  }
+]

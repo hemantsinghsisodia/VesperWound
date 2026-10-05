@@ -55,7 +55,7 @@ The ten-cycle regression exposed an ownership leak in node post-processing: disp
 
 ## Performance measurement
 
-`npm run test:performance` with `VESPER_PERFORMANCE=1` performs 30 seconds of warm-up and 600 seconds of measurement at a 1440 × 900 viewport, High quality, adaptive resolution off, and Chrome's default graphics path. It records adapter information, actual backend, browser version, frame timings, and resource samples in [desktop-performance.json](qa/desktop-performance.json).
+The historical foundation measurement is retained in [desktop-performance.json](qa/desktop-performance.json). To repeat that fixture specifically, set `VESPER_PERFORMANCE=1` and run `npx playwright test --project performance --grep sustained`. It performs 30 seconds of warm-up and 600 seconds of measurement at a 1440 × 900 viewport, High quality, adaptive resolution off, and Chrome's default graphics path. The current `npm run test:performance` command measures the production visual milestone instead; see its validation report.
 
 The development overlay reports the recent 120-frame window; aggregate export computes p95 over up to 180,000 retained measured frames. Visibility and modal pauses reset timing so suspended wall time is excluded. Long running-frame stalls remain in the aggregate. CPU time is synchronous application plus render submission, not GPU execution. Three.js memory is an estimate, not a driver-wide GPU measurement.
 
@@ -80,7 +80,7 @@ npm run test:browser
 npm run test:production
 npm run size
 $env:VESPER_PERFORMANCE = '1'
-npm run test:performance
+npx playwright test --project performance --grep sustained
 ```
 
 Run browser cases without other GPU workloads when measuring performance. Default browser regression tests skip the ten-minute measurement unless explicitly opted in. The test fixture reload deliberately exercises cached assets and scene/pass destruction; it is not map streaming.
