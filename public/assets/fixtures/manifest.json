@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "assets": {
+    "vessel": {
+      "kind": "model",
+      "url": "/assets/fixtures/vessel.glb"
+    },
+    "stone": {
+      "kind": "texture",
+      "url": "/assets/fixtures/stone.ktx2",
+      "colorSpace": "srgb"
+    },
+    "normal": {
+      "kind": "texture",
+      "url": "/assets/fixtures/normal.ktx2",
+      "colorSpace": "linear"
+    }
+  }
+}
