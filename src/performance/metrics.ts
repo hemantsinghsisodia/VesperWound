@@ -1,3 +1,4 @@
+import type { PlayerState } from '../player/player-simulation';
 export interface FrameStatistics {
   backend: string; quality: string; resolution: string; frameMs: number; cpuMs: number;
   fps: number; p95: number; draws: number; triangles: number; textures: number;
@@ -7,6 +8,7 @@ export interface FrameStatistics {
   scene: string; variant: string; animation: string; camera: string; artLoading: boolean;
   characterTier: string; inspection: string; inspectionPaused: boolean;
   rig?: { feet: number[][]; gripDistances: number[] };
+  player?: PlayerState;
 }
 export class FrameMetrics {
   private readonly frames: number[] = [];

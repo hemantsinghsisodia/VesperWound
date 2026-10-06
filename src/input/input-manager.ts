@@ -10,14 +10,17 @@ export class InputManager {
   private readonly pressed = new Set<InputAction>();
   private readonly pointers = new Map<number, InputAction>();
   private aim = { x: 0, y: 0 };
+  private aimActive = false;
   private stick = { x: 0, y: 0 };
   private stickPointer: number | null = null;
   private stickOrigin = { x: 0, y: 0 };
   private readonly bindings = new Map<string, InputAction>(Object.entries(ACTION_KEYS));
   private readonly stickElement: HTMLElement;
 
-  constructor(canvas: HTMLCanvasElement, stick: HTMLElement, pulse: HTMLButtonElement) {
+  constructor(canvas: HTMLCanvasElement, stick: HTMLElement, pulse: HTMLButtonElement, playerButtons?: { dodge: HTMLButtonElement; run: HTMLButtonElement }) {
     this.stickElement = stick;
+    if (playerButtons) { this.bindings.set('Space', 'dodge'); this.bindings.set('ShiftLeft', 'run'); this.bindings.set('ShiftRight', 'run'); }
+    const primary: InputAction = playerButtons ? 'attack' : 'pulse';
     this.lifetime.listen(window, 'keydown', (event) => {
       if (this.isEditing(event.target)) return;
       if (MOVEMENT_KEYS.has(event.code) || this.bindings.has(event.code)) event.preventDefault();
@@ -35,19 +38,22 @@ export class InputManager {
     this.lifetime.listen(canvas, 'pointermove', (event) => {
       const bounds = canvas.getBoundingClientRect();
       this.aim = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: 1 - (event.clientY - bounds.top) / bounds.height * 2 };
+      this.aimActive = event.pointerType !== 'touch';
     });
     this.lifetime.listen(canvas, 'pointerdown', (event) => {
       if (event.button !== 0) return;
-      this.pointers.set(event.pointerId, 'pulse');
-      this.pressed.add('pulse');
+      const bounds = canvas.getBoundingClientRect();
+      this.aim = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: 1 - (event.clientY - bounds.top) / bounds.height * 2 }; this.aimActive = event.pointerType !== 'touch';
+      this.pointers.set(event.pointerId, primary);
+      this.pressed.add(primary);
       canvas.setPointerCapture(event.pointerId);
     });
-    this.lifetime.listen(pulse, 'pointerdown', (event) => {
-      event.preventDefault();
-      this.pointers.set(event.pointerId, 'pulse');
-      this.pressed.add('pulse');
-      pulse.setPointerCapture(event.pointerId);
-    });
+    for (const [button, action] of [[pulse, primary], ...(playerButtons ? [[playerButtons.dodge, 'dodge'], [playerButtons.run, 'run']] as const : [])] as ReadonlyArray<readonly [HTMLButtonElement, InputAction]>) {
+      this.lifetime.listen(button, 'pointerdown', (event) => {
+        event.preventDefault(); this.aimActive = false;
+        this.pointers.set(event.pointerId, action); this.pressed.add(action); button.setPointerCapture(event.pointerId);
+      });
+    }
     this.lifetime.listen(stick, 'pointerdown', (event) => {
       if (this.stickPointer !== null) return;
       event.preventDefault();
@@ -72,18 +78,20 @@ export class InputManager {
     this.lifetime.listen(stick, 'lostpointercapture', release);
     this.lifetime.listen(pulse, 'lostpointercapture', release);
     this.lifetime.listen(canvas, 'lostpointercapture', release);
+    if (playerButtons) for (const button of [playerButtons.dodge, playerButtons.run]) this.lifetime.listen(button, 'lostpointercapture', release);
     this.lifetime.listen(window, 'orientationchange', () => this.clear());
   }
 
   private updateStick(event: PointerEvent, element: HTMLElement): void {
-    const radius = element.clientWidth * 0.3;
+    const radius = element.getBoundingClientRect().width * 0.3;
     let x = (event.clientX - this.stickOrigin.x) / radius;
     let y = (event.clientY - this.stickOrigin.y) / radius;
     const length = Math.hypot(x, y);
     if (length > 1) { x /= length; y /= length; }
     this.stick = { x, y };
-    element.style.setProperty('--stick-x', `${x * radius}px`);
-    element.style.setProperty('--stick-y', `${y * radius}px`);
+    const knobRadius = element.clientWidth * 0.3;
+    element.style.setProperty('--stick-x', `${x * knobRadius}px`);
+    element.style.setProperty('--stick-y', `${y * knobRadius}px`);
   }
   private isEditing(target: EventTarget | null): boolean {
     return target instanceof HTMLElement && (['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(target.tagName) || target.isContentEditable);
@@ -97,10 +105,10 @@ export class InputManager {
     for (const [key, action] of this.bindings) if (this.keys.has(key)) held.add(action);
     const pressed = new Set(this.pressed);
     this.pressed.clear();
-    return { movement: { x, y }, aim: { ...this.aim }, pressed, held };
+    return { movement: { x, y }, aim: { ...this.aim }, aimActive: this.aimActive, pressed, held };
   }
   clear(): void {
-    this.keys.clear(); this.pointers.clear(); this.pressed.clear();
+    this.keys.clear(); this.pointers.clear(); this.pressed.clear(); this.aimActive = false;
     this.stick = { x: 0, y: 0 }; this.stickPointer = null;
     this.stickElement.style.setProperty('--stick-x', '0px');
     this.stickElement.style.setProperty('--stick-y', '0px');

@@ -17,7 +17,7 @@ test('ten scene reloads and six quality swaps retain stable resources', async ({
   }
   await writeFile('docs/qa/visual-lifecycle.json', JSON.stringify({ before, loads, errors }, null, 2));
   for (const stats of loads) {
-    expect(stats?.references).toBe(2); expect(stats?.resources).toBe(before?.resources); expect(stats?.listeners).toBe(before?.listeners);
+    expect(stats?.references).toBe(3); expect(stats?.resources).toBe(before?.resources); expect(stats?.listeners).toBe(before?.listeners);
     expect(stats?.textures).toBeLessThanOrEqual((before?.textures ?? 0) + 2);
     expect(stats?.estimatedGpuBytes).toBeLessThanOrEqual((before?.estimatedGpuBytes ?? 0) * 1.02);
   }
@@ -29,7 +29,7 @@ test('ten scene reloads and six quality swaps retain stable resources', async ({
     await expect.poll(async () => page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().artLoading)).toBe(false);
     await page.waitForTimeout(150);
     const stats = await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot()); swaps.push(stats);
-    expect(stats?.quality).toBe(quality); expect(stats?.references).toBe(2); expect(stats?.resources).toBe(before?.resources);
+    expect(stats?.quality).toBe(quality); expect(stats?.references).toBe(3); expect(stats?.resources).toBe(before?.resources);
     if (quality === 'High') expect(stats?.textures).toBeLessThanOrEqual((before?.textures ?? 0) + 2);
   }
   await page.getByRole('button', { name: 'RETURN TO THE WORKS' }).click();
@@ -47,7 +47,7 @@ test('a failed variant load preserves the current scene and can be retried', asy
   await expect(page.locator('#art-status')).toContainText('Current view retained');
   await expect(page.locator('#quality')).toHaveValue('High');
   expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().variant)).toBe('desktop');
-  expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().references)).toBe(2);
+  expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().references)).toBe(3);
   await page.unroute('**/assets/showcase/mobile/character.glb');
   await page.locator('#quality').selectOption('Mobile'); await expect(page.locator('#quality')).toBeEnabled();
   expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().variant)).toBe('mobile');

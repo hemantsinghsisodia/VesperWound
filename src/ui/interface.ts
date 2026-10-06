@@ -3,6 +3,7 @@ import { QUALITY_NAMES, type QualityName } from '../performance/quality';
 import type { Preferences } from '../platform/settings';
 import { MEDIC, type CharacterClip } from '../world/character-definition';
 import type { CameraView, PreviewClip, InspectionView, InspectionLighting, InspectionState } from '../world/presentation';
+import type { PlayerState } from '../player/player-simulation';
 
 export class Interface {
   canvas: HTMLCanvasElement;
@@ -35,8 +36,8 @@ export class Interface {
         </section>
         <section id="location" class="location" hidden><p class="eyebrow">THE VESPER WORKS / 01</p><h2>Ash Quay</h2><p>The last light at the intake.</p></section>
         <section id="showcase-controls" class="showcase-controls" aria-label="Visual showcase" hidden>
-          <div class="view-buttons"><button id="view-courtyard" aria-pressed="true">Courtyard</button><button id="view-character" aria-pressed="false">Medic</button><button id="turn-character" aria-label="Turn Medic">↻</button></div>
-          <label for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
+          <div class="view-buttons"><button id="view-player" aria-pressed="true">Play</button><button id="view-courtyard" aria-pressed="false">Courtyard</button><button id="view-character" aria-pressed="false">Medic</button><button id="turn-character" aria-label="Turn Medic">↻</button></div>
+          <label id="animation-label" for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
           <p>MEDIC · SCIFI MEDIC</p>
           <button id="inspection-toggle" hidden>Detailed inspection</button>
           <div id="inspection-controls" hidden>
@@ -49,7 +50,8 @@ export class Interface {
           <span id="inspection-status" role="status"></span>
         </section>
         <div id="controls-hint" class="controls-hint" hidden><span>W A S D <small>move the light</small></span><span>SPACE / CLICK <small>release pressure</small></span><span>ESC <small>settings</small></span></div>
-        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
+        <section id="player-hud" class="player-hud" aria-label="Player status" hidden><label for="health">MEDIC <span id="health-value">100 / 100</span></label><progress id="health" max="100" value="100" aria-label="Medic health"></progress><p id="player-message" role="status">Strike the practice target. Avoid the marked pressure vent.</p><button id="restart-player" hidden>Return to the intake</button></section>
+        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
         <div class="session-tag"><span class="status-dot"></span><span id="session-status">INTAKE CLOSED</span></div>
         <section id="rotate" class="rotate-panel" hidden><span aria-hidden="true">↻</span><h2>Turn toward the Works</h2><p>Rotate your phone to landscape to continue.</p></section>
         <section id="error" class="error-panel" hidden role="alert"><p class="eyebrow">CONNECTION INTERRUPTED</p><h2>The Works are silent.</h2><p id="error-detail"></p><button id="retry" class="primary-button">TRY AGAIN <span aria-hidden="true">↗</span></button><button id="compatibility" class="text-button">Use compatibility graphics</button></section>
@@ -88,13 +90,14 @@ export class Interface {
     preferences(values: Partial<Preferences>): void;
     camera(view: CameraView): void; animation(clip: PreviewClip): void; turn(): void;
     inspection(): void; inspectionView(view: InspectionView): void;
-    inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void;
+    inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void; restart(): void;
   }): void {
     this.lifetime.listen(this.start, 'click', () => callbacks.start());
-    for (const view of ['courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
+    for (const view of ['player', 'courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
       callbacks.camera(view);
-      for (const choice of ['courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
+      for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
     });
+    this.lifetime.listen(this.get('#restart-player'), 'click', () => callbacks.restart());
     this.lifetime.listen(this.get('#animation'), 'change', () => { const value = this.get<HTMLSelectElement>('#animation').value; callbacks.animation(value === 'pose' ? { kind: 'pose' } : { kind: 'clip', name: value.slice(5) }); });
     this.lifetime.listen(this.get('#turn-character'), 'click', () => callbacks.turn());
     this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => callbacks.inspection());
@@ -135,11 +138,32 @@ export class Interface {
   enter(): void {
     this.entry.hidden = true;
     const showcase = this.root.dataset.scene === 'showcase';
-    this.get('#location').hidden = false; this.get('#controls-hint').hidden = showcase; this.get('#touch-controls').hidden = showcase;
+    this.get('#location').hidden = false; this.get('#controls-hint').hidden = false; this.get('#touch-controls').hidden = false;
     this.get('#showcase-controls').hidden = !showcase;
     this.get('#session-status').textContent = 'PRESSURE STABLE'; this.canvas.focus(); this.root.dataset.state = 'running';
+    if (showcase) this.mode('player');
   }
   scene(name: 'foundation' | 'showcase'): void { this.root.dataset.scene = name; }
+  mode(view: CameraView): void {
+    const playing = view === 'player'; this.root.dataset.mode = view;
+    for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
+    this.get('#player-hud').hidden = !playing; this.get('#touch-controls').hidden = !playing;
+    this.get('#controls-hint').hidden = !playing;
+    if (playing) {
+      this.pulse.setAttribute('aria-label', 'Attack'); this.pulse.querySelector('small')!.textContent = 'ATTACK';
+      this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK <small>aim & punch</small></span><span>SPACE <small>dodge</small></span><span>ESC <small>settings</small></span>';
+    }
+  }
+  player(state: PlayerState): void {
+    this.get<HTMLProgressElement>('#health').value = state.health;
+    this.get('#health-value').textContent = `${state.health} / 100`;
+    this.get('#restart-player').hidden = state.action !== 'dead';
+    this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.health < 100 ? 'Pressure vent damage. Dodge through or move clear.' : state.targetHits ? `Practice hits: ${state.targetHits}` : 'Strike the practice target. Avoid the marked pressure vent.';
+    this.root.dataset.playerAction = state.action;
+    // Read-only state also supports production measurements without dev commands.
+    this.canvas.dataset.playerPosition = `${state.position.x.toFixed(3)},${state.position.y.toFixed(3)},${state.position.z.toFixed(3)}`;
+    this.canvas.dataset.playerAction = state.action;
+  }
   animationChoices(clips: readonly CharacterClip[]): void {
     const select = this.get<HTMLSelectElement>('#animation');
     select.replaceChildren(new Option('Static pose', 'pose'), ...clips.map((clip) => new Option(clip.name, `clip:${clip.name}`)));
@@ -156,6 +180,12 @@ export class Interface {
     button.textContent = active ? 'Return to Ash Quay' : state.status === 'loading' ? 'Cancel inspection' : state.status === 'failed' ? 'Retry detailed inspection' : 'Detailed inspection';
     this.get('#inspection-controls').hidden = !active;
     this.get('#view-courtyard').hidden = active; this.get('#view-character').hidden = active;
+    this.get('#view-player').hidden = active;
+    this.get('#player-hud').hidden = active || this.root.dataset.mode !== 'player';
+    if (this.root.dataset.scene === 'showcase') {
+      this.get('#touch-controls').hidden = active || this.root.dataset.mode !== 'player';
+      this.get('#controls-hint').hidden = active || this.root.dataset.mode !== 'player';
+    }
     this.get('#location').hidden = active || !['running', 'paused'].includes(this.root.dataset.state ?? '');
     this.get('#inspection-status').textContent = state.status === 'loading' ? 'Preparing detailed Medic…' : state.status === 'failed' ? state.message : '';
     if (active) {

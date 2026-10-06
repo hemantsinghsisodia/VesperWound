@@ -14,6 +14,9 @@ import { VisualShowcase } from '../world/visual-showcase';
 import { artVariant, type WorldPresentation, type InspectionState } from '../world/presentation';
 import type { CharacterInspection } from '../world/character-inspection';
 import { CourtyardCamera } from '../camera/courtyard-camera';
+import { PlayerSimulation, PRACTICE_TARGET } from '../player/player-simulation';
+import type { RapierPlayerCollision } from '../player/player-collision';
+import collisionBoxes from '../player/courtyard-collision.json';
 
 interface SessionEvents { pressureReleased: { x: number; z: number } }
 
@@ -38,6 +41,7 @@ export class Application {
   private inspectionState: InspectionState = { status: 'courtyard' };
   private committedQuality: QualityName = 'High';
   private input: InputManager | null = null;
+  private player: PlayerSimulation | null = null;
   private debug: { update(stats: FrameStatistics): void; dispose(): void } | null = null;
   private started = false;
   private modalPaused = false;
@@ -72,13 +76,20 @@ export class Application {
       },
       retry: (compatibility) => { void this.audio.unlock(); void this.boot(compatibility); },
       preferences: (values) => this.setPreferences(values),
-      camera: (view) => { if (this.courtyard && !this.inspection) this.camera.selectView(view, this.courtyard.target, this.courtyard instanceof VisualShowcase); },
+      camera: (view) => {
+        if (this.courtyard && !this.inspection) {
+          if (this.courtyard instanceof VisualShowcase) this.courtyard.setPlaying(view === 'player');
+          this.input?.clear(); this.ui.mode(view);
+          this.camera.selectView(view, this.courtyard.target, this.courtyard instanceof VisualShowcase); this.ui.canvas.focus();
+        }
+      },
       animation: (clip) => this.preview?.selectClip(clip),
       turn: () => this.preview?.turn(),
       inspection: () => { if (this.inspection || this.pendingInspection) this.closeInspection(); else void this.enterInspection(); },
       inspectionView: (view) => { this.inspection?.selectView(view); this.updateInspectionUi(); },
       inspectionLighting: (lighting) => { this.inspection?.selectLighting(lighting); this.updateInspectionUi(); },
       inspectionPause: () => { if (this.inspection) this.inspection.actor.paused = !this.inspection.actor.paused; this.updateInspectionUi(); },
+      restart: () => { this.player?.reset(); this.input?.clear(); this.ui.canvas.focus(); },
     });
     this.lifetime.listen(window, 'resize', () => { this.resize(); this.synchronizePause(); });
     const visibility = () => {
@@ -108,11 +119,17 @@ export class Application {
       this.ui.loading('Unsealing the courtyard…');
       const assets = new AssetManager(adapter.renderer); this.assets = assets; await assets.init(this.manifestUrl());
       if (this.disposed) return;
+      if (this.options.scene === 'showcase') {
+        const physics = await import('../player/player-collision'); await physics.initializePhysics();
+        if (this.disposed) return;
+        const collision: RapierPlayerCollision = new physics.RapierPlayerCollision(); collision.install(collisionBoxes);
+        this.player = new PlayerSimulation(collision);
+      }
       this.courtyard = await this.createWorld(); await this.courtyard.load(assets, this.options.missingFixture);
       if (this.disposed) return;
       this.fixtureLoads++;
       this.courtyard.configure(this.quality.profile);
-      this.camera.selectView('courtyard', this.courtyard.target, this.courtyard instanceof VisualShowcase);
+      this.camera.selectView(this.player ? 'player' : 'courtyard', this.courtyard.target, this.courtyard instanceof VisualShowcase);
       this.committedQuality = this.quality.selected;
       adapter.configure(this.courtyard.scene, this.camera.camera, this.quality.profile);
       this.resize();
@@ -120,7 +137,7 @@ export class Application {
       await adapter.compile(this.courtyard.scene, this.camera.camera);
       if (this.disposed) return;
       adapter.render();
-      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse);
+      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run') } : undefined);
       this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0;
       await adapter.renderer.setAnimationLoop((time) => this.frame(time));
       if (import.meta.env.DEV && !this.debug) {
@@ -189,12 +206,16 @@ export class Application {
         const alpha = this.clock.advance(time, (dt) => {
           const input = this.input?.sample();
           if (!input) return;
+          if (world instanceof VisualShowcase) {
+            world.aim = input.aimActive ? this.camera.aim(input.aim, world.target.y) : Math.hypot(world.target.x - PRACTICE_TARGET.x, world.target.z - PRACTICE_TARGET.z) < 1.6 ? PRACTICE_TARGET : undefined;
+          }
           if (world.update(dt, input, this.settings.values.reducedMotion)) this.events.emit('pressureReleased', { x: world.target.x, z: world.target.z });
           this.audio.setListener(world.target.x, world.target.z);
         }, this.timeScale);
         world.interpolate(alpha);
         if (!this.inspection) this.camera.update(this.courtyard.target, delta);
         if (this.preview) this.ui.animation(this.preview.clip);
+        if (this.player) this.ui.player(this.player.state);
       }
       this.adapter.render();
       if (!paused) {
@@ -230,6 +251,7 @@ export class Application {
       await assets.init(this.manifestUrl());
       replacement = await this.createWorld(); this.loadingWorld = replacement;
       await replacement.load(assets, false);
+      if (replacement instanceof VisualShowcase) replacement.setPlaying(this.camera.view === 'player');
       if (this.disposed || this.adapter !== adapter) return;
       replacement.configure(this.quality.profile);
       await adapter.compile(replacement.scene, this.camera.camera);
@@ -289,6 +311,7 @@ export class Application {
       adapter.renderer.toneMappingExposure = 1;
       adapter.render();
       this.inspection = request.world; this.inspectionAssets = request.assets;
+      this.input?.clear();
       request.world = null; request.assets = null; this.inspection.activate();
       this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0; this.resize();
       this.refreshAnimationUi(); this.updateInspectionUi();
@@ -313,6 +336,7 @@ export class Application {
     }
     this.inspection?.dispose(); this.inspection = null; this.inspectionAssets?.dispose(); this.inspectionAssets = null;
     this.inspectionState = { status: 'courtyard' }; this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0;
+    this.input?.clear();
     this.resize(); this.updateInspectionUi(); this.refreshAnimationUi();
   }
   private manifestUrl(): string {
@@ -323,7 +347,8 @@ export class Application {
     if (import.meta.env.DEV && this.options.scene === 'foundation') {
       const { Courtyard } = await import('../world/courtyard'); return new Courtyard();
     }
-    return new VisualShowcase(artVariant(this.quality.selected));
+    if (!this.player) throw new Error('Player simulation is unavailable.');
+    return new VisualShowcase(artVariant(this.quality.selected), this.player);
   }
   private snapshot(): FrameStatistics {
     const info = this.adapter?.renderer.info;
@@ -345,6 +370,7 @@ export class Application {
       inspection: this.inspectionState.status, inspectionPaused: this.inspection?.actor.paused ?? false,
       artLoading: this.reloading,
       ...(import.meta.env.DEV && this.preview ? { rig: this.preview.inspection() } : {}),
+      ...(this.player ? { player: structuredClone(this.player.state) } : {}),
     };
   }
   private stopSession(): void {
@@ -356,6 +382,7 @@ export class Application {
     this.loadingWorld?.dispose(); this.loadingWorld = null;
     this.loadingAssets?.dispose(); this.loadingAssets = null;
     this.assets?.dispose(); this.assets = null;
+    this.player?.dispose(); this.player = null;
     adapter?.dispose(); this.clock.reset();
   }
   async dispose(): Promise<void> {

@@ -46,7 +46,7 @@ for (const tier of ['desktop', 'mobile', 'cinematic']) {
   const directory = `public/assets/showcase/${tier}`; await mkdir(directory, { recursive: true });
   if (tier !== 'desktop') await copyFile('public/assets/showcase/desktop/character.glb', `${directory}/character.glb`);
   await writeFile(`${directory}/manifest.json`, JSON.stringify({ version: 1, assets: {
-    character: { kind: 'model', url: 'character.glb' }, ...(tier === 'cinematic' ? {} : { courtyard: { kind: 'model', url: 'ash-quay.glb' } }),
+    character: { kind: 'model', url: 'character.glb' }, animations: { kind: 'model', url: '../shared/animations.glb' }, ...(tier === 'cinematic' ? {} : { courtyard: { kind: 'model', url: 'ash-quay.glb' } }),
   } }, null, 2));
   results.push({ tier, triangles, rawBytes: bytes.length, gzipBytes: gzipSync(bytes).length, sha256: createHash('sha256').update(bytes).digest('hex'), clips: doc.getRoot().listAnimations().map((a) => a.getName()), textures: doc.getRoot().listTextures().length, identicalToDesktop: true });
 }

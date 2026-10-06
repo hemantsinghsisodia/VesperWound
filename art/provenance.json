@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "recorded": "2026-10-06T05:59:58.590Z",
+  "recorded": "2026-10-06T07:45:22.831Z",
   "sources": [
     {
       "id": "cobblestone_floor_08",
@@ -290,6 +290,78 @@
       "authors": [
         "Tony Flanagan"
       ]
+    },
+    {
+      "title": "Universal Animation Library — free Standard package",
+      "author": "Quaternius",
+      "contributors": [
+        "Gonzalo Furnier"
+      ],
+      "source": "https://quaternius.itch.io/universal-animation-library",
+      "license": "CC0 1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "acquired": "2026-10-06",
+      "archiveSha256": "cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724",
+      "modifications": [
+        "World-space rest-pose retargeting to supplied Medic skeleton",
+        "30 Hz baked skeletal animation; horizontal hip translation removed, vertical motion retained",
+        "Keyframe resampling and Meshopt compression",
+        "A-pose/T-pose semantic bone alignment",
+        "Read-only export from saved Blender animation source"
+      ],
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "duration": 2.5,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Walk_Loop",
+          "duration": 1.3333333730697632,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Jog_Fwd_Loop",
+          "duration": 0.9333333373069763,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Punch_Cross",
+          "duration": 1,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Roll",
+          "duration": 1.4666666984558105,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Hit_Chest",
+          "duration": 0.3333333432674408,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Death01",
+          "duration": 2.4000000953674316,
+          "fps": 30,
+          "channels": 53
+        }
+      ],
+      "runtimeBytes": 148544,
+      "runtimeSha256": "7de9e3343c8df893467898f83f9079c2fcd77dd554e4cfe7e03f0fc7fb89b571",
+      "editableSource": "art/source/medic-player-animations.blend",
+      "editableSourceSha256": "f2945efb5fd59f8844813e9d31612c2ecee66b0c4c6d90ae0d95390ac3262e04",
+      "id": "quaternius-universal-animation-library-standard",
+      "authors": [
+        "Quaternius",
+        "Gonzalo Furnier"
+      ]
     }
   ],
   "originalWork": "VESPERWOUND courtyard modules, pressure-engine landmark, lamps, drainage, covers, debris, reflection lighting and contact-AO bake belong to the project owner. Medic and imported environment assets retain their stated licenses.",
@@ -314,6 +386,14 @@
     {
       "path": "public/assets/showcase/cinematic/character.glb",
       "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4"
+    },
+    {
+      "path": "art/source/medic-player-animations.blend",
+      "sha256": "f2945efb5fd59f8844813e9d31612c2ecee66b0c4c6d90ae0d95390ac3262e04"
+    },
+    {
+      "path": "public/assets/showcase/shared/animations.glb",
+      "sha256": "7de9e3343c8df893467898f83f9079c2fcd77dd554e4cfe7e03f0fc7fb89b571"
     },
     {
       "path": "art/source/ash-quay-desktop.blend",

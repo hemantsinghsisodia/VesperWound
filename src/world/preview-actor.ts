@@ -9,6 +9,7 @@ export class PreviewActor {
   clip: PreviewClip = { kind: 'pose' };
   clips: CharacterClip[] = [];
   paused = false;
+  controlled = false;
   private mixer: AnimationMixer | null = null;
   private root: GLTF['scene'] | null = null;
   private readonly actions = new Map<string, AnimationAction>();
@@ -24,7 +25,7 @@ export class PreviewActor {
       if (!clip.name || names.has(clip.name)) throw new Error('Character clips must have unique nonempty names.');
       names.add(clip.name); this.actions.set(clip.name, this.mixer!.clipAction(clip));
       return this.definition.clips.find((item) => item.name === clip.name) ?? { name: clip.name, loop: true };
-    });
+    }).sort((a, b) => this.definition.clips.findIndex(c => c.name === a.name) - this.definition.clips.findIndex(c => c.name === b.name));
     for (const expected of this.definition.clips) if (!names.has(expected.name)) throw new Error(`Character animation is missing: ${expected.name}`);
     this.mixer.addEventListener('finished', this.finished); this.selectClip(this.defaultClip()); this.update(0);
   }
@@ -32,19 +33,22 @@ export class PreviewActor {
     const idle = this.clips.find((clip) => /idle/i.test(clip.name));
     return idle ? { kind: 'clip', name: idle.name } : { kind: 'pose' };
   }
-  private readonly finished = () => this.selectClip(this.defaultClip());
+  private readonly finished = () => { if (!this.controlled) this.selectClip(this.defaultClip()); };
+  playbackRate(rate: number): void { if (this.clip.kind === 'clip') this.actions.get(this.clip.name)?.setEffectiveTimeScale(rate); }
   selectClip(selection: PreviewClip): void {
     if (selection.kind === 'pose') {
       this.mixer?.stopAllAction();
-      const first = this.actions.values().next().value as AnimationAction | undefined;
+      const idle = this.defaultClip();
+      const first = (idle.kind === 'clip' ? this.actions.get(idle.name) : this.actions.values().next().value) as AnimationAction | undefined;
       if (first) { first.reset().play(); first.paused = false; this.mixer?.update(0); first.paused = true; }
       this.clip = { kind: 'pose' }; return;
     }
     const next = this.actions.get(selection.name); const descriptor = this.clips.find((item) => item.name === selection.name);
     if (!next || !descriptor) return;
-    const previous = this.clip.kind === 'clip' ? this.actions.get(this.clip.name) : this.actions.values().next().value as AnimationAction | undefined;
+    const idle = this.defaultClip();
+    const previous = this.clip.kind === 'clip' ? this.actions.get(this.clip.name) : idle.kind === 'clip' ? this.actions.get(idle.name) : this.actions.values().next().value as AnimationAction | undefined;
     next.reset().setLoop(descriptor.loop ? LoopRepeat : LoopOnce, descriptor.loop ? Infinity : 1);
-    next.paused = false; next.clampWhenFinished = true; next.enabled = true; next.setEffectiveWeight(1).play();
+    next.paused = false; next.clampWhenFinished = true; next.enabled = true; next.setEffectiveTimeScale(1).setEffectiveWeight(1).play();
     if (previous && previous !== next) { previous.paused = false; next.crossFadeFrom(previous, 0.18, false); }
     this.clip = selection;
   }

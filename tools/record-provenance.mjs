@@ -10,8 +10,11 @@ const imports = JSON.parse(await readFile('art/downloads/provenance.json', 'utf8
 const sources = imports.filter((source) => Object.hasOwn(modifications, source.id)).map((source) => ({ ...source, modifications: modifications[source.id] }));
 const medic = JSON.parse(await readFile('art/medic-provenance.json', 'utf8'));
 sources.push({ ...medic, id: 'fab-scifi-medic', authors: [medic.author] });
+const animations = JSON.parse(await readFile('art/animation-provenance.json', 'utf8'));
+sources.push({ ...animations, id: 'quaternius-universal-animation-library-standard', authors: [animations.author, ...animations.contributors] });
 const hash = async (path) => createHash('sha256').update(await readFile(path)).digest('hex');
 const paths = ['art/source/medic-master.blend', ...['desktop', 'mobile', 'cinematic'].map((tier) => `public/assets/showcase/${tier}/character.glb`)];
+paths.push('art/source/medic-player-animations.blend', 'public/assets/showcase/shared/animations.glb');
 for (const tier of ['desktop', 'mobile']) paths.push(`art/source/ash-quay-${tier}.blend`, `public/assets/showcase/${tier}/ash-quay.glb`);
 const outputs = await Promise.all(paths.map(async (path) => ({ path, sha256: await hash(path) })));
 const provenance = { schema: 1, recorded: new Date().toISOString(), sources,

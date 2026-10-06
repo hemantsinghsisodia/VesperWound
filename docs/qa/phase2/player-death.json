@@ -1,0 +1,42 @@
+{
+  "dead": {
+    "position": {
+      "x": -3.440062917338201,
+      "y": 0.029634468384901996,
+      "z": 1.5601485685122753
+    },
+    "previous": {
+      "x": -3.440062917338201,
+      "y": 0.029634468384901996,
+      "z": 1.5601485685122753
+    },
+    "facing": -2.356194488995578,
+    "health": 0,
+    "action": "dead",
+    "actionTime": 0,
+    "grounded": true,
+    "strikes": 0,
+    "targetHits": 0,
+    "invulnerable": false
+  },
+  "restarted": {
+    "position": {
+      "x": -1.6,
+      "y": 0.02995710572227836,
+      "z": 3.4
+    },
+    "previous": {
+      "x": -1.6,
+      "y": 0.035,
+      "z": 3.4
+    },
+    "facing": 0,
+    "health": 100,
+    "action": "idle",
+    "actionTime": 0.016666666666666666,
+    "grounded": true,
+    "strikes": 0,
+    "targetHits": 0,
+    "invulnerable": false
+  }
+}

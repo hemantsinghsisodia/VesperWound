@@ -4,7 +4,7 @@ The active character is **SciFi Medic - Rigged by Tony Flanagan**, acquired thro
 
 `art/source/medic-master.blend` is the editable, packed master. It preserves the supplied 67-bone armature, nine meshes, clothing, equipment and materials. A parent empty applies uniform scale and ground normalization to 1.8 metres. All source images are packed, with native sizes from 128 to 1024 pixels; the head color image is 512 pixels. Original extracted texture files are retained alongside the downloaded source. There is no invented high-resolution source detail.
 
-Both the supplied Blender package and Fab's converted GLB contain **zero animation clips**, despite the listing's animation-related tags. Static pose is therefore the only active preview. The runtime supports arbitrary supplied clips with pause and 180 ms transitions; synthetic clips in unit tests exercise that behavior without adding generated game animations. Future locomotion, combat and new animation acquisition remain Phase 2.
+Both supplied Fab files contain **zero animation clips**. Phase 2 adds seven clips from Quaternius's free CC0 Universal Animation Library: idle, walk, jog, cross punch, roll, chest hit and death. They are retargeted additions, not Fab-supplied animation. Static pose remains available from the idle's first frame; previews retain pause and 180 ms transitions.
 
 ## Normal build
 
@@ -12,7 +12,9 @@ Run `npm run assets:build` using Blender 5.2, or set `BLENDER_PATH` to its execu
 
 The optimizer uses Meshopt, ETC1S for packed material maps, and UASTC with Zstandard for normal and color maps. Color maps use UASTC because paired browser captures revealed visible ETC1S blocks on the coat at inspection distance. It creates mipmaps without enlarging the source images. The 18,745-triangle model already fits the mobile ceiling; all three tiers share identical exported bytes. Desktop and detailed inspection preserve the same native detail. The cinematic path remains explicitly loaded and independently owned; it is a studio inspection option, not a higher-detail reconstruction.
 
-Ash Quay's desktop/mobile models remain unchanged. Manifests now use the `character` key, alongside `courtyard` where applicable. Model dependencies resolve relative to their model location. Scene and inspection asset handles retain reference-counted ownership and cancellation/disposal paths.
+Ash Quay's models remain unchanged. Manifests use `character`, `courtyard` where applicable and `animations` pointing to `../shared/animations.glb`. Dependencies resolve relative to model locations. The shared animation pack counts toward both initial-art budgets. Scene and inspection handles retain reference-counted ownership and cancellation/disposal paths.
+
+`art/source/medic-player-animations.blend` is the editable animation authoring source. `assets:build` exports it read-only and strips constant scale/location tracks before Meshopt compression. `tools/retarget-medic.mjs` and `tools/blender/phase2_sources.py` are explicit one-time acquisition/retarget preparation tools; do not rerun them over artist edits. The retarget aligns Medic's lowered-arm bind pose with the library's T-pose, maps semantic bones in world space, retains vertical body motion and removes horizontal hip travel. Source provenance, archive hashes and modifications are in `art/animation-provenance.json`. Character geometry, materials, equipment and 67-bone rig remain supplied by Tony Flanagan.
 
 ## Source evidence
 

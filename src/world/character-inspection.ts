@@ -5,13 +5,14 @@ import type { QualityProfile } from '../performance/quality';
 import type { InspectionLighting, InspectionView, WorldPresentation } from './presentation';
 import { PreviewActor } from './preview-actor';
 import { MEDIC } from './character-definition';
+import { PLAYER_CLIP_DESCRIPTORS } from '../player/player-animation';
 
-/** Optional studio owns one model reference and its own camera/listeners. */
+/** Optional studio owns model/animation references and its own camera/listeners. */
 export class CharacterInspection implements WorldPresentation {
   readonly scene = new Scene();
   readonly target = new Vector3();
   readonly camera = new PerspectiveCamera(35, 1, 0.02, 30);
-  readonly actor = new PreviewActor();
+  readonly actor = new PreviewActor({ ...MEDIC, clips: PLAYER_CLIP_DESCRIPTORS });
   view: InspectionView = 'full-body';
   lighting: InspectionLighting = 'neutral';
   private readonly controls: OrbitControls;
@@ -21,7 +22,7 @@ export class CharacterInspection implements WorldPresentation {
   private readonly hemisphere = new HemisphereLight(0xe1e4ea, 0x3c3934, 1.1);
   private readonly floor = new Mesh(new PlaneGeometry(16, 16), new MeshStandardNodeMaterial({ color: 0x343a3c, roughness: 0.82 }));
   private reflection: RenderTarget | null = null;
-  private handle: { release(): void } | null = null;
+  private readonly handles: Array<{ release(): void }> = [];
   private disposed = false;
   constructor(canvas: HTMLCanvasElement) {
     this.scene.background = new Color(0x30363a);
@@ -37,9 +38,14 @@ export class CharacterInspection implements WorldPresentation {
     this.selectView('full-body');
   }
   async load(assets: AssetManager): Promise<void> {
-    const handle = await assets.model('character');
-    if (this.disposed) { handle.release(); throw new Error('Inspection was cancelled.'); }
-    this.handle = handle; this.actor.attach(handle.value);
+    const loaded = await Promise.allSettled([assets.model('character'), assets.model('animations')]);
+    for (const result of loaded) if (result.status === 'fulfilled') { if (this.disposed) result.value.release(); else this.handles.push(result.value); }
+    if (this.disposed) throw new Error('Inspection was cancelled.');
+    const character = loaded[0]; const animations = loaded[1];
+    const failed = loaded.find(result => result.status === 'rejected');
+    if (failed?.status === 'rejected') throw failed.reason;
+    if (character?.status !== 'fulfilled' || animations?.status !== 'fulfilled') throw new Error('Inspection is incomplete.');
+    this.actor.attach({ scene: character.value.value.scene, animations: animations.value.value.animations });
     // A soft, owned reflection field makes the imported materials readable.
     const faces = Array.from({ length: 6 }, () => {
       const canvas = document.createElement('canvas'); canvas.width = canvas.height = 32;
@@ -82,7 +88,8 @@ export class CharacterInspection implements WorldPresentation {
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
     this.controls.dispose(); this.actor.dispose(); this.scene.clear(); this.scene.environment = null;
-    this.handle?.release(); this.handle = null; this.reflection?.dispose(); this.reflection = null;
+    for (const handle of this.handles) handle.release(); this.handles.length = 0;
+    this.reflection?.dispose(); this.reflection = null;
     this.floor.geometry.dispose(); this.floor.material.dispose();
     for (const light of [this.key, this.fill, this.rim, this.hemisphere]) light.dispose();
   }

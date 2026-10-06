@@ -14,8 +14,10 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop', testIgnore: ['**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { viewport: { width: 1440, height: 900 } } },
-    { name: 'mobile', testIgnore: ['**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 } } },
+    { name: 'desktop', testIgnore: ['**/player.spec.ts', '**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { viewport: { width: 1440, height: 900 } } },
+    { name: 'mobile', testIgnore: ['**/player.spec.ts', '**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 } } },
+    { name: 'hardware-player-desktop', testMatch: '**/player.spec.ts', use: { viewport: { width: 1440, height: 900 }, launchOptions: { args: [] } } },
+    { name: 'hardware-player-mobile', testMatch: '**/player.spec.ts', use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 }, launchOptions: { args: [] } } },
     { name: 'hardware-inspection', testMatch: '**/inspection.spec.ts', use: { viewport: { width: 1440, height: 900 }, launchOptions: { args: [] } } },
     { name: 'hardware-webgpu', testMatch: '**/webgpu.spec.ts', use: { viewport: { width: 1440, height: 900 }, launchOptions: { args: [] } } },
     { name: 'hardware-showcase', testMatch: '**/showcase-lifecycle.spec.ts', use: { viewport: { width: 1440, height: 900 }, launchOptions: { args: [] } } },

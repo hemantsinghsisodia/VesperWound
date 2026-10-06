@@ -14,17 +14,17 @@ test('Medic and Ash Quay render with selected assets and animation previews', as
   await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeVisible();
   const variant = test.info().project.name === 'mobile' ? 'mobile' : 'desktop';
   const stats = await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot());
-  expect(stats?.variant).toBe(variant); expect(stats?.references).toBe(2); expect(stats?.scene).toBe('showcase');
+  expect(stats?.variant).toBe(variant); expect(stats?.references).toBe(3); expect(stats?.scene).toBe('showcase');
   expect(requests.filter((url) => url.includes('/showcase/') && url.includes(`/${variant === 'mobile' ? 'desktop' : 'mobile'}/`))).toEqual([]);
   expect(requests.some((url) => url.includes('/showcase/cinematic/'))).toBe(false);
   if (variant === 'mobile') await expect(page.locator('#inspection-toggle')).toBeHidden();
   await mkdir('docs/qa/medic/browser', { recursive: true });
-  await page.screenshot({ path: `docs/qa/medic/browser/courtyard-webgl2-${variant}.png` });
+  await page.screenshot({ path: `docs/qa/phase2/browser/courtyard-webgl2-${variant}.png` });
   await page.getByRole('button', { name: 'Medic', exact: true }).click();
   await page.waitForTimeout(300);
-  await page.screenshot({ path: `docs/qa/medic/browser/medic-webgl2-${variant}.png` });
-  await expect(page.locator('#animation option')).toHaveText(['Static pose']);
-  expect(stats?.animation).toBe('static-pose');
+  await page.screenshot({ path: `docs/qa/phase2/browser/medic-webgl2-${variant}.png` });
+  await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01']);
+  expect(stats?.animation).toBe('Idle_Loop');
   expect(errors).toEqual([]);
   if (variant === 'mobile') {
     await page.getByRole('button', { name: 'Turn Medic' }).tap();
@@ -43,5 +43,5 @@ test('Medic and Ash Quay render with selected assets and animation previews', as
     await expect(page.locator('#inspection-toggle')).toBeHidden();
     expect(requests.some((url) => url.includes('/showcase/cinematic/'))).toBe(false);
   }
-  await writeFile(`docs/qa/medic/browser/webgl2-${variant}.json`, JSON.stringify({ stats, errors, viewport: page.viewportSize(), browser: test.info().project.use.channel, userAgent: await page.evaluate(() => navigator.userAgent) }, null, 2));
+  await writeFile(`docs/qa/phase2/browser/webgl2-${variant}.json`, JSON.stringify({ stats, errors, viewport: page.viewportSize(), browser: test.info().project.use.channel, userAgent: await page.evaluate(() => navigator.userAgent) }, null, 2));
 });

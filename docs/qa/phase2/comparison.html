@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medic — Phase 2 browser captures</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #0c181c; color: #e5dfcd; }
+  body { max-width: 1480px; margin: auto; padding: 24px; }
+  h1, h2 { font-weight: 500; } p { max-width: 80ch; line-height: 1.6; }
+  a { color: #dac589; } .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,380px),1fr)); gap: 20px; }
+  figure { margin: 0; background: #14242a; border: 1px solid #46504a; }
+  figure img { width: 100%; display: block; } figcaption { padding: 12px; }
+  .wide { grid-column: 1 / -1; } section { margin-block: 36px; }
+</style>
+<h1>Medic — Phase 2 browser captures</h1>
+<p>The accepted Fab Medic is unchanged. Seven separate Quaternius CC0 animations were retargeted to its supplied rig for the player prototype. These are actual browser captures, not concept images. Static poses help inspect deformation; animation polish still requires review in motion. <a href="validation.md">Validation report</a>.</p>
+<section><h2>Playable courtyard</h2><div class="grid">
+<figure class="wide"><a href="browser/courtyard-webgpu.png"><img src="browser/courtyard-webgpu.png" alt="Medic and the practice target in the WebGPU courtyard"></a><figcaption>Desktop gameplay distance — WebGPU</figcaption></figure>
+<figure><a href="browser/desktop-punch.png"><img loading="lazy" src="browser/desktop-punch.png" alt="Desktop punch against the practice target"></a><figcaption>Punch preview</figcaption></figure>
+<figure><a href="browser/desktop-dodge.png"><img loading="lazy" src="browser/desktop-dodge.png" alt="Desktop dodge in the courtyard"></a><figcaption>Dodge preview</figcaption></figure>
+<figure><a href="browser/desktop-death.png"><img loading="lazy" src="browser/desktop-death.png" alt="Medic lying down after the pressure vent depleted health"></a><figcaption>Death and restart</figcaption></figure>
+<figure class="wide"><a href="browser/mobile-player.png"><img loading="lazy" src="browser/mobile-player.png" alt="Mobile landscape with enlarged left-handed attack, run and dodge controls"></a><figcaption>Touch landscape — enlarged left-handed controls</figcaption></figure>
+</div></section>
+<section><h2>Retargeted animation poses</h2><div class="grid">
+<figure><a href="browser/clip-Idle_Loop.png"><img loading="lazy" src="browser/clip-Idle_Loop.png" alt="Medic in idle pose"></a><figcaption>Idle_Loop</figcaption></figure>
+<figure><a href="browser/clip-Walk_Loop.png"><img loading="lazy" src="browser/clip-Walk_Loop.png" alt="Medic mid-stride walking"></a><figcaption>Walk_Loop</figcaption></figure>
+<figure><a href="browser/clip-Jog_Fwd_Loop.png"><img loading="lazy" src="browser/clip-Jog_Fwd_Loop.png" alt="Medic mid-stride jogging"></a><figcaption>Jog_Fwd_Loop</figcaption></figure>
+<figure><a href="browser/clip-Punch_Cross.png"><img loading="lazy" src="browser/clip-Punch_Cross.png" alt="Medic performing a cross punch"></a><figcaption>Punch_Cross</figcaption></figure>
+<figure><a href="browser/clip-Roll.png"><img loading="lazy" src="browser/clip-Roll.png" alt="Medic tucked during a roll"></a><figcaption>Roll — retained vertical tuck</figcaption></figure>
+<figure><a href="browser/clip-Hit_Chest.png"><img loading="lazy" src="browser/clip-Hit_Chest.png" alt="Medic reacting to a chest hit"></a><figcaption>Hit_Chest</figcaption></figure>
+<figure><a href="browser/clip-Death01.png"><img loading="lazy" src="browser/clip-Death01.png" alt="Sampled Medic death animation pose"></a><figcaption>Death01 — sampled pose; courtyard capture shows held end state</figcaption></figure>
+</div></section>
+<section><h2>Inspection and materials</h2><div class="grid">
+<figure><a href="browser/webgpu-required-front.png"><img loading="lazy" src="browser/webgpu-required-front.png" alt="Medic front view in the WebGPU studio"></a><figcaption>Front — WebGPU</figcaption></figure>
+<figure><a href="browser/webgpu-required-profile.png"><img loading="lazy" src="browser/webgpu-required-profile.png" alt="Medic profile in the WebGPU studio"></a><figcaption>Profile — WebGPU</figcaption></figure>
+<figure><a href="browser/webgpu-required-back.png"><img loading="lazy" src="browser/webgpu-required-back.png" alt="Medic back view in the WebGPU studio"></a><figcaption>Back — WebGPU</figcaption></figure>
+<figure><a href="browser/webgpu-required-three-quarter.png"><img loading="lazy" src="browser/webgpu-required-three-quarter.png" alt="Medic three-quarter view in the WebGPU studio"></a><figcaption>Three-quarter — WebGPU</figcaption></figure>
+<figure><a href="browser/webgl2-portrait.png"><img loading="lazy" src="browser/webgl2-portrait.png" alt="Medic portrait rendered by WebGL2"></a><figcaption>Portrait — WebGL2</figcaption></figure>
+<figure><a href="browser/webgpu-required-equipment.png"><img loading="lazy" src="browser/webgpu-required-equipment.png" alt="Medic medical pouch and gloves in WebGPU"></a><figcaption>Equipment — WebGPU</figcaption></figure>
+<figure><a href="browser/materials-source-portrait.png"><img loading="lazy" src="browser/materials-source-portrait.png" alt="Medic portrait with source texture maps"></a><figcaption>Source maps — browser portrait</figcaption></figure>
+<figure><a href="browser/materials-compressed-portrait.png"><img loading="lazy" src="browser/materials-compressed-portrait.png" alt="Medic portrait with compressed KTX2 maps"></a><figcaption>Compressed KTX2 — browser portrait</figcaption></figure>
+</div></section>
+<p>Character: Tony Flanagan, SciFi Medic, CC BY 4.0. Animations: Quaternius with Gonzalo Furnier, Universal Animation Library Standard, CC0 1.0. Source details and modifications are recorded in the validation report and asset provenance. Physical phone behavior remains unmeasured.</p>
+</html>

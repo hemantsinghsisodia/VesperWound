@@ -57,6 +57,20 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
     requestAnimationFrame(observe);
   });
   const samples = [];
+  let exercise = true;
+  const movement = mode === 'gameplay' ? (async () => {
+    while (exercise) {
+      // Repeated run cycles in the clear forecourt exercise fixed simulation,
+      // collision, rig updates and camera follow without development commands.
+      for (const keys of [['d', 's'], ['a', 'w']]) {
+        if (!exercise) break;
+        await page.keyboard.down('Shift'); for (const key of keys) await page.keyboard.down(key);
+        await page.waitForTimeout(450);
+        for (const key of keys) await page.keyboard.up(key); await page.keyboard.up('Shift');
+        await page.waitForTimeout(100);
+      }
+    }
+  })() : Promise.resolve();
   for (let i = 0; i < 20; i++) {
     await page.waitForTimeout(30000);
     const sample = await page.evaluate(() => {
@@ -72,6 +86,7 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
     await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
     expect(sample.visible).toBe('visible');
   }
+  exercise = false; await movement;
   const metrics = await page.evaluate(() => {
     const measurement = window.__PERFORMANCE_MEASUREMENT__!; measurement.stopped = true;
     const frames = measurement.frames.sort((a, b) => a - b);
@@ -82,11 +97,11 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
   });
   const evidence = { date: new Date().toISOString(), browser: browser.version(), backend: 'WebGPU', build: 'production',
     mode, method: 'External requestAnimationFrame intervals with Chrome --disable-frame-rate-limit and --disable-gpu-vsync; application has no frame limiter. Includes CPU submission and scheduling, not isolated GPU timestamp queries.',
-    renderingUncapped: true, browserFlags: ['--disable-frame-rate-limit', '--disable-gpu-vsync'],
+    renderingUncapped: true, gameplayExercise: mode === 'gameplay' ? 'Alternating 450 ms run cycles, fixed simulation and follow camera' : 'Looped idle skeletal animation', browserFlags: ['--disable-frame-rate-limit', '--disable-gpu-vsync'],
     viewport: { width: 1440, height: 900 }, quality: 'High', adaptiveResolution: false, warmupSeconds: 30,
     hardware, samples, metrics, errors, warnings };
   await mkdir('docs/qa', { recursive: true });
-  await writeFile(`docs/qa/medic/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
+  await writeFile(`docs/qa/phase2/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
   expect(errors).toEqual([]);
   expect(warnings.filter((message) => message.includes('Vertex attribute'))).toEqual([]);
   expect(metrics.durationSeconds).toBeGreaterThanOrEqual(600);

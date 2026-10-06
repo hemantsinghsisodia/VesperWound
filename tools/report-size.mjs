@@ -9,6 +9,11 @@ async function visit(directory) {
     if (entry.isDirectory()) await visit(path);
     else {
       const bytes = await readFile(path);
+      if (path.includes('/showcase/shared/')) {
+        // Shared animation delivery counts against each art tier, not bootstrap.
+        for (const tier of ['desktop', 'mobile', 'cinematic']) { groups[tier].raw += bytes.length; groups[tier].gzip += gzipSync(bytes).byteLength; }
+        continue;
+      }
       const group = path.includes('/showcase/desktop/') ? groups.desktop : path.includes('/showcase/mobile/') ? groups.mobile : path.includes('/showcase/cinematic/') ? groups.cinematic : groups.bootstrap;
       group.raw += bytes.length; group.gzip += gzipSync(bytes).byteLength;
     }

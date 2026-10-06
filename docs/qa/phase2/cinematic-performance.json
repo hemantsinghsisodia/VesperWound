@@ -1,0 +1,215 @@
+{
+  "date": "2026-10-06T08:10:38.707Z",
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "build": "production",
+  "mode": "cinematic",
+  "method": "External requestAnimationFrame intervals with Chrome --disable-frame-rate-limit and --disable-gpu-vsync; application has no frame limiter. Includes CPU submission and scheduling, not isolated GPU timestamp queries.",
+  "renderingUncapped": true,
+  "gameplayExercise": "Looped idle skeletal animation",
+  "browserFlags": [
+    "--disable-frame-rate-limit",
+    "--disable-gpu-vsync"
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererAllocation": {
+      "estimatedBytes": 72803343,
+      "textures": 64
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.00989999997616,
+      "frames": 12350,
+      "fps": 425.83392476933994,
+      "p95FrameMs": 2.900000000008731,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 60.03059999999404,
+      "frames": 24574,
+      "fps": 435.40311071333633,
+      "p95FrameMs": 2.7000000000116415,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 90.05209999999404,
+      "frames": 36734,
+      "fps": 400.7034571803828,
+      "p95FrameMs": 4.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 120.068,
+      "frames": 48748,
+      "fps": 384.63182187273054,
+      "p95FrameMs": 4.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 150.08889999997615,
+      "frames": 61438,
+      "fps": 429.51226496134507,
+      "p95FrameMs": 3,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 180.1165,
+      "frames": 73975,
+      "fps": 418.34197132033546,
+      "p95FrameMs": 3.2000000000116415,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 210.142,
+      "frames": 86443,
+      "fps": 419.2676791204684,
+      "p95FrameMs": 3.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 240.15959999999404,
+      "frames": 99220,
+      "fps": 415.46451240623196,
+      "p95FrameMs": 3.2999999999883585,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 270.1743999999762,
+      "frames": 111654,
+      "fps": 401.42729705619985,
+      "p95FrameMs": 4.2999999999883585,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 300.2057999999821,
+      "frames": 124270,
+      "fps": 376.5769158350575,
+      "p95FrameMs": 4,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 330.2325,
+      "frames": 136523,
+      "fps": 413.51742516483046,
+      "p95FrameMs": 3.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 360.26009999999405,
+      "frames": 149257,
+      "fps": 426.2473655544803,
+      "p95FrameMs": 2.800000000046566,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 390.28709999999404,
+      "frames": 161899,
+      "fps": 405.4054054054054,
+      "p95FrameMs": 3.1000000000349246,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 420.3095,
+      "frames": 174461,
+      "fps": 424.3481540855251,
+      "p95FrameMs": 2.8999999999650754,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 450.329,
+      "frames": 186922,
+      "fps": 419.6684619150894,
+      "p95FrameMs": 2.900000000023283,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 480.34379999998214,
+      "frames": 199584,
+      "fps": 424.33815035714895,
+      "p95FrameMs": 2.900000000023283,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 510.359,
+      "frames": 212219,
+      "fps": 430.828147438966,
+      "p95FrameMs": 2.900000000023283,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 540.3771999999881,
+      "frames": 224626,
+      "fps": 395.4045207916837,
+      "p95FrameMs": 3.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 570.4017999999821,
+      "frames": 236493,
+      "fps": 394.1663381947202,
+      "p95FrameMs": 3.700000000069849,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    },
+    {
+      "elapsedSeconds": 600.4235,
+      "frames": 248466,
+      "fps": 399.86671109630123,
+      "p95FrameMs": 3.599999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72803343
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 600.562199999988,
+    "frameCount": 248470,
+    "fps": 413.82009559809063,
+    "p95FrameMs": 3.1999999999970896,
+    "maxFrameMs": 40.90000000002328,
+    "intervalsOver50Ms": 0,
+    "intervalsOver100Ms": 0
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

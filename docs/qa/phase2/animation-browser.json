@@ -1,0 +1,464 @@
+{
+  "poses": [
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.600000000000364,
+      "cpuMs": 2.300000011920929,
+      "fps": 5.85565802957107,
+      "p95": 533,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Idle_Loop",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.21471390729492262,
+            0.09893316982634731,
+            0.19160592942088728
+          ],
+          [
+            -0.16968395145188897,
+            0.09779895160181662,
+            -0.23437553885498352
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.699999999999818,
+      "cpuMs": 1.2000000178813934,
+      "fps": 26.87449610319806,
+      "p95": 116.60000000000036,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Walk_Loop",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.0744403444140497,
+            0.1035815252054621,
+            0.0502827911196741
+          ],
+          [
+            -0.112432509283894,
+            0.3062543126726594,
+            -0.29689812220416434
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.800000000000182,
+      "cpuMs": 1.2000000178813934,
+      "fps": 35.87970513405961,
+      "p95": 17,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Jog_Fwd_Loop",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.10394944478761829,
+            0.41088933346416956,
+            -0.62696688037343
+          ],
+          [
+            -0.08296151139512205,
+            0.436229406092589,
+            0.4359320638098359
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.700000000000728,
+      "cpuMs": 1.2000000178813934,
+      "fps": 40.87545920215241,
+      "p95": 16.899999999999636,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Punch_Cross",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.21258048335514318,
+            0.08644875688313552,
+            0.12466505703433174
+          ],
+          [
+            -0.2830965092634409,
+            0.15686198469015827,
+            -0.26776786721827694
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.800000000000182,
+      "cpuMs": 1.600000023841858,
+      "fps": 44.26850551228025,
+      "p95": 16.800000000000182,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Roll",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.16745616975401137,
+            0.9839590085084041,
+            -0.8274967976258591
+          ],
+          [
+            -0.16131070396195915,
+            1.0013667145875669,
+            -0.846685631947979
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.699999999999818,
+      "cpuMs": 1.9000000059604645,
+      "fps": 47.69664931038596,
+      "p95": 16.800000000000182,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Hit_Chest",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.21860515922542467,
+            0.07392166701043412,
+            0.061927268274132516
+          ],
+          [
+            -0.16911148892413982,
+            0.12203028902820479,
+            -0.34088379275684066
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.599999999999454,
+      "cpuMs": 0.8999999761581421,
+      "fps": 60.02100735257343,
+      "p95": 16.800000000000182,
+      "draws": 20,
+      "triangles": 37493,
+      "textures": 64,
+      "estimatedGpuBytes": 72803343,
+      "resources": 28,
+      "references": 5,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6000047465212106,
+      "markerZ": 3.399991753191111,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Death01",
+      "camera": "full-body",
+      "characterTier": "cinematic",
+      "inspection": "active",
+      "inspectionPaused": true,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            0.1961193868569756,
+            0.11227208426127228,
+            0.30216785013343306
+          ],
+          [
+            -0.21474674825179396,
+            0.12226450140421119,
+            -0.12255754100031942
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000047620732556,
+          "y": 0.029210986144025813,
+          "z": 3.3999917295849666
+        },
+        "previous": {
+          "x": -1.600004206643079,
+          "y": 0.02932414843613515,
+          "z": 3.399992572661544
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 1.649999999999999,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances."
+  ]
+}

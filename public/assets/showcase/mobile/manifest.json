@@ -5,6 +5,10 @@
       "kind": "model",
       "url": "character.glb"
     },
+    "animations": {
+      "kind": "model",
+      "url": "../shared/animations.glb"
+    },
     "courtyard": {
       "kind": "model",
       "url": "ash-quay.glb"

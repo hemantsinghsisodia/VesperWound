@@ -1,0 +1,74 @@
+{
+  "stats": {
+    "backend": "WebGL2",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 839.8999999999996,
+    "cpuMs": 3.699999988079071,
+    "fps": 0,
+    "p95": 0,
+    "draws": 72,
+    "triangles": 271259,
+    "textures": 53,
+    "estimatedGpuBytes": 55397322,
+    "resources": 22,
+    "references": 3,
+    "voices": 3,
+    "overruns": 0,
+    "fixtureLoads": 1,
+    "markerX": -1.6,
+    "markerZ": 3.4,
+    "listeners": 47,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Idle_Loop",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.4505040951776633,
+          0.14056658550678836,
+          3.3589040959925063
+        ],
+        [
+          -1.7494981363282252,
+          0.1405663862807282,
+          3.3589039435796693
+        ]
+      ],
+      "gripDistances": []
+    },
+    "player": {
+      "position": {
+        "x": -1.6,
+        "y": 0.035,
+        "z": 3.4
+      },
+      "previous": {
+        "x": -1.6,
+        "y": 0.035,
+        "z": 3.4
+      },
+      "facing": 0,
+      "health": 100,
+      "action": "idle",
+      "actionTime": 0,
+      "grounded": false,
+      "strikes": 0,
+      "targetHits": 0,
+      "invulnerable": false
+    }
+  },
+  "errors": [],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "browser": "chrome",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36"
+}

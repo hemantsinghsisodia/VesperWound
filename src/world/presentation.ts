@@ -13,7 +13,7 @@ export type InspectionState =
   | { status: 'failed'; message: string }
   | { status: 'active'; view: InspectionView; lighting: InspectionLighting; paused: boolean };
 export type PreviewClip = { kind: 'pose' } | { kind: 'clip'; name: string };
-export type CameraView = 'courtyard' | 'character';
+export type CameraView = 'player' | 'courtyard' | 'character';
 export interface WorldPresentation {
   readonly scene: Scene;
   readonly target: Vector3;

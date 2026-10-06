@@ -24,4 +24,12 @@ describe('supplied character previews', () => {
     expect(actor.clip).toEqual({ kind: 'clip', name: 'Medic Idle' }); actor.dispose();
     const duplicate = new PreviewActor(); expect(() => duplicate.attach({ scene: new Group(), animations: [new AnimationClip('Walk', 1, []), new AnimationClip('Walk', 1, [])] })).toThrow('unique'); duplicate.dispose();
   });
+  it('fades out the actual pose action when idle is not the first exported clip', () => {
+    const scene = new Group(); const joint = new Group(); joint.name = 'joint'; scene.add(joint);
+    const clip = (name: string, x: number) => new AnimationClip(name, 1, [new VectorKeyframeTrack('joint.position', [0, 1], [x, 0, 0, x, 0, 0])]);
+    const actor = new PreviewActor(); actor.attach({ scene, animations: [clip('Death01', 9), clip('Idle_Loop', 1), clip('Walk_Loop', 3)] });
+    actor.selectClip({ kind: 'pose' }); expect(joint.position.x).toBe(1);
+    actor.selectClip({ kind: 'clip', name: 'Walk_Loop' }); actor.update(.25);
+    expect(joint.position.x).toBeCloseTo(3); actor.dispose();
+  });
 });

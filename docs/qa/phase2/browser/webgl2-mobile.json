@@ -1,0 +1,74 @@
+{
+  "stats": {
+    "backend": "WebGL2",
+    "quality": "Mobile",
+    "resolution": "915 × 412",
+    "frameMs": 500,
+    "cpuMs": 15.800000011920929,
+    "fps": 2,
+    "p95": 500,
+    "draws": 60,
+    "triangles": 181967,
+    "textures": 42,
+    "estimatedGpuBytes": 23848093,
+    "resources": 22,
+    "references": 3,
+    "voices": 3,
+    "overruns": 1,
+    "fixtureLoads": 1,
+    "markerX": -1.6000000206309495,
+    "markerZ": 3.3999990285376156,
+    "listeners": 47,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "mobile",
+    "animation": "Idle_Loop",
+    "camera": "player",
+    "characterTier": "mobile",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.4001581065765287,
+          0.12473150704675195,
+          3.463377569406649
+        ],
+        [
+          -1.769557066240854,
+          0.1274227886656198,
+          3.26390428489561
+        ]
+      ],
+      "gripDistances": []
+    },
+    "player": {
+      "position": {
+        "x": -1.599999536515162,
+        "y": 0.029411023959401067,
+        "z": 3.399998544421828
+      },
+      "previous": {
+        "x": -1.6000000206309495,
+        "y": 0.02931102396192728,
+        "z": 3.3999990285376156
+      },
+      "facing": 0,
+      "health": 100,
+      "action": "idle",
+      "actionTime": 0.08333333333333333,
+      "grounded": true,
+      "strikes": 0,
+      "targetHits": 0,
+      "invulnerable": false
+    }
+  },
+  "errors": [],
+  "viewport": {
+    "width": 915,
+    "height": 412
+  },
+  "browser": "chrome",
+  "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Mobile Safari/537.36"
+}

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "VESPERWOUND \u2014 Fab Medic at Ash Quay",
+  "description": "VESPERWOUND — Fab Medic at Ash Quay",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "prebuild": "node tools/sync-runtime.mjs",
@@ -22,6 +22,7 @@
     "size": "node tools/report-size.mjs"
   },
   "dependencies": {
+    "@dimforge/rapier3d-compat": "0.21.0",
     "three": "0.186.1"
   },
   "devDependencies": {

@@ -1,0 +1,135 @@
+{
+  "stats": {
+    "backend": "WebGPU",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 16.800000000000182,
+    "cpuMs": 4.5,
+    "fps": 36.01440576230485,
+    "p95": 50,
+    "draws": 72,
+    "triangles": 271259,
+    "textures": 53,
+    "estimatedGpuBytes": 56377996,
+    "resources": 22,
+    "references": 3,
+    "voices": 3,
+    "overruns": 0,
+    "fixtureLoads": 1,
+    "markerX": -1.6000000201436984,
+    "markerZ": 3.3999990285376156,
+    "listeners": 47,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Idle_Loop",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.4075552931540707,
+          0.12575572569018528,
+          3.4417706183813794
+        ],
+        [
+          -1.7672139399075182,
+          0.12828063301160753,
+          3.282454076513232
+        ]
+      ],
+      "gripDistances": []
+    },
+    "player": {
+      "position": {
+        "x": -1.6000000206309495,
+        "y": 0.02931102396192728,
+        "z": 3.3999990285376156
+      },
+      "previous": {
+        "x": -1.599999777005371,
+        "y": 0.029211023964453492,
+        "z": 3.3999990285376156
+      },
+      "facing": 0,
+      "health": 100,
+      "action": "idle",
+      "actionTime": 0.06666666666666667,
+      "grounded": true,
+      "strikes": 0,
+      "targetHits": 0,
+      "invulnerable": false
+    }
+  },
+  "poses": [
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.699999999999818,
+      "cpuMs": 4.299999982118607,
+      "fps": 58.33121988333755,
+      "p95": 16.800000000000182,
+      "draws": 54,
+      "triangles": 271167,
+      "textures": 53,
+      "estimatedGpuBytes": 56377996,
+      "resources": 22,
+      "references": 3,
+      "voices": 3,
+      "overruns": 0,
+      "fixtureLoads": 1,
+      "markerX": -1.600000402654553,
+      "markerZ": 3.3999965763370827,
+      "listeners": 47,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Idle_Loop",
+      "camera": "character",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.377568137330976,
+            0.12629653980117467,
+            3.592336461576292
+          ],
+          [
+            -1.7631585388313666,
+            0.1250934638316794,
+            3.166708766194498
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "position": {
+          "x": -1.6000004085687527,
+          "y": 0.029224268673860937,
+          "z": 3.399996571901433
+        },
+        "previous": {
+          "x": -1.5999999861259147,
+          "y": 0.02932384462852497,
+          "z": 3.3999968887335474
+        },
+        "facing": 0,
+        "health": 100,
+        "action": "idle",
+        "actionTime": 0.4666666666666666,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false
+      }
+    }
+  ],
+  "errors": []
+}

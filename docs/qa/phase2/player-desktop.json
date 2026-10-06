@@ -1,0 +1,43 @@
+{
+  "before": {
+    "position": {
+      "x": 0.5492220323398925,
+      "y": 0.02900076473830268,
+      "z": 3.3716046493070166
+    },
+    "previous": {
+      "x": 0.5492224060192058,
+      "y": 0.028900764740828894,
+      "z": 3.3716048361466733
+    },
+    "facing": 1.5707962899947487,
+    "health": 100,
+    "action": "idle",
+    "actionTime": 0.24999999999999997,
+    "grounded": true,
+    "strikes": 0,
+    "targetHits": 0,
+    "invulnerable": false
+  },
+  "after": {
+    "position": {
+      "x": 0.670268151626602,
+      "y": 0.029727529927033064,
+      "z": 3.7165783054283135
+    },
+    "previous": {
+      "x": 0.6702683884175693,
+      "y": 0.029627529929559276,
+      "z": 3.7165783054283135
+    },
+    "facing": -0.5186267107190989,
+    "health": 100,
+    "action": "idle",
+    "actionTime": 0,
+    "grounded": true,
+    "strikes": 1,
+    "targetHits": 1,
+    "invulnerable": false
+  },
+  "errors": []
+}
