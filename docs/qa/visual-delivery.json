@@ -1,25 +1,25 @@
 {
   "bootstrap": {
-    "rawBytes": 6779956,
-    "gzipBytes": 2546238,
+    "rawBytes": 6796237,
+    "gzipBytes": 2551478,
     "limitBytes": 5242880,
     "passed": true
   },
   "desktop": {
-    "rawBytes": 16468133,
-    "gzipBytes": 15119363,
+    "rawBytes": 16500401,
+    "gzipBytes": 15124396,
     "limitBytes": 20971520,
     "passed": true
   },
   "mobile": {
-    "rawBytes": 10325941,
-    "gzipBytes": 9211936,
+    "rawBytes": 10358209,
+    "gzipBytes": 9216969,
     "limitBytes": 10485760,
     "passed": true
   },
   "cinematic": {
-    "rawBytes": 6727120,
-    "gzipBytes": 6227069,
+    "rawBytes": 6759388,
+    "gzipBytes": 6232102,
     "limitBytes": 41943040,
     "passed": true
   }

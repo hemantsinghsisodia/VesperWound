@@ -1,4 +1,5 @@
 import type { PlayerState } from '../player/player-simulation';
+import type { CombatantState } from '../player/combat-definitions';
 export interface FrameStatistics {
   backend: string; quality: string; resolution: string; frameMs: number; cpuMs: number;
   fps: number; p95: number; draws: number; triangles: number; textures: number;
@@ -9,6 +10,7 @@ export interface FrameStatistics {
   characterTier: string; inspection: string; inspectionPaused: boolean;
   rig?: { feet: number[][]; gripDistances: number[] };
   player?: PlayerState;
+  targets?: CombatantState[];
 }
 export class FrameMetrics {
   private readonly frames: number[] = [];

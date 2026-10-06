@@ -2,7 +2,7 @@ import {
   Scene, Color, FogExp2, Mesh,
   DirectionalLight, HemisphereLight, PointLight, Vector3, CubeTexture, SRGBColorSpace,
   Sprite, SpriteMaterial, CanvasTexture,
-  PlaneGeometry, MeshStandardNodeMaterial, CylinderGeometry, TorusGeometry, BoxGeometry,
+  PlaneGeometry, MeshStandardNodeMaterial,
   PMREMGenerator, type BufferGeometry, type RenderTarget, type WebGPURenderer,
   type Texture, type Material,
 } from 'three/webgpu';
@@ -12,8 +12,10 @@ import type { QualityProfile } from '../performance/quality';
 import type { ArtVariant, PreviewClip, WorldPresentation } from './presentation';
 import { PreviewActor } from './preview-actor';
 import { MEDIC } from './character-definition';
-import { PLAYER_CLIP_DESCRIPTORS, PLAYER_CLIPS, PLAYER_CLIP_RATES } from '../player/player-animation';
-import { type PlayerSimulation, PRACTICE_TARGET, PRESSURE_VENT } from '../player/player-simulation';
+import { PLAYER_CLIP_DESCRIPTORS, PLAYER_CLIPS, PLAYER_CLIP_RATES, attackPlaybackRate } from '../player/player-animation';
+import { type PlayerSimulation } from '../player/player-simulation';
+import { ATTACKS, type CombatEvent } from '../player/combat-definitions';
+import { CombatPresentation } from './combat-presentation';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
@@ -35,12 +37,11 @@ export class VisualShowcase implements WorldPresentation {
   private disposed = false;
   playing = true;
   aim: { x: number; z: number } | undefined;
-  private targetPlate: MeshStandardNodeMaterial | null = null;
-  private hitFlash = 0;
-  private seenHits = 0;
-  private readonly practiceLabels: Sprite[] = [];
+  private readonly combat: CombatPresentation;
+  private animationSequence = -1;
 
   constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation) {
+    this.combat = new CombatPresentation(player); this.scene.add(this.combat.group);
     this.scene.background = new Color(0x142126);
     this.scene.fog = new FogExp2(0x142126, 0.028);
     this.actor.position.copy(this.target); this.actor.rotation.y = 0.25;
@@ -68,13 +69,13 @@ export class VisualShowcase implements WorldPresentation {
     this.scene.traverse((object) => {
       if (object instanceof Mesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = !('isSkinnedMesh' in object); }
     });
-    this.surfaceDetails(); this.practiceArea(); this.applyPlayer(1);
+    this.surfaceDetails(); this.applyPlayer(1);
     this.update(0, { movement: { x: 0, y: 0 }, aim: { x: 0, y: 0 }, pressed: new Set(), held: new Set() }, true);
   }
   selectClip(name: PreviewClip): void { this.preview.selectClip(name); }
   setPlaying(playing: boolean): void {
     this.playing = playing; this.preview.controlled = playing;
-    for (const label of this.practiceLabels) label.visible = playing;
+    this.combat.group.visible = playing;
     if (playing) this.applyPlayer(1); else this.preview.playbackRate(1);
   }
   turn(): void { this.preview.turn(); }
@@ -86,12 +87,10 @@ export class VisualShowcase implements WorldPresentation {
     this.key.shadow.mapSize.set(profile.shadowSize, profile.shadowSize); this.key.shadow.needsUpdate = true;
   }
   update(dt: number, input: InputFrame, reducedMotion: boolean): boolean {
-    const impact = this.playing && this.player.update(dt, input, this.aim);
+    if (this.playing) this.player.update(dt, input, this.aim);
     if (this.playing) this.applyPlayer(1);
     this.time += dt; this.preview.update(dt);
-    if (this.player.state.targetHits !== this.seenHits) { this.seenHits = this.player.state.targetHits; this.hitFlash = 0.22; }
-    this.hitFlash = Math.max(0, this.hitFlash - dt);
-    if (this.targetPlate) this.targetPlate.emissiveIntensity = this.hitFlash > 0 ? 2.5 : 0.15;
+    if (this.playing) this.combat.update(dt, reducedMotion);
     this.scene.updateMatrixWorld(true);
     this.engine.intensity = 38 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * 2);
     this.steam.forEach((puff, index) => {
@@ -101,38 +100,18 @@ export class VisualShowcase implements WorldPresentation {
         [4.15, 4.7, 4.35][flue]! + phase, -2.2 + Math.cos(index * 1.7) * 0.12);
       puff.scale.setScalar(0.35 + phase * 0.35);
     });
-    return impact;
+    return false; // Foundation's pressure pulse is separate from typed combat events.
   }
-  interpolate(alpha: number): void { if (this.playing) this.applyPlayer(alpha); }
+  combatEvent(event: CombatEvent, reducedMotion: boolean): void { this.combat.event(event, reducedMotion); }
+  interpolate(alpha: number): void { if (this.playing) { this.applyPlayer(alpha); this.combat.interpolate(alpha); } }
   private applyPlayer(alpha: number): void {
     const s = this.player.state;
     this.target.set(s.previous.x + (s.position.x - s.previous.x) * alpha, s.previous.y + (s.position.y - s.previous.y) * alpha, s.previous.z + (s.position.z - s.previous.z) * alpha);
     this.actor.position.copy(this.target); this.actor.rotation.y = s.facing;
     this.preview.controlled = true;
-    const name = PLAYER_CLIPS[s.action];
-    if (this.clip.kind !== 'clip' || this.clip.name !== name) this.preview.selectClip({ kind: 'clip', name });
-    this.preview.playbackRate(PLAYER_CLIP_RATES[s.action]);
-  }
-  private practiceArea(): void {
-    const iron = new MeshStandardNodeMaterial({ color: 0x343b3b, metalness: 0.65, roughness: 0.5 });
-    this.targetPlate = new MeshStandardNodeMaterial({ color: 0xb09b79, emissive: 0x8a6030, emissiveIntensity: 0.15, roughness: 0.9 });
-    const hazard = new MeshStandardNodeMaterial({ color: 0xb37a3d, emissive: 0x68310a, emissiveIntensity: 0.8, roughness: 0.65 });
-    this.materials.push(iron, this.targetPlate, hazard);
-    const postGeometry = new CylinderGeometry(0.09, 0.15, 1.6, 12); const plateGeometry = new BoxGeometry(0.65, 0.65, 0.18); const ringGeometry = new TorusGeometry(0.82, 0.035, 6, 32);
-    this.geometries.push(postGeometry, plateGeometry, ringGeometry);
-    const post = new Mesh(postGeometry, iron); post.position.set(PRACTICE_TARGET.x, 0.82, PRACTICE_TARGET.z); post.castShadow = true;
-    const plate = new Mesh(plateGeometry, this.targetPlate); plate.position.set(PRACTICE_TARGET.x, 1.25, PRACTICE_TARGET.z); plate.castShadow = true;
-    const ring = new Mesh(ringGeometry, hazard); ring.rotation.x = Math.PI / 2; ring.position.set(PRESSURE_VENT.x, 0.08, PRESSURE_VENT.z);
-    this.scene.add(post, plate, ring);
-    for (const [text, x, z] of [['PRACTICE TARGET', PRACTICE_TARGET.x, PRACTICE_TARGET.z], ['PRESSURE VENT · DANGER', PRESSURE_VENT.x, PRESSURE_VENT.z]] as const) {
-      const canvas = document.createElement('canvas'); canvas.width = 512; canvas.height = 64;
-      const context = canvas.getContext('2d'); if (!context) continue;
-      context.fillStyle = '#0d1c22db'; context.fillRect(0, 0, 512, 64); context.fillStyle = '#e8d4a7'; context.font = '22px Arial'; context.textAlign = 'center'; context.fillText(text, 256, 40);
-      const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; this.textures.push(texture);
-      const material = new SpriteMaterial({ map: texture, depthTest: false, transparent: true }); this.materials.push(material);
-      const label = new Sprite(material); label.geometry = label.geometry.clone(); this.geometries.push(label.geometry);
-      label.position.set(x, text.startsWith('PRACTICE') ? 2 : 0.8, z); label.scale.set(2.1, 0.26, 1); this.scene.add(label); this.practiceLabels.push(label);
-    }
+    const name = s.attack ? ATTACKS[s.attack].clip : PLAYER_CLIPS[s.action];
+    if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) { this.preview.selectClip({ kind: 'clip', name }); this.animationSequence = s.actionSequence; }
+    this.preview.playbackRate(s.attack ? attackPlaybackRate(ATTACKS[s.attack], s.actionTime, this.preview.duration(name)) : s.action === 'ward' ? this.preview.duration(name) / .8 : PLAYER_CLIP_RATES[s.action]);
   }
   private reflectionEnvironment(renderer: WebGPURenderer): void {
     const faces = Array.from({ length: 6 }, (_, index) => {
@@ -171,10 +150,10 @@ export class VisualShowcase implements WorldPresentation {
       this.steam.push(puff); this.scene.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1; }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources; }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
-    this.preview.dispose();
+    this.preview.dispose(); this.combat.dispose();
     this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;
     for (const geometry of this.geometries) geometry.dispose();

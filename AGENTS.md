@@ -1,6 +1,7 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- Phase 3 unarmed combat prototype is authorized on 2026-10-06: three-hit light chain, heavy strike, posture/stagger/critical follow-up, pressure-powered Ward, reactive training targets, telegraphed vent, bounded effects/audio/camera feedback and validation. Preserve accepted Medic art. Enemy AI and Phase 4 remain excluded until requested.
 - Phase 2 player prototype is authorized on 2026-10-06: movement, follow camera, static collision, licensed retargeted animations, basic punch/dodge, health, damage, death/restart and touch controls. Preserve Medic's accepted appearance and rig. Quaternius CC0 clips are separate additions; do not present them as supplied Fab animations. Enemy AI, weapon redesign and subsequent phases are excluded until requested.
 - The user accepted Tony Flanagan's Fab SciFi Medic under CC BY 4.0 as the retained character on 2026-10-06 and requested removal of the previous generated character. Medic is the only character asset; do not restore the removed generators, sources or comparisons. Preserve its appearance and supplied rig. The downloaded Blender and GLB have no animations; use Static pose and defer new clips and mechanics to Phase 2.
 - Phase 0 architecture was approved on 2026-10-05. See docs/architecture.md.

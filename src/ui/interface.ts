@@ -50,8 +50,8 @@ export class Interface {
           <span id="inspection-status" role="status"></span>
         </section>
         <div id="controls-hint" class="controls-hint" hidden><span>W A S D <small>move the light</small></span><span>SPACE / CLICK <small>release pressure</small></span><span>ESC <small>settings</small></span></div>
-        <section id="player-hud" class="player-hud" aria-label="Player status" hidden><label for="health">MEDIC <span id="health-value">100 / 100</span></label><progress id="health" max="100" value="100" aria-label="Medic health"></progress><p id="player-message" role="status">Strike the practice target. Avoid the marked pressure vent.</p><button id="restart-player" hidden>Return to the intake</button></section>
-        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
+        <section id="player-hud" class="player-hud" aria-label="Player status" hidden><label for="health">MEDIC <span id="health-value">100 / 100</span></label><progress id="health" max="100" value="100" aria-label="Medic health"></progress><label for="pressure">PRESSURE <span id="pressure-value">100 / 100</span></label><progress id="pressure" max="100" value="100" aria-label="Ward pressure"></progress><p id="player-message" role="status">Chain three light hits, then use heavy to break posture.</p><p id="combat-score">HITS 0 · CRITICALS 0 · BLOCKS 0</p><button id="reset-targets">Reset targets</button><button id="restart-player" hidden>Return to the intake</button></section>
+        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button><button id="heavy" aria-label="Heavy attack">HEAVY</button><button id="ward" aria-label="Ward">WARD</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
         <div class="session-tag"><span class="status-dot"></span><span id="session-status">INTAKE CLOSED</span></div>
         <section id="rotate" class="rotate-panel" hidden><span aria-hidden="true">↻</span><h2>Turn toward the Works</h2><p>Rotate your phone to landscape to continue.</p></section>
         <section id="error" class="error-panel" hidden role="alert"><p class="eyebrow">CONNECTION INTERRUPTED</p><h2>The Works are silent.</h2><p id="error-detail"></p><button id="retry" class="primary-button">TRY AGAIN <span aria-hidden="true">↗</span></button><button id="compatibility" class="text-button">Use compatibility graphics</button></section>
@@ -90,7 +90,7 @@ export class Interface {
     preferences(values: Partial<Preferences>): void;
     camera(view: CameraView): void; animation(clip: PreviewClip): void; turn(): void;
     inspection(): void; inspectionView(view: InspectionView): void;
-    inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void; restart(): void;
+    inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void; restart(): void; resetTargets(): void;
   }): void {
     this.lifetime.listen(this.start, 'click', () => callbacks.start());
     for (const view of ['player', 'courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
@@ -98,6 +98,7 @@ export class Interface {
       for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
     });
     this.lifetime.listen(this.get('#restart-player'), 'click', () => callbacks.restart());
+    this.lifetime.listen(this.get('#reset-targets'), 'click', () => callbacks.resetTargets());
     this.lifetime.listen(this.get('#animation'), 'change', () => { const value = this.get<HTMLSelectElement>('#animation').value; callbacks.animation(value === 'pose' ? { kind: 'pose' } : { kind: 'clip', name: value.slice(5) }); });
     this.lifetime.listen(this.get('#turn-character'), 'click', () => callbacks.turn());
     this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => callbacks.inspection());
@@ -151,18 +152,23 @@ export class Interface {
     this.get('#controls-hint').hidden = !playing;
     if (playing) {
       this.pulse.setAttribute('aria-label', 'Attack'); this.pulse.querySelector('small')!.textContent = 'ATTACK';
-      this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK <small>aim & punch</small></span><span>SPACE <small>dodge</small></span><span>ESC <small>settings</small></span>';
+      this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK / RIGHT CLICK <small>light / heavy</small></span><span>SPACE / Q <small>dodge / Ward</small></span><span>ESC <small>settings</small></span>';
     }
   }
   player(state: PlayerState): void {
     this.get<HTMLProgressElement>('#health').value = state.health;
     this.get('#health-value').textContent = `${state.health} / 100`;
+    this.get<HTMLProgressElement>('#pressure').value = state.pressure;
+    this.get('#pressure-value').textContent = `${Math.floor(state.pressure)} / 100`;
     this.get('#restart-player').hidden = state.action !== 'dead';
-    this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.health < 100 ? 'Pressure vent damage. Dodge through or move clear.' : state.targetHits ? `Practice hits: ${state.targetHits}` : 'Strike the practice target. Avoid the marked pressure vent.';
+    this.get('#reset-targets').hidden = state.action === 'dead';
+    this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.';
+    this.get('#combat-score').textContent = `HITS ${state.targetHits} · CRITICALS ${state.criticals} · BLOCKS ${state.blocks}`;
     this.root.dataset.playerAction = state.action;
     // Read-only state also supports production measurements without dev commands.
     this.canvas.dataset.playerPosition = `${state.position.x.toFixed(3)},${state.position.y.toFixed(3)},${state.position.z.toFixed(3)}`;
     this.canvas.dataset.playerAction = state.action;
+    this.canvas.dataset.combatHits = String(state.targetHits); this.canvas.dataset.combatCriticals = String(state.criticals); this.canvas.dataset.combatStrikes = String(state.strikes); this.canvas.dataset.combatBlocks = String(state.blocks);
   }
   animationChoices(clips: readonly CharacterClip[]): void {
     const select = this.get<HTMLSelectElement>('#animation');

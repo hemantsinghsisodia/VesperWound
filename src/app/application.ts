@@ -14,11 +14,12 @@ import { VisualShowcase } from '../world/visual-showcase';
 import { artVariant, type WorldPresentation, type InspectionState } from '../world/presentation';
 import type { CharacterInspection } from '../world/character-inspection';
 import { CourtyardCamera } from '../camera/courtyard-camera';
-import { PlayerSimulation, PRACTICE_TARGET } from '../player/player-simulation';
+import { PlayerSimulation } from '../player/player-simulation';
+import type { CombatEvent } from '../player/combat-definitions';
 import type { RapierPlayerCollision } from '../player/player-collision';
 import collisionBoxes from '../player/courtyard-collision.json';
 
-interface SessionEvents { pressureReleased: { x: number; z: number } }
+interface SessionEvents { pressureReleased: { x: number; z: number }; combat: CombatEvent }
 
 export class Application {
   private readonly lifetime = new Lifetime();
@@ -66,6 +67,13 @@ export class Application {
     this.ui.storage(this.settings.persistent);
     this.audio.setVolume(this.settings.values.volume, this.settings.values.muted);
     this.events.on('pressureReleased', () => this.audio.pulse());
+    this.events.on('combat', (event) => {
+      const reduced = this.settings.values.reducedMotion;
+      this.audio.combat(event);
+      if (this.courtyard instanceof VisualShowcase) this.courtyard.combatEvent(event, reduced);
+      if (!reduced && event.type === 'hit') this.camera.impulse(event.critical ? .12 : event.attack === 'heavy' ? .07 : .025);
+      if (!reduced && event.type === 'damage') this.camera.impulse(.08);
+    });
     this.ui.bind({
       start: () => this.start(),
       pause: (paused) => {
@@ -90,6 +98,7 @@ export class Application {
       inspectionLighting: (lighting) => { this.inspection?.selectLighting(lighting); this.updateInspectionUi(); },
       inspectionPause: () => { if (this.inspection) this.inspection.actor.paused = !this.inspection.actor.paused; this.updateInspectionUi(); },
       restart: () => { this.player?.reset(); this.input?.clear(); this.ui.canvas.focus(); },
+      resetTargets: () => { this.player?.resetTargets(); this.input?.clear(); this.ui.canvas.focus(); },
     });
     this.lifetime.listen(window, 'resize', () => { this.resize(); this.synchronizePause(); });
     const visibility = () => {
@@ -137,7 +146,7 @@ export class Application {
       await adapter.compile(this.courtyard.scene, this.camera.camera);
       if (this.disposed) return;
       adapter.render();
-      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run') } : undefined);
+      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run'), heavy: this.ui.get('#heavy'), ward: this.ui.get('#ward') } : undefined);
       this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0;
       await adapter.renderer.setAnimationLoop((time) => this.frame(time));
       if (import.meta.env.DEV && !this.debug) {
@@ -171,6 +180,7 @@ export class Application {
     if (paused) void this.audio.suspend();
   }
   private setPreferences(values: Partial<Preferences>): void {
+    if (values.reducedMotion) this.camera.clearImpulse();
     if (values.quality) this.closeInspection();
     this.settings.update(values); this.ui.applyPreferences(this.settings.values); this.ui.storage(this.settings.persistent);
     this.audio.setVolume(this.settings.values.volume, this.settings.values.muted);
@@ -207,9 +217,10 @@ export class Application {
           const input = this.input?.sample();
           if (!input) return;
           if (world instanceof VisualShowcase) {
-            world.aim = input.aimActive ? this.camera.aim(input.aim, world.target.y) : Math.hypot(world.target.x - PRACTICE_TARGET.x, world.target.z - PRACTICE_TARGET.z) < 1.6 ? PRACTICE_TARGET : undefined;
+            world.aim = input.aimActive ? this.camera.aim(input.aim, world.target.y) : this.player?.nearestTarget();
           }
           if (world.update(dt, input, this.settings.values.reducedMotion)) this.events.emit('pressureReleased', { x: world.target.x, z: world.target.z });
+          if (world instanceof VisualShowcase) for (const event of world.player.drainEvents()) this.events.emit('combat', event);
           this.audio.setListener(world.target.x, world.target.z);
         }, this.timeScale);
         world.interpolate(alpha);
@@ -370,7 +381,7 @@ export class Application {
       inspection: this.inspectionState.status, inspectionPaused: this.inspection?.actor.paused ?? false,
       artLoading: this.reloading,
       ...(import.meta.env.DEV && this.preview ? { rig: this.preview.inspection() } : {}),
-      ...(this.player ? { player: structuredClone(this.player.state) } : {}),
+      ...(this.player ? { player: structuredClone(this.player.state), targets: structuredClone(this.player.targets) } : {}),
     };
   }
   private stopSession(): void {

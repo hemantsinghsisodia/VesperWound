@@ -17,26 +17,26 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`${backend}: inspectio
     if (cycle === 0) {
       for (const view of ['full-body', 'portrait', 'equipment']) {
         await page.locator('#inspection-view').selectOption(view); await page.waitForTimeout(400);
-        await page.screenshot({ path: `docs/qa/phase2/browser/${backend}-${view}.png` });
+        await page.screenshot({ path: `docs/qa/phase3/browser/${backend}-${view}.png` });
       }
       await page.locator('#inspection-lighting').selectOption('ash-quay'); await page.waitForTimeout(200);
-      await page.screenshot({ path: `docs/qa/phase2/browser/${backend}-ash-quay.png` });
+      await page.screenshot({ path: `docs/qa/phase3/browser/${backend}-ash-quay.png` });
       await page.locator('#inspection-view').selectOption('full-body');
       await page.locator('#inspection-lighting').selectOption('neutral');
       await page.locator('#animation-pause').click();
       const still = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().rig); await page.waitForTimeout(250);
       expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().rig)).toEqual(still);
       await page.locator('#animation-pause').click();
-      await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01']);
+      await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Jab', 'Punch_Cross', 'Spell_Simple_Shoot', 'Roll', 'Hit_Chest', 'Death01']);
       expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().animation)).toBe('Idle_Loop');
       await page.locator('#inspection-view').selectOption('full-body');
       for (const [angle, turns] of [['front', 0], ['three-quarter', 1], ['profile', 1], ['back', 2]] as const) {
         for (let turn = 0; turn < turns; turn++) await page.locator('#turn-character').click();
-        await page.waitForTimeout(200); await page.screenshot({ path: `docs/qa/phase2/browser/${backend}-${angle}.png` });
+        await page.waitForTimeout(200); await page.screenshot({ path: `docs/qa/phase3/browser/${backend}-${angle}.png` });
       }
       await page.mouse.move(600, 400); await page.mouse.down(); await page.mouse.move(850, 440, { steps: 12 }); await page.mouse.up();
       await page.mouse.wheel(0, -150); await page.waitForTimeout(250);
-      await page.screenshot({ path: `docs/qa/phase2/browser/${backend}-orbit.png` });
+      await page.screenshot({ path: `docs/qa/phase3/browser/${backend}-orbit.png` });
     }
     await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'courtyard');
     await page.waitForTimeout(400); const after = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot()); cycles.push(after);
@@ -44,7 +44,7 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`${backend}: inspectio
     expect(after.textures).toBeLessThanOrEqual(baseline.textures + 2);
     expect(after.estimatedGpuBytes).toBeLessThanOrEqual(baseline.estimatedGpuBytes * 1.03);
   }
-  expect(errors).toEqual([]); await writeFile(`docs/qa/phase2/inspection-${backend}.json`, JSON.stringify({ baseline, cycles, errors }, null, 2));
+  expect(errors).toEqual([]); await writeFile(`docs/qa/phase3/inspection-${backend}.json`, JSON.stringify({ baseline, cycles, errors }, null, 2));
 });
 
 test('source PNG and compressed KTX2 material renders have paired inspection evidence', async ({ page }) => {
@@ -62,7 +62,7 @@ test('source PNG and compressed KTX2 material renders have paired inspection evi
     await page.locator('#animation-pause').click();
     for (const view of ['full-body', 'portrait', 'equipment']) {
       await page.locator('#inspection-view').selectOption(view); await page.waitForTimeout(150);
-      await page.screenshot({ path: `docs/qa/phase2/browser/materials-${mode}-${view}.png` });
+      await page.screenshot({ path: `docs/qa/phase3/browser/materials-${mode}-${view}.png` });
     }
     await page.locator('#inspection-toggle').click();
     await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'courtyard');
@@ -78,14 +78,14 @@ test('mobile landscape uses only mobile assets and supports touch character view
     page.on('request', (request) => requests.push(request.url())); page.on('pageerror', (error) => errors.push(error.message));
     await page.goto('/?backend=webgl2'); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
     await page.locator('#start').tap(); await expect(page.locator('#inspection-toggle')).toBeHidden();
-    await page.screenshot({ path: 'docs/qa/phase2/browser/mobile-landscape.png' });
+    await page.screenshot({ path: 'docs/qa/phase3/browser/mobile-landscape.png' });
     await page.getByRole('button', { name: 'Medic', exact: true }).tap(); await page.waitForTimeout(300);
     await page.getByRole('button', { name: 'Turn Medic' }).tap();
-    await page.screenshot({ path: 'docs/qa/phase2/browser/mobile-character.png' });
+    await page.screenshot({ path: 'docs/qa/phase3/browser/mobile-character.png' });
     expect(requests.some((url) => /showcase\/(desktop|cinematic)\//.test(url))).toBe(false);
     expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().variant)).toBe('mobile');
-    await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01']); expect(errors).toEqual([]);
-    await writeFile('docs/qa/phase2/mobile-requests.json', JSON.stringify({ requests, errors }, null, 2));
+    await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Jab', 'Punch_Cross', 'Spell_Simple_Shoot', 'Roll', 'Hit_Chest', 'Death01']); expect(errors).toEqual([]);
+    await writeFile('docs/qa/phase3/mobile-requests.json', JSON.stringify({ requests, errors }, null, 2));
   } finally { await context.close(); }
 });
 
@@ -116,23 +116,23 @@ test('failed and cancelled inspection retains courtyard; rapid requests and qual
   expect(errors).toEqual([]);
 });
 
-test('seven licensed clips deform Medic in the studio and transition without binding errors', async ({ page }) => {
+test('nine licensed clips deform Medic in the studio and transition without binding errors', async ({ page }) => {
   test.setTimeout(120000);
   const errors: string[] = []; const warnings: string[] = [];
   page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'warning') warnings.push(m.text()); });
   await page.goto('/?backend=webgpu-required'); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.locator('#start').click(); await page.locator('#inspection-toggle').click();
   await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active');
-  const clips = ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01']; const poses = [];
+  const clips = ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Jab', 'Punch_Cross', 'Spell_Simple_Shoot', 'Roll', 'Hit_Chest', 'Death01']; const poses = [];
   for (const name of clips) {
     await page.locator('#animation').selectOption(`clip:${name}`); await page.waitForTimeout(name === 'Hit_Chest' ? 120 : 250);
     await page.locator('#animation-pause').click();
     const pose = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot()); poses.push(pose);
     expect(pose.animation).toBe(name); expect(pose.rig?.feet.flat().every(Number.isFinite)).toBe(true);
-    await page.screenshot({ path: `docs/qa/phase2/browser/clip-${name}.png` });
+    await page.screenshot({ path: `docs/qa/phase3/browser/clip-${name}.png` });
     await page.locator('#animation-pause').click();
   }
   await page.locator('#animation').selectOption('pose'); await expect.poll(() => page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().animation)).toBe('static-pose');
   expect(warnings.filter(w => /PropertyBinding|No target|Vertex attribute/.test(w))).toEqual([]); expect(errors).toEqual([]);
-  await writeFile('docs/qa/phase2/animation-browser.json', JSON.stringify({ poses, errors, warnings }, null, 2));
+  await writeFile('docs/qa/phase3/animation-browser.json', JSON.stringify({ poses, errors, warnings }, null, 2));
 });

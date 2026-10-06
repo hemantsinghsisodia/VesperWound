@@ -35,6 +35,7 @@ export class PreviewActor {
   }
   private readonly finished = () => { if (!this.controlled) this.selectClip(this.defaultClip()); };
   playbackRate(rate: number): void { if (this.clip.kind === 'clip') this.actions.get(this.clip.name)?.setEffectiveTimeScale(rate); }
+  duration(name: string): number { return this.actions.get(name)?.getClip().duration ?? 1; }
   selectClip(selection: PreviewClip): void {
     if (selection.kind === 'pose') {
       this.mixer?.stopAllAction();

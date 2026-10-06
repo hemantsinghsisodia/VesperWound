@@ -40,7 +40,8 @@ const alignments = new Map(targetBones.map(n => {
 const position = n => new Vector3().setFromMatrixPosition(new Matrix4().fromArray(n.getWorldMatrix()));
 const sourceHips = sourceNodes.get('pelvis'); const hips = targetBones.find(n => n.getName() === 'Hips');
 const ratio = position(hips).y / position(sourceHips).y;
-const selected = ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01'];
+const combatAddition = process.argv.includes('--combat');
+const selected = combatAddition ? ['Punch_Jab', 'Spell_Simple_Shoot'] : ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01'];
 const rows = [];
 for (const name of selected) {
   const original = source.getRoot().listAnimations().find(a => a.getName() === name);
@@ -97,7 +98,7 @@ for (const name of selected) {
   rows.push({ name, duration, fps: 30, channels: animation.listChannels().length });
   for (const [n, tr] of originalTransforms) n.setTranslation(tr.t).setRotation(tr.r).setScale(tr.s);
 }
-await mkdir('art/source/medic', { recursive: true }); await io.write('art/source/medic/animations.glb', output);
+await mkdir('art/source/medic', { recursive: true }); await io.write(`art/source/medic/${combatAddition ? 'combat-' : ''}animations.glb`, output);
 const originalNodes = new Map([...exportNodes].map(([original, exported]) => [exported, original]));
 const targetBuffer = target.getRoot().listBuffers()[0];
 for (const clip of output.getRoot().listAnimations()) {
@@ -109,7 +110,14 @@ for (const clip of output.getRoot().listAnimations()) {
     saved.addChannel(target.createAnimationChannel().setTargetNode(originalNodes.get(channel.getTargetNode())).setTargetPath(channel.getTargetPath()).setSampler(copied));
   }
 }
-await io.write('art/source/medic/player-character.glb', target);
+await io.write(`art/source/medic/${combatAddition ? 'combat-character' : 'player-character'}.glb`, target);
+if (combatAddition) {
+  const record = JSON.parse(await readFile('art/animation-provenance.json', 'utf8'));
+  record.clips = [...record.clips.filter(c => !selected.includes(c.name)), ...rows];
+  record.modifications = [...new Set([...record.modifications, 'Phase 3 adds licensed jab and Ward clips; original seven authored actions retained'])];
+  await writeFile('art/animation-provenance.json', JSON.stringify(record, null, 2));
+  console.log(`Combat additions prepared: ${selected.join(', ')}`);
+} else {
 await output.transform(resample({ tolerance: 0.001 }), meshopt({ encoder: MeshoptEncoder, level: 'high' }));
 await mkdir('public/assets/showcase/shared', { recursive: true }); await io.write('public/assets/showcase/shared/animations.glb', output);
 const bytes = await readFile('public/assets/showcase/shared/animations.glb');
@@ -117,3 +125,4 @@ await mkdir('docs/qa/phase2', { recursive: true });
 const provenance = { title: 'Universal Animation Library — free Standard package', author: 'Quaternius', contributors: ['Gonzalo Furnier'], source: 'https://quaternius.itch.io/universal-animation-library', license: 'CC0 1.0', licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/', acquired: '2026-10-06', archiveSha256: createHash('sha256').update(await readFile('art/imports/animations/universal-animation-library-standard.zip')).digest('hex'), modifications: ['World-space rest-pose retargeting to supplied Medic skeleton', '30 Hz baked skeletal animation; horizontal hip translation removed, vertical motion retained', 'Keyframe resampling and Meshopt compression'], clips: rows, runtimeBytes: bytes.length, runtimeSha256: createHash('sha256').update(bytes).digest('hex') };
 await writeFile('art/animation-provenance.json', JSON.stringify(provenance, null, 2)); await writeFile('docs/qa/phase2/animations.json', JSON.stringify(provenance, null, 2));
 console.log(JSON.stringify(provenance, null, 2));
+}

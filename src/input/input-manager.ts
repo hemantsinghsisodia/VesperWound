@@ -17,9 +17,9 @@ export class InputManager {
   private readonly bindings = new Map<string, InputAction>(Object.entries(ACTION_KEYS));
   private readonly stickElement: HTMLElement;
 
-  constructor(canvas: HTMLCanvasElement, stick: HTMLElement, pulse: HTMLButtonElement, playerButtons?: { dodge: HTMLButtonElement; run: HTMLButtonElement }) {
+  constructor(canvas: HTMLCanvasElement, stick: HTMLElement, pulse: HTMLButtonElement, playerButtons?: { dodge: HTMLButtonElement; run: HTMLButtonElement; heavy: HTMLButtonElement; ward: HTMLButtonElement }) {
     this.stickElement = stick;
-    if (playerButtons) { this.bindings.set('Space', 'dodge'); this.bindings.set('ShiftLeft', 'run'); this.bindings.set('ShiftRight', 'run'); }
+    if (playerButtons) { this.bindings.set('Space', 'dodge'); this.bindings.set('KeyQ', 'ward'); this.bindings.set('ShiftLeft', 'run'); this.bindings.set('ShiftRight', 'run'); }
     const primary: InputAction = playerButtons ? 'attack' : 'pulse';
     this.lifetime.listen(window, 'keydown', (event) => {
       if (this.isEditing(event.target)) return;
@@ -41,14 +41,16 @@ export class InputManager {
       this.aimActive = event.pointerType !== 'touch';
     });
     this.lifetime.listen(canvas, 'pointerdown', (event) => {
-      if (event.button !== 0) return;
+      if (event.button !== 0 && !(playerButtons && event.button === 2)) return;
       const bounds = canvas.getBoundingClientRect();
       this.aim = { x: (event.clientX - bounds.left) / bounds.width * 2 - 1, y: 1 - (event.clientY - bounds.top) / bounds.height * 2 }; this.aimActive = event.pointerType !== 'touch';
-      this.pointers.set(event.pointerId, primary);
-      this.pressed.add(primary);
+      const action = event.button === 2 ? 'heavy' : primary;
+      this.pointers.set(event.pointerId, action);
+      this.pressed.add(action);
       canvas.setPointerCapture(event.pointerId);
     });
-    for (const [button, action] of [[pulse, primary], ...(playerButtons ? [[playerButtons.dodge, 'dodge'], [playerButtons.run, 'run']] as const : [])] as ReadonlyArray<readonly [HTMLButtonElement, InputAction]>) {
+    if (playerButtons) this.lifetime.listen(canvas, 'contextmenu', event => event.preventDefault());
+    for (const [button, action] of [[pulse, primary], ...(playerButtons ? [[playerButtons.dodge, 'dodge'], [playerButtons.run, 'run'], [playerButtons.heavy, 'heavy'], [playerButtons.ward, 'ward']] as const : [])] as ReadonlyArray<readonly [HTMLButtonElement, InputAction]>) {
       this.lifetime.listen(button, 'pointerdown', (event) => {
         event.preventDefault(); this.aimActive = false;
         this.pointers.set(event.pointerId, action); this.pressed.add(action); button.setPointerCapture(event.pointerId);
@@ -78,7 +80,7 @@ export class InputManager {
     this.lifetime.listen(stick, 'lostpointercapture', release);
     this.lifetime.listen(pulse, 'lostpointercapture', release);
     this.lifetime.listen(canvas, 'lostpointercapture', release);
-    if (playerButtons) for (const button of [playerButtons.dodge, playerButtons.run]) this.lifetime.listen(button, 'lostpointercapture', release);
+    if (playerButtons) for (const button of [playerButtons.dodge, playerButtons.run, playerButtons.heavy, playerButtons.ward]) this.lifetime.listen(button, 'lostpointercapture', release);
     this.lifetime.listen(window, 'orientationchange', () => this.clear());
   }
 

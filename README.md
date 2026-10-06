@@ -1,6 +1,6 @@
 # VESPERWOUND
 
-Phase 2 player prototype for the approved dark horror action game. The default scene lets you control Tony Flanagan's accepted SciFi Medic at Ash Quay. Its appearance and supplied rig are unchanged. Separate CC0 animations from Quaternius provide idle, walk, jog, punch, roll, hit and death.
+Phase 3 unarmed combat prototype for the approved dark horror action game. Control Tony Flanagan's accepted SciFi Medic at Ash Quay: a three-hit light combo, committed heavy strike, posture break, critical follow-up and pressure-powered Ward. Character appearance and the supplied rig are unchanged. Nine separate CC0 clips from Quaternius provide the player and inspection animations.
 
 ## Run
 
@@ -9,7 +9,9 @@ npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:5173 and select **Enter the Works**. **WASD/arrows** walk, **Shift** runs, **click** aims and punches, and **Space** dodges. Touch uses the joystick plus Run, Attack and Dodge. Strike the marked practice target; the orange pressure vent causes damage. At zero health, **Return to the intake** restarts. **Courtyard** and **Medic** pause gameplay for animation previews; **Play** resumes. Eligible desktops offer **Detailed inspection**, with full-body/portrait/equipment views, orbit/zoom and Neutral/Ash Quay lighting. Inspection loads explicitly; cancel, failure and exit retain/restore Ash Quay. Escape opens settings; F3 opens development diagnostics. Mobile/Low use mobile art; Medium/High/Ultra use desktop art. Failed quality loads retain the previous scene. Credits are accessible from entry and settings.
+Open http://127.0.0.1:5173 and select **Enter the Works**. **WASD/arrows** walk, **Shift** runs, **left click** aims and queues a light strike, **right click** attacks heavy, **Space** dodges and **Q** activates Ward. Touch uses the joystick plus Run, Attack, Dodge, Heavy and Ward; settings support handedness and enlarged controls. Chain jab/cross/jab, then heavy to reach 100 posture. An exposed target takes double damage from the next heavy within two seconds. Three training targets show health, posture, defeat and automatic reset; **Reset targets** restores them immediately. The orange vent warns for 600 ms before each pulse: move away, dodge or block it with Ward. Ward absorbs one hit for 800 ms and costs 25 pressure. Successful strikes restore 10 pressure once per attack; three quiet seconds start regeneration at five per second.
+
+At zero health, **Return to the intake** restarts. **Courtyard** and **Medic** pause gameplay for animation previews; **Play** resumes. Eligible desktops offer **Detailed inspection**, with full-body/portrait/equipment views, orbit/zoom and Neutral/Ash Quay lighting. Inspection loads explicitly; cancel, failure and exit retain/restore Ash Quay. Escape opens settings; F3 opens development diagnostics. Mobile/Low use mobile art; Medium/High/Ultra use desktop art. Failed quality loads retain the previous scene. Credits are accessible from entry and settings. Reduced Motion disables camera impulses, impact particles and strong flashes. Enemy AI remains Phase 4 work.
 
 ## Validate
 
@@ -32,7 +34,7 @@ Production ignores these flags and excludes the development diagnostics module.
 
 High quality uses quarter-resolution bloom; Ultra uses half-resolution bloom. The main scene resolution remains governed by the existing preset and adaptive-resolution settings.
 
-Run sustained measurements after `npm run build`. On Windows, use `powershell -NoProfile -File tools/run-performance.ps1`; its temporary idle-sleep protection ends with the process. Elsewhere, set `VESPER_PERFORMANCE=1` and run `npm run test:performance`. Two serial production runs each warm up for 30 seconds and measure ten minutes at 1440 × 900, High quality and adaptive resolution disabled. Gameplay alternates run cycles, exercising physics, skinning and camera follow; inspection loops idle. Chrome frame-rate limiting and GPU vsync are disabled. External requestAnimationFrame intervals include CPU submission/scheduling, rather than isolated GPU timestamps. Reports are `docs/qa/phase2/{gameplay,cinematic}-performance.json`. Targets are p95 ≤18.5 ms gameplay and ≤35 ms inspection. Keep other GPU workloads closed. Development commands remain excluded from production.
+Run sustained measurements after `npm run build`. On Windows, use `powershell -NoProfile -File tools/run-performance.ps1`; its temporary idle-sleep protection ends with the process. Elsewhere, set `VESPER_PERFORMANCE=1` and run `npm run test:performance`. Two serial production runs each warm up for 30 seconds and measure ten minutes at 1440 × 900, High quality and adaptive resolution disabled. Active combat repeatedly exercises the full combo, heavy/stagger/critical, Ward and target resets through real production input; inspection loops idle. Chrome frame-rate limiting and GPU vsync are disabled. External requestAnimationFrame intervals include CPU submission/scheduling, rather than isolated GPU timestamps. Reports are `docs/qa/phase3/{combat,cinematic}-performance.json`. Targets are p95 ≤18.5 ms combat and ≤35 ms inspection. Keep other GPU workloads closed. Development commands remain excluded from production.
 
 ## Assets
 
@@ -44,6 +46,8 @@ Install Blender 5.2 and run `npm run assets:build` to export the saved character
 
 `src/app/application.ts` composes one session. `core` owns the fixed clock, event contract, input contract, and cleanup helpers without importing Three.js. `assets` owns decoded shared resources; `world` owns the courtyard's meshes/materials and releases asset handles. `rendering` owns the renderer and post-processing passes. `input`, `audio`, `performance`, `platform`, `camera`, and `ui` each own their respective lifecycle. `src/main.ts` only starts the application and disposes it during HMR.
 
+`player/combat-definitions.ts` defines attack tuning, the unarmed style, combatant state and typed events. `player-simulation.ts` resolves damage on the fixed CPU clock using attack/hurt volumes and collision obstruction; animation never determines damage. The session dispatches events to independently owned sound and visual feedback. Target knockback is swept against authored geometry, other targets and the player. Visual particles have a fixed 48-instance pool; audio has a 24-source ceiling.
+
 ## Decisions and validation
 
 - [Approved architecture](docs/architecture.md)
@@ -53,6 +57,8 @@ Install Blender 5.2 and run `npm run assets:build` to export the saved character
 - [Medic validation and measured performance](docs/qa/medic/validation.md)
 - [Medic source/browser comparison gallery](docs/qa/medic/comparison.html)
 - [Phase 2 validation and controls](docs/qa/phase2/validation.md)
+- [Phase 3 combat validation](docs/qa/phase3/validation.md)
+- [Phase 3 demonstration and captures](docs/qa/phase3/comparison.html)
 - [Model policy and engineering instructions](AGENTS.md)
 - [Original user brief](master-game-brief.md)
 

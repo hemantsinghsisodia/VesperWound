@@ -14,19 +14,19 @@ test('real WebGPU backend renders the compressed courtyard', async ({ page }) =>
   const stats = await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot());
   expect(stats?.backend).toBe('WebGPU'); expect(stats?.references).toBe(3); expect(stats?.scene).toBe('showcase'); expect(errors).toEqual([]);
   await test.info().attach('webgpu-statistics', { body: JSON.stringify(stats, null, 2), contentType: 'application/json' });
-  await page.screenshot({ path: 'docs/qa/phase2/browser/courtyard-webgpu.png' });
+  await page.screenshot({ path: 'docs/qa/phase3/browser/courtyard-webgpu.png' });
   await page.getByRole('button', { name: 'Medic', exact: true }).click();
   await page.waitForTimeout(300);
-  await page.screenshot({ path: 'docs/qa/phase2/browser/medic-webgpu.png' });
+  await page.screenshot({ path: 'docs/qa/phase3/browser/medic-webgpu.png' });
   const poses = [await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot())];
-  await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01']);
+  await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Jab', 'Punch_Cross', 'Spell_Simple_Shoot', 'Roll', 'Hit_Chest', 'Death01']);
   expect(poses[0]?.animation).toBe('Idle_Loop');
   expect(poses[0]?.rig?.feet).toHaveLength(2);
   for (const angle of ['side', 'back']) {
     await page.getByRole('button', { name: 'Turn Medic' }).click(); await page.getByRole('button', { name: 'Turn Medic' }).click();
     await page.waitForTimeout(100);
-    await page.screenshot({ path: `docs/qa/phase2/browser/medic-${angle}-webgpu.png` });
+    await page.screenshot({ path: `docs/qa/phase3/browser/medic-${angle}-webgpu.png` });
   }
   expect(errors).toEqual([]);
-  await writeFile('docs/qa/phase2/browser/webgpu-poses.json', JSON.stringify({ stats, poses, errors }, null, 2));
+  await writeFile('docs/qa/phase3/browser/webgpu-poses.json', JSON.stringify({ stats, poses, errors }, null, 2));
 });

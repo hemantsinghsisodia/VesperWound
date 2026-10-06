@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phase 3 — Medic unarmed combat</title>
+<style>body{margin:0;background:#102026;color:#e9dfc6;font:16px/1.6 system-ui}main{max-width:1280px;margin:auto;padding:32px}h1,h2{font-family:Georgia,serif}a{color:#e3bd72}video,img{width:100%;display:block;background:#18282e;border-radius:5px}figure{margin:0}figcaption{padding:8px 0 24px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}code{color:#b6dfd6}</style>
+<main><h1>Medic — Phase 3 unarmed combat</h1>
+<p>Actual browser captures from Ash Quay. Use left click for jab/cross/jab, right click for heavy, Space for dodge and Q for Ward. Reach 100 posture, then land heavy during the two-second exposure for a deliberate critical. <a href="validation.md">Validation report</a>.</p>
+<h2>Combat demonstration</h2><p>Recorded browser input demonstrates the combo, heavy stagger and critical defeat, target reset, then identical outcomes on Low quality with Reduced Motion enabled. These screen recordings have no captured audio; synthesized combat sounds are available in the running game.</p>
+<div class="grid"><figure><video controls preload="metadata" poster="browser/webgpu-required-stagger.png" src="combat-webgpu-required.webm"></video><figcaption>WebGPU · desktop · High followed by Low/Reduced Motion.</figcaption></figure>
+<figure><video controls preload="metadata" poster="browser/webgl2-stagger.png" src="combat-webgl2.webm"></video><figcaption>WebGL2 · desktop · same deterministic combat outcomes.</figcaption></figure></div>
+<h2>Combat feedback</h2><div class="grid">
+<figure><img loading="lazy" src="browser/webgpu-required-combo.png" alt="Three light strikes against the isolated target"><figcaption>Jab/cross/jab: 44 health and 50 posture damage.</figcaption></figure>
+<figure><img loading="lazy" src="browser/webgpu-required-stagger.png" alt="Target exposed after a heavy strike"><figcaption>Heavy adds 30 health and 50 posture damage. EXPOSED invites a critical follow-up.</figcaption></figure>
+<figure><img loading="lazy" src="browser/webgpu-required-critical.png" alt="Critical heavy defeats the exposed target"><figcaption>Critical heavy: 60 health damage, opening consumed and visible defeat.</figcaption></figure>
+<figure><img loading="lazy" src="browser/ward.png" alt="Ward barrier at the telegraphed pressure vent"><figcaption>Ward protects Medic from one pressure-vent pulse.</figcaption></figure></div>
+<h2>Touch controls</h2><div class="grid">
+<figure><img loading="lazy" src="browser/mobile-right.png" alt="Enlarged right-handed landscape controls"><figcaption>915 × 412 CSS pixels, controls at 1.4× scale.</figcaption></figure>
+<figure><img loading="lazy" src="browser/mobile-left.png" alt="Enlarged left-handed landscape controls"><figcaption>Separate Heavy/Ward buttons; movement remains independently owned.</figcaption></figure></div>
+<h2>Licensed animation additions</h2><div class="grid">
+<figure><img loading="lazy" src="browser/clip-Punch_Jab.png" alt="Retargeted Punch Jab under neutral studio lighting"><figcaption><code>Punch_Jab</code> · Quaternius CC0 addition to the saved animation master.</figcaption></figure>
+<figure><img loading="lazy" src="browser/clip-Punch_Cross.png" alt="Existing Punch Cross under neutral studio lighting"><figcaption><code>Punch_Cross</code> · reused for light cross and the retimed heavy strike.</figcaption></figure>
+<figure><img loading="lazy" src="browser/clip-Spell_Simple_Shoot.png" alt="Retargeted Ward gesture under neutral studio lighting"><figcaption><code>Spell_Simple_Shoot</code> · Ward gesture, no equipment changes.</figcaption></figure></div>
+<p>Medic remains Tony Flanagan’s accepted <a href="https://www.fab.com/listings/2c775e7c-06e8-4b6c-96a0-c57c17987634">SciFi Medic</a> under CC BY 4.0. The separate <a href="https://quaternius.itch.io/universal-animation-library">Quaternius animation library</a> is CC0. Physical-phone testing and human combat-feel review remain separate gates. No Phase 4 enemy AI is included.</p></main></html>

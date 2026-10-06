@@ -4,7 +4,7 @@ The active character is **SciFi Medic - Rigged by Tony Flanagan**, acquired thro
 
 `art/source/medic-master.blend` is the editable, packed master. It preserves the supplied 67-bone armature, nine meshes, clothing, equipment and materials. A parent empty applies uniform scale and ground normalization to 1.8 metres. All source images are packed, with native sizes from 128 to 1024 pixels; the head color image is 512 pixels. Original extracted texture files are retained alongside the downloaded source. There is no invented high-resolution source detail.
 
-Both supplied Fab files contain **zero animation clips**. Phase 2 adds seven clips from Quaternius's free CC0 Universal Animation Library: idle, walk, jog, cross punch, roll, chest hit and death. They are retargeted additions, not Fab-supplied animation. Static pose remains available from the idle's first frame; previews retain pause and 180 ms transitions.
+Both supplied Fab files contain **zero animation clips**. Phase 2 adds seven clips from Quaternius's free CC0 Universal Animation Library: idle, walk, jog, cross punch, roll, chest hit and death. Phase 3 appends `Punch_Jab` and `Spell_Simple_Shoot` from the same already acquired Standard package. They are retargeted additions, not Fab-supplied animation. Static pose remains available from the idle's first frame; previews retain pause and 180 ms transitions.
 
 ## Normal build
 
@@ -15,6 +15,8 @@ The optimizer uses Meshopt, ETC1S for packed material maps, and UASTC with Zstan
 Ash Quay's models remain unchanged. Manifests use `character`, `courtyard` where applicable and `animations` pointing to `../shared/animations.glb`. Dependencies resolve relative to model locations. The shared animation pack counts toward both initial-art budgets. Scene and inspection handles retain reference-counted ownership and cancellation/disposal paths.
 
 `art/source/medic-player-animations.blend` is the editable animation authoring source. `assets:build` exports it read-only and strips constant scale/location tracks before Meshopt compression. `tools/retarget-medic.mjs` and `tools/blender/phase2_sources.py` are explicit one-time acquisition/retarget preparation tools; do not rerun them over artist edits. The retarget aligns Medic's lowered-arm bind pose with the library's T-pose, maps semantic bones in world space, retains vertical body motion and removes horizontal hip travel. Source provenance, archive hashes and modifications are in `art/animation-provenance.json`. Character geometry, materials, equipment and 67-bone rig remain supplied by Tony Flanagan.
+
+The Phase 3 authoring operation used `node tools/retarget-medic.mjs --combat`, then Blender with `--background --factory-startup --disable-autoexec --python tools/blender/add_combat_animations.py`. It appended the two new actions/NLA tracks to the existing animation master, preserving all seven earlier actions and action slots. A packed pre-change animation master is retained at `art/archive/phase2/medic-player-animations.blend`. The append script refuses to overwrite existing combat actions; it is preparation history, not a normal build step. The normal read-only build validates nine exported clips. The compressed shared pack is 180,812 bytes, including the 32,268-byte Phase 3 addition. There are no new character meshes, textures or equipment.
 
 ## Source evidence
 

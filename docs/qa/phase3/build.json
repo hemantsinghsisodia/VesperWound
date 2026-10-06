@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-06T09:16:22.1159794Z",
+  "files": [
+    {
+      "path": "C:\\Hemant\\Prj\\Learning\\WebGPUGame\\dist\\assets\\basis_transcoder-o4Hde_L7.js",
+      "bytes": 57529,
+      "sha256": "8478b5b6d6b74e7d3082b89f6417321d8d1dc0307f2b30d4484bb11b441696a1"
+    },
+    {
+      "path": "C:\\Hemant\\Prj\\Learning\\WebGPUGame\\dist\\assets\\basis_transcoder-VXdx5NbI.wasm",
+      "bytes": 527333,
+      "sha256": "6cf17dc889352c42e9acf8897107978d127005fe3386c36a0e3845e27967630a"
+    },
+    {
+      "path": "C:\\Hemant\\Prj\\Learning\\WebGPUGame\\dist\\assets\\character-inspection-BUBbVhaF.js",
+      "bytes": 23498,
+      "sha256": "5707918acfc2c1536102cfa09889ef831759ada2b33c2c1970013620c239f539"
+    },
+    {
+      "path": "C:\\Hemant\\Prj\\Learning\\WebGPUGame\\dist\\assets\\index-Bvn-yuUl.css",
+      "bytes": 14459,
+      "sha256": "ca6cc9bc69952dc32a64c4039dbfe5bd69178e8a9d2cf86c2a27c808f8d0f363"
+    },
+    {
+      "path": "C:\\Hemant\\Prj\\Learning\\WebGPUGame\\dist\\assets\\index-DJ8UHbR-.js",
+      "bytes": 1152321,
+      "sha256": "d67edf5631d4d8ee84fae0af298ea2fe937f05a8a5fe058aed716d9f2c0ee7df"
+    },
+    {
+      "path": "C:\\Hemant\\Prj\\Learning\\WebGPUGame\\dist\\assets\\player-collision-CA8Eemob.js",
+      "bytes": 4335601,
+      "sha256": "5d407f9388cb444b8041cd013ee529ae9566439eea2f3ece8c216146b3f921a0"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
+import { PerspectiveCamera, Vector3 } from 'three';
 
 interface FrameMeasurement {
   started: number;
@@ -12,7 +13,7 @@ declare global {
   interface Window { __PERFORMANCE_MEASUREMENT__?: FrameMeasurement }
 }
 
-for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-minute ${mode} WebGPU measurement`, async ({ page, browser }) => {
+for (const mode of ['combat', 'cinematic']) test(`production sustained ten-minute ${mode} WebGPU measurement`, async ({ page, browser }) => {
   test.skip(process.env.VESPER_PERFORMANCE !== '1', 'Opt in with VESPER_PERFORMANCE=1; ten-minute hardware measurement.');
   const errors: string[] = [];
   const warnings: string[] = [];
@@ -30,6 +31,15 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
     await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active');
   }
   expect(await page.evaluate(() => typeof window.__VESPER_DEBUG__)).toBe('undefined');
+  let aim = { x: 0, y: 0 };
+  if (mode === 'combat') {
+    await page.keyboard.down('d'); await page.keyboard.down('s');
+    await expect.poll(async () => page.evaluate(() => Number(document.querySelector('canvas')?.dataset.playerPosition?.split(',')[0]))).toBeGreaterThan(.6);
+    await page.keyboard.up('d'); await page.keyboard.up('s'); await page.waitForTimeout(500);
+    const p = await page.evaluate(() => document.querySelector('canvas')!.dataset.playerPosition!.split(',').map(Number));
+    const camera = new PerspectiveCamera(38, 1440 / 900, .1, 100); camera.position.set(p[0]! + 9.5, p[1]! + .85 + 15, p[2]! + 9.5); camera.lookAt(p[0]!, p[1]! + .85, p[2]!); camera.updateMatrixWorld();
+    const projected = new Vector3(1.5, p[1]!, 3.4).project(camera); aim = { x: (projected.x + 1) * 720, y: (1 - projected.y) * 450 };
+  }
   await page.waitForTimeout(30000);
   const hardware = await page.evaluate(async () => {
     const canvas = document.querySelector('canvas');
@@ -58,17 +68,15 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
   });
   const samples = [];
   let exercise = true;
-  const movement = mode === 'gameplay' ? (async () => {
+  const movement = mode === 'combat' ? (async () => {
     while (exercise) {
-      // Repeated run cycles in the clear forecourt exercise fixed simulation,
-      // collision, rig updates and camera follow without development commands.
-      for (const keys of [['d', 's'], ['a', 'w']]) {
+      // Real production input exercises damage, posture, criticals, target
+      // knockback, particles, audio and skeletal transitions. No dev commands.
+      for (const [button, delay] of [['left', 650], ['left', 700], ['left', 770], ['right', 950], ['right', 950]] as const) {
         if (!exercise) break;
-        await page.keyboard.down('Shift'); for (const key of keys) await page.keyboard.down(key);
-        await page.waitForTimeout(450);
-        for (const key of keys) await page.keyboard.up(key); await page.keyboard.up('Shift');
-        await page.waitForTimeout(100);
+        await page.mouse.click(aim.x, aim.y, { button }); await page.waitForTimeout(delay);
       }
+      if (exercise) { await page.keyboard.press('q'); await page.waitForTimeout(850); await page.locator('#reset-targets').click(); }
     }
   })() : Promise.resolve();
   for (let i = 0; i < 20; i++) {
@@ -79,7 +87,8 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
       return { elapsedSeconds: (performance.now() - measurement.started) / 1000, frames: measurement.frames.length,
         fps: 1000 * recent.length / recent.reduce((sum, value) => sum + value, 0),
         p95FrameMs: recent[Math.floor((recent.length - 1) * 0.95)]!, visible: document.visibilityState,
-        estimatedRendererBytes: Number(document.querySelector('canvas')?.dataset.rendererBytes) };
+        estimatedRendererBytes: Number(document.querySelector('canvas')?.dataset.rendererBytes),
+        hits: Number(document.querySelector('canvas')?.dataset.combatHits), criticals: Number(document.querySelector('canvas')?.dataset.combatCriticals), strikes: Number(document.querySelector('canvas')?.dataset.combatStrikes) };
     });
     samples.push(sample);
     console.log(`Measured ${sample.elapsedSeconds.toFixed(0)}s: ${sample.fps.toFixed(1)} FPS, p95 ${sample.p95FrameMs.toFixed(1)} ms`);
@@ -97,14 +106,15 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
   });
   const evidence = { date: new Date().toISOString(), browser: browser.version(), backend: 'WebGPU', build: 'production',
     mode, method: 'External requestAnimationFrame intervals with Chrome --disable-frame-rate-limit and --disable-gpu-vsync; application has no frame limiter. Includes CPU submission and scheduling, not isolated GPU timestamp queries.',
-    renderingUncapped: true, gameplayExercise: mode === 'gameplay' ? 'Alternating 450 ms run cycles, fixed simulation and follow camera' : 'Looped idle skeletal animation', browserFlags: ['--disable-frame-rate-limit', '--disable-gpu-vsync'],
+    renderingUncapped: true, gameplayExercise: mode === 'combat' ? 'Repeated real-input light combo, heavy stagger/critical follow-up, Ward and target resets; fixed simulation, knockback, particles and audio active' : 'Looped idle skeletal animation', browserFlags: ['--disable-frame-rate-limit', '--disable-gpu-vsync'],
     viewport: { width: 1440, height: 900 }, quality: 'High', adaptiveResolution: false, warmupSeconds: 30,
     hardware, samples, metrics, errors, warnings };
-  await mkdir('docs/qa', { recursive: true });
-  await writeFile(`docs/qa/phase2/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
+  await mkdir('docs/qa/phase3', { recursive: true });
+  await writeFile(`docs/qa/phase3/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
   expect(errors).toEqual([]);
   expect(warnings.filter((message) => message.includes('Vertex attribute'))).toEqual([]);
   expect(metrics.durationSeconds).toBeGreaterThanOrEqual(600);
   expect(metrics.durationSeconds).toBeLessThan(630);
   expect(metrics.p95FrameMs).toBeLessThanOrEqual(mode === 'cinematic' ? 35 : 18.5);
+  if (mode === 'combat') { expect(samples.at(-1)!.hits).toBeGreaterThan(300); expect(samples.at(-1)!.criticals).toBeGreaterThan(50); }
 });

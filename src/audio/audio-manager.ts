@@ -1,4 +1,5 @@
 export type AudioBus = 'ambience' | 'effects' | 'ui' | 'music';
+import type { CombatEvent } from '../player/combat-definitions';
 
 interface SpatialAudioPosition {
   readonly positionX?: AudioParam;
@@ -25,6 +26,7 @@ export class AudioManager {
   private readonly sources = new Set<AudioScheduledSourceNode>();
   private ambienceStarted = false;
   private panner: PannerNode | null = null;
+  private noise: AudioBuffer | null = null;
   muted = false;
   volume = 0.55;
   status: 'locked' | 'running' | 'suspended' | 'unavailable' = 'locked';
@@ -81,6 +83,37 @@ export class AudioManager {
     oscillator.onended = () => { this.sources.delete(oscillator); oscillator.disconnect(); gain.disconnect(); };
     this.sources.add(oscillator); oscillator.start(); oscillator.stop(context.currentTime + 0.5);
   }
+  combat(event: CombatEvent): void {
+    const context = this.context; const bus = this.buses.get('effects');
+    if (!context || !bus || context.state !== 'running' || this.sources.size >= 22) return;
+    if (!['swing', 'hit', 'block', 'ward', 'damage', 'vent-warning', 'vent-pulse'].includes(event.type)) return;
+    const hit = event.type === 'hit'; const swing = event.type === 'swing';
+    const heavy = (hit || swing) && event.attack === 'heavy';
+    const frequency = event.type === 'block' ? 850 : event.type === 'ward' ? 420 : event.type === 'vent-warning' ? 660 : heavy ? 75 : hit ? 120 : swing ? 220 : 55;
+    const duration = swing ? .12 : event.type === 'ward' ? .3 : .18;
+    const oscillator = context.createOscillator(); const gain = context.createGain();
+    oscillator.type = event.type === 'block' || event.type === 'ward' || event.type === 'vent-warning' ? 'sine' : 'triangle';
+    oscillator.frequency.setValueAtTime(frequency, context.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(event.type === 'ward' ? 850 : Math.max(35, frequency * .45), context.currentTime + duration);
+    gain.gain.setValueAtTime(0, context.currentTime); gain.gain.linearRampToValueAtTime(swing ? .025 : .065, context.currentTime + .008);
+    gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration);
+    oscillator.connect(gain); gain.connect(bus); this.sources.add(oscillator);
+    oscillator.onended = () => { this.sources.delete(oscillator); oscillator.disconnect(); gain.disconnect(); };
+    oscillator.start(); oscillator.stop(context.currentTime + duration);
+    if (hit || swing || event.type === 'damage') {
+      if (!this.noise) {
+        this.noise = context.createBuffer(1, Math.ceil(context.sampleRate * .3), context.sampleRate);
+        const data = this.noise.getChannelData(0); let seed = 7631;
+        for (let i = 0; i < data.length; i++) { seed = (seed * 1664525 + 1013904223) >>> 0; data[i] = seed / 2147483648 - 1; }
+      }
+      const source = context.createBufferSource(); source.buffer = this.noise;
+      const filter = context.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = swing ? 1800 : heavy ? 650 : 1000;
+      const envelope = context.createGain(); envelope.gain.setValueAtTime(swing ? .035 : hit && event.critical ? .1 : .065, context.currentTime); envelope.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration);
+      source.connect(filter); filter.connect(envelope); envelope.connect(bus); this.sources.add(source);
+      source.onended = () => { this.sources.delete(source); source.disconnect(); filter.disconnect(); envelope.disconnect(); };
+      source.start(); source.stop(context.currentTime + duration);
+    }
+  }
   setListener(x: number, z: number): void {
     if (!this.context) return;
     setSpatialPosition(this.context.listener, x, 0, z);
@@ -102,6 +135,6 @@ export class AudioManager {
   async dispose(): Promise<void> {
     for (const source of this.sources) { source.onended = null; source.stop(); source.disconnect(); }
     this.sources.clear(); this.buses.clear(); this.panner?.disconnect(); this.master?.disconnect();
-    await this.context?.close(); this.context = null; this.ambienceStarted = false; this.status = 'locked';
+    await this.context?.close(); this.context = null; this.noise = null; this.ambienceStarted = false; this.status = 'locked';
   }
 }

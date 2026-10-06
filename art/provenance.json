@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "recorded": "2026-10-06T07:45:22.831Z",
+  "recorded": "2026-10-06T08:33:08.112Z",
   "sources": [
     {
       "id": "cobblestone_floor_08",
@@ -307,7 +307,8 @@
         "30 Hz baked skeletal animation; horizontal hip translation removed, vertical motion retained",
         "Keyframe resampling and Meshopt compression",
         "A-pose/T-pose semantic bone alignment",
-        "Read-only export from saved Blender animation source"
+        "Read-only export from saved Blender animation source",
+        "Phase 3 adds licensed jab and Ward clips; original seven authored actions retained"
       ],
       "clips": [
         {
@@ -351,12 +352,24 @@
           "duration": 2.4000000953674316,
           "fps": 30,
           "channels": 53
+        },
+        {
+          "name": "Punch_Jab",
+          "duration": 0.8666666746139526,
+          "fps": 30,
+          "channels": 53
+        },
+        {
+          "name": "Spell_Simple_Shoot",
+          "duration": 0.5,
+          "fps": 30,
+          "channels": 53
         }
       ],
-      "runtimeBytes": 148544,
-      "runtimeSha256": "7de9e3343c8df893467898f83f9079c2fcd77dd554e4cfe7e03f0fc7fb89b571",
+      "runtimeBytes": 180812,
+      "runtimeSha256": "5e1d8168cb792755a95649955c14a2460402dc0f2569ece4a30564c6c5e353c1",
       "editableSource": "art/source/medic-player-animations.blend",
-      "editableSourceSha256": "f2945efb5fd59f8844813e9d31612c2ecee66b0c4c6d90ae0d95390ac3262e04",
+      "editableSourceSha256": "58a9c78ef996935b84db7e7fed789c6353dff4869dc8119f1f374c7ad5a01d4b",
       "id": "quaternius-universal-animation-library-standard",
       "authors": [
         "Quaternius",
@@ -389,11 +402,11 @@
     },
     {
       "path": "art/source/medic-player-animations.blend",
-      "sha256": "f2945efb5fd59f8844813e9d31612c2ecee66b0c4c6d90ae0d95390ac3262e04"
+      "sha256": "58a9c78ef996935b84db7e7fed789c6353dff4869dc8119f1f374c7ad5a01d4b"
     },
     {
       "path": "public/assets/showcase/shared/animations.glb",
-      "sha256": "7de9e3343c8df893467898f83f9079c2fcd77dd554e4cfe7e03f0fc7fb89b571"
+      "sha256": "5e1d8168cb792755a95649955c14a2460402dc0f2569ece4a30564c6c5e353c1"
     },
     {
       "path": "art/source/ash-quay-desktop.blend",
