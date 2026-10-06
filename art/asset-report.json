@@ -1,42 +1,12 @@
 [
   {
     "variant": "desktop",
-    "name": "iona",
-    "triangles": 49964,
-    "rawBytes": 11098524,
-    "gzipBytes": 10591645,
-    "clips": [
-      "attack",
-      "dodge",
-      "idle",
-      "run",
-      "walk"
-    ],
-    "textures": 18
-  },
-  {
-    "variant": "desktop",
     "name": "ash-quay",
     "triangles": 116608,
     "rawBytes": 9740936,
     "gzipBytes": 8892277,
     "clips": [],
     "textures": 12
-  },
-  {
-    "variant": "mobile",
-    "name": "iona",
-    "triangles": 19913,
-    "rawBytes": 3889672,
-    "gzipBytes": 3585908,
-    "clips": [
-      "attack",
-      "dodge",
-      "idle",
-      "run",
-      "walk"
-    ],
-    "textures": 18
   },
   {
     "variant": "mobile",
@@ -48,18 +18,36 @@
     "textures": 12
   },
   {
+    "variant": "desktop",
+    "name": "character",
+    "triangles": 18745,
+    "rawBytes": 6578372,
+    "gzipBytes": 6188443,
+    "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+    "clips": [],
+    "textures": 15,
+    "identicalToDesktop": true
+  },
+  {
+    "variant": "mobile",
+    "name": "character",
+    "triangles": 18745,
+    "rawBytes": 6578372,
+    "gzipBytes": 6188443,
+    "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+    "clips": [],
+    "textures": 15,
+    "identicalToDesktop": true
+  },
+  {
     "variant": "cinematic",
-    "name": "iona",
-    "triangles": 135152,
-    "rawBytes": 18619436,
-    "gzipBytes": 17880440,
-    "clips": [
-      "attack",
-      "dodge",
-      "idle",
-      "run",
-      "walk"
-    ],
-    "textures": 18
+    "name": "character",
+    "triangles": 18745,
+    "rawBytes": 6578372,
+    "gzipBytes": 6188443,
+    "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+    "clips": [],
+    "textures": 15,
+    "identicalToDesktop": true
   }
 ]

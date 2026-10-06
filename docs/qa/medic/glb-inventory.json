@@ -1,0 +1,254 @@
+{
+  "meshes": [
+    {
+      "name": "mesh_0",
+      "triangles": 206
+    },
+    {
+      "name": "mesh_1",
+      "triangles": 206
+    },
+    {
+      "name": "Object_2",
+      "triangles": 950
+    },
+    {
+      "name": "Object_3",
+      "triangles": 2758
+    },
+    {
+      "name": "mesh_4",
+      "triangles": 4094
+    },
+    {
+      "name": "Object_5",
+      "triangles": 2656
+    },
+    {
+      "name": "Object_6",
+      "triangles": 5871
+    },
+    {
+      "name": "Object_7",
+      "triangles": 1904
+    },
+    {
+      "name": "mesh_8",
+      "triangles": 100
+    }
+  ],
+  "skins": [
+    {
+      "name": "",
+      "bones": [
+        "LeftEye_1"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "RightEye_2"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "Head_3"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "Head_3"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "Head_3",
+        "Neck_4",
+        "Spine2_53",
+        "RightShoulder_52",
+        "LeftShoulder_28"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "Spine_55",
+        "Hips_66",
+        "LeftUpLeg_60",
+        "RightUpLeg_65",
+        "RightLeg_64",
+        "Spine1_54",
+        "LeftLeg_59",
+        "RightHandThumb4_29"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "RightForeArm_50",
+        "RightArm_51",
+        "RightHand_49",
+        "RightHandThumb1_32",
+        "RightHandPinky4_45",
+        "RightHandPinky3_46",
+        "RightHandPinky2_47",
+        "RightHandPinky1_48",
+        "RightHandRing1_44",
+        "RightHandMiddle1_40",
+        "RightHandRing4_41",
+        "RightHandRing3_42",
+        "RightHandRing2_43",
+        "RightHandIndex1_36",
+        "RightHandMiddle2_39",
+        "RightHandMiddle4_37",
+        "RightHandMiddle3_38",
+        "RightHandThumb2_31",
+        "RightHandThumb4_29",
+        "RightHandThumb3_30",
+        "RightHandIndex3_34",
+        "RightHandIndex4_33",
+        "RightHandIndex2_35",
+        "LeftForeArm_26",
+        "LeftArm_27",
+        "LeftHand_25",
+        "LeftHandThumb1_8",
+        "LeftHandPinky4_21",
+        "LeftHandPinky3_22",
+        "LeftHandPinky2_23",
+        "LeftHandPinky1_24",
+        "LeftHandRing1_20",
+        "LeftHandMiddle1_16",
+        "LeftHandRing4_17",
+        "LeftHandRing3_18",
+        "LeftHandRing2_19",
+        "LeftHandIndex1_12",
+        "LeftHandMiddle2_15",
+        "LeftHandMiddle4_13",
+        "LeftHandMiddle3_14",
+        "LeftHandThumb2_7",
+        "LeftHandThumb4_5",
+        "LeftHandThumb3_6",
+        "LeftHandIndex3_10",
+        "LeftHandIndex4_9",
+        "LeftHandIndex2_11",
+        "Spine2_53",
+        "RightShoulder_52",
+        "Spine1_54",
+        "Neck_4",
+        "Spine_55",
+        "Hips_66",
+        "LeftShoulder_28",
+        "RightUpLeg_65",
+        "LeftUpLeg_60"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "RightLeg_64",
+        "RightUpLeg_65",
+        "RightFoot_63",
+        "RightToeBase_62",
+        "RightToe_End_61",
+        "LeftLeg_59",
+        "LeftUpLeg_60",
+        "LeftFoot_58",
+        "LeftToeBase_57",
+        "LeftToe_End_56"
+      ]
+    },
+    {
+      "name": "",
+      "bones": [
+        "Head_3"
+      ]
+    }
+  ],
+  "animations": [],
+  "textures": [
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 7020
+    },
+    {
+      "name": "",
+      "mime": "image/png",
+      "bytes": 18048
+    },
+    {
+      "name": "",
+      "mime": "image/png",
+      "bytes": 2773
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 2611
+    },
+    {
+      "name": "",
+      "mime": "image/png",
+      "bytes": 77659
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 44840
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 328884
+    },
+    {
+      "name": "",
+      "mime": "image/png",
+      "bytes": 682333
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 1487955
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 363491
+    },
+    {
+      "name": "",
+      "mime": "image/png",
+      "bytes": 703205
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 955667
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 67517
+    },
+    {
+      "name": "",
+      "mime": "image/png",
+      "bytes": 102592
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 152496
+    },
+    {
+      "name": "",
+      "mime": "image/jpeg",
+      "bytes": 47742
+    }
+  ],
+  "extensions": []
+}

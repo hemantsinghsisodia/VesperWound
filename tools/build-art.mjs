@@ -5,15 +5,17 @@ const blender = process.env.BLENDER_PATH ?? (process.platform === 'win32' ? 'C:/
 const environment = { ...process.env }; delete environment.SSLKEYLOGFILE;
 async function run(command, args) {
   await new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: 'inherit', env: environment, windowsHide: true });
-    child.on('error', reject); child.on('exit', (code) => code === 0 ? resolve() : reject(new Error(`${command} exited ${code}`)));
+    let output = '';
+    const child = spawn(command, args, { stdio: ['ignore', 'pipe', 'inherit'], env: environment, windowsHide: true });
+    child.stdout.on('data', (chunk) => { output += chunk.toString(); process.stdout.write(chunk); });
+    child.on('error', reject); child.on('exit', (code) => code === 0 && (command !== blender || output.includes('MEDIC_EXPORT_COMPLETE')) ? resolve() : reject(new Error(`${command} exited ${code}`)));
   });
 }
 // Authoring is separate. This command only reads the packed master and exports
-// its intentionally constructed tiers; it never saves over an artist's work.
-const fingerprint = async () => createHash('sha256').update(await readFile('art/source/iona-master.blend')).digest('hex');
+// equivalent runtime tiers; it never saves over an artist's work.
+const fingerprint = async () => createHash('sha256').update(await readFile('art/source/medic-master.blend')).digest('hex');
 const masterBefore = await fingerprint();
-for (const variant of ['desktop', 'mobile', 'cinematic']) await run(blender, ['-b', '--factory-startup', '--disable-autoexec', '--python', 'tools/blender/export_iona.py', '--', variant]);
+await run(blender, ['-b', '--factory-startup', '--disable-autoexec', '--python', 'tools/blender/export_medic.py']);
 if (await fingerprint() !== masterBefore) throw new Error('The authored master changed during export.');
-await run(process.execPath, ['tools/optimize-art.mjs']);
+await run(process.execPath, ['tools/optimize-medic.mjs']);
 await run(process.execPath, ['tools/record-provenance.mjs']);

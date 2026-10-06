@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 
-test('Iona and Ash Quay render with selected assets and animation previews', async ({ page }) => {
+test('Medic and Ash Quay render with selected assets and animation previews', async ({ page }) => {
   test.setTimeout(150000);
   const errors: string[] = []; const requests: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -18,21 +18,16 @@ test('Iona and Ash Quay render with selected assets and animation previews', asy
   expect(requests.filter((url) => url.includes('/showcase/') && url.includes(`/${variant === 'mobile' ? 'desktop' : 'mobile'}/`))).toEqual([]);
   expect(requests.some((url) => url.includes('/showcase/cinematic/'))).toBe(false);
   if (variant === 'mobile') await expect(page.locator('#inspection-toggle')).toBeHidden();
-  await mkdir('docs/qa/visual', { recursive: true });
-  await page.screenshot({ path: `docs/qa/visual/courtyard-webgl2-${variant}.png` });
-  await page.getByRole('button', { name: 'Iona', exact: true }).click();
+  await mkdir('docs/qa/medic/browser', { recursive: true });
+  await page.screenshot({ path: `docs/qa/medic/browser/courtyard-webgl2-${variant}.png` });
+  await page.getByRole('button', { name: 'Medic', exact: true }).click();
   await page.waitForTimeout(300);
-  await page.screenshot({ path: `docs/qa/visual/iona-webgl2-${variant}.png` });
-  for (const clip of ['walk', 'run', 'attack', 'dodge', 'idle']) {
-    await page.locator('#animation').selectOption(clip);
-    await expect.poll(async () => page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().animation)).toBe(clip);
-    await page.waitForTimeout(250);
-    await page.screenshot({ path: `docs/qa/visual/iona-${clip}-${variant}.png` });
-    if (clip === 'attack' || clip === 'dodge') await expect.poll(async () => page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().animation)).toBe('idle');
-  }
+  await page.screenshot({ path: `docs/qa/medic/browser/medic-webgl2-${variant}.png` });
+  await expect(page.locator('#animation option')).toHaveText(['Static pose']);
+  expect(stats?.animation).toBe('static-pose');
   expect(errors).toEqual([]);
   if (variant === 'mobile') {
-    await page.getByRole('button', { name: 'Turn Iona' }).tap();
+    await page.getByRole('button', { name: 'Turn Medic' }).tap();
     for (const selector of ['#view-courtyard', '#view-character', '#turn-character', '#animation']) {
       const bounds = await page.locator(selector).boundingBox();
       expect(bounds?.height).toBeGreaterThanOrEqual(44); expect(bounds?.width).toBeGreaterThanOrEqual(44);
@@ -48,5 +43,5 @@ test('Iona and Ash Quay render with selected assets and animation previews', asy
     await expect(page.locator('#inspection-toggle')).toBeHidden();
     expect(requests.some((url) => url.includes('/showcase/cinematic/'))).toBe(false);
   }
-  await writeFile(`docs/qa/visual/webgl2-${variant}.json`, JSON.stringify({ stats, errors, viewport: page.viewportSize(), browser: test.info().project.use.channel, userAgent: await page.evaluate(() => navigator.userAgent) }, null, 2));
+  await writeFile(`docs/qa/medic/browser/webgl2-${variant}.json`, JSON.stringify({ stats, errors, viewport: page.viewportSize(), browser: test.info().project.use.channel, userAgent: await page.evaluate(() => navigator.userAgent) }, null, 2));
 });

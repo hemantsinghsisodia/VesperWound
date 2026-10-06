@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "VESPERWOUND — Iona and Ash Quay visual milestone",
+  "description": "VESPERWOUND \u2014 Fab Medic at Ash Quay",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "prebuild": "node tools/sync-runtime.mjs",
@@ -16,10 +16,8 @@
     "test:production": "playwright test --config playwright.production.config.ts",
     "test:performance": "playwright test --config playwright.performance.config.ts",
     "assets:generate": "node tools/generate-fixtures.mjs",
-    "assets:fetch": "node --use-system-ca tools/fetch-art.mjs && node --use-system-ca tools/fetch-skin.mjs",
+    "assets:fetch": "node --use-system-ca tools/fetch-art.mjs",
     "assets:build": "node tools/build-art.mjs",
-    "assets:fetch:morphs": "node --use-system-ca tools/fetch-iona-morphs.mjs",
-    "assets:legacy": "node tools/build-art-legacy.mjs",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build",
     "size": "node tools/report-size.mjs"
   },

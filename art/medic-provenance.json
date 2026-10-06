@@ -1,0 +1,62 @@
+{
+  "title": "SciFi Medic - Rigged",
+  "author": "Tony Flanagan",
+  "source": "https://www.fab.com/listings/2c775e7c-06e8-4b6c-96a0-c57c17987634",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "acquired": "2026-10-06",
+  "method": "Fab browser Download flow; EULA accepted with explicit user approval",
+  "files": [
+    {
+      "name": "scifi-medic-rigged.zip",
+      "bytes": 17335162,
+      "sha256": "ad0a58ac7133179c91aa57de99412458645372b24bf45445c57c228d9af01342"
+    },
+    {
+      "name": "scifi_medic_rigged.glb",
+      "bytes": 6061824,
+      "sha256": "4e0e95df851f7884b39e683ada3350f0aa5e87f1e75b2528f22451b829dd9a78"
+    }
+  ],
+  "modifications": [
+    "Uniform scale and ground normalization to 1.8 m",
+    "Blender 5.2 glTF export retaining all 67 source bones",
+    "Meshopt geometry compression",
+    "Semantic KTX2 compression and mipmaps; native textures retained without upscaling"
+  ],
+  "suppliedAnimations": [],
+  "additionalNotices": "No separate notice or license file was included in the downloaded archive. Listing CC BY 4.0 and author credit retained.",
+  "masterSha256": "a238e4aa8cdfc7e7a44357f7cc0d0c908aee64cec48fcdfa235afe3f05ba1a45",
+  "exports": [
+    {
+      "tier": "desktop",
+      "triangles": 18745,
+      "rawBytes": 6578372,
+      "gzipBytes": 6188443,
+      "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+      "clips": [],
+      "textures": 15,
+      "identicalToDesktop": true
+    },
+    {
+      "tier": "mobile",
+      "triangles": 18745,
+      "rawBytes": 6578372,
+      "gzipBytes": 6188443,
+      "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+      "clips": [],
+      "textures": 15,
+      "identicalToDesktop": true
+    },
+    {
+      "tier": "cinematic",
+      "triangles": 18745,
+      "rawBytes": 6578372,
+      "gzipBytes": 6188443,
+      "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+      "clips": [],
+      "textures": 15,
+      "identicalToDesktop": true
+    }
+  ]
+}

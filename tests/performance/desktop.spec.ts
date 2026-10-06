@@ -86,7 +86,7 @@ for (const mode of ['gameplay', 'cinematic']) test(`production sustained ten-min
     viewport: { width: 1440, height: 900 }, quality: 'High', adaptiveResolution: false, warmupSeconds: 30,
     hardware, samples, metrics, errors, warnings };
   await mkdir('docs/qa', { recursive: true });
-  await writeFile(`docs/qa/iona-rebuild/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
+  await writeFile(`docs/qa/medic/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
   expect(errors).toEqual([]);
   expect(warnings.filter((message) => message.includes('Vertex attribute'))).toEqual([]);
   expect(metrics.durationSeconds).toBeGreaterThanOrEqual(600);

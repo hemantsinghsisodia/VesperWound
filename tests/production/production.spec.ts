@@ -14,7 +14,7 @@ test('production ignores development flags and excludes diagnostics', async ({ p
   expect(await page.evaluate(() => window.__VESPER_DEBUG__)).toBeUndefined();
   await expect(page.locator('.debug-panel, .debug-toggle')).toHaveCount(0);
   expect(requests.some((url) => url.includes('debug-tools'))).toBe(false);
-  expect(requests.some((url) => url.endsWith('/assets/showcase/desktop/iona.glb'))).toBe(true);
+  expect(requests.some((url) => url.endsWith('/assets/showcase/desktop/character.glb'))).toBe(true);
   expect(requests.some((url) => url.includes('/assets/fixtures/'))).toBe(false);
   await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeVisible();
   expect(errors).toEqual([]);

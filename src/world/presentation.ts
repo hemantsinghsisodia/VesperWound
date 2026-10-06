@@ -12,7 +12,7 @@ export type InspectionState =
   | { status: 'loading' }
   | { status: 'failed'; message: string }
   | { status: 'active'; view: InspectionView; lighting: InspectionLighting; paused: boolean };
-export type PreviewClip = 'idle' | 'walk' | 'run' | 'attack' | 'dodge';
+export type PreviewClip = { kind: 'pose' } | { kind: 'clip'; name: string };
 export type CameraView = 'courtyard' | 'character';
 export interface WorldPresentation {
   readonly scene: Scene;

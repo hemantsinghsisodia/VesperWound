@@ -77,7 +77,7 @@ describe('lifecycle and typed events', () => {
 
 describe('capabilities and validated configuration', () => {
   it('ignores all development URL flags in production', () => {
-    expect(readBootOptions(false, '?backend=webgpu-required&fixture=missing')).toEqual({ backend: 'auto', missingFixture: false, scene: 'showcase' });
+    expect(readBootOptions(false, '?backend=webgpu-required&fixture=missing&portrait=refined')).toEqual({ backend: 'auto', missingFixture: false, scene: 'showcase' });
     expect(readBootOptions(true, '?backend=webgl2')).toEqual({ backend: 'webgl2', missingFixture: false, scene: 'showcase' });
     expect(readBootOptions(true, '?backend=unknown')).toEqual({ backend: 'auto', missingFixture: false, scene: 'showcase' });
   });

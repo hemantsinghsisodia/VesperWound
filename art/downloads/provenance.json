@@ -118,65 +118,6 @@
     ]
   },
   {
-    "id": "denim_fabric",
-    "source": "https://polyhaven.com/a/denim_fabric",
-    "authors": [
-      "Rob Tuytel"
-    ],
-    "license": "CC0-1.0",
-    "retrieved": "2026-10-05T12:25:09.703Z",
-    "files": [
-      {
-        "filename": "denim_fabric/diff_1k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric/denim_fabric_diff_1k.jpg",
-        "bytes": 886486,
-        "md5": "3835b5e277dd99784bfe68d985da14ae"
-      },
-      {
-        "filename": "denim_fabric/normal_1k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric/denim_fabric_nor_gl_1k.jpg",
-        "bytes": 474669,
-        "md5": "9008fe723671f9cb3e6d0889eab9adb0"
-      },
-      {
-        "filename": "denim_fabric/rough_1k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric/denim_fabric_rough_1k.jpg",
-        "bytes": 467773,
-        "md5": "7eebb4a6185f2e6805976bc356dd1b41"
-      },
-      {
-        "filename": "denim_fabric/ao_1k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/denim_fabric/denim_fabric_ao_1k.jpg",
-        "bytes": 337504,
-        "md5": "801ac0dd4e4c8bd54b7fdcc90546f629"
-      },
-      {
-        "filename": "denim_fabric/diff_2k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/denim_fabric/denim_fabric_diff_2k.jpg",
-        "bytes": 3980719,
-        "md5": "5d84c58b94a3094ea1edff88f4ed39d0"
-      },
-      {
-        "filename": "denim_fabric/normal_2k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/denim_fabric/denim_fabric_nor_gl_2k.jpg",
-        "bytes": 2110796,
-        "md5": "147f1a6f1eaa07d54b79377141ef7b33"
-      },
-      {
-        "filename": "denim_fabric/rough_2k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/denim_fabric/denim_fabric_rough_2k.jpg",
-        "bytes": 2221998,
-        "md5": "b857cc1a739a05e02f402ed587fc362f"
-      },
-      {
-        "filename": "denim_fabric/ao_2k.jpg",
-        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/denim_fabric/denim_fabric_ao_2k.jpg",
-        "bytes": 1556229,
-        "md5": "597060b1217de5bfafb3dca07c92f4dd"
-      }
-    ]
-  },
-  {
     "id": "stone_brick_wall_001",
     "source": "https://polyhaven.com/a/stone_brick_wall_001",
     "authors": [

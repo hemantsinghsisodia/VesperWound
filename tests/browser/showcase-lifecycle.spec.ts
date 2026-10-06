@@ -41,14 +41,14 @@ test('ten scene reloads and six quality swaps retain stable resources', async ({
 test('a failed variant load preserves the current scene and can be retried', async ({ page }) => {
   await page.goto('/?backend=webgl2'); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
-  await page.route('**/assets/showcase/mobile/iona.glb', (route) => route.fulfill({ status: 404, body: 'missing' }));
+  await page.route('**/assets/showcase/mobile/character.glb', (route) => route.fulfill({ status: 404, body: 'missing' }));
   await page.getByRole('button', { name: 'Open settings' }).click();
   await page.locator('#quality').selectOption('Mobile');
   await expect(page.locator('#art-status')).toContainText('Current view retained');
   await expect(page.locator('#quality')).toHaveValue('High');
   expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().variant)).toBe('desktop');
   expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().references)).toBe(2);
-  await page.unroute('**/assets/showcase/mobile/iona.glb');
+  await page.unroute('**/assets/showcase/mobile/character.glb');
   await page.locator('#quality').selectOption('Mobile'); await expect(page.locator('#quality')).toBeEnabled();
   expect(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot().variant)).toBe('mobile');
   await page.getByRole('button', { name: 'RETURN TO THE WORKS' }).click();

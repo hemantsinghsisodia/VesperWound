@@ -4,7 +4,7 @@ import {
   Sprite, SpriteMaterial, CanvasTexture,
   PlaneGeometry, MeshStandardNodeMaterial,
   PMREMGenerator, type BufferGeometry, type RenderTarget, type WebGPURenderer,
-  type Object3D, type Texture, type Material,
+  type Texture, type Material,
 } from 'three/webgpu';
 import type { AssetManager } from '../assets/asset-manager';
 import type { InputFrame } from '../core/input-frame';
@@ -24,10 +24,8 @@ export class VisualShowcase implements WorldPresentation {
   private readonly materials: Material[] = [];
   private readonly textures: Texture[] = [];
   private readonly key = new DirectionalLight(0xc8dcdf, 3.2);
-  private readonly lantern = new PointLight(0xffbb61, 1.6, 3.5, 2);
   private readonly engine = new PointLight(0xb4e4d4, 38, 10, 2);
   private readonly gate = new PointLight(0xffc784, 35, 10, 2);
-  private socket: Object3D | null = null;
   private readonly steam: Sprite[] = [];
   private reflection: RenderTarget | null = null;
   private time = 0;
@@ -37,17 +35,16 @@ export class VisualShowcase implements WorldPresentation {
     this.scene.background = new Color(0x142126);
     this.scene.fog = new FogExp2(0x142126, 0.028);
     this.actor.position.copy(this.target); this.actor.rotation.y = 0.25;
-    this.actor.position.y -= 0.012;
     this.scene.add(this.actor);
     this.key.position.set(-6, 15, 8); this.key.target.position.set(0, 0, -2);
     this.key.castShadow = true;
     Object.assign(this.key.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
     this.key.shadow.bias = -0.0006; this.key.shadow.normalBias = 0.035;
     this.engine.position.set(0, 2.8, -2); this.gate.position.set(-5, 3.1, -6);
-    this.scene.add(this.key, this.key.target, new HemisphereLight(0xa5c5d6, 0x444235, 2), this.lantern, this.engine, this.gate);
+    this.scene.add(this.key, this.key.target, new HemisphereLight(0xa5c5d6, 0x444235, 2), this.engine, this.gate);
   }
   async load(assets: AssetManager, missingFixture: boolean): Promise<void> {
-    const loaded = await Promise.allSettled([assets.model(missingFixture ? 'missing-iona' : 'iona'), assets.model('courtyard')]);
+    const loaded = await Promise.allSettled([assets.model(missingFixture ? 'missing-character' : 'character'), assets.model('courtyard')]);
     for (const result of loaded) if (result.status === 'fulfilled') {
       if (this.disposed) result.value.release(); else this.handles.push(result.value);
     }
@@ -61,8 +58,6 @@ export class VisualShowcase implements WorldPresentation {
     this.scene.traverse((object) => {
       if (object instanceof Mesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = !('isSkinnedMesh' in object); }
     });
-    this.socket = hero.value.value.scene.getObjectByName('socket_lantern') ?? null;
-    if (!this.socket || !hero.value.value.scene.getObjectByName('socket_wake_hook')) throw new Error('Iona attachment points are missing.');
     this.surfaceDetails();
     this.update(0, { movement: { x: 0, y: 0 }, aim: { x: 0, y: 0 }, pressed: new Set(), held: new Set() }, true);
   }
@@ -78,8 +73,6 @@ export class VisualShowcase implements WorldPresentation {
   update(dt: number, _input: InputFrame, reducedMotion: boolean): boolean {
     this.time += dt; this.preview.update(dt);
     this.scene.updateMatrixWorld(true);
-    this.socket?.getWorldPosition(this.lantern.position);
-    this.lantern.intensity = 1.6 + (reducedMotion ? 0 : Math.sin(this.time * 2.8) * 0.1);
     this.engine.intensity = 38 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * 2);
     this.steam.forEach((puff, index) => {
       const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
@@ -138,6 +131,6 @@ export class VisualShowcase implements WorldPresentation {
     for (const material of this.materials) material.dispose();
     for (const texture of this.textures) texture.dispose();
     this.reflection?.dispose(); this.reflection = null;
-    this.key.dispose(); this.lantern.dispose(); this.engine.dispose(); this.gate.dispose();
+    this.key.dispose(); this.engine.dispose(); this.gate.dispose();
   }
 }

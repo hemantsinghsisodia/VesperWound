@@ -1,0 +1,510 @@
+{
+  "date": "2026-10-06",
+  "authorization": "User accepted Medic and requested removal of the older character",
+  "removed": [
+    {
+      "path": "art/baseline/iona-cinematic-v1",
+      "files": 2,
+      "bytes": 101021592
+    },
+    {
+      "path": "art/baseline/iona-retired-runtime",
+      "files": 6,
+      "bytes": 33608098
+    },
+    {
+      "path": "art/baseline/iona-v1",
+      "files": 6,
+      "bytes": 25650325
+    },
+    {
+      "path": "art/blender-desktop.log",
+      "files": 1,
+      "bytes": 3923
+    },
+    {
+      "path": "art/blender-mobile.log",
+      "files": 1,
+      "bytes": 3920
+    },
+    {
+      "path": "art/downloads/base.mhclo",
+      "files": 1,
+      "bytes": 216208
+    },
+    {
+      "path": "art/downloads/base.obj",
+      "files": 1,
+      "bytes": 1749303
+    },
+    {
+      "path": "art/downloads/denim_fabric",
+      "files": 9,
+      "bytes": 12072905
+    },
+    {
+      "path": "art/downloads/iona-morphs",
+      "files": 6,
+      "bytes": 1416770
+    },
+    {
+      "path": "art/downloads/iona-skin",
+      "files": 2,
+      "bytes": 3646205
+    },
+    {
+      "path": "art/downloads/makehuman-CC0.md",
+      "files": 1,
+      "bytes": 6962
+    },
+    {
+      "path": "art/downloads/makehuman-license.md",
+      "files": 1,
+      "bytes": 3598
+    },
+    {
+      "path": "art/downloads/skin-pack-provenance.json",
+      "files": 1,
+      "bytes": 415
+    },
+    {
+      "path": "art/downloads/skins01_cc0.zip",
+      "files": 1,
+      "bytes": 104227958
+    },
+    {
+      "path": "art/optimization.log",
+      "files": 1,
+      "bytes": 1401
+    },
+    {
+      "path": "art/references/iona-design.png",
+      "files": 1,
+      "bytes": 2784917
+    },
+    {
+      "path": "art/review",
+      "files": 13,
+      "bytes": 172903852
+    },
+    {
+      "path": "art/source/cinematic",
+      "files": 2,
+      "bytes": 88171368
+    },
+    {
+      "path": "art/source/desktop/iona-stats.json",
+      "files": 1,
+      "bytes": 109
+    },
+    {
+      "path": "art/source/desktop/iona.glb",
+      "files": 1,
+      "bytes": 39915596
+    },
+    {
+      "path": "art/source/desktop/stats.json",
+      "files": 1,
+      "bytes": 141
+    },
+    {
+      "path": "art/source/iona-desktop.blend",
+      "files": 1,
+      "bytes": 13162185
+    },
+    {
+      "path": "art/source/iona-desktop.blend1",
+      "files": 1,
+      "bytes": 13165014
+    },
+    {
+      "path": "art/source/iona-master.blend",
+      "files": 1,
+      "bytes": 101020518
+    },
+    {
+      "path": "art/source/iona-master.blend1",
+      "files": 1,
+      "bytes": 101070138
+    },
+    {
+      "path": "art/source/iona-mobile.blend",
+      "files": 1,
+      "bytes": 3442619
+    },
+    {
+      "path": "art/source/iona-mobile.blend1",
+      "files": 1,
+      "bytes": 3441374
+    },
+    {
+      "path": "art/source/iona-portrait-provenance.json",
+      "files": 1,
+      "bytes": 7558
+    },
+    {
+      "path": "art/source/iona-portrait-refined.blend",
+      "files": 1,
+      "bytes": 112769431
+    },
+    {
+      "path": "art/source/iona-portrait-refined.blend1",
+      "files": 1,
+      "bytes": 112765355
+    },
+    {
+      "path": "art/source/iona-portrait-review.blend",
+      "files": 1,
+      "bytes": 117050202
+    },
+    {
+      "path": "art/source/iona-portrait-review.blend1",
+      "files": 1,
+      "bytes": 113404839
+    },
+    {
+      "path": "art/source/iona-portrait-runtime.blend",
+      "files": 1,
+      "bytes": 116249950
+    },
+    {
+      "path": "art/source/mobile/iona-stats.json",
+      "files": 1,
+      "bytes": 108
+    },
+    {
+      "path": "art/source/mobile/iona.glb",
+      "files": 1,
+      "bytes": 14443460
+    },
+    {
+      "path": "art/source/mobile/stats.json",
+      "files": 1,
+      "bytes": 140
+    },
+    {
+      "path": "art/textures/iona",
+      "files": 23,
+      "bytes": 100524222
+    },
+    {
+      "path": "art/textures/iona-refined",
+      "files": 3,
+      "bytes": 3935219
+    },
+    {
+      "path": "art/work",
+      "files": 57,
+      "bytes": 499533877
+    },
+    {
+      "path": "docs/iona-art-workflow.md",
+      "files": 1,
+      "bytes": 6769
+    },
+    {
+      "path": "docs/qa/iona-portrait",
+      "files": 22,
+      "bytes": 20088424
+    },
+    {
+      "path": "docs/qa/iona-rebuild",
+      "files": 70,
+      "bytes": 46770174
+    },
+    {
+      "path": "docs/qa/iona-refined",
+      "files": 33,
+      "bytes": 16856232
+    },
+    {
+      "path": "docs/qa/visual/iona-attack-desktop.png",
+      "files": 1,
+      "bytes": 1531369
+    },
+    {
+      "path": "docs/qa/visual/iona-attack-mobile.png",
+      "files": 1,
+      "bytes": 2167221
+    },
+    {
+      "path": "docs/qa/visual/iona-attack-webgpu.png",
+      "files": 1,
+      "bytes": 1543826
+    },
+    {
+      "path": "docs/qa/visual/iona-back-webgpu.png",
+      "files": 1,
+      "bytes": 1514133
+    },
+    {
+      "path": "docs/qa/visual/iona-dodge-desktop.png",
+      "files": 1,
+      "bytes": 1532567
+    },
+    {
+      "path": "docs/qa/visual/iona-dodge-mobile.png",
+      "files": 1,
+      "bytes": 2115044
+    },
+    {
+      "path": "docs/qa/visual/iona-dodge-webgpu.png",
+      "files": 1,
+      "bytes": 1547577
+    },
+    {
+      "path": "docs/qa/visual/iona-idle-desktop.png",
+      "files": 1,
+      "bytes": 1531945
+    },
+    {
+      "path": "docs/qa/visual/iona-idle-mobile.png",
+      "files": 1,
+      "bytes": 2108885
+    },
+    {
+      "path": "docs/qa/visual/iona-idle-webgpu.png",
+      "files": 1,
+      "bytes": 1545040
+    },
+    {
+      "path": "docs/qa/visual/iona-run-desktop.png",
+      "files": 1,
+      "bytes": 1531634
+    },
+    {
+      "path": "docs/qa/visual/iona-run-mobile.png",
+      "files": 1,
+      "bytes": 2210781
+    },
+    {
+      "path": "docs/qa/visual/iona-run-webgpu.png",
+      "files": 1,
+      "bytes": 1543507
+    },
+    {
+      "path": "docs/qa/visual/iona-side-webgpu.png",
+      "files": 1,
+      "bytes": 1536835
+    },
+    {
+      "path": "docs/qa/visual/iona-walk-desktop.png",
+      "files": 1,
+      "bytes": 1532197
+    },
+    {
+      "path": "docs/qa/visual/iona-walk-mobile.png",
+      "files": 1,
+      "bytes": 2209764
+    },
+    {
+      "path": "docs/qa/visual/iona-walk-webgpu.png",
+      "files": 1,
+      "bytes": 1543847
+    },
+    {
+      "path": "docs/qa/visual/iona-webgl2-desktop.png",
+      "files": 1,
+      "bytes": 1532851
+    },
+    {
+      "path": "docs/qa/visual/iona-webgl2-mobile.png",
+      "files": 1,
+      "bytes": 2256198
+    },
+    {
+      "path": "docs/qa/visual/iona-webgpu.png",
+      "files": 1,
+      "bytes": 1545160
+    },
+    {
+      "path": "docs/qa/visual/webgl2-desktop.json",
+      "files": 1,
+      "bytes": 1286
+    },
+    {
+      "path": "docs/qa/visual/webgl2-mobile.json",
+      "files": 1,
+      "bytes": 1299
+    },
+    {
+      "path": "docs/qa/visual/webgpu-poses.json",
+      "files": 1,
+      "bytes": 48193
+    },
+    {
+      "path": "tools/blender/__pycache__",
+      "files": 1,
+      "bytes": 15679
+    },
+    {
+      "path": "tools/blender/author_iona.py",
+      "files": 1,
+      "bytes": 25919
+    },
+    {
+      "path": "tools/blender/bake_portrait_hair.py",
+      "files": 1,
+      "bytes": 8469
+    },
+    {
+      "path": "tools/blender/build_visual.py",
+      "files": 1,
+      "bytes": 32029
+    },
+    {
+      "path": "tools/blender/correct_iona.py",
+      "files": 1,
+      "bytes": 3472
+    },
+    {
+      "path": "tools/blender/export_iona.py",
+      "files": 1,
+      "bytes": 3921
+    },
+    {
+      "path": "tools/blender/export_texture_sources.py",
+      "files": 1,
+      "bytes": 947
+    },
+    {
+      "path": "tools/blender/finalize_tiers.py",
+      "files": 1,
+      "bytes": 2754
+    },
+    {
+      "path": "tools/blender/finish_iona.py",
+      "files": 1,
+      "bytes": 7798
+    },
+    {
+      "path": "tools/blender/inspect_base.py",
+      "files": 1,
+      "bytes": 775
+    },
+    {
+      "path": "tools/blender/inspect_portrait.py",
+      "files": 1,
+      "bytes": 1358
+    },
+    {
+      "path": "tools/blender/iona_geometry.py",
+      "files": 1,
+      "bytes": 6364
+    },
+    {
+      "path": "tools/blender/material_finish.py",
+      "files": 1,
+      "bytes": 1937
+    },
+    {
+      "path": "tools/blender/portrait_iona.py",
+      "files": 1,
+      "bytes": 22327
+    },
+    {
+      "path": "tools/blender/publish_iona.py",
+      "files": 1,
+      "bytes": 3029
+    },
+    {
+      "path": "tools/blender/refine_deformation.py",
+      "files": 1,
+      "bytes": 2544
+    },
+    {
+      "path": "tools/blender/refine_groom.py",
+      "files": 1,
+      "bytes": 3029
+    },
+    {
+      "path": "tools/blender/refine_iona.py",
+      "files": 1,
+      "bytes": 6277
+    },
+    {
+      "path": "tools/blender/refine_portrait.py",
+      "files": 1,
+      "bytes": 9632
+    },
+    {
+      "path": "tools/blender/render_iona.py",
+      "files": 1,
+      "bytes": 3075
+    },
+    {
+      "path": "tools/blender/render_portrait.py",
+      "files": 1,
+      "bytes": 2876
+    },
+    {
+      "path": "tools/blender/repack_bakes.py",
+      "files": 1,
+      "bytes": 698
+    },
+    {
+      "path": "tools/blender/save_portrait_review.py",
+      "files": 1,
+      "bytes": 3147
+    },
+    {
+      "path": "tools/blender/sweep_fringe.py",
+      "files": 1,
+      "bytes": 2030
+    },
+    {
+      "path": "tools/blender/validate_portrait.py",
+      "files": 1,
+      "bytes": 3476
+    },
+    {
+      "path": "tools/build-art-legacy.mjs",
+      "files": 1,
+      "bytes": 733
+    },
+    {
+      "path": "tools/build-iona-legacy.mjs",
+      "files": 1,
+      "bytes": 1410
+    },
+    {
+      "path": "tools/character-comparisons.mjs",
+      "files": 1,
+      "bytes": 5846
+    },
+    {
+      "path": "tools/fetch-iona-morphs.mjs",
+      "files": 1,
+      "bytes": 2003
+    },
+    {
+      "path": "tools/fetch-skin.mjs",
+      "files": 1,
+      "bytes": 918
+    },
+    {
+      "path": "tools/optimize-art.mjs",
+      "files": 1,
+      "bytes": 5433
+    },
+    {
+      "path": "tools/portrait-comparisons.mjs",
+      "files": 1,
+      "bytes": 6457
+    }
+  ],
+  "removedFiles": 338,
+  "removedBytes": 2131940895,
+  "obsoleteCacheFiles": 159,
+  "obsoleteCacheBytes": 101499545,
+  "visualAccepted": true,
+  "protectedFilesVerifiedUnchanged": 10,
+  "validation": {
+    "artBuild": "passed",
+    "check": "passed",
+    "unitTests": 23,
+    "browserRegressions": 3,
+    "sizeBudgets": "passed",
+    "performance": "Retained prior measurements; rendering code and measured models unchanged"
+  }
+}

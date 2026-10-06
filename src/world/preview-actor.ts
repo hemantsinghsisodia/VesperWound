@@ -1,52 +1,66 @@
 import { AnimationMixer, Group, LoopOnce, LoopRepeat, Mesh, Vector3, type AnimationAction } from 'three/webgpu';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { PreviewClip } from './presentation';
+import { MEDIC, type CharacterClip, type CharacterDefinition } from './character-definition';
 
 /** Owns preview animation only. The asset handle owns meshes, skins and maps. */
 export class PreviewActor {
   readonly group = new Group();
-  clip: PreviewClip = 'idle';
+  clip: PreviewClip = { kind: 'pose' };
+  clips: CharacterClip[] = [];
   paused = false;
   private mixer: AnimationMixer | null = null;
   private root: GLTF['scene'] | null = null;
-  private readonly actions = new Map<PreviewClip, AnimationAction>();
-  attach(gltf: GLTF): void {
+  private readonly actions = new Map<string, AnimationAction>();
+  constructor(readonly definition: CharacterDefinition = MEDIC) {}
+  attach(gltf: Pick<GLTF, 'scene' | 'animations'>): void {
     this.root = gltf.scene; this.group.add(gltf.scene);
     gltf.scene.traverse((object) => {
       if (object instanceof Mesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = !('isSkinnedMesh' in object); }
     });
-    for (const name of ['socket_lantern', 'socket_wake_hook']) if (!gltf.scene.getObjectByName(name)) throw new Error(`Iona attachment is missing: ${name}`);
     this.mixer = new AnimationMixer(gltf.scene);
-    for (const name of ['idle', 'walk', 'run', 'attack', 'dodge'] as const) {
-      const clip = gltf.animations.find((value) => value.name === name);
-      if (!clip) throw new Error(`Iona animation is missing: ${name}`);
-      this.actions.set(name, this.mixer.clipAction(clip));
-    }
-    this.mixer.addEventListener('finished', this.finished); this.actions.get('idle')?.play(); this.update(0);
+    const names = new Set<string>();
+    this.clips = gltf.animations.map((clip) => {
+      if (!clip.name || names.has(clip.name)) throw new Error('Character clips must have unique nonempty names.');
+      names.add(clip.name); this.actions.set(clip.name, this.mixer!.clipAction(clip));
+      return this.definition.clips.find((item) => item.name === clip.name) ?? { name: clip.name, loop: true };
+    });
+    for (const expected of this.definition.clips) if (!names.has(expected.name)) throw new Error(`Character animation is missing: ${expected.name}`);
+    this.mixer.addEventListener('finished', this.finished); this.selectClip(this.defaultClip()); this.update(0);
   }
-  private readonly finished = () => this.selectClip('idle');
-  selectClip(name: PreviewClip): void {
-    const next = this.actions.get(name); if (!next) return;
-    const previous = this.actions.get(this.clip);
-    next.reset().setLoop(name === 'attack' || name === 'dodge' ? LoopOnce : LoopRepeat, Infinity);
-    next.clampWhenFinished = true; next.enabled = true; next.setEffectiveWeight(1).play();
-    if (previous && previous !== next) next.crossFadeFrom(previous, 0.18, false);
-    this.clip = name;
+  private defaultClip(): PreviewClip {
+    const idle = this.clips.find((clip) => /idle/i.test(clip.name));
+    return idle ? { kind: 'clip', name: idle.name } : { kind: 'pose' };
+  }
+  private readonly finished = () => this.selectClip(this.defaultClip());
+  selectClip(selection: PreviewClip): void {
+    if (selection.kind === 'pose') {
+      this.mixer?.stopAllAction();
+      const first = this.actions.values().next().value as AnimationAction | undefined;
+      if (first) { first.reset().play(); first.paused = false; this.mixer?.update(0); first.paused = true; }
+      this.clip = { kind: 'pose' }; return;
+    }
+    const next = this.actions.get(selection.name); const descriptor = this.clips.find((item) => item.name === selection.name);
+    if (!next || !descriptor) return;
+    const previous = this.clip.kind === 'clip' ? this.actions.get(this.clip.name) : this.actions.values().next().value as AnimationAction | undefined;
+    next.reset().setLoop(descriptor.loop ? LoopRepeat : LoopOnce, descriptor.loop ? Infinity : 1);
+    next.paused = false; next.clampWhenFinished = true; next.enabled = true; next.setEffectiveWeight(1).play();
+    if (previous && previous !== next) { previous.paused = false; next.crossFadeFrom(previous, 0.18, false); }
+    this.clip = selection;
   }
   turn(): void { this.group.rotation.y += Math.PI / 4; }
-  update(dt: number): void { if (!this.paused) this.mixer?.update(dt); this.group.updateMatrixWorld(true); }
+  update(dt: number): void { if (!this.paused && this.clip.kind === 'clip') this.mixer?.update(dt); this.group.updateMatrixWorld(true); }
   inspection(): { feet: number[][]; gripDistances: number[] } {
     this.group.updateMatrixWorld(true);
-    const position = (name: string) => {
-      const object = this.group.getObjectByName(name); if (!object) throw new Error(`Rig node missing: ${name}`);
-      return object.getWorldPosition(new Vector3());
-    };
-    return { feet: [position('footL').toArray(), position('footR').toArray()],
-      gripDistances: [position('socket_lantern').distanceTo(position('handL')), position('socket_wake_hook').distanceTo(position('handR'))] };
+    const feet = (this.definition.diagnostics?.feet ?? []).flatMap((name) => {
+      const bone = this.group.getObjectByName(name); return bone ? [bone.getWorldPosition(new Vector3()).toArray()] : [];
+    });
+    return { feet, gripDistances: [] };
   }
+
   dispose(): void {
     this.mixer?.removeEventListener('finished', this.finished); this.mixer?.stopAllAction();
     if (this.root) this.mixer?.uncacheRoot(this.root);
-    this.actions.clear(); this.mixer = null; this.root = null; this.group.clear();
+    this.actions.clear(); this.clips = []; this.mixer = null; this.root = null; this.group.clear();
   }
 }

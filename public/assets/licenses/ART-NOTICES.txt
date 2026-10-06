@@ -1,4 +1,6 @@
-Imported visual assets are CC0-1.0. Authors, sources, hashes and modifications are recorded in art-provenance.json. Poly Haven license: https://polyhaven.com/license
-MakeHuman data license: https://github.com/makehumancommunity/makehuman/blob/master/LICENSE.md
-Female skin license: https://static.makehumancommunity.org/assets/assetpacks/skins01.html
-Original VESPERWOUND work belongs to the project owner.
+SciFi Medic - Rigged by Tony Flanagan: CC BY 4.0. Source: https://www.fab.com/listings/2c775e7c-06e8-4b6c-96a0-c57c17987634
+License: https://creativecommons.org/licenses/by/4.0/
+Modified through scale/ground normalization, Blender glTF re-export, Meshopt and KTX2 compression/mipmaps. No author endorsement is implied.
+Imported environment assets: CC0-1.0; Poly Haven license: https://polyhaven.com/license
+Authors, source hashes and modifications are recorded in art-provenance.json and medic-provenance.json. See /credits.html for accessible attribution.
+Original VESPERWOUND environment work belongs to the project owner.

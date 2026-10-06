@@ -1,9 +1,9 @@
 {
   "version": 1,
   "assets": {
-    "iona": {
+    "character": {
       "kind": "model",
-      "url": "iona.glb"
+      "url": "character.glb"
     },
     "courtyard": {
       "kind": "model",

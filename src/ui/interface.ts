@@ -1,6 +1,7 @@
 import { Lifetime } from '../core/lifetime';
 import { QUALITY_NAMES, type QualityName } from '../performance/quality';
 import type { Preferences } from '../platform/settings';
+import { MEDIC, type CharacterClip } from '../world/character-definition';
 import type { CameraView, PreviewClip, InspectionView, InspectionLighting, InspectionState } from '../world/presentation';
 
 export class Interface {
@@ -30,13 +31,13 @@ export class Interface {
           <p class="entry-description">Beneath the evening bell,<br>something is still breathing.</p>
           <button id="start" class="primary-button" disabled>OPENING THE INTAKE<span aria-hidden="true">↗</span></button>
           <p id="load-status" class="load-status" role="status">Preparing the Works…</p>
-          <p class="entry-footnote">THE VESPER WORKS · IONA AT ASH QUAY</p>
+          <p class="entry-footnote">THE VESPER WORKS · MEDIC AT ASH QUAY · <a href="/credits.html" target="_blank" rel="noopener">Credits</a></p>
         </section>
         <section id="location" class="location" hidden><p class="eyebrow">THE VESPER WORKS / 01</p><h2>Ash Quay</h2><p>The last light at the intake.</p></section>
         <section id="showcase-controls" class="showcase-controls" aria-label="Visual showcase" hidden>
-          <div class="view-buttons"><button id="view-courtyard" aria-pressed="true">Courtyard</button><button id="view-character" aria-pressed="false">Iona</button><button id="turn-character" aria-label="Turn Iona">↻</button></div>
-          <label for="animation">Animation</label><select id="animation"><option value="idle">Idle</option><option value="walk">Walk</option><option value="run">Run</option><option value="attack">Attack</option><option value="dodge">Dodge</option></select>
-          <p>IONA · MORTUARY ENGINEER</p>
+          <div class="view-buttons"><button id="view-courtyard" aria-pressed="true">Courtyard</button><button id="view-character" aria-pressed="false">Medic</button><button id="turn-character" aria-label="Turn Medic">↻</button></div>
+          <label for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
+          <p>MEDIC · SCIFI MEDIC</p>
           <button id="inspection-toggle" hidden>Detailed inspection</button>
           <div id="inspection-controls" hidden>
             <label for="inspection-view">View</label><select id="inspection-view"><option value="full-body">Full body</option><option value="portrait">Portrait</option><option value="equipment">Equipment</option></select>
@@ -59,6 +60,7 @@ export class Interface {
           <label class="setting-row">Reduced motion<input id="reduced-motion" type="checkbox" /></label>
           <label class="setting-row">Interface scale<input id="ui-scale" type="range" min="0.8" max="1.4" step="0.1" /></label>
           <label class="setting-row">Left-handed controls<input id="left-handed" type="checkbox" /></label>
+          <p class="settings-note"><a href="/credits.html" target="_blank" rel="noopener">Asset credits and licenses</a></p>
           <p id="storage-status" class="settings-note">Preferences are saved on this device.</p>
           <button id="resume" class="primary-button">RETURN TO THE WORKS <span aria-hidden="true">↗</span></button>
         </dialog>
@@ -66,6 +68,8 @@ export class Interface {
     this.canvas = this.get('#world'); this.stick = this.get('#movement-stick'); this.pulse = this.get('#pulse');
     this.entry = this.get('#entry'); this.start = this.get('#start'); this.status = this.get('#load-status');
     this.settings = this.get('#settings'); this.rotate = this.get('#rotate'); this.errorPanel = this.get('#error');
+    this.get('#view-character').textContent = MEDIC.displayName;
+    this.get('#turn-character').setAttribute('aria-label', `Turn ${MEDIC.displayName}`);
     this.get<HTMLSelectElement>('#quality').value = preferences.quality;
     this.get<HTMLInputElement>('#adaptive').checked = preferences.adaptive;
     this.get<HTMLInputElement>('#volume').value = String(preferences.volume);
@@ -91,7 +95,7 @@ export class Interface {
       callbacks.camera(view);
       for (const choice of ['courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
     });
-    this.lifetime.listen(this.get('#animation'), 'change', () => callbacks.animation(this.get<HTMLSelectElement>('#animation').value as PreviewClip));
+    this.lifetime.listen(this.get('#animation'), 'change', () => { const value = this.get<HTMLSelectElement>('#animation').value; callbacks.animation(value === 'pose' ? { kind: 'pose' } : { kind: 'clip', name: value.slice(5) }); });
     this.lifetime.listen(this.get('#turn-character'), 'click', () => callbacks.turn());
     this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => callbacks.inspection());
     this.lifetime.listen(this.get('#inspection-view'), 'change', () => callbacks.inspectionView(this.get<HTMLSelectElement>('#inspection-view').value as InspectionView));
@@ -136,7 +140,11 @@ export class Interface {
     this.get('#session-status').textContent = 'PRESSURE STABLE'; this.canvas.focus(); this.root.dataset.state = 'running';
   }
   scene(name: 'foundation' | 'showcase'): void { this.root.dataset.scene = name; }
-  animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip; }
+  animationChoices(clips: readonly CharacterClip[]): void {
+    const select = this.get<HTMLSelectElement>('#animation');
+    select.replaceChildren(new Option('Static pose', 'pose'), ...clips.map((clip) => new Option(clip.name, `clip:${clip.name}`)));
+  }
+  animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip.kind === 'pose' ? 'pose' : `clip:${clip.name}`; }
   artLoading(loading: boolean, message = ''): void {
     this.get('#art-status').textContent = message;
     for (const selector of ['#animation', '#turn-character', '#quality']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
@@ -149,7 +157,7 @@ export class Interface {
     this.get('#inspection-controls').hidden = !active;
     this.get('#view-courtyard').hidden = active; this.get('#view-character').hidden = active;
     this.get('#location').hidden = active || !['running', 'paused'].includes(this.root.dataset.state ?? '');
-    this.get('#inspection-status').textContent = state.status === 'loading' ? 'Preparing detailed Iona…' : state.status === 'failed' ? state.message : '';
+    this.get('#inspection-status').textContent = state.status === 'loading' ? 'Preparing detailed Medic…' : state.status === 'failed' ? state.message : '';
     if (active) {
       this.get<HTMLSelectElement>('#inspection-view').value = state.view;
       this.get<HTMLSelectElement>('#inspection-lighting').value = state.lighting;

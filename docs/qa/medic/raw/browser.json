@@ -1,0 +1,37 @@
+{
+  "errors": [],
+  "stats": {
+    "backend": "WebGL2",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 16.700000000000728,
+    "cpuMs": 3.5,
+    "fps": 10.039503262838556,
+    "p95": 16.80000000000291,
+    "draws": 20,
+    "triangles": 37493,
+    "textures": 56,
+    "estimatedGpuBytes": 137195917,
+    "resources": 14,
+    "references": 3,
+    "voices": 3,
+    "overruns": 3,
+    "fixtureLoads": 1,
+    "markerX": -1.6,
+    "markerZ": 3.4,
+    "listeners": 41,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "static-pose",
+    "camera": "full-body",
+    "characterTier": "cinematic",
+    "inspection": "active",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [],
+      "gripDistances": []
+    }
+  }
+}

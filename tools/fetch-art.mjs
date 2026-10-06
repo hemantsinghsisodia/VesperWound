@@ -11,7 +11,7 @@ async function save(url, name, expected) {
   await writeFile(new URL(name, directory), bytes);
   return { filename: name, url, bytes: bytes.length, md5 };
 }
-for (const id of ['cobblestone_floor_08', 'rusty_metal_04', 'denim_fabric', 'stone_brick_wall_001', 'wooden_crate_01']) {
+for (const id of ['cobblestone_floor_08', 'rusty_metal_04', 'stone_brick_wall_001', 'wooden_crate_01']) {
   await mkdir(new URL(`${id}/`, directory), { recursive: true });
   const files = await fetch(`https://api.polyhaven.com/files/${id}`).then((r) => r.json());
   await writeFile(new URL(`${id}/files.json`, directory), JSON.stringify(files, null, 2));
@@ -32,5 +32,4 @@ for (const id of ['cobblestone_floor_08', 'rusty_metal_04', 'denim_fabric', 'sto
   provenance.push({ id, source: `https://polyhaven.com/a/${id}`, authors: Object.keys(catalog[id].authors), license: 'CC0-1.0', retrieved: new Date().toISOString(), files: records });
   console.log(`Downloaded ${id}: ${records.length} files`);
 }
-await save('https://raw.githubusercontent.com/makehumancommunity/makehuman/master/LICENSE.ASSETS.md', 'makehuman-CC0.md');
 await writeFile(new URL('provenance.json', directory), JSON.stringify(provenance, null, 2));

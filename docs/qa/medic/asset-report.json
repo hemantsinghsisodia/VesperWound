@@ -1,0 +1,32 @@
+[
+  {
+    "tier": "desktop",
+    "triangles": 18745,
+    "rawBytes": 6578372,
+    "gzipBytes": 6188443,
+    "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+    "clips": [],
+    "textures": 15,
+    "identicalToDesktop": true
+  },
+  {
+    "tier": "mobile",
+    "triangles": 18745,
+    "rawBytes": 6578372,
+    "gzipBytes": 6188443,
+    "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+    "clips": [],
+    "textures": 15,
+    "identicalToDesktop": true
+  },
+  {
+    "tier": "cinematic",
+    "triangles": 18745,
+    "rawBytes": 6578372,
+    "gzipBytes": 6188443,
+    "sha256": "d61ab0b64fdfd01190b20ccb251c535bbcfb1cd243f2e755d6e82427a91e04f4",
+    "clips": [],
+    "textures": 15,
+    "identicalToDesktop": true
+  }
+]

@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-06T05:46:33.592Z",
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "build": "production",
+  "mode": "cinematic",
+  "method": "External requestAnimationFrame intervals with Chrome --disable-frame-rate-limit and --disable-gpu-vsync; application has no frame limiter. Includes CPU submission and scheduling, not isolated GPU timestamp queries.",
+  "renderingUncapped": true,
+  "browserFlags": [
+    "--disable-frame-rate-limit",
+    "--disable-gpu-vsync"
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererAllocation": {
+      "estimatedBytes": 72404252,
+      "textures": 62
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.005200000017883,
+      "frames": 11381,
+      "fps": 394.4686726129162,
+      "p95FrameMs": 3.3000000000029104,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 60.03330000001192,
+      "frames": 22913,
+      "fps": 368.9658706569642,
+      "p95FrameMs": 4.30000000000291,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 90.05540000000596,
+      "frames": 35170,
+      "fps": 410.19096668337977,
+      "p95FrameMs": 3.2999999999883585,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 120.06970000001787,
+      "frames": 47320,
+      "fps": 421.91125799873544,
+      "p95FrameMs": 3,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 150.08909999999403,
+      "frames": 59735,
+      "fps": 407.2674615924147,
+      "p95FrameMs": 3.1000000000058208,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 180.112,
+      "frames": 70793,
+      "fps": 365.4599719814008,
+      "p95FrameMs": 4.2999999999883585,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 210.141,
+      "frames": 81995,
+      "fps": 378.3658798057731,
+      "p95FrameMs": 3.7000000000116415,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 240.17320000001789,
+      "frames": 93817,
+      "fps": 410.2844638949661,
+      "p95FrameMs": 3.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 270.199099999994,
+      "frames": 105827,
+      "fps": 409.37002501705706,
+      "p95FrameMs": 3.2000000000116415,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 300.22209999999404,
+      "frames": 118484,
+      "fps": 415.6947876492482,
+      "p95FrameMs": 3.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 330.2403000000119,
+      "frames": 130463,
+      "fps": 353.4054542241777,
+      "p95FrameMs": 4.600000000034925,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 360.256,
+      "frames": 141420,
+      "fps": 371.24118302190055,
+      "p95FrameMs": 4.100000000034925,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 390.2792000000179,
+      "frames": 152996,
+      "fps": 403.1084137683929,
+      "p95FrameMs": 3.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 420.30020000001787,
+      "frames": 164979,
+      "fps": 428.2655246252677,
+      "p95FrameMs": 3.1000000000349246,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 450.32840000000596,
+      "frames": 176828,
+      "fps": 383.95085429064795,
+      "p95FrameMs": 3.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 480.34280000001195,
+      "frames": 188798,
+      "fps": 397.9219630816794,
+      "p95FrameMs": 3.700000000069849,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 510.35980000001194,
+      "frames": 200556,
+      "fps": 371.2641544458847,
+      "p95FrameMs": 4.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 540.394800000012,
+      "frames": 212262,
+      "fps": 325.21500325215413,
+      "p95FrameMs": 5.400000000023283,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 570.443300000012,
+      "frames": 223100,
+      "fps": 385.05968425106084,
+      "p95FrameMs": 3.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    },
+    {
+      "elapsedSeconds": 600.469599999994,
+      "frames": 234249,
+      "fps": 384.20490928495195,
+      "p95FrameMs": 3.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 72404252
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 600.5933000000119,
+    "frameCount": 234253,
+    "fps": 390.1106834336399,
+    "p95FrameMs": 3.7000000000116415,
+    "maxFrameMs": 165.90000000002328,
+    "intervalsOver50Ms": 9,
+    "intervalsOver100Ms": 6
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

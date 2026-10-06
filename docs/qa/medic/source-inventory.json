@@ -1,0 +1,1710 @@
+{
+  "objects": [
+    {
+      "name": "Armature",
+      "type": "ARMATURE",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [],
+      "bones": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ]
+    },
+    {
+      "name": "EyeLeft",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 206,
+      "materials": [
+        "Eye"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          0.012947535142302513,
+          -0.10580912232398987,
+          1.70510733127594
+        ],
+        [
+          0.012947535142302513,
+          -0.10580912232398987,
+          1.7440941333770752
+        ],
+        [
+          0.012947535142302513,
+          -0.086403027176857,
+          1.7440941333770752
+        ],
+        [
+          0.012947535142302513,
+          -0.086403027176857,
+          1.70510733127594
+        ],
+        [
+          0.05199415236711502,
+          -0.10580912232398987,
+          1.70510733127594
+        ],
+        [
+          0.05199415236711502,
+          -0.10580912232398987,
+          1.7440941333770752
+        ],
+        [
+          0.05199415236711502,
+          -0.086403027176857,
+          1.7440941333770752
+        ],
+        [
+          0.05199415236711502,
+          -0.086403027176857,
+          1.70510733127594
+        ]
+      ]
+    },
+    {
+      "name": "EyeRight",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 206,
+      "materials": [
+        "Eye"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.052113521844148636,
+          -0.10580917447805405,
+          1.705066442489624
+        ],
+        [
+          -0.052113521844148636,
+          -0.10580917447805405,
+          1.744133472442627
+        ],
+        [
+          -0.052113521844148636,
+          -0.08640307188034058,
+          1.744133472442627
+        ],
+        [
+          -0.052113521844148636,
+          -0.08640307188034058,
+          1.705066442489624
+        ],
+        [
+          -0.013222116976976395,
+          -0.10580917447805405,
+          1.705066442489624
+        ],
+        [
+          -0.013222116976976395,
+          -0.10580917447805405,
+          1.744133472442627
+        ],
+        [
+          -0.013222116976976395,
+          -0.08640307188034058,
+          1.744133472442627
+        ],
+        [
+          -0.013222116976976395,
+          -0.08640307188034058,
+          1.705066442489624
+        ]
+      ]
+    },
+    {
+      "name": "Glasses",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 950,
+      "materials": [
+        "Glasses"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.083219014108181,
+          -0.13261206448078156,
+          1.6991046667099
+        ],
+        [
+          -0.083219014108181,
+          -0.13261206448078156,
+          1.7392820119857788
+        ],
+        [
+          -0.083219014108181,
+          0.012010132893919945,
+          1.7392820119857788
+        ],
+        [
+          -0.083219014108181,
+          0.012010132893919945,
+          1.6991046667099
+        ],
+        [
+          0.08249406516551971,
+          -0.13261206448078156,
+          1.6991046667099
+        ],
+        [
+          0.08249406516551971,
+          -0.13261206448078156,
+          1.7392820119857788
+        ],
+        [
+          0.08249406516551971,
+          0.012010132893919945,
+          1.7392820119857788
+        ],
+        [
+          0.08249406516551971,
+          0.012010132893919945,
+          1.6991046667099
+        ]
+      ]
+    },
+    {
+      "name": "Hair",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 2758,
+      "materials": [
+        "Hair"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.10278541594743729,
+          -0.11446788161993027,
+          1.6133512258529663
+        ],
+        [
+          -0.10278541594743729,
+          -0.11446788161993027,
+          1.8508098125457764
+        ],
+        [
+          -0.10278541594743729,
+          0.09549303352832794,
+          1.8508098125457764
+        ],
+        [
+          -0.10278541594743729,
+          0.09549303352832794,
+          1.6133512258529663
+        ],
+        [
+          0.1010860726237297,
+          -0.11446788161993027,
+          1.6133512258529663
+        ],
+        [
+          0.1010860726237297,
+          -0.11446788161993027,
+          1.8508098125457764
+        ],
+        [
+          0.1010860726237297,
+          0.09549303352832794,
+          1.8508098125457764
+        ],
+        [
+          0.1010860726237297,
+          0.09549303352832794,
+          1.6133512258529663
+        ]
+      ]
+    },
+    {
+      "name": "Head",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 4094,
+      "materials": [
+        "Head"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.09610744565725327,
+          -0.13965551555156708,
+          1.5201966762542725
+        ],
+        [
+          -0.09610744565725327,
+          -0.13965551555156708,
+          1.832675576210022
+        ],
+        [
+          -0.09610744565725327,
+          0.08721794933080673,
+          1.832675576210022
+        ],
+        [
+          -0.09610744565725327,
+          0.08721794933080673,
+          1.5201966762542725
+        ],
+        [
+          0.0957942083477974,
+          -0.13965551555156708,
+          1.5201966762542725
+        ],
+        [
+          0.0957942083477974,
+          -0.13965551555156708,
+          1.832675576210022
+        ],
+        [
+          0.0957942083477974,
+          0.08721794933080673,
+          1.832675576210022
+        ],
+        [
+          0.0957942083477974,
+          0.08721794933080673,
+          1.5201966762542725
+        ]
+      ]
+    },
+    {
+      "name": "Outfit_Bottom",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 2656,
+      "materials": [
+        "Bottom"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.22350794076919556,
+          -0.1886783093214035,
+          0.3301677703857422
+        ],
+        [
+          -0.22350794076919556,
+          -0.1886783093214035,
+          1.1407008171081543
+        ],
+        [
+          -0.22350794076919556,
+          0.1380230188369751,
+          1.1407008171081543
+        ],
+        [
+          -0.22350794076919556,
+          0.1380230188369751,
+          0.3301677703857422
+        ],
+        [
+          0.27795809507369995,
+          -0.1886783093214035,
+          0.3301677703857422
+        ],
+        [
+          0.27795809507369995,
+          -0.1886783093214035,
+          1.1407008171081543
+        ],
+        [
+          0.27795809507369995,
+          0.1380230188369751,
+          1.1407008171081543
+        ],
+        [
+          0.27795809507369995,
+          0.1380230188369751,
+          0.3301677703857422
+        ]
+      ]
+    },
+    {
+      "name": "Outfit_Top",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 5871,
+      "materials": [
+        "Top"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.5315999984741211,
+          -0.19014018774032593,
+          0.6097965836524963
+        ],
+        [
+          -0.5315999984741211,
+          -0.19014018774032593,
+          1.6657257080078125
+        ],
+        [
+          -0.5315999984741211,
+          0.14448034763336182,
+          1.6657257080078125
+        ],
+        [
+          -0.5315999984741211,
+          0.14448034763336182,
+          0.6097965836524963
+        ],
+        [
+          0.531599223613739,
+          -0.19014018774032593,
+          0.6097965836524963
+        ],
+        [
+          0.531599223613739,
+          -0.19014018774032593,
+          1.6657257080078125
+        ],
+        [
+          0.531599223613739,
+          0.14448034763336182,
+          1.6657257080078125
+        ],
+        [
+          0.531599223613739,
+          0.14448034763336182,
+          0.6097965836524963
+        ]
+      ]
+    },
+    {
+      "name": "Shoes",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 1904,
+      "materials": [
+        "Soes"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.26303452253341675,
+          -0.17337378859519958,
+          0.01891743764281273
+        ],
+        [
+          -0.26303452253341675,
+          -0.17337378859519958,
+          0.40104982256889343
+        ],
+        [
+          -0.26303452253341675,
+          0.17552822828292847,
+          0.40104982256889343
+        ],
+        [
+          -0.26303452253341675,
+          0.17552822828292847,
+          0.01891743764281273
+        ],
+        [
+          0.26302939653396606,
+          -0.17337378859519958,
+          0.01891743764281273
+        ],
+        [
+          0.26302939653396606,
+          -0.17337378859519958,
+          0.40104982256889343
+        ],
+        [
+          0.26302939653396606,
+          0.17552822828292847,
+          0.40104982256889343
+        ],
+        [
+          0.26302939653396606,
+          0.17552822828292847,
+          0.01891743764281273
+        ]
+      ]
+    },
+    {
+      "name": "Teeth",
+      "type": "MESH",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "modifiers": [
+        "ARMATURE"
+      ],
+      "triangles": 100,
+      "materials": [
+        "Teeth"
+      ],
+      "groups": [
+        "Hips",
+        "Spine",
+        "Spine1",
+        "Spine2",
+        "Neck",
+        "Head",
+        "HeadTop_End",
+        "LeftEye",
+        "RightEye",
+        "LeftShoulder",
+        "LeftArm",
+        "LeftForeArm",
+        "LeftHand",
+        "LeftHandThumb1",
+        "LeftHandThumb2",
+        "LeftHandThumb3",
+        "LeftHandThumb4",
+        "LeftHandIndex1",
+        "LeftHandIndex2",
+        "LeftHandIndex3",
+        "LeftHandIndex4",
+        "LeftHandMiddle1",
+        "LeftHandMiddle2",
+        "LeftHandMiddle3",
+        "LeftHandMiddle4",
+        "LeftHandRing1",
+        "LeftHandRing2",
+        "LeftHandRing3",
+        "LeftHandRing4",
+        "LeftHandPinky1",
+        "LeftHandPinky2",
+        "LeftHandPinky3",
+        "LeftHandPinky4",
+        "RightShoulder",
+        "RightArm",
+        "RightForeArm",
+        "RightHand",
+        "RightHandThumb1",
+        "RightHandThumb2",
+        "RightHandThumb3",
+        "RightHandThumb4",
+        "RightHandIndex1",
+        "RightHandIndex2",
+        "RightHandIndex3",
+        "RightHandIndex4",
+        "RightHandMiddle1",
+        "RightHandMiddle2",
+        "RightHandMiddle3",
+        "RightHandMiddle4",
+        "RightHandRing1",
+        "RightHandRing2",
+        "RightHandRing3",
+        "RightHandRing4",
+        "RightHandPinky1",
+        "RightHandPinky2",
+        "RightHandPinky3",
+        "RightHandPinky4",
+        "LeftUpLeg",
+        "LeftLeg",
+        "LeftFoot",
+        "LeftToeBase",
+        "LeftToe_End",
+        "RightUpLeg",
+        "RightLeg",
+        "RightFoot",
+        "RightToeBase",
+        "RightToe_End"
+      ],
+      "bounds": [
+        [
+          -0.028096232563257217,
+          -0.11786460876464844,
+          1.6423561573028564
+        ],
+        [
+          -0.028096232563257217,
+          -0.11786460876464844,
+          1.6782236099243164
+        ],
+        [
+          -0.028096232563257217,
+          -0.05065998062491417,
+          1.6782236099243164
+        ],
+        [
+          -0.028096232563257217,
+          -0.05065998062491417,
+          1.6423561573028564
+        ],
+        [
+          0.028096001595258713,
+          -0.11786460876464844,
+          1.6423561573028564
+        ],
+        [
+          0.028096001595258713,
+          -0.11786460876464844,
+          1.6782236099243164
+        ],
+        [
+          0.028096001595258713,
+          -0.05065998062491417,
+          1.6782236099243164
+        ],
+        [
+          0.028096001595258713,
+          -0.05065998062491417,
+          1.6423561573028564
+        ]
+      ]
+    }
+  ],
+  "actions": [],
+  "images": [
+    {
+      "name": "Medic_Bottom_Diffuse.jpg",
+      "path": "//textures\\Medic_Bottom_Diffuse.jpg",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Medic_Bottom_Mettalic_Roughness.png",
+      "path": "//textures\\Medic_Bottom_Mettalic_Roughness.png",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Medic_Bottom_Normal.jpg",
+      "path": "//textures\\Medic_Bottom_Normal.jpg",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Medic_Eye_diffuse.jpg",
+      "path": "//textures\\Medic_Eye_diffuse.jpg",
+      "packed": true,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "Medic_Glasses_Diffuse.png",
+      "path": "//textures\\Medic_Glasses_Diffuse.png",
+      "packed": true,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "Medic_Glasses_Mettalic_roughnes.png",
+      "path": "//textures\\Medic_Glasses_Mettalic_roughnes.png",
+      "packed": true,
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "name": "Medic_Hair_Diffuse.jpg",
+      "path": "//textures\\Medic_Hair_Diffuse.jpg",
+      "packed": true,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "Medic_Hair_Normal.png",
+      "path": "//textures\\Medic_Hair_Normal.png",
+      "packed": true,
+      "size": [
+        256,
+        256
+      ]
+    },
+    {
+      "name": "Medic_Head_Diffuse.jpg",
+      "path": "//textures\\Medic_Head_Diffuse.jpg",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "Medic_Shoes_Diffuse.jpg",
+      "path": "//textures\\Medic_Shoes_Diffuse.jpg",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "Medic_Shoes_Metallic_Roughness.png",
+      "path": "//textures\\Medic_Shoes_Metallic_Roughness.png",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "Medic_Shoes_Normal.jpg",
+      "path": "//textures\\Medic_Shoes_Normal.jpg",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ]
+    },
+    {
+      "name": "Medic_Top_Diffuse.jpg",
+      "path": "//textures\\Medic_Top_Diffuse.jpg",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Medic_Top_Metallic.png",
+      "path": "//textures\\Medic_Top_Metallic.png",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Medic_Top_Normal.jpg",
+      "path": "//textures\\Medic_Top_Normal.jpg",
+      "packed": true,
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "Wolf3D_Teeth_Diffuse.jpg",
+      "path": "//textures\\Wolf3D_Teeth_Diffuse.jpg",
+      "packed": true,
+      "size": [
+        512,
+        512
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "Bottom",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Separate RGB",
+          "type": "SEPARATE_COLOR",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Bottom_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Bottom_Mettalic_Roughness.png"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Bottom_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Dots Stroke",
+      "nodes": [
+        {
+          "name": "Frame",
+          "type": "FRAME",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output.001",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Diffuse BSDF",
+          "type": "BSDF_DIFFUSE",
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "Eye",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Eye_diffuse.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Glasses",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Separate RGB",
+          "type": "SEPARATE_COLOR",
+          "image": null
+        },
+        {
+          "name": "Image Texture.002",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Glasses_Mettalic_roughnes.png"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Glasses_Diffuse.png"
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        }
+      ]
+    },
+    {
+      "name": "Hair",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Image Texture.002",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Hair_Diffuse.jpg"
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Hair_Normal.png"
+        }
+      ]
+    },
+    {
+      "name": "Head",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Head_Diffuse.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Soes",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Separate RGB",
+          "type": "SEPARATE_COLOR",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Shoes_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Shoes_Metallic_Roughness.png"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Shoes_Normal.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Teeth",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Wolf3D_Teeth_Diffuse.jpg"
+        }
+      ]
+    },
+    {
+      "name": "Top",
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "image": null
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "image": null
+        },
+        {
+          "name": "Separate RGB",
+          "type": "SEPARATE_COLOR",
+          "image": null
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "image": null
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Top_Diffuse.jpg"
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Top_Metallic.png"
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "image": "Medic_Top_Normal.jpg"
+        },
+        {
+          "name": "Mapping",
+          "type": "MAPPING",
+          "image": null
+        },
+        {
+          "name": "Texture Coordinate",
+          "type": "TEX_COORD",
+          "image": null
+        }
+      ]
+    }
+  ],
+  "fps": 25,
+  "frames": [
+    1,
+    250
+  ]
+}

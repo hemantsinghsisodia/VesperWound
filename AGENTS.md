@@ -1,11 +1,11 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- The user accepted Tony Flanagan's Fab SciFi Medic under CC BY 4.0 as the retained character on 2026-10-06 and requested removal of the previous generated character. Medic is the only character asset; do not restore the removed generators, sources or comparisons. Preserve its appearance and supplied rig. The downloaded Blender and GLB have no animations; use Static pose and defer new clips and mechanics to Phase 2.
 - Phase 0 architecture was approved on 2026-10-05. See docs/architecture.md.
 - Implement only the phase explicitly requested by the user. Stop and report after that phase; do not automatically start the next one.
 - Phase 1 is the technical foundation and test courtyard. It is not a player/combat prototype.
-- The user approved the Iona and Ash Quay visual milestone on 2026-10-05: a finished art scene and animation previews before Phase 2. Player collision, controlled movement, combat, health, and death remain outside this milestone.
-- The user approved the Iona cinematic character rebuild: canonical authored Blender source, three character tiers and optional studio inspection. Environment reconstruction and Phase 2 remain excluded. Art review is separate from technical validation.
+- The retained visual milestone presents Medic at Ash Quay with optional desktop studio inspection. Environment reconstruction, player collision, controlled movement, combat, health and death remain outside this milestone. Physical-phone performance remains unverified.
 - Inspect the repository, previous decisions, and dependencies before each phase. Give a short implementation plan; test, profile, check mobile compatibility, and report limitations honestly.
 - Preserve working systems. Explain architecture changes before making them.
 

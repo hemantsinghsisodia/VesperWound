@@ -1,0 +1,230 @@
+{
+  "baseline": {
+    "backend": "WebGPU",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 16.600000000000364,
+    "cpuMs": 2.0999999940395355,
+    "fps": 56.106471816283914,
+    "p95": 16.800000000000182,
+    "draws": 65,
+    "triangles": 270751,
+    "textures": 51,
+    "estimatedGpuBytes": 55978928,
+    "resources": 9,
+    "references": 2,
+    "voices": 3,
+    "overruns": 0,
+    "fixtureLoads": 1,
+    "markerX": -1.6,
+    "markerZ": 3.4,
+    "listeners": 41,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "static-pose",
+    "camera": "courtyard",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.4653188501833634,
+          0.14056658550678836,
+          3.323195789380328
+        ],
+        [
+          -1.7550179283791456,
+          0.1405663862807282,
+          3.3971679512797954
+        ]
+      ],
+      "gripDistances": []
+    }
+  },
+  "cycles": [
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.599999999998545,
+      "cpuMs": 2.2999999821186066,
+      "fps": 60.03001500750386,
+      "p95": 16.799999999999272,
+      "draws": 65,
+      "triangles": 270751,
+      "textures": 51,
+      "estimatedGpuBytes": 55978936,
+      "resources": 9,
+      "references": 2,
+      "voices": 3,
+      "overruns": 2,
+      "fixtureLoads": 1,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 41,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "static-pose",
+      "camera": "courtyard",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4653188501833634,
+            0.14056658550678836,
+            3.323195789380328
+          ],
+          [
+            -1.7550179283791456,
+            0.1405663862807282,
+            3.3971679512797954
+          ]
+        ],
+        "gripDistances": []
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.69999999999891,
+      "cpuMs": 3.300000011920929,
+      "fps": 60.015003750937794,
+      "p95": 16.799999999999272,
+      "draws": 65,
+      "triangles": 270751,
+      "textures": 51,
+      "estimatedGpuBytes": 55978936,
+      "resources": 9,
+      "references": 2,
+      "voices": 3,
+      "overruns": 3,
+      "fixtureLoads": 1,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 41,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "static-pose",
+      "camera": "courtyard",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4653188501833634,
+            0.14056658550678836,
+            3.323195789380328
+          ],
+          [
+            -1.7550179283791456,
+            0.1405663862807282,
+            3.3971679512797954
+          ]
+        ],
+        "gripDistances": []
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.600000000000364,
+      "cpuMs": 2.199999988079071,
+      "fps": 60.020876826722514,
+      "p95": 16.80000000000109,
+      "draws": 65,
+      "triangles": 270751,
+      "textures": 51,
+      "estimatedGpuBytes": 55978936,
+      "resources": 9,
+      "references": 2,
+      "voices": 3,
+      "overruns": 4,
+      "fixtureLoads": 1,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 41,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "static-pose",
+      "camera": "courtyard",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4653188501833634,
+            0.14056658550678836,
+            3.323195789380328
+          ],
+          [
+            -1.7550179283791456,
+            0.1405663862807282,
+            3.3971679512797954
+          ]
+        ],
+        "gripDistances": []
+      }
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.700000000000728,
+      "cpuMs": 2.300000011920929,
+      "fps": 52.526263131565884,
+      "p95": 33.399999999999636,
+      "draws": 65,
+      "triangles": 270751,
+      "textures": 51,
+      "estimatedGpuBytes": 55978936,
+      "resources": 9,
+      "references": 2,
+      "voices": 3,
+      "overruns": 6,
+      "fixtureLoads": 1,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 41,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "static-pose",
+      "camera": "courtyard",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4653188501833634,
+            0.14056658550678836,
+            3.323195789380328
+          ],
+          [
+            -1.7550179283791456,
+            0.1405663862807282,
+            3.3971679512797954
+          ]
+        ],
+        "gripDistances": []
+      }
+    }
+  ],
+  "errors": []
+}

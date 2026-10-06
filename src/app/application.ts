@@ -132,7 +132,7 @@ export class Application {
           timeScale: (value) => { this.timeScale = value; },
         });
       }
-      this.ui.ready();
+      this.refreshAnimationUi(); this.ui.ready();
       this.updateInspectionUi();
     } catch (error) {
       if (!this.disposed) this.fail(error instanceof Error ? error.message : String(error));
@@ -241,7 +241,7 @@ export class Application {
       oldWorld?.dispose(); oldAssets.dispose();
       this.committedQuality = this.quality.selected;
       this.fixtureLoads++; this.clock.reset(); this.metrics.resetTiming();
-      this.ui.animation('idle'); this.ui.artLoading(false);
+      this.refreshAnimationUi(); this.ui.artLoading(false);
     } catch (error) {
       if (!this.disposed && this.adapter === adapter && oldWorld) {
         this.quality.select(previousQuality); this.settings.update({ quality: previousQuality });
@@ -255,6 +255,9 @@ export class Application {
       this.reloading = false;
       this.updateInspectionUi();
     }
+  }
+  private refreshAnimationUi(): void {
+    if (this.preview) { this.ui.animationChoices(this.preview.clips); this.ui.animation(this.preview.clip); }
   }
   private get preview() { return this.inspection?.actor ?? (this.courtyard instanceof VisualShowcase ? this.courtyard.preview : null); }
   private get inspectionEligible(): boolean {
@@ -288,12 +291,12 @@ export class Application {
       this.inspection = request.world; this.inspectionAssets = request.assets;
       request.world = null; request.assets = null; this.inspection.activate();
       this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0; this.resize();
-      this.ui.animation('idle'); this.updateInspectionUi();
+      this.refreshAnimationUi(); this.updateInspectionUi();
     } catch (error) {
       if (current()) {
         if (this.courtyard) adapter.configure(this.courtyard.scene, this.camera.camera, this.quality.profile);
         adapter.renderer.toneMappingExposure = 1.25;
-        this.inspectionState = { status: 'failed', message: `Detailed Iona could not be loaded. ${error instanceof Error ? error.message : String(error)}` };
+        this.inspectionState = { status: 'failed', message: `Detailed Medic could not be loaded. ${error instanceof Error ? error.message : String(error)}` };
         this.updateInspectionUi();
       }
     } finally {
@@ -310,10 +313,11 @@ export class Application {
     }
     this.inspection?.dispose(); this.inspection = null; this.inspectionAssets?.dispose(); this.inspectionAssets = null;
     this.inspectionState = { status: 'courtyard' }; this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0;
-    this.resize(); this.updateInspectionUi(); if (this.preview) this.ui.animation(this.preview.clip);
+    this.resize(); this.updateInspectionUi(); this.refreshAnimationUi();
   }
   private manifestUrl(): string {
-    return this.options.scene === 'foundation' ? '/assets/fixtures/manifest.json' : `/assets/showcase/${artVariant(this.quality.selected)}/manifest.json`;
+    if (this.options.scene === 'foundation') return '/assets/fixtures/manifest.json';
+    return `/assets/showcase/${artVariant(this.quality.selected)}/manifest.json`;
   }
   private async createWorld(): Promise<WorldPresentation> {
     if (import.meta.env.DEV && this.options.scene === 'foundation') {
@@ -336,7 +340,7 @@ export class Application {
       listeners: this.lifetime.cleanupCount + this.ui.listenerCount + (this.input?.listenerCount ?? 0) + this.events.listenerCount,
       audioState: this.audio.status,
       scene: this.options.scene, variant: this.courtyard instanceof VisualShowcase ? this.courtyard.variant : 'fixture',
-      animation: this.preview?.clip ?? 'fixture', camera: this.inspection?.view ?? this.camera.view,
+      animation: this.preview ? this.preview.clip.kind === 'pose' ? 'static-pose' : this.preview.clip.name : 'fixture', camera: this.inspection?.view ?? this.camera.view,
       characterTier: this.inspection ? 'cinematic' : this.courtyard instanceof VisualShowcase ? this.courtyard.variant : 'fixture',
       inspection: this.inspectionState.status, inspectionPaused: this.inspection?.actor.paused ?? false,
       artLoading: this.reloading,

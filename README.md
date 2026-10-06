@@ -1,6 +1,6 @@
 # VESPERWOUND
 
-Iona and Ash Quay visual milestone for the approved dark horror action game. The default scene presents the mortuary engineer, original pressure machinery, scanned materials, and five in-place animation previews. Phase 2 player movement, collision, combat, health, and death are not introduced here.
+Medic and Ash Quay visual milestone for the approved dark horror action game. The default scene presents Tony Flanagan's SciFi Medic, original pressure machinery and scanned materials. The supplied character has no animation clips, so previews use its static pose. The user accepted Medic on 2026-10-06. Phase 2 player movement, collision, combat, health and death remain separate.
 
 ## Run
 
@@ -9,7 +9,7 @@ npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. Select **Enter the Works**, then use **Courtyard**, **Iona**, the turn button, and the animation selector. Eligible desktop configurations also offer **Detailed inspection**, with full-body/portrait/equipment views, orbit/zoom, Neutral/Ash Quay lighting and animation pause. Cinematic art loads only after selection; cancel, failure and exit retain/restore Ash Quay. Escape opens settings; F3 opens development diagnostics. The showcase controls work on touch screens. Mobile/Low load the mobile art variant; Medium/High/Ultra load desktop art. Failed quality loads preserve the previous scene. The rebuilt character remains **awaiting art review**.
+Open http://127.0.0.1:5173. Select **Enter the Works**, then use **Courtyard**, **Medic**, the turn button and **Static pose**. Eligible desktop configurations also offer **Detailed inspection**, with full-body/portrait/equipment views, orbit/zoom and Neutral/Ash Quay lighting. Inspection art loads only after selection; cancel, failure and exit retain/restore Ash Quay. Escape opens settings; F3 opens development diagnostics. Controls support touch screens. Mobile/Low load the mobile art variant; Medium/High/Ultra load desktop art. Failed quality loads preserve the previous scene. Credits are accessible from the entry screen and settings.
 
 ## Validate
 
@@ -32,13 +32,13 @@ Production ignores these flags and excludes the development diagnostics module.
 
 High quality uses quarter-resolution bloom; Ultra uses half-resolution bloom. The main scene resolution remains governed by the existing preset and adaptive-resolution settings.
 
-Run the sustained desktop measurements after `npm run build`. On Windows, use `powershell -NoProfile -File tools/run-performance.ps1`; it temporarily prevents idle sleep and releases that request when the tests finish. Elsewhere, set `VESPER_PERFORMANCE=1` and run `npm run test:performance`. Two serial production runs each warm up for 30 seconds and measure ten minutes at 1440 × 900, fixed High quality, adaptive resolution disabled. Chrome launches with frame-rate limiting and GPU vsync disabled. External requestAnimationFrame intervals include CPU submission/scheduling; they are not isolated GPU timestamp measurements. Reports are `docs/qa/iona-rebuild/{gameplay,cinematic}-performance.json`. Targets are p95 ≤18.5 ms gameplay and ≤35 ms cinematic. Keep other GPU workloads closed. Application development commands remain excluded from production.
+Run the sustained desktop measurements after `npm run build`. On Windows, use `powershell -NoProfile -File tools/run-performance.ps1`; it temporarily prevents idle sleep and releases that request when the tests finish. Elsewhere, set `VESPER_PERFORMANCE=1` and run `npm run test:performance`. Two serial production runs each warm up for 30 seconds and measure ten minutes at 1440 × 900, fixed High quality, adaptive resolution disabled. Chrome launches with frame-rate limiting and GPU vsync disabled. External requestAnimationFrame intervals include CPU submission/scheduling; they are not isolated GPU timestamp measurements. Reports are `docs/qa/medic/{gameplay,cinematic}-performance.json`. Targets are p95 ≤18.5 ms courtyard and ≤35 ms inspection. Keep other GPU workloads closed. Application development commands remain excluded from production.
 
 ## Assets
 
 Editable packed Blender masters live in `art/source`; optimized Meshopt GLBs and mipmapped KTX2 textures live in `public/assets/showcase`. Source downloads are separate from delivery. See [visual asset provenance](docs/visual-assets.md) and `art/provenance.json` for sources, authors, licenses, modifications, and hashes. The original technical fixtures remain reproducible with `npm run assets:generate`.
 
-To export the saved character, install Blender 5.2 and run `npm run assets:build`. It reads `art/source/iona-master.blend`, exports its three authored selections, checks that the master hash is unchanged, compresses maps/geometry and records provenance. It preserves Ash Quay exports. Set `BLENDER_PATH` if Blender is installed elsewhere. **Normal art builds never regenerate or overwrite the master.** `npm run assets:legacy` explicitly runs the old generator; it never edits the canonical Iona master. Source fetches are `assets:fetch` and `assets:fetch:morphs`. Ordinary app builds use saved optimized exports and do not invoke Blender or download art. `npm run size` enforces gzip bootstrap ≤5 MiB, raw initial art ≤20 MiB desktop/≤10 MiB mobile, and additional cinematic art ≤40 MiB. See [Iona authoring workflow](docs/iona-art-workflow.md).
+To export the saved character, install Blender 5.2 and run `npm run assets:build`. It reads `art/source/medic-master.blend`, verifies that the master remains unchanged, compresses maps/geometry and refreshes provenance. All three tiers reuse the supplied native detail. It preserves Ash Quay exports. Set `BLENDER_PATH` if Blender is installed elsewhere. **Normal art builds never regenerate or overwrite the master.** `npm run assets:fetch` downloads only the retained environment imports; Medic originals are preserved under `art/imports/medic`. Previous character sources and generators have been removed. Ordinary app builds use saved optimized exports and do not invoke Blender or download art. `npm run size` enforces gzip bootstrap ≤5 MiB, raw initial art ≤20 MiB desktop/≤10 MiB mobile, and additional inspection art ≤40 MiB. See [Medic workflow](docs/medic-art-workflow.md).
 
 ## Module ownership
 
@@ -50,7 +50,8 @@ To export the saved character, install Blender 5.2 and run `npm run assets:build
 - [Phase 1 validation](docs/phase-1-validation.md)
 - [Visual milestone validation](docs/visual-milestone-validation.md)
 - [Visual comparisons](docs/visual-comparison.md)
-- [Cinematic rebuild validation](docs/qa/iona-rebuild/validation.md)
+- [Medic validation and measured performance](docs/qa/medic/validation.md)
+- [Medic source/browser comparison gallery](docs/qa/medic/comparison.html)
 - [Model policy and engineering instructions](AGENTS.md)
 - [Original user brief](master-game-brief.md)
 
