@@ -3,7 +3,8 @@ import { QUALITY_NAMES, type QualityName } from '../performance/quality';
 import type { Preferences } from '../platform/settings';
 import { MEDIC, type CharacterClip } from '../world/character-definition';
 import type { CameraView, PreviewClip, InspectionView, InspectionLighting, InspectionState } from '../world/presentation';
-import type { PlayerState } from '../player/player-simulation';
+import type { WeaponPickup } from '../player/weapon-pickup';
+import type { PlayerSimulation, PlayerState } from '../player/player-simulation';
 import type { EncounterSimulation } from '../enemies/encounter-simulation';
 
 export class Interface {
@@ -52,8 +53,8 @@ export class Interface {
           <span id="inspection-status" role="status"></span>
         </section>
         <div id="controls-hint" class="controls-hint" hidden><span>W A S D <small>move the light</small></span><span>SPACE / CLICK <small>release pressure</small></span><span>ESC <small>settings</small></span></div>
-        <section id="player-hud" class="player-hud" aria-label="Player status" hidden><label for="health">MEDIC <span id="health-value">100 / 100</span></label><progress id="health" max="100" value="100" aria-label="Medic health"></progress><label for="pressure">PRESSURE <span id="pressure-value">100 / 100</span></label><progress id="pressure" max="100" value="100" aria-label="Ward pressure"></progress><p id="player-message" role="status">Chain three light hits, then use heavy to break posture.</p><p id="combat-score">HITS 0 · CRITICALS 0 · BLOCKS 0</p><button id="reset-targets">Reset targets</button><button id="restart-player" hidden>Return to the intake</button></section>
-        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button><button id="heavy" aria-label="Heavy attack">HEAVY</button><button id="ward" aria-label="Ward">WARD</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
+        <section id="player-hud" class="player-hud" aria-label="Player status" hidden><label for="health">MEDIC <span id="health-value">100 / 100</span></label><progress id="health" max="100" value="100" aria-label="Medic health"></progress><label for="pressure">PRESSURE <span id="pressure-value">100 / 100</span></label><progress id="pressure" max="100" value="100" aria-label="Ward pressure"></progress><p id="player-message" role="status">Chain three light hits, then use heavy to break posture.</p><p id="equipped-weapon">Unarmed</p><p id="pickup-status" role="status"></p><p id="combat-score">HITS 0 · CRITICALS 0 · BLOCKS 0</p><button id="reset-targets">Reset targets</button><button id="restart-player" hidden>Return to the intake</button></section>
+        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><button id="pickup" class="pickup-button" aria-label="Pick up steel baton" hidden>Pick up</button><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button><button id="heavy" aria-label="Heavy attack">HEAVY</button><button id="ward" aria-label="Ward">WARD</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
         <div class="session-tag"><span class="status-dot"></span><span id="session-status">INTAKE CLOSED</span></div>
         <section id="rotate" class="rotate-panel" hidden><span aria-hidden="true">↻</span><h2>Turn toward the Works</h2><p>Rotate your phone to landscape to continue.</p></section>
         <section id="error" class="error-panel" hidden role="alert"><p class="eyebrow">CONNECTION INTERRUPTED</p><h2>The Works are silent.</h2><p id="error-detail"></p><button id="retry" class="primary-button">TRY AGAIN <span aria-hidden="true">↗</span></button><button id="compatibility" class="text-button">Use compatibility graphics</button></section>
@@ -175,6 +176,13 @@ export class Interface {
     this.canvas.dataset.playerPosition = `${state.position.x.toFixed(3)},${state.position.y.toFixed(3)},${state.position.z.toFixed(3)}`;
     this.canvas.dataset.playerAction = state.action;
     this.canvas.dataset.combatHits = String(state.targetHits); this.canvas.dataset.combatCriticals = String(state.criticals); this.canvas.dataset.combatStrikes = String(state.strikes); this.canvas.dataset.combatBlocks = String(state.blocks);
+  }
+  weapon(player:PlayerSimulation,pickup:WeaponPickup):void {
+    const armed=player.state.weapon==='baton',eligible=player.canPickupBaton();
+    this.get('#equipped-weapon').textContent=armed?'Steel baton':'Unarmed';
+    this.get('#pickup-status').textContent=armed?'':pickup.status==='loading'||pickup.status==='ready'?'Preparing steel baton…':pickup.status==='failed'&&eligible?'Pickup failed · F to retry':eligible?'F — Pick up steel baton':'';
+    const button=this.get<HTMLButtonElement>('#pickup');button.hidden=armed||!eligible;button.disabled=pickup.status==='loading'||pickup.status==='ready';button.textContent=pickup.status==='failed'?'Retry pickup':button.disabled?'Loading…':'Pick up';
+    this.root.dataset.weapon=player.state.weapon;this.root.dataset.pickup=pickup.status;this.canvas.dataset.weapon=player.state.weapon;
   }
   animationChoices(clips: readonly CharacterClip[]): void {
     const select = this.get<HTMLSelectElement>('#animation');

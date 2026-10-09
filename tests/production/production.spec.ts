@@ -30,3 +30,11 @@ test('production loads the enemy only on selection and completes a real encounte
   const driver=exerciseEncounter(page,()=>running,totals);await expect.poll(()=>totals.victories,{timeout:60000,intervals:[100]}).toBeGreaterThan(0);running=false;await driver;
   await page.locator('#encounter-return').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');expect(errors).toEqual([]);
 });
+
+test('production requests armed clips only on pickup and retains the baton through encounter and inspection',async({page})=>{
+  const requests:string[]=[],errors:string[]=[];page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();expect(requests.some(r=>r.includes('/weapons/baton/animations.glb'))).toBe(false);
+  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');expect(requests.some(r=>r.includes('/weapons/baton/animations.glb'))).toBe(true);
+  await page.locator('#inspection-toggle').click();await expect(page.locator('#app')).toHaveAttribute('data-inspection','active');await expect(page.locator('#animation')).toHaveValue('clip:Baton_Idle');await page.locator('#inspection-toggle').click();
+  await page.locator('#encounter-start').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');await page.locator('#encounter-restart').click();await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');await page.locator('#encounter-return').click();await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');expect(errors).toEqual([]);expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');
+});

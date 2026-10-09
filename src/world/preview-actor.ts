@@ -1,4 +1,4 @@
-import { AnimationMixer, Group, LoopOnce, LoopRepeat, Mesh, Vector3, type AnimationAction } from 'three/webgpu';
+import { AnimationMixer, Group, LoopOnce, LoopRepeat, Mesh, Vector3, type AnimationAction, type AnimationClip } from 'three/webgpu';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { PreviewClip } from './presentation';
 import { MEDIC, type CharacterClip, type CharacterDefinition } from './character-definition';
@@ -13,6 +13,7 @@ export class PreviewActor {
   private mixer: AnimationMixer | null = null;
   private root: GLTF['scene'] | null = null;
   private readonly actions = new Map<string, AnimationAction>();
+  private preferredIdle = '';
   constructor(readonly definition: CharacterDefinition = MEDIC) {}
   attach(gltf: Pick<GLTF, 'scene' | 'animations'>): void {
     this.root = gltf.scene; this.group.add(gltf.scene);
@@ -30,8 +31,17 @@ export class PreviewActor {
     this.mixer.addEventListener('finished', this.finished); this.selectClip(this.defaultClip()); this.update(0);
   }
   private defaultClip(): PreviewClip {
-    const idle = this.clips.find((clip) => /idle/i.test(clip.name));
+    const idle = this.clips.find((clip) => clip.name===this.preferredIdle) ?? this.clips.find((clip) => /idle/i.test(clip.name));
     return idle ? { kind: 'clip', name: idle.name } : { kind: 'pose' };
+  }
+  addClips(clips: readonly AnimationClip[], idle = ''): void {
+    if (!this.mixer) throw new Error('Actor must be loaded before adding clips.');
+    for (const clip of clips) {
+      if (this.actions.has(clip.name)) continue;
+      this.actions.set(clip.name,this.mixer.clipAction(clip));
+      this.clips.push({name:clip.name,loop:/_(Idle|Walk|Run)$/.test(clip.name)});
+    }
+    if (idle && this.actions.has(idle)) this.preferredIdle=idle;
   }
   private readonly finished = (event: { action: AnimationAction }) => {
     // A fading previous clip may finish after another clip was selected. Only

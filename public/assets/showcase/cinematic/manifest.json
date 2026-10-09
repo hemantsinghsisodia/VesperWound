@@ -8,6 +8,10 @@
     "animations": {
       "kind": "model",
       "url": "../shared/animations.glb"
+    },
+    "baton": {
+      "kind": "model",
+      "url": "../../weapons/baton/baton.glb"
     }
   }
 }

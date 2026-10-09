@@ -41,7 +41,8 @@ const position = n => new Vector3().setFromMatrixPosition(new Matrix4().fromArra
 const sourceHips = sourceNodes.get('pelvis'); const hips = targetBones.find(n => n.getName() === 'Hips');
 const ratio = position(hips).y / position(sourceHips).y;
 const combatAddition = process.argv.includes('--combat');
-const selected = combatAddition ? ['Punch_Jab', 'Spell_Simple_Shoot'] : ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01'];
+const batonAddition = process.argv.includes('--baton');
+const selected = batonAddition ? ['Sword_Idle', 'Sword_Attack'] : combatAddition ? ['Punch_Jab', 'Spell_Simple_Shoot'] : ['Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Cross', 'Roll', 'Hit_Chest', 'Death01'];
 const rows = [];
 for (const name of selected) {
   const original = source.getRoot().listAnimations().find(a => a.getName() === name);
@@ -98,7 +99,7 @@ for (const name of selected) {
   rows.push({ name, duration, fps: 30, channels: animation.listChannels().length });
   for (const [n, tr] of originalTransforms) n.setTranslation(tr.t).setRotation(tr.r).setScale(tr.s);
 }
-await mkdir('art/source/medic', { recursive: true }); await io.write(`art/source/medic/${combatAddition ? 'combat-' : ''}animations.glb`, output);
+await mkdir('art/source/medic', { recursive: true }); await io.write(`art/source/medic/${batonAddition ? 'baton-' : combatAddition ? 'combat-' : ''}animations.glb`, output);
 const originalNodes = new Map([...exportNodes].map(([original, exported]) => [exported, original]));
 const targetBuffer = target.getRoot().listBuffers()[0];
 for (const clip of output.getRoot().listAnimations()) {
@@ -110,8 +111,10 @@ for (const clip of output.getRoot().listAnimations()) {
     saved.addChannel(target.createAnimationChannel().setTargetNode(originalNodes.get(channel.getTargetNode())).setTargetPath(channel.getTargetPath()).setSampler(copied));
   }
 }
-await io.write(`art/source/medic/${combatAddition ? 'combat-character' : 'player-character'}.glb`, target);
-if (combatAddition) {
+await io.write(`art/source/medic/${batonAddition ? 'baton-character' : combatAddition ? 'combat-character' : 'player-character'}.glb`, target);
+if (batonAddition) {
+  console.log(`Baton starting clips retargeted: ${rows.map(r => r.name).join(', ')}`);
+} else if (combatAddition) {
   const record = JSON.parse(await readFile('art/animation-provenance.json', 'utf8'));
   record.clips = [...record.clips.filter(c => !selected.includes(c.name)), ...rows];
   record.modifications = [...new Set([...record.modifications, 'Phase 3 adds licensed jab and Ward clips; original seven authored actions retained'])];

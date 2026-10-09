@@ -1,0 +1,22 @@
+{
+  "graphics": [
+    {
+      "Name": "Intel(R) UHD Graphics",
+      "DriverVersion": "32.0.101.6078"
+    },
+    {
+      "Name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+      "DriverVersion": "32.0.16.1714"
+    }
+  ],
+  "os": {
+    "Caption": "Microsoft Windows 11 Home Single Language",
+    "BuildNumber": "26200"
+  },
+  "measuredAt": "2026-10-09T14:16:31.4440298Z",
+  "cpu": [
+    {
+      "Name": "13th Gen Intel(R) Core(TM) i7-13620H"
+    }
+  ]
+}

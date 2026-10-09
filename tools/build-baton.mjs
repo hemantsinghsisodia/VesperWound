@@ -1,0 +1,33 @@
+import { spawn } from 'node:child_process';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { NodeIO } from '@gltf-transform/core';
+import { ALL_EXTENSIONS } from '@gltf-transform/extensions';
+import { prune, resample, meshopt, dedup } from '@gltf-transform/functions';
+import { MeshoptEncoder, MeshoptDecoder } from 'meshoptimizer';
+const blender=process.env.BLENDER_PATH??'C:/Program Files/Blender Foundation/Blender 5.2/blender.exe';
+const masters=['art/source/steel-baton.blend','art/source/medic-baton-animations.blend'];
+const hash=async p=>createHash('sha256').update(await readFile(p)).digest('hex');
+const before=await Promise.all(masters.map(hash));
+const environment={...process.env};delete environment.SSLKEYLOGFILE;
+await new Promise((resolve,reject)=>{let output='';const child=spawn(blender,['-b','--factory-startup','--disable-autoexec','--python','tools/blender/export_baton.py'],{env:environment,windowsHide:true,stdio:['ignore','pipe','inherit']});child.stdout.on('data',b=>{output+=b;process.stdout.write(b);});child.on('error',reject);child.on('exit',code=>code===0&&output.includes('BATON_EXPORT_COMPLETE')?resolve():reject(new Error('Baton export failed')));});
+for(let i=0;i<masters.length;i++)if(await hash(masters[i])!==before[i])throw new Error('Export modified an authored master');
+const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder':MeshoptEncoder,'meshopt.decoder':MeshoptDecoder});
+const model=await io.read('art/source/baton/baton.glb');
+await model.transform(dedup(),prune(),meshopt({encoder:MeshoptEncoder,level:'high'}));
+await mkdir('public/assets/weapons/baton',{recursive:true});await io.write('public/assets/weapons/baton/baton.glb',model);
+const animations=await io.read('art/source/baton/animations.glb');
+for(const clip of animations.getRoot().listAnimations())for(const channel of clip.listChannels())if(channel.getTargetPath()!=='rotation'&&!(channel.getTargetPath()==='translation'&&channel.getTargetNode().getName()==='Hips'))channel.dispose();
+for(const node of animations.getRoot().listNodes()){node.setMesh(null);node.setSkin(null);}
+for(const mesh of animations.getRoot().listMeshes())mesh.dispose();for(const skin of animations.getRoot().listSkins())skin.dispose();
+await animations.transform(prune({keepLeaves:true}),resample({tolerance:.001}),meshopt({encoder:MeshoptEncoder,level:'high'}));
+await io.write('public/assets/weapons/baton/animations.glb',animations);
+const modelBytes=(await readFile('public/assets/weapons/baton/baton.glb')).length,animationBytes=(await readFile('public/assets/weapons/baton/animations.glb')).length;
+if(modelBytes>32768||animationBytes>524288)throw new Error('Baton payload exceeds its approved ceiling');
+const library=JSON.parse(await readFile('art/animation-provenance.json','utf8'));
+const record={title:'Steel baton and Medic armed actions',authorship:'Original VESPERWOUND weapon model and animation edits; project-owner work',date:new Date().toISOString().slice(0,10),sources:masters.map((path,i)=>({path,sha256:before[i]})),animationSource:{author:library.author,contributors:library.contributors,source:library.source,license:library.license,licenseUrl:library.licenseUrl,acquired:library.acquired,archiveSha256:library.archiveSha256,archive:'art/imports/animations/universal-animation-library-standard.zip',sourceClips:['Sword_Idle','Sword_Attack','Walk_Loop','Jog_Fwd_Loop','Roll','Spell_Simple_Shoot','Hit_Chest','Death01']},modifications:['Retarget to accepted Medic rig','Offline arm IK and authored forehand/backhand/finisher/overhead paths','Baked closed right-hand fingers and retained vertical hip motion','Separate armed actions; existing unarmed master retained','Read-only saved-source export with Meshopt'],clips:animations.getRoot().listAnimations().map(a=>a.getName()),modelBytes,animationBytes,runtimeHashes:{model:await hash('public/assets/weapons/baton/baton.glb'),animations:await hash('public/assets/weapons/baton/animations.glb')}};
+await writeFile('art/baton-provenance.json',JSON.stringify(record,null,2));
+await writeFile('public/assets/licenses/baton-provenance.json',JSON.stringify(record,null,2));
+await writeFile('public/assets/weapons/baton/manifest.json',JSON.stringify({version:1,assets:{animations:{kind:'model',url:'animations.glb'}}},null,2));
+for(const tier of ['desktop','mobile','cinematic']){const path=`public/assets/showcase/${tier}/manifest.json`,m=JSON.parse(await readFile(path,'utf8'));m.assets.baton={kind:'model',url:'../../weapons/baton/baton.glb'};await writeFile(path,JSON.stringify(m,null,2));}
+console.log(`Baton ${modelBytes} bytes; armed animations ${animationBytes} bytes`);

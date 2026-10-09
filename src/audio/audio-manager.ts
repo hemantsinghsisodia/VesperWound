@@ -88,8 +88,9 @@ export class AudioManager {
     if (!context || !bus || context.state !== 'running' || this.sources.size >= 22) return;
     if (!['swing', 'hit', 'block', 'ward', 'damage', 'vent-warning', 'vent-pulse', 'enemy-warning'].includes(event.type)) return;
     const hit = event.type === 'hit'; const swing = event.type === 'swing';
-    const heavy = (hit || swing) && event.attack === 'heavy';
-    const frequency = event.type === 'enemy-warning' ? 330 : event.type === 'block' ? 850 : event.type === 'ward' ? 420 : event.type === 'vent-warning' ? 660 : heavy ? 75 : hit ? 120 : swing ? 220 : 55;
+    const heavy = (hit || swing) && (event.attack === 'heavy' || event.attack === 'baton-heavy');
+    const baton=(hit||swing)&&event.attack.startsWith('baton-');
+    const frequency = baton&&hit ? heavy?105:170 : baton&&swing ? 290 : event.type === 'enemy-warning' ? 330 : event.type === 'block' ? 850 : event.type === 'ward' ? 420 : event.type === 'vent-warning' ? 660 : heavy ? 75 : hit ? 120 : swing ? 220 : 55;
     const duration = swing ? .12 : event.type === 'ward' ? .3 : .18;
     const oscillator = context.createOscillator(); const gain = context.createGain();
     oscillator.type = event.type === 'block' || event.type === 'ward' || event.type === 'vent-warning' ? 'sine' : 'triangle';
@@ -107,7 +108,7 @@ export class AudioManager {
         for (let i = 0; i < data.length; i++) { seed = (seed * 1664525 + 1013904223) >>> 0; data[i] = seed / 2147483648 - 1; }
       }
       const source = context.createBufferSource(); source.buffer = this.noise;
-      const filter = context.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = swing ? 1800 : heavy ? 650 : 1000;
+      const filter = context.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = baton ? swing?2800:2000 : swing ? 1800 : heavy ? 650 : 1000;
       const envelope = context.createGain(); envelope.gain.setValueAtTime(swing ? .035 : hit && event.critical ? .1 : .065, context.currentTime); envelope.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration);
       source.connect(filter); filter.connect(envelope); envelope.connect(bus); this.sources.add(source);
       source.onended = () => { this.sources.delete(source); source.disconnect(); filter.disconnect(); envelope.disconnect(); };

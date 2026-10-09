@@ -41,7 +41,7 @@ export class CombatPresentation {
     if (event.type === 'hit') {
       const index = this.player.targets.findIndex(t => t.id === event.target);
       if (index >= 0) { const target = this.targets[index]!; target.flash = reduced ? 0 : .16; if (event.critical) { target.critical = 1; target.damage = event.damage; } }
-      if (!reduced) for (let i = 0; i < (event.critical ? 12 : event.attack === 'heavy' ? 8 : 4); i++) {
+      if (!reduced) for (let i = 0; i < (event.critical ? 12 : event.attack === 'heavy' || event.attack === 'baton-heavy' ? 8 : 4); i++) {
         const p = this.pool[this.cursor++ % this.pool.length]!; const a = i * 2.4;
         Object.assign(p, { life: .25, x: event.position.x, y: event.position.y + 1.15, z: event.position.z, vx: Math.sin(a) * 1.8, vy: 1 + (i % 3) * .3, vz: Math.cos(a) * 1.8 });
       }

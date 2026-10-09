@@ -24,3 +24,5 @@ if (createHash('sha256').update(await readFile('art/source/medic-player-animatio
 await run(process.execPath, ['tools/optimize-player-animations.mjs']);
 await run(process.execPath, ['tools/record-provenance.mjs']);
 await run(process.execPath, ['tools/build-enemy.mjs']);
+
+await run(process.execPath, ['tools/build-baton.mjs']);

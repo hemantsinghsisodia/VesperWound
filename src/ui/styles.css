@@ -33,3 +33,7 @@
 .encounter-controls{display:flex;flex-wrap:wrap;gap:6px;max-width:240px}.encounter-controls button{min-height:44px;padding:8px 10px;font:10px Arial,sans-serif}.encounter-controls span{max-width:220px;font:10px/1.4 Arial,sans-serif;color:#d2b68b}#app[data-scene=foundation] .encounter-controls{display:none}
 @media(pointer:coarse),(max-height:550px){.encounter-controls{max-width:220px}.encounter-controls button{font-size:9px;padding:6px 9px}}
 @media(pointer:coarse),(max-height:550px){.player-hud{width:220px}.player-hud p{margin:5px 0}#app[data-mode=player] .location{display:none}.player-hud #reset-targets{min-height:44px;padding:6px 10px}#app[data-mode=player] .session-tag{left:calc(50% - 68px);bottom:12px}}
+
+.pickup-button { position:absolute;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translateX(-50%) scale(var(--ui-scale));transform-origin:bottom center;min-height:44px;padding:.7rem 1rem;background:#20332f;border:1px solid #a1b4a4;color:#e7e3d4;pointer-events:auto; }
+#pickup-status {color:#d8c28b;} #equipped-weapon {color:#c9d5cc;margin:.3rem 0;}
+@media (pointer:fine) { .pickup-button { display:none; } }

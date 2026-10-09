@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-09T14:22:06.577Z",
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "build": "production",
+  "mode": "cinematic",
+  "method": "External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.",
+  "renderingUncapped": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "exercise": "Looped equipped Baton_Idle skeletal animation",
+  "totals": {
+    "encounters": 0,
+    "victories": 0,
+    "hits": 0,
+    "criticals": 0,
+    "blocks": 0,
+    "strikes": 0
+  },
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererAllocation": {
+      "estimatedBytes": 73175865,
+      "textures": 65
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.019,
+      "frames": 12595,
+      "fps": 419.60976292048423,
+      "p95FrameMs": 3.1000000000058208,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 60.0365,
+      "frames": 25014,
+      "fps": 410.6682484999196,
+      "p95FrameMs": 3.3000000000029104,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 90.055,
+      "frames": 37505,
+      "fps": 411.5696810334972,
+      "p95FrameMs": 3.3000000000174623,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 120.078,
+      "frames": 49916,
+      "fps": 408.5245455164426,
+      "p95FrameMs": 3.6000000000058208,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 150.099,
+      "frames": 62130,
+      "fps": 407.0096099491238,
+      "p95FrameMs": 3.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 180.12440000003576,
+      "frames": 74867,
+      "fps": 425.0094446543245,
+      "p95FrameMs": 2.8999999999941792,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 210.13790000003576,
+      "frames": 87535,
+      "fps": 436.58589827548633,
+      "p95FrameMs": 2.7000000000116415,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 240.157,
+      "frames": 100262,
+      "fps": 424.6484854204032,
+      "p95FrameMs": 2.900000000023283,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 270.173,
+      "frames": 113014,
+      "fps": 422.8131166024663,
+      "p95FrameMs": 3,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    },
+    {
+      "elapsedSeconds": 300.19260000002384,
+      "frames": 125786,
+      "fps": 427.4722143060713,
+      "p95FrameMs": 2.800000000046566,
+      "visible": "visible",
+      "estimatedRendererBytes": 73175865,
+      "rendererTextures": 65,
+      "exercise": {
+        "encounters": 0,
+        "victories": 0,
+        "hits": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "strikes": 0
+      }
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 300.24010000002386,
+    "frameCount": 125790,
+    "fps": 419.02135080173133,
+    "p95FrameMs": 3.2000000000116415,
+    "maxFrameMs": 15.89999999999418,
+    "intervalsOver50Ms": 0,
+    "intervalsOver100Ms": 0
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

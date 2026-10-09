@@ -4,17 +4,18 @@ import {
   Sprite, SpriteMaterial, CanvasTexture,
   PlaneGeometry, MeshStandardNodeMaterial,
   PMREMGenerator, type BufferGeometry, type RenderTarget, type WebGPURenderer,
-  type Texture, type Material,
+  type Texture, type Material, type AnimationClip,
 } from 'three/webgpu';
 import type { AssetManager } from '../assets/asset-manager';
 import type { InputFrame } from '../core/input-frame';
 import type { QualityProfile } from '../performance/quality';
 import type { ArtVariant, PreviewClip, WorldPresentation } from './presentation';
+import { BatonPresentation } from './baton-presentation';
 import { PreviewActor } from './preview-actor';
 import { MEDIC } from './character-definition';
 import { PLAYER_CLIP_DESCRIPTORS, PLAYER_CLIPS, PLAYER_CLIP_RATES, attackPlaybackRate } from '../player/player-animation';
 import { type PlayerSimulation } from '../player/player-simulation';
-import { ATTACKS, type CombatEvent } from '../player/combat-definitions';
+import { type CombatEvent } from '../player/combat-definitions';
 import { CombatPresentation } from './combat-presentation';
 import type { EnemyPresentation } from './enemy-presentation';
 
@@ -40,6 +41,8 @@ export class VisualShowcase implements WorldPresentation {
   aim: { x: number; z: number } | undefined;
   private readonly combat: CombatPresentation;
   private animationSequence = -1;
+  baton: BatonPresentation | null = null;
+  equipBaton(clips: readonly AnimationClip[]): void { this.baton?.equip(clips); }
   private enemy: EnemyPresentation | null = null;
   setEnemy(view: EnemyPresentation | null): void { this.enemy?.dispose(); if (this.enemy) this.scene.remove(this.enemy.group); this.enemy = view; if (view) this.scene.add(view.group); }
 
@@ -57,7 +60,7 @@ export class VisualShowcase implements WorldPresentation {
     this.scene.add(this.key, this.key.target, new HemisphereLight(0xa5c5d6, 0x444235, 2), this.engine, this.gate);
   }
   async load(assets: AssetManager, missingFixture: boolean): Promise<void> {
-    const loaded = await Promise.allSettled([assets.model(missingFixture ? 'missing-character' : 'character'), assets.model('courtyard'), assets.model('animations')]);
+    const loaded = await Promise.allSettled([assets.model(missingFixture ? 'missing-character' : 'character'), assets.model('courtyard'), assets.model('animations'), assets.model('baton')]);
     for (const result of loaded) if (result.status === 'fulfilled') {
       if (this.disposed) result.value.release(); else this.handles.push(result.value);
     }
@@ -69,6 +72,7 @@ export class VisualShowcase implements WorldPresentation {
     this.reflectionEnvironment(assets.renderer);
     const animations = loaded[2]; if (animations?.status !== 'fulfilled') throw new Error('The player animations are incomplete.');
     this.preview.attach({ scene: hero.value.value.scene, animations: animations.value.value.animations }); this.scene.add(court.value.value.scene);
+    const baton=loaded[3];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.preview,baton.value.value);this.scene.add(this.baton.ground);
     this.scene.traverse((object) => {
       if (object instanceof Mesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = !('isSkinnedMesh' in object); }
     });
@@ -92,6 +96,7 @@ export class VisualShowcase implements WorldPresentation {
   update(dt: number, input: InputFrame, reducedMotion: boolean): boolean {
     void input;
     if (this.playing) this.applyPlayer(1);
+    this.baton?.update(this.player.state.weapon==='baton');
     this.time += dt; this.preview.update(dt);
     if (this.playing) this.combat.update(dt, reducedMotion);
     this.enemy?.update(dt, reducedMotion);
@@ -113,9 +118,9 @@ export class VisualShowcase implements WorldPresentation {
     this.target.set(s.previous.x + (s.position.x - s.previous.x) * alpha, s.previous.y + (s.position.y - s.previous.y) * alpha, s.previous.z + (s.position.z - s.previous.z) * alpha);
     this.actor.position.copy(this.target); this.actor.rotation.y = s.facing;
     this.preview.controlled = true;
-    const name = s.attack ? ATTACKS[s.attack].clip : PLAYER_CLIPS[s.action];
+    const name = s.attack ? this.player.attackDefinition(s.attack).clip : s.weapon==='baton' && s.action!=='attack' && s.action!=='heavy' ? this.player.style.animations[s.action] : PLAYER_CLIPS[s.action];
     if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) { this.preview.selectClip({ kind: 'clip', name }); this.animationSequence = s.actionSequence; }
-    this.preview.playbackRate(s.attack ? attackPlaybackRate(ATTACKS[s.attack], s.actionTime, this.preview.duration(name)) : s.action === 'ward' ? this.preview.duration(name) / .8 : PLAYER_CLIP_RATES[s.action]);
+    this.preview.playbackRate(s.attack ? attackPlaybackRate(this.player.attackDefinition(s.attack), s.actionTime, this.preview.duration(name)) : s.action === 'ward' ? this.preview.duration(name) / .8 : PLAYER_CLIP_RATES[s.action]);
   }
   private reflectionEnvironment(renderer: WebGPURenderer): void {
     const faces = Array.from({ length: 6 }, (_, index) => {
@@ -154,10 +159,10 @@ export class VisualShowcase implements WorldPresentation {
       this.steam.push(puff); this.scene.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.enemy?.ownedResources ?? 0); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton ? 2 : 0) + (this.enemy?.ownedResources ?? 0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
-    this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;
+    this.baton?.dispose(); this.baton=null; this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;
     this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;
     for (const geometry of this.geometries) geometry.dispose();

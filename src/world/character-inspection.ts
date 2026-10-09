@@ -1,8 +1,9 @@
-import { Scene, Color, PerspectiveCamera, DirectionalLight, HemisphereLight, Mesh, PlaneGeometry, MeshStandardNodeMaterial, Vector3, CubeTexture, SRGBColorSpace, PMREMGenerator, type RenderTarget } from 'three/webgpu';
+import { Scene, Color, PerspectiveCamera, DirectionalLight, HemisphereLight, Mesh, PlaneGeometry, MeshStandardNodeMaterial, Vector3, CubeTexture, SRGBColorSpace, PMREMGenerator, type RenderTarget, type AnimationClip } from 'three/webgpu';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import type { AssetManager } from '../assets/asset-manager';
 import type { QualityProfile } from '../performance/quality';
 import type { InspectionLighting, InspectionView, WorldPresentation } from './presentation';
+import { BatonPresentation } from './baton-presentation';
 import { PreviewActor } from './preview-actor';
 import { MEDIC, type CharacterDefinition } from './character-definition';
 import { PLAYER_CLIP_DESCRIPTORS } from '../player/player-animation';
@@ -24,6 +25,8 @@ export class CharacterInspection implements WorldPresentation {
   private reflection: RenderTarget | null = null;
   private readonly handles: Array<{ release(): void }> = [];
   private disposed = false;
+  private baton: BatonPresentation | null=null;
+  equipBaton(clips:readonly AnimationClip[]):void { this.baton?.equip(clips);this.actor.selectClip({kind:'clip',name:'Baton_Idle'}); }
   constructor(canvas: HTMLCanvasElement, private readonly definition: CharacterDefinition = { ...MEDIC, clips: PLAYER_CLIP_DESCRIPTORS }) {
     this.actor = new PreviewActor(definition);
     this.scene.background = new Color(0x30363a);
@@ -39,7 +42,7 @@ export class CharacterInspection implements WorldPresentation {
     this.selectView('full-body');
   }
   async load(assets: AssetManager): Promise<void> {
-    const loaded = await Promise.allSettled([assets.model('character'), assets.model('animations')]);
+    const loaded = await Promise.allSettled([assets.model('character'), assets.model('animations'), assets.model('baton')]);
     for (const result of loaded) if (result.status === 'fulfilled') { if (this.disposed) result.value.release(); else this.handles.push(result.value); }
     if (this.disposed) throw new Error('Inspection was cancelled.');
     const character = loaded[0]; const animations = loaded[1];
@@ -47,6 +50,7 @@ export class CharacterInspection implements WorldPresentation {
     if (failed?.status === 'rejected') throw failed.reason;
     if (character?.status !== 'fulfilled' || animations?.status !== 'fulfilled') throw new Error('Inspection is incomplete.');
     this.actor.attach({ scene: character.value.value.scene, animations: animations.value.value.animations });
+    const baton=loaded[2];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.actor,baton.value.value,true);
     // A soft, owned reflection field makes the imported materials readable.
     const faces = Array.from({ length: 6 }, () => {
       const canvas = document.createElement('canvas'); canvas.width = canvas.height = 32;
@@ -65,6 +69,7 @@ export class CharacterInspection implements WorldPresentation {
   selectView(view: InspectionView): void {
     this.view = view;
     const setups = this.definition.cameras[view];
+    if(view==='equipment'&&this.baton?.equipped){this.actor.update(0);const point=this.baton.inspection();this.controls.target.fromArray(point);this.camera.position.set(point[0]!-.65,point[1]!+.1,point[2]!+.8);this.controls.minDistance=.35;this.controls.maxDistance=2;this.controls.update();return;}
     this.controls.target.fromArray(setups.target); this.camera.position.fromArray(setups.position);
     this.controls.minDistance = setups.near; this.controls.maxDistance = setups.far; this.controls.update();
   }
@@ -85,10 +90,10 @@ export class CharacterInspection implements WorldPresentation {
     this.controls.update(); return false;
   }
   interpolate(): void { /* Skeletal previews are in place. */ }
-  get ownedResources(): number { return 4; }
+  get ownedResources(): number { return 4 + (this.baton?2:0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
-    this.controls.dispose(); this.actor.dispose(); this.scene.clear(); this.scene.environment = null;
+    this.controls.dispose(); this.baton?.dispose();this.baton=null; this.actor.dispose(); this.scene.clear(); this.scene.environment = null;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;
     this.reflection?.dispose(); this.reflection = null;
     this.floor.geometry.dispose(); this.floor.material.dispose();

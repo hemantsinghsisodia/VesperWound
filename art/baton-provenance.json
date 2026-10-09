@@ -1,0 +1,63 @@
+{
+  "title": "Steel baton and Medic armed actions",
+  "authorship": "Original VESPERWOUND weapon model and animation edits; project-owner work",
+  "date": "2026-10-09",
+  "sources": [
+    {
+      "path": "art/source/steel-baton.blend",
+      "sha256": "84f69c5cefd385642762fbf641e6cb3f995681d84cd17cdbc1f2445be6486286"
+    },
+    {
+      "path": "art/source/medic-baton-animations.blend",
+      "sha256": "4627bec2e2880da3319245dc2a8d148737a3075ddc733c922f252f3ce0c4c57e"
+    }
+  ],
+  "animationSource": {
+    "author": "Quaternius",
+    "contributors": [
+      "Gonzalo Furnier"
+    ],
+    "source": "https://quaternius.itch.io/universal-animation-library",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "acquired": "2026-10-06",
+    "archiveSha256": "cc73fc4e495b82958207316596317a3f40b9fa38065bde1027937452da537724",
+    "archive": "art/imports/animations/universal-animation-library-standard.zip",
+    "sourceClips": [
+      "Sword_Idle",
+      "Sword_Attack",
+      "Walk_Loop",
+      "Jog_Fwd_Loop",
+      "Roll",
+      "Spell_Simple_Shoot",
+      "Hit_Chest",
+      "Death01"
+    ]
+  },
+  "modifications": [
+    "Retarget to accepted Medic rig",
+    "Offline arm IK and authored forehand/backhand/finisher/overhead paths",
+    "Baked closed right-hand fingers and retained vertical hip motion",
+    "Separate armed actions; existing unarmed master retained",
+    "Read-only saved-source export with Meshopt"
+  ],
+  "clips": [
+    "Baton_Idle",
+    "Baton_Walk",
+    "Baton_Run",
+    "Baton_Dodge",
+    "Baton_Ward",
+    "Baton_Hit",
+    "Baton_Death",
+    "Baton_Light1",
+    "Baton_Light2",
+    "Baton_Light3",
+    "Baton_Heavy"
+  ],
+  "modelBytes": 9252,
+  "animationBytes": 427552,
+  "runtimeHashes": {
+    "model": "49abe8fd14bf2eb9636ccb664a9d4d449eca7edfb271c6386500008a8cd9f6c7",
+    "animations": "e9a77b188522f8dc97bba4c3ecb5bcadf28c6c0a81e5ab755e54fd617b00e07a"
+  }
+}

@@ -1,5 +1,7 @@
 import type { InputFrame } from '../core/input-frame';
-import { ATTACKS, UNARMED, TRAINING_TARGETS, attackTouches, type AttackId, type CombatEvent, type CombatEventPayload, type EntityHandle, type CombatantState, type CombatStyleDefinition, type Position } from './combat-definitions';
+import { UNARMED, TRAINING_TARGETS, attackTouches, type AttackId, type CombatEvent, type CombatEventPayload, type EntityHandle, type CombatantState, type CombatStyleDefinition, type Position, type WeaponId } from './combat-definitions';
+import { BATON, BATON_PICKUP } from './weapon-definitions';
+import { weaponTouches } from './weapon-contact';
 export type { Position } from './combat-definitions';
 export interface PlayerCollision {
   move(position: Position, displacement: Position): { position: Position; grounded: boolean };
@@ -10,7 +12,7 @@ export interface PlayerCollision {
 }
 export type PlayerAction = 'idle' | 'walk' | 'run' | 'attack' | 'heavy' | 'ward' | 'dodge' | 'hit' | 'dead';
 export interface PlayerState {
-  position: Position; previous: Position; facing: number; health: number; pressure: number;
+  weapon: WeaponId; position: Position; previous: Position; facing: number; health: number; pressure: number;
   action: PlayerAction; actionTime: number; actionSequence: number; attack: AttackId | null;
   grounded: boolean; strikes: number; targetHits: number; invulnerable: boolean;
   wardRemaining: number; combo: number; criticals: number; blocks: number; defeats: number;
@@ -22,7 +24,7 @@ export const PRESSURE_VENT: Position = { x: -4.2, y: 0, z: 1.2 };
 const DURATIONS = { dodge: .72, hit: .42, ward: .8 };
 export class PlayerSimulation {
   readonly state: PlayerState = {
-    position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100,
+    weapon: 'unarmed', position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100,
     action: 'idle', actionTime: 0, actionSequence: 0, attack: null, grounded: false,
     strikes: 0, targetHits: 0, invulnerable: false, wardRemaining: 0, combo: 0,
     criticals: 0, blocks: 0, defeats: 0, ventWarning: false, ventRemaining: 2,
@@ -45,7 +47,11 @@ export class PlayerSimulation {
   private readonly events: CombatEvent[] = [];
   private dodgeDirection = { x: 0, z: 1 }; private verticalSpeed = 0;
   private ventAt = 2; private warned = false; private disposed = false;
-  constructor(private readonly collision: PlayerCollision, readonly style: CombatStyleDefinition = UNARMED) { if (!style.light.length) throw new Error('Combat style requires a light chain.'); collision.syncTargets?.(this.targets); }
+  constructor(private readonly collision: PlayerCollision, private readonly baseStyle: CombatStyleDefinition = UNARMED) { if (!baseStyle.light.length) throw new Error('Combat style requires a light chain.'); collision.syncTargets?.(this.targets); }
+  get style(): CombatStyleDefinition { return this.state.weapon === 'baton' ? BATON : this.baseStyle; }
+  attackDefinition(id: AttackId) { const attack = this.style.attacks[id]; if (!attack) throw new Error(`Unknown style attack ${id}`); return attack; }
+  canPickupBaton(): boolean { const s=this.state; return s.weapon==='unarmed' && s.health>0 && ['idle','walk','run'].includes(s.action) && Math.hypot(s.position.x-BATON_PICKUP.x,s.position.y-BATON_PICKUP.y,s.position.z-BATON_PICKUP.z)<=1.25 && !this.collision.blocked?.({...s.position,y:s.position.y+.6},{...BATON_PICKUP,y:BATON_PICKUP.y+.6}); }
+  equipBaton(): boolean { if(!this.canPickupBaton())return false; this.state.weapon='baton'; this.state.combo=0; this.clearQueued(); this.state.actionSequence++; return true; }
   drainEvents(): CombatEvent[] { return this.events.splice(0); }
   nearestTarget(range = 1.8): Position | undefined {
     return this.targets.filter(t => t.health > 0).sort((a, b) => this.distance(a.position) - this.distance(b.position)).find(t => this.distance(t.position) < range)?.position;
@@ -59,7 +65,7 @@ export class PlayerSimulation {
     for (const action of ['attack', 'heavy', 'ward', 'dodge'] as const) if (input.pressed.has(action)) this.queued.set(action, this.clock + this.style.buffer);
     for (const [action, until] of this.queued) if (until < this.clock) this.queued.delete(action);
     s.actionTime += dt; s.wardRemaining = Math.max(0, s.wardRemaining - dt);
-    const attack = s.attack ? ATTACKS[s.attack] : null;
+    const attack = s.attack ? this.attackDefinition(s.attack) : null;
     if (attack && s.actionTime >= attack.duration) { this.chainUntil = this.clock + this.style.chainTimeout; this.action('idle'); }
     else if ((s.action === 'dodge' || s.action === 'hit' || s.action === 'ward') && s.actionTime >= DURATIONS[s.action]) this.action('idle');
     if (this.clock > this.chainUntil && s.action !== 'attack') s.combo = 0;
@@ -68,7 +74,7 @@ export class PlayerSimulation {
     const length = Math.hypot(x, z); if (length > 1) { x /= length; z /= length; }
     const magnitude = Math.min(1, Math.hypot(x, z));
     let free = ['idle', 'walk', 'run'].includes(s.action);
-    const recovery = (s.action === 'attack' || s.action === 'heavy') && s.attack !== null && s.actionTime >= ATTACKS[s.attack].active[1];
+    const recovery = (s.action === 'attack' || s.action === 'heavy') && s.attack !== null && s.actionTime >= this.attackDefinition(s.attack).active[1];
     if ((free || recovery) && this.queued.has('dodge')) {
       this.queued.clear(); s.combo = 0; this.action('dodge');
       this.dodgeDirection = magnitude > .08 ? { x: x / magnitude, z: z / magnitude } : { x: Math.sin(s.facing), z: Math.cos(s.facing) };
@@ -109,10 +115,10 @@ export class PlayerSimulation {
   }
   resolveAttack(): void {
     const s = this.state; if (!s.attack) return;
-    const a = ATTACKS[s.attack]; if (s.actionTime < a.active[0] || s.actionTime >= a.active[1]) return;
+    const a = this.attackDefinition(s.attack); if (s.actionTime < a.active[0] || s.actionTime - 1/60 >= a.active[1]) return;
     for (const t of this.targets) {
       const key = `${t.id}:${t.generation}`;
-      if (t.health <= 0 || this.hitTargets.has(key) || !attackTouches(a, s.position, s.facing, t.position)) continue;
+      if (t.health <= 0 || this.hitTargets.has(key) || !(a.contact ? weaponTouches(a,s.position,s.facing,t.position,s.actionTime,s.actionTime-1/60,this.collision.blocked?.bind(this.collision)) : attackTouches(a, s.position, s.facing, t.position))) continue;
       if (this.collision.blocked?.({ ...s.position, y: s.position.y + 1 }, { ...t.position, y: t.position.y + 1 })) continue;
       this.hitTargets.add(key); const critical = a.kind === 'heavy' && t.exposedUntil > this.clock;
       const damage = a.damage * (critical ? 2 : 1); t.health = Math.max(0, t.health - damage); t.hits++; s.targetHits++;

@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-09T14:16:10.465Z",
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "build": "production",
+  "mode": "encounter",
+  "method": "External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.",
+  "renderingUncapped": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "exercise": "Real-input equipped baton pursuit, heavy swings, Ward, stagger, criticals, defeat and restart",
+  "totals": {
+    "encounters": 55,
+    "victories": 55,
+    "hits": 165,
+    "criticals": 55,
+    "blocks": 105,
+    "strikes": 165
+  },
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererAllocation": {
+      "estimatedBytes": 57320666,
+      "textures": 60
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.025099999964237,
+      "frames": 3598,
+      "fps": 119.3713110949002,
+      "p95FrameMs": 10.900000000001455,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 10,
+        "victories": 10,
+        "hits": 30,
+        "criticals": 10,
+        "blocks": 18,
+        "strikes": 30
+      }
+    },
+    {
+      "elapsedSeconds": 60.05409999996424,
+      "frames": 7182,
+      "fps": 120.55858812497907,
+      "p95FrameMs": 10.599999999991269,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 15,
+        "victories": 15,
+        "hits": 45,
+        "criticals": 15,
+        "blocks": 28,
+        "strikes": 45
+      }
+    },
+    {
+      "elapsedSeconds": 90.07639999997616,
+      "frames": 10760,
+      "fps": 118.53568912039931,
+      "p95FrameMs": 11.80000000000291,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 20,
+        "victories": 20,
+        "hits": 60,
+        "criticals": 20,
+        "blocks": 38,
+        "strikes": 60
+      }
+    },
+    {
+      "elapsedSeconds": 120.09539999997615,
+      "frames": 14273,
+      "fps": 116.24978203165874,
+      "p95FrameMs": 10.39999999999418,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 25,
+        "victories": 25,
+        "hits": 75,
+        "criticals": 25,
+        "blocks": 48,
+        "strikes": 75
+      }
+    },
+    {
+      "elapsedSeconds": 150.12119999998808,
+      "frames": 17812,
+      "fps": 117.56176891274976,
+      "p95FrameMs": 10.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 30,
+        "victories": 30,
+        "hits": 90,
+        "criticals": 30,
+        "blocks": 58,
+        "strikes": 90
+      }
+    },
+    {
+      "elapsedSeconds": 180.15259999996422,
+      "frames": 21291,
+      "fps": 114.66063636653183,
+      "p95FrameMs": 12.60000000000582,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 35,
+        "victories": 35,
+        "hits": 105,
+        "criticals": 35,
+        "blocks": 68,
+        "strikes": 105
+      }
+    },
+    {
+      "elapsedSeconds": 210.18689999997616,
+      "frames": 24857,
+      "fps": 119.19424689101677,
+      "p95FrameMs": 11.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 40,
+        "victories": 40,
+        "hits": 120,
+        "criticals": 40,
+        "blocks": 76,
+        "strikes": 120
+      }
+    },
+    {
+      "elapsedSeconds": 240.21409999996425,
+      "frames": 28304,
+      "fps": 112.29155879398857,
+      "p95FrameMs": 12.599999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 45,
+        "victories": 45,
+        "hits": 135,
+        "criticals": 45,
+        "blocks": 85,
+        "strikes": 135
+      }
+    },
+    {
+      "elapsedSeconds": 270.25319999998806,
+      "frames": 31699,
+      "fps": 111.21683575744859,
+      "p95FrameMs": 12.400000000023283,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 50,
+        "victories": 50,
+        "hits": 150,
+        "criticals": 50,
+        "blocks": 95,
+        "strikes": 150
+      }
+    },
+    {
+      "elapsedSeconds": 300.299,
+      "frames": 35065,
+      "fps": 111.75265412553549,
+      "p95FrameMs": 12.099999999976717,
+      "visible": "visible",
+      "estimatedRendererBytes": 57320666,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 55,
+        "victories": 55,
+        "hits": 165,
+        "criticals": 55,
+        "blocks": 105,
+        "strikes": 165
+      }
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 300.3406999999881,
+    "frameCount": 35068,
+    "fps": 116.77095737000906,
+    "p95FrameMs": 11.5,
+    "maxFrameMs": 53,
+    "intervalsOver50Ms": 1,
+    "intervalsOver100Ms": 0
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

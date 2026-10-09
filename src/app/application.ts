@@ -9,6 +9,11 @@ import { AudioManager } from '../audio/audio-manager';
 import { QualityManager, type QualityName } from '../performance/quality';
 import { FrameMetrics, type FrameStatistics } from '../performance/metrics';
 import { RendererAdapter } from '../rendering/renderer-adapter';
+import type { AnimationClip } from 'three/webgpu';
+import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
+import type { AssetHandle } from '../assets/resource-cache';
+import { WeaponPickup } from '../player/weapon-pickup';
+import { BATON } from '../player/weapon-definitions';
 import { AssetManager } from '../assets/asset-manager';
 import { VisualShowcase } from '../world/visual-showcase';
 import { artVariant, type WorldPresentation, type InspectionState } from '../world/presentation';
@@ -49,6 +54,11 @@ export class Application {
   private enemyAssets: AssetManager | null = null;
   private pendingEnemy: { assets: AssetManager | null; view: EnemyPresentation | null; cancelled: boolean } | null = null;
   private encounterError = '';
+  private readonly pickup=new WeaponPickup();
+  private weaponAssets:AssetManager|null=null;
+  private weaponHandle:AssetHandle<GLTF>|null=null;
+  private armedClips:readonly AnimationClip[]|null=null;
+  private pendingWeapon:{id:number;assets:AssetManager;handle:AssetHandle<GLTF>|null;cancelled:boolean}|null=null;
   private debug: { update(stats: FrameStatistics): void; dispose(): void } | null = null;
   private started = false;
   private modalPaused = false;
@@ -77,7 +87,7 @@ export class Application {
       const reduced = this.settings.values.reducedMotion;
       this.audio.combat(event);
       if (this.courtyard instanceof VisualShowcase) this.courtyard.combatEvent(event, reduced);
-      if (!reduced && event.type === 'hit') this.camera.impulse(event.critical ? .12 : event.attack === 'heavy' ? .07 : .025);
+      if (!reduced && event.type === 'hit') this.camera.impulse(event.critical ? .12 : (event.attack === 'heavy' || event.attack === 'baton-heavy') ? .07 : .025);
       if (!reduced && event.type === 'damage') this.camera.impulse(.08);
     });
     this.ui.bind({
@@ -92,6 +102,7 @@ export class Application {
       preferences: (values) => this.setPreferences(values),
       camera: (view) => {
         if (this.courtyard && !this.inspection) {
+          this.cancelWeaponLoad();
           if (this.courtyard instanceof VisualShowcase) this.courtyard.setPlaying(view === 'player');
           this.input?.clear(); this.ui.mode(view);
           this.encounter?.clearQueued();
@@ -104,10 +115,10 @@ export class Application {
       inspectionView: (view) => { this.inspection?.selectView(view); this.updateInspectionUi(); },
       inspectionLighting: (lighting) => { this.inspection?.selectLighting(lighting); this.updateInspectionUi(); },
       inspectionPause: () => { if (this.inspection) this.inspection.actor.paused = !this.inspection.actor.paused; this.updateInspectionUi(); },
-      restart: () => { this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
+      restart: () => { this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       resetTargets: () => { this.player?.resetTargets(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterStart: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter(); },
-      encounterRestart: () => { this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
+      encounterRestart: () => { this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterReturn: () => this.returnToTraining(),
     });
     this.lifetime.listen(window, 'resize', () => { this.resize(); this.synchronizePause(); });
@@ -156,7 +167,7 @@ export class Application {
       await adapter.compile(this.courtyard.scene, this.camera.camera);
       if (this.disposed) return;
       adapter.render();
-      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run'), heavy: this.ui.get('#heavy'), ward: this.ui.get('#ward') } : undefined);
+      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run'), heavy: this.ui.get('#heavy'), ward: this.ui.get('#ward'), interact: this.ui.get('#pickup') } : undefined);
       this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0;
       await adapter.renderer.setAnimationLoop((time) => this.frame(time));
       if (import.meta.env.DEV && !this.debug) {
@@ -230,7 +241,18 @@ export class Application {
           if (!input) return;
           if (world instanceof VisualShowcase) {
             world.aim = input.aimActive ? this.camera.aim(input.aim, world.target.y) : this.player?.nearestTarget();
-            if(world.playing)this.encounter?.update(dt,input,world.aim);
+            if(world.playing){
+              this.encounter?.update(dt,input,world.aim);
+              if(this.player){
+                const id=this.pickup.update(this.player,input.pressed.has('interact'),!this.pendingEnemy&&!this.pendingInspection);
+                if(id!==null)void this.loadBaton(id);
+                if(this.pendingWeapon&&this.pendingWeapon.id!==this.pickup.requestId)this.cancelWeaponLoad();
+                if(this.pickup.status==='equipped'&&this.pendingWeapon?.handle){
+                  this.weaponAssets=this.pendingWeapon.assets;this.weaponHandle=this.pendingWeapon.handle;this.armedClips=this.weaponHandle.value.animations;this.pendingWeapon=null;
+                  world.equipBaton(this.armedClips);this.refreshAnimationUi();
+                }
+              }
+            }
           }
           if (world.update(dt, input, this.settings.values.reducedMotion)) this.events.emit('pressureReleased', { x: world.target.x, z: world.target.z });
           if (world instanceof VisualShowcase) for (const event of this.encounter?.drainEvents() ?? []) this.events.emit('combat', event);
@@ -241,6 +263,7 @@ export class Application {
         if (this.preview) this.ui.animation(this.preview.clip);
         if (this.player) this.ui.player(this.player.state);
         this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);
+        if(this.player)this.ui.weapon(this.player,this.pickup);
       }
       this.adapter.render();
       if (!paused) {
@@ -266,6 +289,7 @@ export class Application {
   private async reloadFixture(): Promise<void> {
     if (this.reloading || !this.assets || !this.adapter) return;
     this.closeInspection();
+    this.cancelWeaponLoad();
     this.cancelEnemyLoad();this.encounter?.clearQueued();
     this.reloading = true; this.ui.artLoading(true, 'Preparing the art collection…');
     const oldWorld = this.courtyard; const oldAssets = this.assets; const adapter = this.adapter;
@@ -278,6 +302,7 @@ export class Application {
       await assets.init(this.manifestUrl());
       replacement = await this.createWorld(); this.loadingWorld = replacement;
       await replacement.load(assets, false);
+      if(replacement instanceof VisualShowcase&&this.armedClips)replacement.equipBaton(this.armedClips);
       if(replacement instanceof VisualShowcase && this.encounter?.mode==='encounter') {
         enemyAssets=new AssetManager(adapter.renderer);await enemyAssets.init(`/assets/encounter/${replacement.variant}/manifest.json`);
         const {EnemyPresentation}=await import('../world/enemy-presentation');const view=new EnemyPresentation(this.encounter);
@@ -313,7 +338,7 @@ export class Application {
     }
   }
   private refreshAnimationUi(): void {
-    if (this.preview) { this.ui.animationChoices(this.preview.clips); this.ui.animation(this.preview.clip); }
+    if (this.preview) { this.ui.animationChoices(this.player?.state.weapon==='baton'?this.preview.clips.filter(c=>c.name.startsWith('Baton_')):this.preview.clips); this.ui.animation(this.preview.clip); }
   }
   private get preview() { return this.inspection?.actor ?? (this.courtyard instanceof VisualShowcase ? this.courtyard.preview : null); }
   private get inspectionEligible(): boolean {
@@ -325,7 +350,7 @@ export class Application {
   }
   private async enterInspection(): Promise<void> {
     if (!this.inspectionEligible || !this.adapter || this.reloading || this.pendingInspection || this.inspection || this.disposed) return;
-    this.cancelEnemyLoad();this.encounter?.clearQueued();
+    this.cancelWeaponLoad();this.cancelEnemyLoad();this.encounter?.clearQueued();
     const adapter = this.adapter;
     const request = { world: null as CharacterInspection | null, assets: null as AssetManager | null, cancelled: false };
     this.pendingInspection = request; this.inspectionState = { status: 'loading' }; this.updateInspectionUi();
@@ -338,6 +363,7 @@ export class Application {
       if (!current()) return;
       request.world = new CharacterInspection(this.ui.canvas);
       await request.world.load(request.assets);
+      if(this.armedClips)request.world.equipBaton(this.armedClips);
       if (!current()) return;
       request.world.configure(this.quality.profile); request.world.resize(innerWidth, innerHeight);
       await adapter.compile(request.world.scene, request.world.camera);
@@ -385,6 +411,7 @@ export class Application {
   }
   private async startEncounter():Promise<void> {
     if(!this.encounter||!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.reloading||this.inspection||this.pendingEnemy)return;
+    this.cancelWeaponLoad();
     const adapter=this.adapter,world=this.courtyard,simulation=this.encounter;
     const request={assets:null as AssetManager|null,view:null as EnemyPresentation|null,cancelled:false};this.pendingEnemy=request;this.encounterError='';this.updateEncounterUi();
     const current=()=>!request.cancelled&&!this.disposed&&this.adapter===adapter&&this.courtyard===world&&this.pendingEnemy===request;
@@ -400,8 +427,29 @@ export class Application {
   }
   private returnToTraining():void {
     if(this.reloading)return;
-    this.cancelEnemyLoad();if(this.courtyard instanceof VisualShowcase)this.courtyard.setEnemy(null);
+    this.cancelWeaponLoad();this.cancelEnemyLoad();if(this.courtyard instanceof VisualShowcase)this.courtyard.setEnemy(null);
     this.enemyAssets?.dispose();this.enemyAssets=null;this.encounter?.training();this.input?.clear();this.updateEncounterUi();this.ui.canvas.focus();
+  }
+  private cancelWeaponLoad():void {
+    const request=this.pendingWeapon;
+    if(request){request.cancelled=true;request.handle?.release();request.assets.dispose();this.pendingWeapon=null;}
+    this.pickup.cancel();
+  }
+  private async loadBaton(id:number):Promise<void> {
+    if(!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.pendingWeapon)return;
+    const world=this.courtyard,assets=new AssetManager(this.adapter.renderer),request={id,assets,handle:null as AssetHandle<GLTF>|null,cancelled:false};
+    this.pendingWeapon=request;
+    const current=()=>!request.cancelled&&!this.disposed&&this.pendingWeapon===request&&this.pickup.requestId===id&&this.courtyard===world;
+    try {
+      await assets.init('/assets/weapons/baton/manifest.json');if(!current())return;
+      request.handle=await assets.model('animations');if(!current())return;
+      const names=request.handle.value.animations.map(a=>a.name);
+      if([...Object.values(BATON.animations),...Object.values(BATON.attacks).map(a=>a!.clip)].some(n=>!names.includes(n)))throw new Error('Armed animation pack is incomplete');
+      this.pickup.complete(id);
+    } catch(error){if(current())this.pickup.failed(id,error instanceof Error?error.message:String(error));}
+    finally {
+      if(!current()||this.pickup.status!=='ready'){request.handle?.release();assets.dispose();if(this.pendingWeapon===request)this.pendingWeapon=null;}
+    }
   }
   private async createWorld(): Promise<WorldPresentation> {
     if (import.meta.env.DEV && this.options.scene === 'foundation') {
@@ -418,8 +466,8 @@ export class Application {
       fps: this.metrics.fps, p95: this.metrics.p95,
       draws: info?.render.drawCalls ?? 0, triangles: info?.render.triangles ?? 0,
       textures: info?.memory.textures ?? 0, estimatedGpuBytes: info?.memory.total ?? 0,
-      resources: (this.courtyard?.ownedResources ?? 0) + (this.assets?.resourceCount ?? 0) + (this.inspection?.ownedResources ?? 0) + (this.inspectionAssets?.resourceCount ?? 0) + (this.enemyAssets?.resourceCount ?? 0),
-      references: (this.assets?.referenceCount ?? 0) + (this.inspectionAssets?.referenceCount ?? 0) + (this.enemyAssets?.referenceCount ?? 0), voices: this.audio.voiceCount,
+      resources: (this.courtyard?.ownedResources ?? 0) + (this.assets?.resourceCount ?? 0) + (this.inspection?.ownedResources ?? 0) + (this.inspectionAssets?.resourceCount ?? 0) + (this.enemyAssets?.resourceCount ?? 0) + (this.weaponAssets?.resourceCount ?? 0),
+      references: (this.assets?.referenceCount ?? 0) + (this.inspectionAssets?.referenceCount ?? 0) + (this.enemyAssets?.referenceCount ?? 0) + (this.weaponAssets?.referenceCount ?? 0), voices: this.audio.voiceCount,
       overruns: this.clock.overruns, fixtureLoads: this.fixtureLoads,
       markerX: this.courtyard?.target.x ?? 0, markerZ: this.courtyard?.target.z ?? 0,
       listeners: this.lifetime.cleanupCount + this.ui.listenerCount + (this.input?.listenerCount ?? 0) + this.events.listenerCount,
@@ -430,11 +478,15 @@ export class Application {
       inspection: this.inspectionState.status, inspectionPaused: this.inspection?.actor.paused ?? false,
       artLoading: this.reloading,
       ...(import.meta.env.DEV && this.preview ? { rig: this.preview.inspection() } : {}),
+      ...(import.meta.env.DEV && this.courtyard instanceof VisualShowcase && this.courtyard.baton && this.player?.state.weapon==='baton' ? { weaponContact: this.courtyard.baton.diagnostics() } : {}),
       ...(this.player ? { player: structuredClone(this.player.state), targets: structuredClone(this.player.targets) } : {}),
       ...(this.encounter ? { encounter: this.encounter.mode, enemies: structuredClone(this.encounter.enemies), enemyLoading: !!this.pendingEnemy } : {}),
     };
   }
   private stopSession(): void {
+    this.cancelWeaponLoad();
+    this.weaponHandle?.release();this.weaponHandle=null;this.weaponAssets?.dispose();this.weaponAssets=null;this.armedClips=null;
+    this.pickup.status='available';
     this.cancelEnemyLoad();
     this.closeInspection();
     const adapter = this.adapter; this.adapter = null;

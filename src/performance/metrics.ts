@@ -10,6 +10,7 @@ export interface FrameStatistics {
   scene: string; variant: string; animation: string; camera: string; artLoading: boolean;
   characterTier: string; inspection: string; inspectionPaused: boolean;
   rig?: { feet: number[][]; gripDistances: number[] };
+  weaponContact?: { base:number[];tip:number[];grip:number };
   player?: PlayerState;
   targets?: CombatantState[];
   encounter?: 'training'|'encounter'; enemies?: EnemyState[]; enemyLoading?: boolean;

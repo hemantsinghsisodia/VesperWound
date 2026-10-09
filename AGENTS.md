@@ -1,6 +1,7 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- The first weapon milestone is authorized: an original steel baton pickup, armed animations, fixed-step weapon contact, retained session equipment and validation. Group encounters remain deferred. Stop validation servers when finished, including port 5173.
 - Phase 4A is authorized on 2026-10-09: one Zombie Number 7 melee encounter, verified licensed imported art, precise manual punch spacing, session-owned enemy simulation/navigation, optional encounter loading and five-minute production measurements per scenario. Stop for review after this enemy; additional archetypes and hordes remain excluded.
 - Phase 3 unarmed combat prototype is authorized on 2026-10-06: three-hit light chain, heavy strike, posture/stagger/critical follow-up, pressure-powered Ward, reactive training targets, telegraphed vent, bounded effects/audio/camera feedback and validation. Preserve accepted Medic art. Enemy AI and Phase 4 remain excluded until requested.
 - Phase 2 player prototype is authorized on 2026-10-06: movement, follow camera, static collision, licensed retargeted animations, basic punch/dodge, health, damage, death/restart and touch controls. Preserve Medic's accepted appearance and rig. Quaternius CC0 clips are separate additions; do not present them as supplied Fab animations. Enemy AI, weapon redesign and subsequent phases are excluded until requested.

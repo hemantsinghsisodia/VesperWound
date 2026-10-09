@@ -13,7 +13,7 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`${backend}: inspectio
   for (let cycle = 0; cycle < 4; cycle++) {
     await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active');
     const loaded = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot());
-    expect(loaded.references).toBe(5); expect(loaded.variant).toBe('desktop'); expect(loaded.characterTier).toBe('cinematic');
+    expect(loaded.references).toBe(7); expect(loaded.variant).toBe('desktop'); expect(loaded.characterTier).toBe('cinematic');
     if (cycle === 0) {
       for (const view of ['full-body', 'portrait', 'equipment']) {
         await page.locator('#inspection-view').selectOption(view); await page.waitForTimeout(400);
@@ -40,7 +40,7 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`${backend}: inspectio
     }
     await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'courtyard');
     await page.waitForTimeout(400); const after = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot()); cycles.push(after);
-    expect(after.references).toBe(3); expect(after.resources).toBe(baseline.resources); expect(after.listeners).toBe(baseline.listeners);
+    expect(after.references).toBe(4); expect(after.resources).toBe(baseline.resources); expect(after.listeners).toBe(baseline.listeners);
     expect(after.textures).toBeLessThanOrEqual(baseline.textures + 2);
     expect(after.estimatedGpuBytes).toBeLessThanOrEqual(baseline.estimatedGpuBytes * 1.03);
   }
@@ -66,7 +66,7 @@ test('source PNG and compressed KTX2 material renders have paired inspection evi
     }
     await page.locator('#inspection-toggle').click();
     await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'courtyard');
-    expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(3);
+    expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(4);
   }
   expect(errors).toEqual([]);
 });
@@ -97,20 +97,20 @@ test('failed and cancelled inspection retains courtyard; rapid requests and qual
   await page.route('**/cinematic/character.glb', (route) => route.fulfill({ status: 503, body: 'unavailable' }));
   await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'failed');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
-  expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(3);
+  expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(4);
   await page.unroute('**/cinematic/character.glb');
   let release = () => {}; const gate = new Promise<void>((resolve) => { release = resolve; });
   await page.route('**/cinematic/character.glb', async (route) => { await gate; await route.continue().catch(() => {}); });
   await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'loading');
   await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'courtyard');
   release(); await page.unroute('**/cinematic/character.glb'); await page.waitForTimeout(300);
-  expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(3);
+  expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(4);
   await page.locator('#inspection-toggle').click(); await page.locator('#inspection-toggle').click();
   await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active');
   await page.getByRole('button', { name: 'Open settings' }).click(); await page.locator('#quality').selectOption('Low');
   await expect(page.locator('#quality')).toBeEnabled(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'courtyard');
   await expect(page.locator('#inspection-toggle')).toBeHidden();
-  expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(3);
+  expect(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot().references)).toBe(4);
   await page.locator('#quality').selectOption('High'); await expect(page.locator('#quality')).toBeEnabled();
   await page.getByRole('button', { name: 'RETURN TO THE WORKS' }).click(); await expect(page.locator('#inspection-toggle')).toBeVisible();
   expect(errors).toEqual([]);

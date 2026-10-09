@@ -5,12 +5,15 @@ const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const groups = { bootstrap: { raw: 0, gzip: 0, limit: 5 * 1024 * 1024 }, desktop: { raw: 0, gzip: 0, limit: 20 * 1024 * 1024 }, mobile: { raw: 0, gzip: 0, limit: 10 * 1024 * 1024 }, cinematic: { raw: 0, gzip: 0, limit: 40 * 1024 * 1024 } };
 groups.encounterDesktop = { raw: 0, gzip: 0, limit: 8 * 1024 * 1024 };
 groups.encounterMobile = { raw: 0, gzip: 0, limit: 4 * 1024 * 1024 };
+groups.weaponAnimations = { raw: 0, gzip: 0, limit: 512 * 1024 };
 async function visit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = `${directory}/${entry.name}`;
     if (entry.isDirectory()) await visit(path);
     else {
       const bytes = await readFile(path);
+      if (path.includes('/weapons/baton/animations.glb') || path.includes('/weapons/baton/manifest.json')) { groups.weaponAnimations.raw += bytes.length; groups.weaponAnimations.gzip += gzipSync(bytes).byteLength; continue; }
+      if (path.includes('/weapons/baton/baton.glb')) { for (const tier of ['desktop','mobile','cinematic']) { groups[tier].raw += bytes.length; groups[tier].gzip += gzipSync(bytes).byteLength; } continue; }
       if (path.includes('/showcase/shared/')) {
         // Shared animation delivery counts against each art tier, not bootstrap.
         for (const tier of ['desktop', 'mobile', 'cinematic']) { groups[tier].raw += bytes.length; groups[tier].gzip += gzipSync(bytes).byteLength; }

@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeAll } from 'vitest';
 import type { InputAction, InputFrame } from '../../src/core/input-frame';
 import { PlayerSimulation, type PlayerCollision, type Position } from '../../src/player/player-simulation';
-import { ATTACKS, UNARMED } from '../../src/player/combat-definitions';
+import { UNARMED } from '../../src/player/combat-definitions';
 import { segmentBlocked } from '../../src/player/collision-math';
 import { initializePhysics, RapierPlayerCollision } from '../../src/player/player-collision';
 import boxes from '../../src/player/courtyard-collision.json';
@@ -14,7 +14,7 @@ class Ground implements PlayerCollision {
 function tick(p: PlayerSimulation, seconds: number) { for (let i = 0; i < Math.ceil(seconds * 60); i++) p.update(1 / 60, frame()); }
 function strike(p: PlayerSimulation, action: 'attack' | 'heavy' = 'attack', target = p.targets[0]!) {
   p.state.position = { x: target.position.x - .75, y: .035, z: target.position.z };
-  p.update(1 / 60, frame([action]), target.position); const attack = p.state.attack!; tick(p, ATTACKS[attack].duration + .025); return attack;
+  p.update(1 / 60, frame([action]), target.position); const attack = p.state.attack!; tick(p, p.attackDefinition(attack).duration + .025); return attack;
 }
 describe('unarmed combat', () => {
   it('uses an injected combat-style chain without changing the damage system', () => {

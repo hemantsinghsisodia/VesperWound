@@ -17,7 +17,7 @@ export class InputManager {
   private readonly bindings = new Map<string, InputAction>(Object.entries(ACTION_KEYS));
   private readonly stickElement: HTMLElement;
 
-  constructor(canvas: HTMLCanvasElement, stick: HTMLElement, pulse: HTMLButtonElement, playerButtons?: { dodge: HTMLButtonElement; run: HTMLButtonElement; heavy: HTMLButtonElement; ward: HTMLButtonElement }) {
+  constructor(canvas: HTMLCanvasElement, stick: HTMLElement, pulse: HTMLButtonElement, playerButtons?: { dodge: HTMLButtonElement; run: HTMLButtonElement; heavy: HTMLButtonElement; ward: HTMLButtonElement; interact: HTMLButtonElement }) {
     this.stickElement = stick;
     if (playerButtons) { this.bindings.set('Space', 'dodge'); this.bindings.set('KeyQ', 'ward'); this.bindings.set('ShiftLeft', 'run'); this.bindings.set('ShiftRight', 'run'); }
     const primary: InputAction = playerButtons ? 'attack' : 'pulse';
@@ -50,7 +50,7 @@ export class InputManager {
       canvas.setPointerCapture(event.pointerId);
     });
     if (playerButtons) this.lifetime.listen(canvas, 'contextmenu', event => event.preventDefault());
-    for (const [button, action] of [[pulse, primary], ...(playerButtons ? [[playerButtons.dodge, 'dodge'], [playerButtons.run, 'run'], [playerButtons.heavy, 'heavy'], [playerButtons.ward, 'ward']] as const : [])] as ReadonlyArray<readonly [HTMLButtonElement, InputAction]>) {
+    for (const [button, action] of [[pulse, primary], ...(playerButtons ? [[playerButtons.dodge, 'dodge'], [playerButtons.run, 'run'], [playerButtons.heavy, 'heavy'], [playerButtons.ward, 'ward'], [playerButtons.interact, 'interact']] as const : [])] as ReadonlyArray<readonly [HTMLButtonElement, InputAction]>) {
       this.lifetime.listen(button, 'pointerdown', (event) => {
         event.preventDefault(); this.aimActive = false;
         this.pointers.set(event.pointerId, action); this.pressed.add(action); button.setPointerCapture(event.pointerId);
@@ -80,7 +80,7 @@ export class InputManager {
     this.lifetime.listen(stick, 'lostpointercapture', release);
     this.lifetime.listen(pulse, 'lostpointercapture', release);
     this.lifetime.listen(canvas, 'lostpointercapture', release);
-    if (playerButtons) for (const button of [playerButtons.dodge, playerButtons.run, playerButtons.heavy, playerButtons.ward]) this.lifetime.listen(button, 'lostpointercapture', release);
+    if (playerButtons) for (const button of [playerButtons.dodge, playerButtons.run, playerButtons.heavy, playerButtons.ward, playerButtons.interact]) this.lifetime.listen(button, 'lostpointercapture', release);
     this.lifetime.listen(window, 'orientationchange', () => this.clear());
   }
 

@@ -65,8 +65,8 @@ describe('first enemy encounter',()=>{
     enemy.action='active';enemy.attackRecipient=old;enemy.facing=-Math.PI/2;e.player.state.position={x:enemy.position.x-.75,y:.035,z:enemy.position.z};
     e.update(1/60,frame());expect(e.player.state.health).toBe(100);expect(enemy.hitPlayer).toBe(false);
   });
-  it('uses the same state sequence regardless of presentation quality',()=>{
-    const high=create(),low=create();high.start();low.start();for(let i=0;i<600;i++){const input=frame(i%60===0?['heavy']:i%97===0?['ward']:[]);high.update(1/60,input);low.update(1/60,input);}expect(high.enemies).toEqual(low.enemies);expect(high.player.state).toEqual(low.player.state);
+  it.each(['unarmed','baton'] as const)('uses the same %s state sequence regardless of presentation quality',weapon=>{
+    const high=create(),low=create();if(weapon==='baton'){high.player.equipBaton();low.player.equipBaton();}high.start();low.start();for(let i=0;i<600;i++){const input=frame(i%60===0?['heavy']:i%97===0?['ward']:[]);high.update(1/60,input);low.update(1/60,input);}expect(high.enemies).toEqual(low.enemies);expect(high.player.state).toEqual(low.player.state);
   });
 });
 describe('courtyard navigation',()=>{

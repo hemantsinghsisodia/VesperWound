@@ -12,6 +12,10 @@
     "courtyard": {
       "kind": "model",
       "url": "ash-quay.glb"
+    },
+    "baton": {
+      "kind": "model",
+      "url": "../../weapons/baton/baton.glb"
     }
   }
 }
