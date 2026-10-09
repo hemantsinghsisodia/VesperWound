@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { exerciseEncounter, type ExerciseTotals } from '../helpers/encounter-driver';
 
 test('production ignores development flags and excludes diagnostics', async ({ page }) => {
   const errors: string[] = [];
@@ -18,4 +19,14 @@ test('production ignores development flags and excludes diagnostics', async ({ p
   expect(requests.some((url) => url.includes('/assets/fixtures/'))).toBe(false);
   await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeVisible();
   expect(errors).toEqual([]);
+});
+test('production loads the enemy only on selection and completes a real encounter',async({page})=>{
+  const requests:string[]=[],errors:string[]=[];page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/');await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();
+  expect(requests.some(r=>r.includes('/encounter/'))).toBe(false);
+  await page.locator('#encounter-start').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');
+  expect(requests.some(r=>r.includes('/encounter/desktop/zombie7.glb'))).toBe(true);expect(requests.some(r=>r.includes('/encounter/mobile/'))).toBe(false);
+  const totals:ExerciseTotals={encounters:0,victories:0,hits:0,criticals:0,blocks:0,strikes:0};let running=true;
+  const driver=exerciseEncounter(page,()=>running,totals);await expect.poll(()=>totals.victories,{timeout:60000,intervals:[100]}).toBeGreaterThan(0);running=false;await driver;
+  await page.locator('#encounter-return').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');expect(errors).toEqual([]);
 });

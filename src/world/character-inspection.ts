@@ -4,7 +4,7 @@ import type { AssetManager } from '../assets/asset-manager';
 import type { QualityProfile } from '../performance/quality';
 import type { InspectionLighting, InspectionView, WorldPresentation } from './presentation';
 import { PreviewActor } from './preview-actor';
-import { MEDIC } from './character-definition';
+import { MEDIC, type CharacterDefinition } from './character-definition';
 import { PLAYER_CLIP_DESCRIPTORS } from '../player/player-animation';
 
 /** Optional studio owns model/animation references and its own camera/listeners. */
@@ -12,7 +12,7 @@ export class CharacterInspection implements WorldPresentation {
   readonly scene = new Scene();
   readonly target = new Vector3();
   readonly camera = new PerspectiveCamera(35, 1, 0.02, 30);
-  readonly actor = new PreviewActor({ ...MEDIC, clips: PLAYER_CLIP_DESCRIPTORS });
+  readonly actor: PreviewActor;
   view: InspectionView = 'full-body';
   lighting: InspectionLighting = 'neutral';
   private readonly controls: OrbitControls;
@@ -24,7 +24,8 @@ export class CharacterInspection implements WorldPresentation {
   private reflection: RenderTarget | null = null;
   private readonly handles: Array<{ release(): void }> = [];
   private disposed = false;
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, private readonly definition: CharacterDefinition = { ...MEDIC, clips: PLAYER_CLIP_DESCRIPTORS }) {
+    this.actor = new PreviewActor(definition);
     this.scene.background = new Color(0x30363a);
     this.floor.rotation.x = -Math.PI / 2; this.floor.receiveShadow = true;
     this.key.position.set(-2.5, 3.5, 3); this.fill.position.set(2, 2, 1); this.rim.position.set(0, 2.5, -2);
@@ -63,7 +64,7 @@ export class CharacterInspection implements WorldPresentation {
   activate(): void { this.controls.enabled = true; }
   selectView(view: InspectionView): void {
     this.view = view;
-    const setups = MEDIC.cameras[view];
+    const setups = this.definition.cameras[view];
     this.controls.target.fromArray(setups.target); this.camera.position.fromArray(setups.position);
     this.controls.minDistance = setups.near; this.controls.maxDistance = setups.far; this.controls.update();
   }

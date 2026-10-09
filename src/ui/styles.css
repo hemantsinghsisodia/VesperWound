@@ -30,4 +30,6 @@
 #app[data-mode=player][data-inspection=active] #turn-character,#app[data-mode=player][data-inspection=active] #animation-label{display:block}
 .player-touch-actions{right:calc(46px + 80px * var(--ui-scale))}.left-handed .player-touch-actions{left:calc(46px + 80px * var(--ui-scale))}#app[data-mode=player] .debug-toggle{top:auto;bottom:8px;right:calc(50% - 72px)}
 .player-touch-actions{display:grid;grid-template-columns:repeat(2,64px);gap:8px;bottom:calc(30px + env(safe-area-inset-bottom))}#pressure{accent-color:#8fc4b3}#combat-score{font-size:9px;letter-spacing:.5px}.player-hud #reset-targets{font-size:9px;min-height:44px;padding:8px 12px}
+.encounter-controls{display:flex;flex-wrap:wrap;gap:6px;max-width:240px}.encounter-controls button{min-height:44px;padding:8px 10px;font:10px Arial,sans-serif}.encounter-controls span{max-width:220px;font:10px/1.4 Arial,sans-serif;color:#d2b68b}#app[data-scene=foundation] .encounter-controls{display:none}
+@media(pointer:coarse),(max-height:550px){.encounter-controls{max-width:220px}.encounter-controls button{font-size:9px;padding:6px 9px}}
 @media(pointer:coarse),(max-height:550px){.player-hud{width:220px}.player-hud p{margin:5px 0}#app[data-mode=player] .location{display:none}.player-hud #reset-targets{min-height:44px;padding:6px 10px}#app[data-mode=player] .session-tag{left:calc(50% - 68px);bottom:12px}}

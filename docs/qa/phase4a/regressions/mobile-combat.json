@@ -1,0 +1,178 @@
+{
+  "snapshot": {
+    "backend": "WebGL2",
+    "quality": "Mobile",
+    "resolution": "915 × 412",
+    "frameMs": 16.69999999999891,
+    "cpuMs": 2.799999952316284,
+    "fps": 45.87682073632299,
+    "p95": 16.80000000000109,
+    "draws": 78,
+    "triangles": 186241,
+    "textures": 43,
+    "estimatedGpuBytes": 24071884,
+    "resources": 31,
+    "references": 3,
+    "voices": 3,
+    "overruns": 2,
+    "fixtureLoads": 1,
+    "markerX": -1.6000043318223356,
+    "markerZ": 3.399990145379568,
+    "listeners": 57,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "mobile",
+    "animation": "Idle_Loop",
+    "camera": "player",
+    "characterTier": "mobile",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.384377888193927,
+          0.13142569811981164,
+          3.59459744346309
+        ],
+        [
+          -1.76800464615863,
+          0.12884857719141918,
+          3.169927673042387
+        ]
+      ],
+      "gripDistances": []
+    },
+    "player": {
+      "position": {
+        "x": -1.6000043318223356,
+        "y": 0.029411047904577575,
+        "z": 3.399990145379568
+      },
+      "previous": {
+        "x": -1.6000043318223356,
+        "y": 0.029311047907103788,
+        "z": 3.399990145379568
+      },
+      "facing": 0,
+      "health": 100,
+      "pressure": 50,
+      "action": "idle",
+      "actionTime": 0.41666666666666663,
+      "actionSequence": 8,
+      "attack": null,
+      "grounded": true,
+      "strikes": 2,
+      "targetHits": 0,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 0,
+      "blocks": 0,
+      "defeats": 0,
+      "ventWarning": false,
+      "ventRemaining": 0.9166666666666705
+    },
+    "targets": [
+      {
+        "id": "isolated",
+        "label": "COMBO TARGET",
+        "position": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 0,
+        "previous": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "heavy",
+        "label": "HEAVY TARGET",
+        "position": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "maxHealth": 160,
+        "mass": 2,
+        "generation": 0,
+        "previous": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "spawn": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "health": 160,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "grouped",
+        "label": "GROUP TARGET",
+        "position": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 0,
+        "previous": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "spawn": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      }
+    ],
+    "encounter": "training",
+    "enemies": [],
+    "enemyLoading": false
+  },
+  "requests": [
+    "http://127.0.0.1:5174/mark.svg"
+  ]
+}

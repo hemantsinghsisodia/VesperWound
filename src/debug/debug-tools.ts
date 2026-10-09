@@ -7,12 +7,14 @@ export interface DebugActions {
   exportMetrics(): object;
   resetMetrics(): void;
   timeScale(value: number): void;
+  encounter(count: number): void;
 }
 export interface DevelopmentApi {
   snapshot(): FrameStatistics;
   reloadFixture(): Promise<void>;
   exportMetrics(): object;
   resetMetrics(): void;
+  encounter(count: number): void;
 }
 declare global { interface Window { __VESPER_DEBUG__?: DevelopmentApi } }
 
@@ -20,7 +22,7 @@ export function mountDebug(root: HTMLElement, actions: DebugActions): { update(s
   const lifetime = new Lifetime();
   const toggle = document.createElement('button'); toggle.className = 'debug-toggle'; toggle.textContent = 'DIAGNOSTICS · F3';
   const panel = document.createElement('aside'); panel.className = 'debug-panel'; panel.hidden = true;
-  panel.innerHTML = '<h3>PHASE 2 / DEVELOPMENT</h3><pre></pre><button data-action="reload">Reload fixture</button><button data-action="export">Export metrics</button><label>Time scale<select><option value="1">1×</option><option value="0.5">0.5×</option><option value="0">Pause</option><option value="2">2×</option></select></label><p>Player capsule / static collision: Rapier. Enemy AI and chunks await later phases. GPU time: unavailable unless measured externally.</p>';
+  panel.innerHTML = '<h3>PHASE 4A / DEVELOPMENT</h3><pre></pre><button data-action="reload">Reload fixture</button><button data-action="export">Export metrics</button><label>Time scale<select><option value="1">1×</option><option value="0.5">0.5×</option><option value="0">Pause</option><option value="2">2×</option></select></label><p>Player capsule / static collision: Rapier. Enemy AI: shared ground navigation and pooled discs. Streaming awaits later phases. GPU time: unavailable unless measured externally.</p>';
   root.append(toggle, panel);
   const show = () => { panel.hidden = !panel.hidden; };
   lifetime.listen(toggle, 'click', show);

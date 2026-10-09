@@ -1,0 +1,50 @@
+[
+  {
+    "backend": "webgpu",
+    "variant": "source",
+    "bounds": "{\"min\":[-0.42854871321604676,0.00046944983199455337,-0.1687967822723346],\"max\":[0.3578027474578337,1.801270197522577,0.47426097965648584]}",
+    "errors": [],
+    "warnings": [
+      "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+    ]
+  },
+  {
+    "backend": "webgpu",
+    "variant": "desktop",
+    "bounds": "{\"min\":[-0.42818326548159463,-0.0009270722301426525,-0.16493144613026894],\"max\":[0.3563498816633435,1.8012780266362698,0.47342574754950184]}",
+    "errors": [],
+    "warnings": [
+      "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+    ]
+  },
+  {
+    "backend": "webgpu",
+    "variant": "mobile",
+    "bounds": "{\"min\":[-0.42817399668090267,0.0015474658823693222,-0.16692466833414243],\"max\":[0.3563956104760771,1.8007378741019981,0.47141170584166864]}",
+    "errors": [],
+    "warnings": [
+      "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+    ]
+  },
+  {
+    "backend": "webgl2",
+    "variant": "source",
+    "bounds": "{\"min\":[-0.42854871321604676,0.00046944983199455337,-0.1687967822723346],\"max\":[0.3578027474578337,1.801270197522577,0.47426097965648584]}",
+    "errors": [],
+    "warnings": []
+  },
+  {
+    "backend": "webgl2",
+    "variant": "desktop",
+    "bounds": "{\"min\":[-0.42818326548159463,-0.0009270722301426525,-0.16493144613026894],\"max\":[0.3563498816633435,1.8012780266362698,0.47342574754950184]}",
+    "errors": [],
+    "warnings": []
+  },
+  {
+    "backend": "webgl2",
+    "variant": "mobile",
+    "bounds": "{\"min\":[-0.42817399668090267,0.0015474658823693222,-0.16692466833414243],\"max\":[0.3563956104760771,1.8007378741019981,0.47141170584166864]}",
+    "errors": [],
+    "warnings": []
+  }
+]

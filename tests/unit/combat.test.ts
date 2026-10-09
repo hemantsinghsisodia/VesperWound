@@ -29,7 +29,7 @@ describe('unarmed combat', () => {
   });
   it('deduplicates each target across the active window and awards pressure once for a group hit', () => {
     const p = new PlayerSimulation(new Ground()); p.state.position = { x: 0, y: .035, z: 0 }; p.state.pressure = 50;
-    p.targets[0]!.position = { x: -.25, y: .035, z: 1 }; p.targets[1]!.position = { x: .25, y: .035, z: 1 };
+    p.targets[0]!.position = { x: -.25, y: .035, z: .75 }; p.targets[1]!.position = { x: .25, y: .035, z: .75 };
     p.update(1 / 60, frame(['attack']), { x: 0, z: 1 }); tick(p, .5);
     const hits = p.drainEvents().filter(e => e.type === 'hit'); expect(hits).toHaveLength(2);
     expect(p.state.pressure).toBe(60); expect(p.state.targetHits).toBe(2);

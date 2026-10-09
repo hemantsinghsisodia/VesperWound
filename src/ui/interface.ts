@@ -4,6 +4,7 @@ import type { Preferences } from '../platform/settings';
 import { MEDIC, type CharacterClip } from '../world/character-definition';
 import type { CameraView, PreviewClip, InspectionView, InspectionLighting, InspectionState } from '../world/presentation';
 import type { PlayerState } from '../player/player-simulation';
+import type { EncounterSimulation } from '../enemies/encounter-simulation';
 
 export class Interface {
   canvas: HTMLCanvasElement;
@@ -40,6 +41,7 @@ export class Interface {
           <label id="animation-label" for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
           <p>MEDIC · SCIFI MEDIC</p>
           <button id="inspection-toggle" hidden>Detailed inspection</button>
+          <div class="encounter-controls"><button id="encounter-start">Start encounter</button><button id="encounter-restart" hidden>Restart encounter</button><button id="encounter-return" hidden>Return to training</button><span id="encounter-status" role="status"></span></div>
           <div id="inspection-controls" hidden>
             <label for="inspection-view">View</label><select id="inspection-view"><option value="full-body">Full body</option><option value="portrait">Portrait</option><option value="equipment">Equipment</option></select>
             <label for="inspection-lighting">Lighting</label><select id="inspection-lighting"><option value="neutral">Neutral</option><option value="ash-quay">Ash Quay</option></select>
@@ -91,6 +93,7 @@ export class Interface {
     camera(view: CameraView): void; animation(clip: PreviewClip): void; turn(): void;
     inspection(): void; inspectionView(view: InspectionView): void;
     inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void; restart(): void; resetTargets(): void;
+    encounterStart(): void; encounterRestart(): void; encounterReturn(): void;
   }): void {
     this.lifetime.listen(this.start, 'click', () => callbacks.start());
     for (const view of ['player', 'courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
@@ -99,6 +102,9 @@ export class Interface {
     });
     this.lifetime.listen(this.get('#restart-player'), 'click', () => callbacks.restart());
     this.lifetime.listen(this.get('#reset-targets'), 'click', () => callbacks.resetTargets());
+    this.lifetime.listen(this.get('#encounter-start'), 'click', () => callbacks.encounterStart());
+    this.lifetime.listen(this.get('#encounter-restart'), 'click', () => callbacks.encounterRestart());
+    this.lifetime.listen(this.get('#encounter-return'), 'click', () => callbacks.encounterReturn());
     this.lifetime.listen(this.get('#animation'), 'change', () => { const value = this.get<HTMLSelectElement>('#animation').value; callbacks.animation(value === 'pose' ? { kind: 'pose' } : { kind: 'clip', name: value.slice(5) }); });
     this.lifetime.listen(this.get('#turn-character'), 'click', () => callbacks.turn());
     this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => callbacks.inspection());
@@ -174,10 +180,25 @@ export class Interface {
     const select = this.get<HTMLSelectElement>('#animation');
     select.replaceChildren(new Option('Static pose', 'pose'), ...clips.map((clip) => new Option(clip.name, `clip:${clip.name}`)));
   }
+  encounter(simulation: EncounterSimulation | null, loading: boolean, error = ''): void {
+    const active=simulation?.mode==='encounter';
+    this.get('#encounter-start').hidden=active;
+    this.get('#encounter-start').textContent=loading?'Cancel encounter load':error?'Retry encounter':'Start encounter';
+    this.get('#encounter-restart').hidden=!active;this.get('#encounter-return').hidden=!active;
+    this.get('#encounter-status').textContent=loading?'Preparing Zombie 7…':error;
+    this.get('#reset-targets').hidden=active||simulation?.player.state.action==='dead';
+    if(active&&simulation?.victorious)this.get('#player-message').textContent='ENCOUNTER COMPLETE · Restart to fight again.';
+    else if(active&&simulation?.player.state.action!=='dead'&&simulation?.player.state.action==='idle')this.get('#player-message').textContent='Watch the windup · step into punch range · dodge or Ward.';
+    this.root.dataset.encounter=active?'active':loading?'loading':error?'failed':'training';
+    this.canvas.dataset.encounter=this.root.dataset.encounter;
+    this.canvas.dataset.enemyState=simulation?.enemies[0]?.action??'none';
+    this.canvas.dataset.enemyHealth=String(simulation?.enemies[0]?.health??0);
+    this.canvas.dataset.enemyPosition=simulation?.enemies[0]?`${simulation.enemies[0].position.x.toFixed(3)},${simulation.enemies[0].position.z.toFixed(3)}`:'';
+  }
   animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip.kind === 'pose' ? 'pose' : `clip:${clip.name}`; }
   artLoading(loading: boolean, message = ''): void {
     this.get('#art-status').textContent = message;
-    for (const selector of ['#animation', '#turn-character', '#quality']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
+    for (const selector of ['#animation', '#turn-character', '#quality', '#encounter-start', '#encounter-restart', '#encounter-return']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
   }
   inspection(state: InspectionState, eligible: boolean): void {
     const active = state.status === 'active';
@@ -185,6 +206,7 @@ export class Interface {
     const button = this.get<HTMLButtonElement>('#inspection-toggle'); button.hidden = !eligible;
     button.textContent = active ? 'Return to Ash Quay' : state.status === 'loading' ? 'Cancel inspection' : state.status === 'failed' ? 'Retry detailed inspection' : 'Detailed inspection';
     this.get('#inspection-controls').hidden = !active;
+    this.get('.encounter-controls').hidden=active;
     this.get('#view-courtyard').hidden = active; this.get('#view-character').hidden = active;
     this.get('#view-player').hidden = active;
     this.get('#player-hud').hidden = active || this.root.dataset.mode !== 'player';

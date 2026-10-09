@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "assets": {
+    "enemy": {
+      "kind": "model",
+      "url": "zombie7.glb"
+    }
+  }
+}

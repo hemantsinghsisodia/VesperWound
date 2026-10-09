@@ -3,22 +3,22 @@
     "backend": "WebGL2",
     "quality": "High",
     "resolution": "1440 × 900",
-    "frameMs": 16.69999999999891,
-    "cpuMs": 5.100000023841858,
-    "fps": 58.171745152354625,
+    "frameMs": 16.5,
+    "cpuMs": 3.800000011920929,
+    "fps": 57.298772169167805,
     "p95": 16.899999999999636,
-    "draws": 84,
-    "triangles": 275293,
+    "draws": 90,
+    "triangles": 275533,
     "textures": 54,
-    "estimatedGpuBytes": 55607728,
+    "estimatedGpuBytes": 55609696,
     "resources": 31,
     "references": 3,
     "voices": 3,
     "overruns": 0,
     "fixtureLoads": 1,
-    "markerX": -1.6000030664455973,
-    "markerZ": 3.399995082155415,
-    "listeners": 54,
+    "markerX": -1.6000034185235879,
+    "markerZ": 3.399994643737197,
+    "listeners": 57,
     "audioState": "running",
     "scene": "showcase",
     "variant": "desktop",
@@ -31,34 +31,34 @@
     "rig": {
       "feet": [
         [
-          -1.3786134539065502,
-          0.12779001907023801,
-          3.5943486978454273
+          -1.3784385405302717,
+          0.12745643606896356,
+          3.594015291657761
         ],
         [
-          -1.7642971977054167,
-          0.12585481097343304,
-          3.1685317266859627
+          -1.764109347316255,
+          0.12563971097093868,
+          3.168224161601784
         ]
       ],
       "gripDistances": []
     },
     "player": {
       "position": {
-        "x": -1.6000030664455973,
-        "y": 0.029424391283246226,
-        "z": 3.399995077318917
+        "x": -1.6000034294125978,
+        "y": 0.029311033151461746,
+        "z": 3.399994630327453
       },
       "previous": {
         "x": -1.6000030664455973,
-        "y": 0.02932439128577244,
-        "z": 3.3999953191438097
+        "y": 0.029424391283246226,
+        "z": 3.399995077318917
       },
       "facing": 0,
       "health": 100,
       "pressure": 100,
       "action": "idle",
-      "actionTime": 1.0666666666666678,
+      "actionTime": 1.0833333333333344,
       "actionSequence": 0,
       "attack": null,
       "grounded": true,
@@ -71,7 +71,7 @@
       "blocks": 0,
       "defeats": 0,
       "ventWarning": false,
-      "ventRemaining": 0.9333333333333322
+      "ventRemaining": 0.9166666666666656
     },
     "targets": [
       {
@@ -84,6 +84,7 @@
         },
         "maxHealth": 100,
         "mass": 1,
+        "generation": 0,
         "previous": {
           "x": 1.5,
           "y": 0.035,
@@ -114,6 +115,7 @@
         },
         "maxHealth": 160,
         "mass": 2,
+        "generation": 0,
         "previous": {
           "x": 3.8,
           "y": 0.035,
@@ -144,6 +146,7 @@
         },
         "maxHealth": 100,
         "mass": 1,
+        "generation": 0,
         "previous": {
           "x": 4.5,
           "y": 0.035,
@@ -164,29 +167,32 @@
         },
         "hits": 0
       }
-    ]
+    ],
+    "encounter": "training",
+    "enemies": [],
+    "enemyLoading": false
   },
   "loads": [
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.700000000000728,
-      "cpuMs": 4.299999982118607,
-      "fps": 1.8097363817337278,
-      "p95": 3198.699999999999,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.900000000001455,
+      "cpuMs": 4.199999988079071,
+      "fps": 1.3957123715944613,
+      "p95": 3482.2999999999993,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55608086,
+      "estimatedGpuBytes": 55610054,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 1,
       "fixtureLoads": 2,
       "markerX": -1.6000042088022808,
-      "markerZ": 3.3999951113406093,
-      "listeners": 54,
+      "markerZ": 3.399995110373261,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -199,14 +205,14 @@
       "rig": {
         "feet": [
           [
-            -1.3850969647230056,
-            0.12839561606427374,
-            3.5902330200847454
+            -1.3850045534160946,
+            0.12811103790219086,
+            3.589299906080742
           ],
           [
-            -1.7694511310520598,
-            0.12694347537751682,
-            3.166129843927627
+            -1.7687498827705108,
+            0.12716404967333467,
+            3.1648537284499496
           ]
         ],
         "gripDistances": []
@@ -252,6 +258,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -282,6 +289,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -312,6 +320,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -332,28 +341,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.700000000000728,
-      "cpuMs": 3.5999999940395355,
-      "fps": 1.507977199384745,
-      "p95": 3215.7000000000007,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.599999999998545,
+      "cpuMs": 5.899999976158142,
+      "fps": 1.7566974088713219,
+      "p95": 3315.600000000002,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55608086,
+      "estimatedGpuBytes": 55650809,
       "resources": 31,
       "references": 3,
       "voices": 4,
       "overruns": 2,
       "fixtureLoads": 3,
-      "markerX": -1.6000032557429287,
+      "markerX": -1.6000032586680768,
       "markerZ": 3.399994488578754,
-      "listeners": 54,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -366,34 +378,34 @@
       "rig": {
         "feet": [
           [
-            -1.3850036003567425,
-            0.1280971832392886,
-            3.589299284286235
+            -1.3849110224440733,
+            0.12780403494793624,
+            3.5883659436212496
           ],
           [
-            -1.7687489297111587,
-            0.1271501950104324,
-            3.1648531066554426
+            -1.7680474910510378,
+            0.12740540680641071,
+            3.163582120805217
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
-          "x": -1.6000035905821002,
-          "y": 0.029210892604314725,
-          "z": 3.399994011860114
-        },
-        "previous": {
           "x": -1.6000032557429287,
           "y": 0.029310924244928177,
+          "z": 3.399994488578754
+        },
+        "previous": {
+          "x": -1.600003743267616,
+          "y": 0.02921092424745439,
           "z": 3.399994488578754
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 1.4499999999999997,
+        "actionTime": 1.4333333333333331,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -406,7 +418,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": true,
-        "ventRemaining": 0.5500000000000003
+        "ventRemaining": 0.5666666666666669
       },
       "targets": [
         {
@@ -419,6 +431,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -449,6 +462,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -479,6 +493,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -499,28 +514,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.5,
-      "cpuMs": 4.300000011920929,
-      "fps": 1.989653800238757,
-      "p95": 2915.7000000000007,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.599999999998545,
+      "cpuMs": 4.699999988079071,
+      "fps": 2.039448766133497,
+      "p95": 3315.7000000000007,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55608086,
+      "estimatedGpuBytes": 55650809,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 3,
       "fixtureLoads": 4,
       "markerX": -1.600004206643079,
-      "markerZ": 3.39999257558747,
-      "listeners": 54,
+      "markerZ": 3.399992574612161,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -533,14 +551,14 @@
       "rig": {
         "feet": [
           [
-            -1.3849119704190755,
-            0.12780416039272158,
-            3.588364030629965
+            -1.385004551256893,
+            0.1280969086840839,
+            3.5892973703196422
           ],
           [
-            -1.76804843902604,
-            0.12740553225119594,
-            3.163580207813933
+            -1.768749880611309,
+            0.12714992045522772,
+            3.16485119268885
           ]
         ],
         "gripDistances": []
@@ -586,6 +604,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -616,6 +635,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -646,6 +666,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -666,28 +687,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.89999999999418,
-      "cpuMs": 6.4000000059604645,
-      "fps": 1.6826990492750384,
-      "p95": 3465.4000000000015,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.799999999995634,
+      "cpuMs": 5.800000011920929,
+      "fps": 1.739584239366792,
+      "p95": 3348.9000000000015,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55648841,
+      "estimatedGpuBytes": 55610054,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 4,
       "fixtureLoads": 5,
-      "markerX": -1.6000053863220884,
+      "markerX": -1.6000053851914957,
       "markerZ": 3.3999918487088916,
-      "listeners": 54,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -700,13 +724,13 @@
       "rig": {
         "feet": [
           [
-            -1.3850057309359023,
-            0.128097198773429,
+            -1.3850057298053096,
+            0.12809719891653254,
             3.5892966444163728
           ],
           [
-            -1.7687510602903185,
-            0.12715021054457282,
+            -1.7687510591597257,
+            0.12715021068767635,
             3.1648504667855804
           ]
         ],
@@ -753,6 +777,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -783,6 +808,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -813,6 +839,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -833,28 +860,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.700000000004366,
-      "cpuMs": 4.300000011920929,
-      "fps": 1.6148566814695196,
-      "p95": 3598.7999999999956,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.69999999999709,
+      "cpuMs": 5,
+      "fps": 1.4710208884966167,
+      "p95": 3299,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55608086,
+      "estimatedGpuBytes": 55650809,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 5,
       "fixtureLoads": 6,
-      "markerX": -1.6000060623122876,
-      "markerZ": 3.39999162959068,
-      "listeners": 54,
+      "markerX": -1.6000060622370968,
+      "markerZ": 3.399991629781381,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -867,14 +897,14 @@
       "rig": {
         "feet": [
           [
-            -1.3850988182330124,
-            0.12878149284035667,
-            3.590229538334816
+            -1.3850064068509107,
+            0.12849731485853294,
+            3.589296425488862
           ],
           [
-            -1.7694529845620666,
-            0.12732935215359975,
-            3.166126362177698
+            -1.7687517362053269,
+            0.12755032662967675,
+            3.1648502478580696
           ]
         ],
         "gripDistances": []
@@ -920,6 +950,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -950,6 +981,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -980,6 +1012,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -1000,28 +1033,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1296 × 810",
-      "frameMs": 16.69999999999709,
-      "cpuMs": 4.0999999940395355,
-      "fps": 1.7066302585544857,
-      "p95": 3399.0999999999985,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.599999999998545,
+      "cpuMs": 4.100000023841858,
+      "fps": 1.435873872839011,
+      "p95": 3382.2999999999956,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 52198102,
+      "estimatedGpuBytes": 52200070,
       "resources": 31,
       "references": 3,
-      "voices": 4,
+      "voices": 3,
       "overruns": 6,
       "fixtureLoads": 7,
-      "markerX": -1.6000065705323263,
-      "markerZ": 3.3999920111980533,
-      "listeners": 54,
+      "markerX": -1.6000065695772288,
+      "markerZ": 3.399992012153151,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -1034,14 +1070,14 @@
       "rig": {
         "feet": [
           [
-            -1.3850069151461402,
-            0.12839691622167332,
-            3.5892968069055344
+            -1.3849143333532252,
+            0.12810416793031099,
+            3.5883634671956464
           ],
           [
-            -1.7687522445005563,
-            0.12744992799281712,
-            3.164850629274742
+            -1.7680508019601897,
+            0.12770553978878535,
+            3.163579644379614
           ]
         ],
         "gripDistances": []
@@ -1087,6 +1123,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -1117,6 +1154,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -1147,6 +1185,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -1167,28 +1206,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1152 × 720",
-      "frameMs": 16.799999999995634,
-      "cpuMs": 3,
-      "fps": 2.049360306818516,
-      "p95": 3299,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.599999999998545,
+      "cpuMs": 2.399999976158142,
+      "fps": 1.7396346767178892,
+      "p95": 3332.5,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 46242153,
+      "estimatedGpuBytes": 46203366,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 7,
       "fixtureLoads": 8,
-      "markerX": -1.6000058722702564,
-      "markerZ": 3.3999918328734653,
-      "listeners": 54,
+      "markerX": -1.6000058742085974,
+      "markerZ": 3.399991830179283,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -1201,14 +1243,14 @@
       "rig": {
         "feet": [
           [
-            -1.3850986281909812,
-            0.12838234407002524,
-            3.5902297416176014
+            -1.3850062188224113,
+            0.12809916651981507,
+            3.5892966258867642
           ],
           [
-            -1.7694527945200353,
-            0.12693020338326833,
-            3.166126565460483
+            -1.7687515481768274,
+            0.12715217829095887,
+            3.164850448255972
           ]
         ],
         "gripDistances": []
@@ -1216,19 +1258,19 @@
       "player": {
         "position": {
           "x": -1.6000058722702564,
-          "y": 0.029410906911070928,
-          "z": 3.3999915913056156
-        },
-        "previous": {
-          "x": -1.6000058722702564,
           "y": 0.02931090691359714,
           "z": 3.399991833357569
+        },
+        "previous": {
+          "x": -1.6000060661043678,
+          "y": 0.02951096809934825,
+          "z": 3.3999915155289613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.3833333333333298,
+        "actionTime": 2.366666666666663,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -1241,7 +1283,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.6333333333333342
+        "ventRemaining": 1.6500000000000008
       },
       "targets": [
         {
@@ -1254,6 +1296,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -1284,6 +1327,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -1314,6 +1358,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -1334,20 +1379,23 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1008 × 630",
-      "frameMs": 16.60000000000582,
-      "cpuMs": 5,
-      "fps": 1.7230486474068096,
-      "p95": 3382.2000000000044,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.599999999998545,
+      "cpuMs": 3.100000023841858,
+      "fps": 1.6986099708405311,
+      "p95": 3432.199999999997,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 40890889,
+      "estimatedGpuBytes": 40852102,
       "resources": 31,
       "references": 3,
       "voices": 3,
@@ -1355,7 +1403,7 @@
       "fixtureLoads": 9,
       "markerX": -1.6000061021245502,
       "markerZ": 3.3999914208501965,
-      "listeners": 54,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -1369,12 +1417,12 @@
         "feet": [
           [
             -1.385006446738364,
-            0.12819722845683895,
+            0.1280978284665823,
             3.5892962165576776
           ],
           [
             -1.7687517760927802,
-            0.12725024022798276,
+            0.1271508402377261,
             3.164850038926885
           ]
         ],
@@ -1383,19 +1431,19 @@
       "player": {
         "position": {
           "x": -1.6000061021245502,
-          "y": 0.029510969459952324,
+          "y": 0.029410969462478537,
           "z": 3.3999914208501965
         },
         "previous": {
           "x": -1.6000061021245502,
-          "y": 0.029410969462478537,
+          "y": 0.029310969472280707,
           "z": 3.3999914208501965
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.5666666666666624,
+        "actionTime": 2.549999999999996,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -1408,7 +1456,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.4500000000000015
+        "ventRemaining": 1.4666666666666681
       },
       "targets": [
         {
@@ -1421,6 +1469,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -1451,6 +1500,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -1481,6 +1531,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -1501,28 +1552,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "936 × 585",
-      "frameMs": 16.70000000001164,
-      "cpuMs": 4,
-      "fps": 1.8658456945610573,
-      "p95": 3115.7000000000044,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.80000000000291,
+      "cpuMs": 2.699999988079071,
+      "fps": 1.4357501794687724,
+      "p95": 3382.4000000000087,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 37356925,
+      "estimatedGpuBytes": 37318138,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 9,
       "fixtureLoads": 10,
-      "markerX": -1.6000061005493338,
-      "markerZ": 3.3999914215217406,
-      "listeners": 54,
+      "markerX": -1.6000061007749062,
+      "markerZ": 3.3999914209496387,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -1535,14 +1589,14 @@
       "rig": {
         "feet": [
           [
-            -1.3850064451631476,
-            0.12849731995170327,
-            3.5892962172292218
+            -1.38500644538872,
+            0.12849491941095675,
+            3.58929621665712
           ],
           [
-            -1.7687517745175638,
-            0.12755033172284708,
-            3.1648500395984294
+            -1.7687517747431363,
+            0.12754793118210056,
+            3.1648500390263274
           ]
         ],
         "gripDistances": []
@@ -1588,6 +1642,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -1618,6 +1673,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -1648,6 +1704,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -1668,28 +1725,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "936 × 585",
-      "frameMs": 16.70000000001164,
-      "cpuMs": 4.200000017881393,
-      "fps": 2.01180257510729,
-      "p95": 2882.300000000003,
-      "draws": 84,
-      "triangles": 275293,
+      "frameMs": 16.59999999999127,
+      "cpuMs": 2.199999988079071,
+      "fps": 2.2649415361966025,
+      "p95": 3415.5,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 36273970,
+      "estimatedGpuBytes": 36275938,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 11,
-      "markerX": -1.600006109467066,
-      "markerZ": 3.3999913167134173,
-      "listeners": 54,
+      "markerX": -1.600005870050323,
+      "markerZ": 3.3999910772966744,
+      "listeners": 57,
       "audioState": "running",
       "scene": "showcase",
       "variant": "desktop",
@@ -1702,34 +1762,34 @@
       "rig": {
         "feet": [
           [
-            -1.3850064540808797,
-            0.1280979251859305,
-            3.5892961124208984
+            -1.3850062146641369,
+            0.12829692518090324,
+            3.5892958730041555
           ],
           [
-            -1.768751783435296,
-            0.1271509369570743,
-            3.164849934790106
+            -1.768751544018553,
+            0.12734993695204705,
+            3.164849695373363
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
-          "x": -1.600006109467066,
-          "y": 0.02941106618905906,
-          "z": 3.3999913167134173
+          "x": -1.60000586908881,
+          "y": 0.029511066186532847,
+          "z": 3.3999910763351613
         },
         "previous": {
           "x": -1.600006109467066,
-          "y": 0.029311066191585272,
+          "y": 0.02941106618905906,
           "z": 3.3999913167134173
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.933333333333328,
+        "actionTime": 2.9499999999999944,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -1742,7 +1802,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0833333333333361
+        "ventRemaining": 1.0666666666666695
       },
       "targets": [
         {
@@ -1755,6 +1815,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -1785,6 +1846,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -1815,6 +1877,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -1835,7 +1898,10 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     }
   ],
   "swaps": [
@@ -1843,22 +1909,22 @@
       "backend": "WebGL2",
       "quality": "Mobile",
       "resolution": "1152 × 720",
-      "frameMs": 16.69999999999709,
+      "frameMs": 16.60000000000582,
       "cpuMs": 2.300000011920929,
       "fps": 0,
       "p95": 0,
-      "draws": 72,
-      "triangles": 186001,
+      "draws": 78,
+      "triangles": 186241,
       "textures": 43,
-      "estimatedGpuBytes": 34918247,
+      "estimatedGpuBytes": 34920215,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 12,
-      "markerX": -1.600005982657929,
-      "markerZ": 3.399991074671768,
-      "listeners": 54,
+      "markerX": -1.600005981003847,
+      "markerZ": 3.399991073017686,
+      "listeners": 57,
       "audioState": "suspended",
       "scene": "showcase",
       "variant": "mobile",
@@ -1871,34 +1937,34 @@
       "rig": {
         "feet": [
           [
-            -1.3856486633119307,
-            0.1287426654333415,
-            3.5919321771043093
+            -1.3856486616578487,
+            0.12884266542353934,
+            3.5919321754502276
           ],
           [
-            -1.76906362799201,
-            0.12743279333530944,
-            3.1661212845911035
+            -1.769063626337928,
+            0.12753279332550727,
+            3.1661212829370218
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
+          "x": -1.600005981003847,
+          "y": 0.029511010969290513,
+          "z": 3.399991073017686
+        },
+        "previous": {
           "x": -1.600005982657929,
           "y": 0.029411010979092683,
           "z": 3.399991074671768
-        },
-        "previous": {
-          "x": -1.6000059801628896,
-          "y": 0.029311010988894853,
-          "z": 3.3999910763351613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.9999999999999942,
+        "actionTime": 3.016666666666661,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -1911,7 +1977,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0166666666666697
+        "ventRemaining": 1.000000000000003
       },
       "targets": [
         {
@@ -1924,6 +1990,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -1954,6 +2021,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -1984,6 +2052,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -2004,28 +2073,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.69999999999709,
+      "frameMs": 16.60000000000582,
       "cpuMs": 2.300000011920929,
       "fps": 0,
       "p95": 0,
-      "draws": 84,
-      "triangles": 275293,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55649205,
+      "estimatedGpuBytes": 55651173,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 13,
-      "markerX": -1.600005982657929,
-      "markerZ": 3.399991074671768,
-      "listeners": 54,
+      "markerX": -1.600005981003847,
+      "markerZ": 3.399991073017686,
+      "listeners": 57,
       "audioState": "suspended",
       "scene": "showcase",
       "variant": "desktop",
@@ -2038,34 +2110,34 @@
       "rig": {
         "feet": [
           [
-            -1.3856486633119307,
-            0.1287426654333415,
-            3.5919321771043093
+            -1.3856486616578487,
+            0.12884266542353934,
+            3.5919321754502276
           ],
           [
-            -1.76906362799201,
-            0.12743279333530944,
-            3.1661212845911035
+            -1.769063626337928,
+            0.12753279332550727,
+            3.1661212829370218
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
+          "x": -1.600005981003847,
+          "y": 0.029511010969290513,
+          "z": 3.399991073017686
+        },
+        "previous": {
           "x": -1.600005982657929,
           "y": 0.029411010979092683,
           "z": 3.399991074671768
-        },
-        "previous": {
-          "x": -1.6000059801628896,
-          "y": 0.029311010988894853,
-          "z": 3.3999910763351613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.9999999999999942,
+        "actionTime": 3.016666666666661,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -2078,7 +2150,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0166666666666697
+        "ventRemaining": 1.000000000000003
       },
       "targets": [
         {
@@ -2091,6 +2163,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -2121,6 +2194,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -2151,6 +2225,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -2171,28 +2246,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "Low",
       "resolution": "1440 × 900",
-      "frameMs": 16.69999999999709,
+      "frameMs": 16.60000000000582,
       "cpuMs": 2.300000011920929,
       "fps": 0,
       "p95": 0,
-      "draws": 72,
-      "triangles": 186001,
+      "draws": 78,
+      "triangles": 186241,
       "textures": 43,
-      "estimatedGpuBytes": 46115687,
+      "estimatedGpuBytes": 46117655,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 14,
-      "markerX": -1.600005982657929,
-      "markerZ": 3.399991074671768,
-      "listeners": 54,
+      "markerX": -1.600005981003847,
+      "markerZ": 3.399991073017686,
+      "listeners": 57,
       "audioState": "suspended",
       "scene": "showcase",
       "variant": "mobile",
@@ -2205,34 +2283,34 @@
       "rig": {
         "feet": [
           [
-            -1.3856486633119307,
-            0.1287426654333415,
-            3.5919321771043093
+            -1.3856486616578487,
+            0.12884266542353934,
+            3.5919321754502276
           ],
           [
-            -1.76906362799201,
-            0.12743279333530944,
-            3.1661212845911035
+            -1.769063626337928,
+            0.12753279332550727,
+            3.1661212829370218
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
+          "x": -1.600005981003847,
+          "y": 0.029511010969290513,
+          "z": 3.399991073017686
+        },
+        "previous": {
           "x": -1.600005982657929,
           "y": 0.029411010979092683,
           "z": 3.399991074671768
-        },
-        "previous": {
-          "x": -1.6000059801628896,
-          "y": 0.029311010988894853,
-          "z": 3.3999910763351613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.9999999999999942,
+        "actionTime": 3.016666666666661,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -2245,7 +2323,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0166666666666697
+        "ventRemaining": 1.000000000000003
       },
       "targets": [
         {
@@ -2258,6 +2336,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -2288,6 +2367,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -2318,6 +2398,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -2338,28 +2419,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.69999999999709,
+      "frameMs": 16.60000000000582,
       "cpuMs": 2.300000011920929,
       "fps": 0,
       "p95": 0,
-      "draws": 84,
-      "triangles": 275293,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55608450,
+      "estimatedGpuBytes": 55610418,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 15,
-      "markerX": -1.600005982657929,
-      "markerZ": 3.399991074671768,
-      "listeners": 54,
+      "markerX": -1.600005981003847,
+      "markerZ": 3.399991073017686,
+      "listeners": 57,
       "audioState": "suspended",
       "scene": "showcase",
       "variant": "desktop",
@@ -2372,34 +2456,34 @@
       "rig": {
         "feet": [
           [
-            -1.3856486633119307,
-            0.1287426654333415,
-            3.5919321771043093
+            -1.3856486616578487,
+            0.12884266542353934,
+            3.5919321754502276
           ],
           [
-            -1.76906362799201,
-            0.12743279333530944,
-            3.1661212845911035
+            -1.769063626337928,
+            0.12753279332550727,
+            3.1661212829370218
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
+          "x": -1.600005981003847,
+          "y": 0.029511010969290513,
+          "z": 3.399991073017686
+        },
+        "previous": {
           "x": -1.600005982657929,
           "y": 0.029411010979092683,
           "z": 3.399991074671768
-        },
-        "previous": {
-          "x": -1.6000059801628896,
-          "y": 0.029311010988894853,
-          "z": 3.3999910763351613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.9999999999999942,
+        "actionTime": 3.016666666666661,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -2412,7 +2496,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0166666666666697
+        "ventRemaining": 1.000000000000003
       },
       "targets": [
         {
@@ -2425,6 +2509,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -2455,6 +2540,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -2485,6 +2571,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -2505,28 +2592,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "Mobile",
       "resolution": "1152 × 720",
-      "frameMs": 16.69999999999709,
+      "frameMs": 16.60000000000582,
       "cpuMs": 2.300000011920929,
       "fps": 0,
       "p95": 0,
-      "draws": 72,
-      "triangles": 186001,
+      "draws": 78,
+      "triangles": 186241,
       "textures": 43,
-      "estimatedGpuBytes": 34918247,
+      "estimatedGpuBytes": 34960970,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 16,
-      "markerX": -1.600005982657929,
-      "markerZ": 3.399991074671768,
-      "listeners": 54,
+      "markerX": -1.600005981003847,
+      "markerZ": 3.399991073017686,
+      "listeners": 57,
       "audioState": "suspended",
       "scene": "showcase",
       "variant": "mobile",
@@ -2539,34 +2629,34 @@
       "rig": {
         "feet": [
           [
-            -1.3856486633119307,
-            0.1287426654333415,
-            3.5919321771043093
+            -1.3856486616578487,
+            0.12884266542353934,
+            3.5919321754502276
           ],
           [
-            -1.76906362799201,
-            0.12743279333530944,
-            3.1661212845911035
+            -1.769063626337928,
+            0.12753279332550727,
+            3.1661212829370218
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
+          "x": -1.600005981003847,
+          "y": 0.029511010969290513,
+          "z": 3.399991073017686
+        },
+        "previous": {
           "x": -1.600005982657929,
           "y": 0.029411010979092683,
           "z": 3.399991074671768
-        },
-        "previous": {
-          "x": -1.6000059801628896,
-          "y": 0.029311010988894853,
-          "z": 3.3999910763351613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.9999999999999942,
+        "actionTime": 3.016666666666661,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -2579,7 +2669,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0166666666666697
+        "ventRemaining": 1.000000000000003
       },
       "targets": [
         {
@@ -2592,6 +2682,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -2622,6 +2713,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -2652,6 +2744,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -2672,28 +2765,31 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     },
     {
       "backend": "WebGL2",
       "quality": "High",
       "resolution": "1440 × 900",
-      "frameMs": 16.69999999999709,
+      "frameMs": 16.60000000000582,
       "cpuMs": 2.300000011920929,
       "fps": 0,
       "p95": 0,
-      "draws": 84,
-      "triangles": 275293,
+      "draws": 90,
+      "triangles": 275533,
       "textures": 54,
-      "estimatedGpuBytes": 55608450,
+      "estimatedGpuBytes": 55651173,
       "resources": 31,
       "references": 3,
       "voices": 3,
       "overruns": 10,
       "fixtureLoads": 17,
-      "markerX": -1.600005982657929,
-      "markerZ": 3.399991074671768,
-      "listeners": 54,
+      "markerX": -1.600005981003847,
+      "markerZ": 3.399991073017686,
+      "listeners": 57,
       "audioState": "suspended",
       "scene": "showcase",
       "variant": "desktop",
@@ -2706,34 +2802,34 @@
       "rig": {
         "feet": [
           [
-            -1.3856486633119307,
-            0.1287426654333415,
-            3.5919321771043093
+            -1.3856486616578487,
+            0.12884266542353934,
+            3.5919321754502276
           ],
           [
-            -1.76906362799201,
-            0.12743279333530944,
-            3.1661212845911035
+            -1.769063626337928,
+            0.12753279332550727,
+            3.1661212829370218
           ]
         ],
         "gripDistances": []
       },
       "player": {
         "position": {
+          "x": -1.600005981003847,
+          "y": 0.029511010969290513,
+          "z": 3.399991073017686
+        },
+        "previous": {
           "x": -1.600005982657929,
           "y": 0.029411010979092683,
           "z": 3.399991074671768
-        },
-        "previous": {
-          "x": -1.6000059801628896,
-          "y": 0.029311010988894853,
-          "z": 3.3999910763351613
         },
         "facing": 0,
         "health": 100,
         "pressure": 100,
         "action": "idle",
-        "actionTime": 2.9999999999999942,
+        "actionTime": 3.016666666666661,
         "actionSequence": 0,
         "attack": null,
         "grounded": true,
@@ -2746,7 +2842,7 @@
         "blocks": 0,
         "defeats": 0,
         "ventWarning": false,
-        "ventRemaining": 1.0166666666666697
+        "ventRemaining": 1.000000000000003
       },
       "targets": [
         {
@@ -2759,6 +2855,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 1.5,
             "y": 0.035,
@@ -2789,6 +2886,7 @@
           },
           "maxHealth": 160,
           "mass": 2,
+          "generation": 0,
           "previous": {
             "x": 3.8,
             "y": 0.035,
@@ -2819,6 +2917,7 @@
           },
           "maxHealth": 100,
           "mass": 1,
+          "generation": 0,
           "previous": {
             "x": 4.5,
             "y": 0.035,
@@ -2839,7 +2938,10 @@
           },
           "hits": 0
         }
-      ]
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
     }
   ],
   "errors": []

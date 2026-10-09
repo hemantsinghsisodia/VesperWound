@@ -1,7 +1,7 @@
 import { Group, Mesh, CylinderGeometry, BoxGeometry, TorusGeometry, SphereGeometry, MeshStandardNodeMaterial, MeshBasicNodeMaterial, CanvasTexture, SpriteMaterial, Sprite, InstancedMesh, Object3D, SRGBColorSpace, type BufferGeometry, type Material } from 'three/webgpu';
 import type { PlayerSimulation } from '../player/player-simulation';
 import { PRESSURE_VENT } from '../player/player-simulation';
-import type { CombatEvent } from '../player/combat-definitions';
+import { TRAINING_TARGETS, type CombatEvent } from '../player/combat-definitions';
 
 /** Owns a bounded visual pool; it never resolves hits or changes combat state. */
 export class CombatPresentation {
@@ -22,7 +22,7 @@ export class CombatPresentation {
     const iron = new MeshStandardNodeMaterial({ color: 0x343b3b, metalness: .65, roughness: .5 });
     const sparkMaterial = new MeshBasicNodeMaterial({ color: 0xe6c189 });
     this.geometries.push(post, plate, ring, sphere, spark); this.materials.push(iron, sparkMaterial, this.wardMaterial, this.ventMaterial);
-    for (const t of player.targets) {
+    for (const t of TRAINING_TARGETS) {
       const group = new Group(); const material = new MeshStandardNodeMaterial({ color: t.id === 'heavy' ? 0x687574 : 0xb09b79, emissive: 0x8a6030, emissiveIntensity: .08, roughness: .8, metalness: t.id === 'heavy' ? .6 : 0 });
       this.materials.push(material); const pole = new Mesh(post, iron); pole.position.y = .8; pole.castShadow = true;
       const face = new Mesh(plate, material); face.position.y = 1.2; face.castShadow = true; group.add(pole, face);
@@ -49,6 +49,8 @@ export class CombatPresentation {
   }
   update(dt: number, reduced: boolean): void {
     this.targets.forEach((view, i) => {
+      view.group.visible = this.player.training;
+      if (!this.player.training) return;
       const t = this.player.targets[i]!; view.flash = Math.max(0, view.flash - dt); view.critical = Math.max(0, view.critical - dt); view.material.emissiveIntensity = reduced ? .08 : view.flash > 0 ? 1.2 : t.exposedUntil > 0 ? .4 : .08;
       view.plate.rotation.z = t.health === 0 ? Math.PI / 2 : t.exposedUntil > 0 ? .2 : Math.min(.12, Math.hypot(t.velocity.x, t.velocity.z) * .06);
       view.plate.position.y = t.health === 0 ? .15 : 1.2;
@@ -67,6 +69,7 @@ export class CombatPresentation {
       }
     });
     this.ward.visible = this.player.state.wardRemaining > 0; this.wardMaterial.opacity = reduced ? .06 : .12;
+    this.vent.visible = this.player.training;
     this.ward.position.set(this.player.state.position.x, this.player.state.position.y + .9, this.player.state.position.z);
     this.ventMaterial.emissiveIntensity = reduced ? .5 : this.player.state.ventWarning ? 1.8 : .5;
     this.vent.scale.setScalar(this.player.state.ventWarning ? 1.05 : 1);
@@ -78,7 +81,7 @@ export class CombatPresentation {
     }
     this.particles.instanceMatrix.needsUpdate = true;
   }
-  interpolate(alpha: number): void { this.targets.forEach((v, i) => { const t = this.player.targets[i]!; v.group.position.set(t.previous.x + (t.position.x - t.previous.x) * alpha, t.position.y, t.previous.z + (t.position.z - t.previous.z) * alpha); }); }
+  interpolate(alpha: number): void { if (this.player.training) this.targets.forEach((v, i) => { const t = this.player.targets[i]!; v.group.position.set(t.previous.x + (t.position.x - t.previous.x) * alpha, t.position.y, t.previous.z + (t.position.z - t.previous.z) * alpha); }); }
   get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length; }
   dispose(): void { this.particles.dispose(); this.group.clear(); this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose()); this.textures.forEach(t => t.dispose()); }
 }

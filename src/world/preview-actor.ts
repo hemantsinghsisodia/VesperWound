@@ -33,9 +33,18 @@ export class PreviewActor {
     const idle = this.clips.find((clip) => /idle/i.test(clip.name));
     return idle ? { kind: 'clip', name: idle.name } : { kind: 'pose' };
   }
-  private readonly finished = () => { if (!this.controlled) this.selectClip(this.defaultClip()); };
+  private readonly finished = (event: { action: AnimationAction }) => {
+    // A fading previous clip may finish after another clip was selected. Only
+    // completion of the currently selected action may return a preview to idle.
+    if (!this.controlled && this.clip.kind === 'clip' && this.actions.get(this.clip.name) === event.action) this.selectClip(this.defaultClip());
+  };
   playbackRate(rate: number): void { if (this.clip.kind === 'clip') this.actions.get(this.clip.name)?.setEffectiveTimeScale(rate); }
   duration(name: string): number { return this.actions.get(name)?.getClip().duration ?? 1; }
+  seek(seconds: number): void {
+    if (this.clip.kind !== 'clip') return;
+    const action = this.actions.get(this.clip.name);
+    if (action) { action.time = Math.min(action.getClip().duration, Math.max(0, seconds)); this.mixer?.update(0); }
+  }
   selectClip(selection: PreviewClip): void {
     if (selection.kind === 'pose') {
       this.mixer?.stopAllAction();

@@ -1,5 +1,8 @@
 import type { Position } from './combat-definitions';
 export interface CollisionBox { position: Position; half: Position }
+export function courtyardSolids(boxes: readonly CollisionBox[]): readonly CollisionBox[] {
+  return boxes.filter(b => !(b.position.x === 1.5 && b.position.z === 3.4 && b.half.x === .24));
+}
 /** Slab intersection against authored solids; hurt volumes are handled separately. */
 export function segmentBlocked(from: Position, to: Position, boxes: readonly CollisionBox[]): boolean {
   return boxes.some(({ position: p, half: h }) => {

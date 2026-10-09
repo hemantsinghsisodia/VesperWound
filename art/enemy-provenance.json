@@ -1,0 +1,64 @@
+{
+  "title": "Zombie Number 7 - Animated",
+  "author": "Tony Flanagan",
+  "listing": "https://www.fab.com/listings/a5710c50-a98e-4b55-98f8-c0a0f8318a84",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "acquired": "2026-10-06",
+  "inspected": "2026-10-09",
+  "originalZipSha256": "8c8c62b8bc77800c72aa98a288cf6a8cbb208f6f3ab0a0a2bb08bd654cd456a2",
+  "originalGlbSha256": "55c90eae41474222a8c989528c86e20eb0948fefd1c9bd88f2718ccce9de36e2",
+  "masterSha256": "5c6f3120d29696d0e046ac6a347c39caa9dd8dc18d94dee1d623544c71664b33",
+  "notices": "No separate notice file supplied. License verified in Fab download dialog.",
+  "modifications": [
+    "Uniform height/ground normalization to 1.8 metres",
+    "In-place hip translation with original vertical motion",
+    "Derivative seam welding followed by anatomical weighted reduction preserving face/hands",
+    "Semantic KTX2 texture compression and Meshopt geometry compression"
+  ],
+  "additionalAnimations": [],
+  "exports": [
+    {
+      "tier": "desktop",
+      "triangles": 5867,
+      "bytes": 2982096,
+      "sha256": "e1dedc6cea215b692f45c4ae2fb314910df4f0032024a2b8a7d704312be1d32f",
+      "clips": [
+        "Attack",
+        "Biting_1",
+        "Biting_2",
+        "Crawl",
+        "Death",
+        "Dying",
+        "Idle",
+        "Neck_Bite",
+        "Run",
+        "Scream",
+        "T-Pose",
+        "Walk"
+      ],
+      "bones": 65
+    },
+    {
+      "tier": "mobile",
+      "triangles": 1855,
+      "bytes": 2939620,
+      "sha256": "47db48fe2c26fb2b0192a0e2f90324d5ec3b3d907c866f32db3d7e82830de449",
+      "clips": [
+        "Attack",
+        "Biting_1",
+        "Biting_2",
+        "Crawl",
+        "Death",
+        "Dying",
+        "Idle",
+        "Neck_Bite",
+        "Run",
+        "Scream",
+        "T-Pose",
+        "Walk"
+      ],
+      "bones": 65
+    }
+  ]
+}

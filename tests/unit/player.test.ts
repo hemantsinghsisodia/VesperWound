@@ -20,7 +20,7 @@ describe('player fixed-clock rules', () => {
     expect(Math.hypot(run.state.position.x - PLAYER_SPAWN.x, run.state.position.z - PLAYER_SPAWN.z)).toBeCloseTo(5);
   });
   it('resolves one timed punch against a forward target and buffers the next punch only briefly', () => {
-    const player = new PlayerSimulation(new FlatGround()); player.state.position = { x: 0.5, y: .035, z: 3.4 };
+    const player = new PlayerSimulation(new FlatGround()); player.state.position = { x: .75, y: .035, z: 3.4 };
     player.update(1 / 60, input(0, 0, ['attack']), { x: 1.5, z: 3.4 }); steps(player, input(), 20);
     expect(player.state.targetHits).toBe(1); steps(player, input(), 60); expect(player.state.targetHits).toBe(1);
     expect(player.state.action).toBe('idle');

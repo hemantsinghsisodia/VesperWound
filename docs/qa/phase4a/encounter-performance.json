@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-09T12:17:57.023Z",
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "build": "production",
+  "mode": "encounter",
+  "method": "External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.",
+  "renderingUncapped": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "exercise": "Real-input pursuit, heavy strikes, Ward, stagger, criticals, defeat and restart",
+  "totals": {
+    "encounters": 57,
+    "victories": 57,
+    "hits": 171,
+    "criticals": 57,
+    "blocks": 113,
+    "strikes": 171
+  },
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererAllocation": {
+      "estimatedBytes": 57220259,
+      "textures": 60
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.021100000023843,
+      "frames": 3429,
+      "fps": 115.39497134358207,
+      "p95FrameMs": 12.299999999995634,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 10,
+        "victories": 10,
+        "hits": 30,
+        "criticals": 10,
+        "blocks": 20,
+        "strikes": 30
+      }
+    },
+    {
+      "elapsedSeconds": 60.05919999998808,
+      "frames": 6771,
+      "fps": 109.1802383768538,
+      "p95FrameMs": 12.599999999991269,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 15,
+        "victories": 15,
+        "hits": 45,
+        "criticals": 15,
+        "blocks": 30,
+        "strikes": 45
+      }
+    },
+    {
+      "elapsedSeconds": 90.08789999997616,
+      "frames": 10039,
+      "fps": 109.65379859033948,
+      "p95FrameMs": 12.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 20,
+        "victories": 20,
+        "hits": 60,
+        "criticals": 20,
+        "blocks": 40,
+        "strikes": 60
+      }
+    },
+    {
+      "elapsedSeconds": 120.11589999997616,
+      "frames": 13266,
+      "fps": 107.46076189680174,
+      "p95FrameMs": 12.89999999999418,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 25,
+        "victories": 25,
+        "hits": 75,
+        "criticals": 25,
+        "blocks": 50,
+        "strikes": 75
+      }
+    },
+    {
+      "elapsedSeconds": 150.1626999999881,
+      "frames": 16444,
+      "fps": 106.18654616460101,
+      "p95FrameMs": 12.5,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 31,
+        "victories": 31,
+        "hits": 93,
+        "criticals": 31,
+        "blocks": 62,
+        "strikes": 93
+      }
+    },
+    {
+      "elapsedSeconds": 180.1985,
+      "frames": 19505,
+      "fps": 99.41181343716345,
+      "p95FrameMs": 13.699999999982538,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 36,
+        "victories": 36,
+        "hits": 108,
+        "criticals": 36,
+        "blocks": 71,
+        "strikes": 108
+      }
+    },
+    {
+      "elapsedSeconds": 210.23760000002383,
+      "frames": 22765,
+      "fps": 109.53035816427128,
+      "p95FrameMs": 13.10000000000582,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 41,
+        "victories": 41,
+        "hits": 123,
+        "criticals": 41,
+        "blocks": 81,
+        "strikes": 123
+      }
+    },
+    {
+      "elapsedSeconds": 240.2915,
+      "frames": 26057,
+      "fps": 107.9026717900453,
+      "p95FrameMs": 13.399999999965075,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 46,
+        "victories": 46,
+        "hits": 138,
+        "criticals": 46,
+        "blocks": 91,
+        "strikes": 138
+      }
+    },
+    {
+      "elapsedSeconds": 270.33380000001193,
+      "frames": 29223,
+      "fps": 106.18717258955111,
+      "p95FrameMs": 13.700000000011642,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 51,
+        "victories": 51,
+        "hits": 153,
+        "criticals": 51,
+        "blocks": 101,
+        "strikes": 153
+      }
+    },
+    {
+      "elapsedSeconds": 300.3658000000119,
+      "frames": 32737,
+      "fps": 117.95002850459058,
+      "p95FrameMs": 12,
+      "visible": "visible",
+      "estimatedRendererBytes": 57220259,
+      "rendererTextures": 60,
+      "exercise": {
+        "encounters": 57,
+        "victories": 57,
+        "hits": 171,
+        "criticals": 57,
+        "blocks": 113,
+        "strikes": 171
+      }
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 300.6141000000238,
+    "frameCount": 32762,
+    "fps": 108.99264144974008,
+    "p95FrameMs": 13,
+    "maxFrameMs": 151.30000000001746,
+    "intervalsOver50Ms": 6,
+    "intervalsOver100Ms": 2
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

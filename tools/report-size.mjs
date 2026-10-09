@@ -3,6 +3,8 @@ import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const groups = { bootstrap: { raw: 0, gzip: 0, limit: 5 * 1024 * 1024 }, desktop: { raw: 0, gzip: 0, limit: 20 * 1024 * 1024 }, mobile: { raw: 0, gzip: 0, limit: 10 * 1024 * 1024 }, cinematic: { raw: 0, gzip: 0, limit: 40 * 1024 * 1024 } };
+groups.encounterDesktop = { raw: 0, gzip: 0, limit: 8 * 1024 * 1024 };
+groups.encounterMobile = { raw: 0, gzip: 0, limit: 4 * 1024 * 1024 };
 async function visit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = `${directory}/${entry.name}`;
@@ -14,7 +16,7 @@ async function visit(directory) {
         for (const tier of ['desktop', 'mobile', 'cinematic']) { groups[tier].raw += bytes.length; groups[tier].gzip += gzipSync(bytes).byteLength; }
         continue;
       }
-      const group = path.includes('/showcase/desktop/') ? groups.desktop : path.includes('/showcase/mobile/') ? groups.mobile : path.includes('/showcase/cinematic/') ? groups.cinematic : groups.bootstrap;
+      const group = path.includes('/encounter/desktop/') ? groups.encounterDesktop : path.includes('/encounter/mobile/') ? groups.encounterMobile : path.includes('/showcase/desktop/') ? groups.desktop : path.includes('/showcase/mobile/') ? groups.mobile : path.includes('/showcase/cinematic/') ? groups.cinematic : groups.bootstrap;
       group.raw += bytes.length; group.gzip += gzipSync(bytes).byteLength;
     }
   }

@@ -1,0 +1,16 @@
+{
+  "framing": {
+    "bottom": 0,
+    "top": 1.8,
+    "height": 1.8,
+    "basis": "Measured rendered Idle skin in browser"
+  },
+  "rawImporterGeometryBounds": {
+    "bottom": -1.0557631254196167,
+    "top": 1.8012696504592896
+  },
+  "engine": "Cycles",
+  "samples": 12,
+  "source": "art/source/zombie7-master.blend",
+  "masterModified": false
+}

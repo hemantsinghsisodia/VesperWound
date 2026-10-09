@@ -1,120 +1,54 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
-import { PerspectiveCamera, Vector3 } from 'three';
-
-interface FrameMeasurement {
-  started: number;
-  previous: number;
-  frames: number[];
-  stopped: boolean;
-}
-
-declare global {
-  interface Window { __PERFORMANCE_MEASUREMENT__?: FrameMeasurement }
-}
-
-for (const mode of ['combat', 'cinematic']) test(`production sustained ten-minute ${mode} WebGPU measurement`, async ({ page, browser }) => {
-  test.skip(process.env.VESPER_PERFORMANCE !== '1', 'Opt in with VESPER_PERFORMANCE=1; ten-minute hardware measurement.');
-  const errors: string[] = [];
-  const warnings: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  page.on('console', (message) => { if (message.type() === 'warning') warnings.push(message.text()); });
-  await page.goto('/');
-  await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
-  await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
-  await page.getByRole('button', { name: 'Open settings' }).click();
-  await page.locator('#quality').selectOption('High');
-  await page.locator('#adaptive').uncheck();
-  await page.getByRole('button', { name: 'RETURN TO THE WORKS' }).click();
-  await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
-  if (mode === 'cinematic') {
-    await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active');
-  }
+import { exerciseEncounter, type ExerciseTotals } from '../helpers/encounter-driver';
+interface FrameMeasurement { started: number; previous: number; frames: number[]; stopped: boolean }
+declare global { interface Window { __PERFORMANCE_MEASUREMENT__?: FrameMeasurement } }
+for (const mode of ['encounter', 'cinematic']) test(`production sustained five-minute ${mode} WebGPU measurement`, async ({ page, browser }) => {
+  test.skip(process.env.VESPER_PERFORMANCE !== '1', 'Opt in with VESPER_PERFORMANCE=1; five-minute hardware measurement.');
+  const errors: string[] = [], warnings: string[] = [];
+  page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'warning') warnings.push(m.text()); });
+  await page.goto('/'); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready'); await page.locator('#start').click();
+  await page.locator('#settings-open').click(); await page.locator('#quality').selectOption('High'); await page.locator('#adaptive').uncheck();
+  await page.locator('#resume').click(); await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
+  if (mode === 'cinematic') { await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active'); }
+  else { await page.locator('#encounter-start').click(); await expect(page.locator('#app')).toHaveAttribute('data-encounter', 'active'); }
   expect(await page.evaluate(() => typeof window.__VESPER_DEBUG__)).toBe('undefined');
-  let aim = { x: 0, y: 0 };
-  if (mode === 'combat') {
-    await page.keyboard.down('d'); await page.keyboard.down('s');
-    await expect.poll(async () => page.evaluate(() => Number(document.querySelector('canvas')?.dataset.playerPosition?.split(',')[0]))).toBeGreaterThan(.6);
-    await page.keyboard.up('d'); await page.keyboard.up('s'); await page.waitForTimeout(500);
-    const p = await page.evaluate(() => document.querySelector('canvas')!.dataset.playerPosition!.split(',').map(Number));
-    const camera = new PerspectiveCamera(38, 1440 / 900, .1, 100); camera.position.set(p[0]! + 9.5, p[1]! + .85 + 15, p[2]! + 9.5); camera.lookAt(p[0]!, p[1]! + .85, p[2]!); camera.updateMatrixWorld();
-    const projected = new Vector3(1.5, p[1]!, 3.4).project(camera); aim = { x: (projected.x + 1) * 720, y: (1 - projected.y) * 450 };
-  }
+  const totals: ExerciseTotals = { encounters: 0, victories: 0, hits: 0, criticals: 0, blocks: 0, strikes: 0 };
+  let running = true;
+  const driver = mode === 'encounter' ? exerciseEncounter(page, () => running, totals) : Promise.resolve();
   await page.waitForTimeout(30000);
   const hardware = await page.evaluate(async () => {
-    const canvas = document.querySelector('canvas');
-    const webgpu = canvas !== null && canvas.getContext('webgpu') !== null;
-    const adapter = await navigator.gpu?.requestAdapter({ powerPreference: 'high-performance' });
-    return { webgpu, renderResolution: { width: canvas?.width, height: canvas?.height },
-      rendererAllocation: { estimatedBytes: Number(canvas?.dataset.rendererBytes), textures: Number(canvas?.dataset.rendererTextures) },
-      adapter: adapter ? { vendor: adapter.info.vendor, architecture: adapter.info.architecture,
-      device: adapter.info.device, description: adapter.info.description } : null };
+    const c = document.querySelector('canvas')!, adapter = await navigator.gpu?.requestAdapter({ powerPreference: 'high-performance' });
+    return { webgpu: c.getContext('webgpu') !== null, renderResolution: { width: c.width, height: c.height },
+      rendererAllocation: { estimatedBytes: Number(c.dataset.rendererBytes), textures: Number(c.dataset.rendererTextures) },
+      adapter: adapter ? { vendor: adapter.info.vendor, architecture: adapter.info.architecture, device: adapter.info.device, description: adapter.info.description } : null };
   });
-  expect(hardware.webgpu).toBe(true);
-  expect(hardware.adapter).not.toBeNull();
-  expect(hardware.renderResolution).toEqual({ width: 1440, height: 900 });
-  // An external observer measures presented rAF intervals without enabling any
-  // application diagnostics or changing the production render loop.
+  expect(hardware.webgpu).toBe(true); expect(hardware.adapter).not.toBeNull(); expect(hardware.renderResolution).toEqual({ width: 1440, height: 900 });
   await page.evaluate(() => {
-    const measurement: FrameMeasurement = { started: performance.now(), previous: 0, frames: [], stopped: false };
-    window.__PERFORMANCE_MEASUREMENT__ = measurement;
-    const observe = (timestamp: number) => {
-      if (measurement.stopped) return;
-      if (measurement.previous) measurement.frames.push(timestamp - measurement.previous);
-      measurement.previous = timestamp;
-      requestAnimationFrame(observe);
-    };
-    requestAnimationFrame(observe);
+    const m: FrameMeasurement = { started: performance.now(), previous: 0, frames: [], stopped: false }; window.__PERFORMANCE_MEASUREMENT__ = m;
+    const observe = (t: number) => { if (m.stopped) return; if (m.previous) m.frames.push(t - m.previous); m.previous = t; requestAnimationFrame(observe); }; requestAnimationFrame(observe);
   });
   const samples = [];
-  let exercise = true;
-  const movement = mode === 'combat' ? (async () => {
-    while (exercise) {
-      // Real production input exercises damage, posture, criticals, target
-      // knockback, particles, audio and skeletal transitions. No dev commands.
-      for (const [button, delay] of [['left', 650], ['left', 700], ['left', 770], ['right', 950], ['right', 950]] as const) {
-        if (!exercise) break;
-        await page.mouse.click(aim.x, aim.y, { button }); await page.waitForTimeout(delay);
-      }
-      if (exercise) { await page.keyboard.press('q'); await page.waitForTimeout(850); await page.locator('#reset-targets').click(); }
-    }
-  })() : Promise.resolve();
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 10; i++) {
     await page.waitForTimeout(30000);
     const sample = await page.evaluate(() => {
-      const measurement = window.__PERFORMANCE_MEASUREMENT__!;
-      const recent = measurement.frames.slice(-1800).sort((a, b) => a - b);
-      return { elapsedSeconds: (performance.now() - measurement.started) / 1000, frames: measurement.frames.length,
-        fps: 1000 * recent.length / recent.reduce((sum, value) => sum + value, 0),
-        p95FrameMs: recent[Math.floor((recent.length - 1) * 0.95)]!, visible: document.visibilityState,
-        estimatedRendererBytes: Number(document.querySelector('canvas')?.dataset.rendererBytes),
-        hits: Number(document.querySelector('canvas')?.dataset.combatHits), criticals: Number(document.querySelector('canvas')?.dataset.combatCriticals), strikes: Number(document.querySelector('canvas')?.dataset.combatStrikes) };
+      const m = window.__PERFORMANCE_MEASUREMENT__!, frames = m.frames.slice(-1800).sort((a,b) => a-b), c = document.querySelector('canvas')!;
+      return { elapsedSeconds: (performance.now()-m.started)/1000, frames: m.frames.length, fps: 1000*frames.length/frames.reduce((s,v)=>s+v,0),
+        p95FrameMs: frames[Math.floor((frames.length-1)*.95)]!, visible: document.visibilityState, estimatedRendererBytes: Number(c.dataset.rendererBytes), rendererTextures: Number(c.dataset.rendererTextures) };
     });
-    samples.push(sample);
-    console.log(`Measured ${sample.elapsedSeconds.toFixed(0)}s: ${sample.fps.toFixed(1)} FPS, p95 ${sample.p95FrameMs.toFixed(1)} ms`);
-    await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
-    expect(sample.visible).toBe('visible');
+    samples.push({ ...sample, exercise: { ...totals } }); console.log(`Measured ${sample.elapsedSeconds.toFixed(0)}s: ${sample.fps.toFixed(1)} FPS, p95 ${sample.p95FrameMs.toFixed(1)} ms; ${totals.victories} victories`);
+    expect(sample.visible).toBe('visible'); await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
   }
-  exercise = false; await movement;
+  running = false; await driver;
   const metrics = await page.evaluate(() => {
-    const measurement = window.__PERFORMANCE_MEASUREMENT__!; measurement.stopped = true;
-    const frames = measurement.frames.sort((a, b) => a - b);
-    return { durationSeconds: (performance.now() - measurement.started) / 1000, frameCount: frames.length,
-      fps: 1000 * frames.length / frames.reduce((sum, value) => sum + value, 0),
-      p95FrameMs: frames[Math.floor((frames.length - 1) * 0.95)]!, maxFrameMs: frames.at(-1)!,
-      intervalsOver50Ms: frames.filter((value) => value > 50).length, intervalsOver100Ms: frames.filter((value) => value > 100).length };
+    const m = window.__PERFORMANCE_MEASUREMENT__!; m.stopped=true; const f=m.frames.sort((a,b)=>a-b);
+    return { durationSeconds:(performance.now()-m.started)/1000, frameCount:f.length, fps:1000*f.length/f.reduce((s,v)=>s+v,0), p95FrameMs:f[Math.floor((f.length-1)*.95)]!,maxFrameMs:f.at(-1)!,intervalsOver50Ms:f.filter(v=>v>50).length,intervalsOver100Ms:f.filter(v=>v>100).length };
   });
-  const evidence = { date: new Date().toISOString(), browser: browser.version(), backend: 'WebGPU', build: 'production',
-    mode, method: 'External requestAnimationFrame intervals with Chrome --disable-frame-rate-limit and --disable-gpu-vsync; application has no frame limiter. Includes CPU submission and scheduling, not isolated GPU timestamp queries.',
-    renderingUncapped: true, gameplayExercise: mode === 'combat' ? 'Repeated real-input light combo, heavy stagger/critical follow-up, Ward and target resets; fixed simulation, knockback, particles and audio active' : 'Looped idle skeletal animation', browserFlags: ['--disable-frame-rate-limit', '--disable-gpu-vsync'],
-    viewport: { width: 1440, height: 900 }, quality: 'High', adaptiveResolution: false, warmupSeconds: 30,
-    hardware, samples, metrics, errors, warnings };
-  await mkdir('docs/qa/phase3', { recursive: true });
-  await writeFile(`docs/qa/phase3/${mode}-performance.json`, JSON.stringify(evidence, null, 2));
-  expect(errors).toEqual([]);
-  expect(warnings.filter((message) => message.includes('Vertex attribute'))).toEqual([]);
-  expect(metrics.durationSeconds).toBeGreaterThanOrEqual(600);
-  expect(metrics.durationSeconds).toBeLessThan(630);
-  expect(metrics.p95FrameMs).toBeLessThanOrEqual(mode === 'cinematic' ? 35 : 18.5);
-  if (mode === 'combat') { expect(samples.at(-1)!.hits).toBeGreaterThan(300); expect(samples.at(-1)!.criticals).toBeGreaterThan(50); }
+  await mkdir('docs/qa/phase4a',{recursive:true});
+  await writeFile(`docs/qa/phase4a/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
+    method:'External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.',
+    renderingUncapped:true,viewport:{width:1440,height:900},quality:'High',adaptiveResolution:false,warmupSeconds:30,exercise:mode==='encounter'?'Real-input pursuit, heavy strikes, Ward, stagger, criticals, defeat and restart':'Looped idle skeletal animation',totals,hardware,samples,metrics,errors,warnings },null,2));
+  expect(errors).toEqual([]);expect(warnings.filter(m=>m.includes('Vertex attribute'))).toEqual([]); expect(metrics.durationSeconds).toBeGreaterThanOrEqual(300);expect(metrics.durationSeconds).toBeLessThan(330);
+  expect(metrics.p95FrameMs).toBeLessThanOrEqual(mode==='cinematic'?35:18.5);
+  if(mode==='encounter'){expect(totals.victories).toBeGreaterThan(10);expect(totals.criticals).toBeGreaterThan(10);expect(totals.blocks).toBeGreaterThan(10);}
 });

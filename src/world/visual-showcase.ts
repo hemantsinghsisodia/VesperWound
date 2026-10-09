@@ -16,6 +16,7 @@ import { PLAYER_CLIP_DESCRIPTORS, PLAYER_CLIPS, PLAYER_CLIP_RATES, attackPlaybac
 import { type PlayerSimulation } from '../player/player-simulation';
 import { ATTACKS, type CombatEvent } from '../player/combat-definitions';
 import { CombatPresentation } from './combat-presentation';
+import type { EnemyPresentation } from './enemy-presentation';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
@@ -39,6 +40,8 @@ export class VisualShowcase implements WorldPresentation {
   aim: { x: number; z: number } | undefined;
   private readonly combat: CombatPresentation;
   private animationSequence = -1;
+  private enemy: EnemyPresentation | null = null;
+  setEnemy(view: EnemyPresentation | null): void { this.enemy?.dispose(); if (this.enemy) this.scene.remove(this.enemy.group); this.enemy = view; if (view) this.scene.add(view.group); }
 
   constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation) {
     this.combat = new CombatPresentation(player); this.scene.add(this.combat.group);
@@ -87,10 +90,11 @@ export class VisualShowcase implements WorldPresentation {
     this.key.shadow.mapSize.set(profile.shadowSize, profile.shadowSize); this.key.shadow.needsUpdate = true;
   }
   update(dt: number, input: InputFrame, reducedMotion: boolean): boolean {
-    if (this.playing) this.player.update(dt, input, this.aim);
+    void input;
     if (this.playing) this.applyPlayer(1);
     this.time += dt; this.preview.update(dt);
     if (this.playing) this.combat.update(dt, reducedMotion);
+    this.enemy?.update(dt, reducedMotion);
     this.scene.updateMatrixWorld(true);
     this.engine.intensity = 38 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * 2);
     this.steam.forEach((puff, index) => {
@@ -102,8 +106,8 @@ export class VisualShowcase implements WorldPresentation {
     });
     return false; // Foundation's pressure pulse is separate from typed combat events.
   }
-  combatEvent(event: CombatEvent, reducedMotion: boolean): void { this.combat.event(event, reducedMotion); }
-  interpolate(alpha: number): void { if (this.playing) { this.applyPlayer(alpha); this.combat.interpolate(alpha); } }
+  combatEvent(event: CombatEvent, reducedMotion: boolean): void { this.combat.event(event, reducedMotion); this.enemy?.event(event); }
+  interpolate(alpha: number): void { if (this.playing) { this.applyPlayer(alpha); this.combat.interpolate(alpha); this.enemy?.interpolate(alpha); } }
   private applyPlayer(alpha: number): void {
     const s = this.player.state;
     this.target.set(s.previous.x + (s.position.x - s.previous.x) * alpha, s.previous.y + (s.position.y - s.previous.y) * alpha, s.previous.z + (s.position.z - s.previous.z) * alpha);
@@ -150,10 +154,10 @@ export class VisualShowcase implements WorldPresentation {
       this.steam.push(puff); this.scene.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources; }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.enemy?.ownedResources ?? 0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
-    this.preview.dispose(); this.combat.dispose();
+    this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;
     this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;
     for (const geometry of this.geometries) geometry.dispose();

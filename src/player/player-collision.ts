@@ -1,7 +1,7 @@
 import RAPIER from '@dimforge/rapier3d-compat';
 import { PLAYER_SPAWN, type PlayerCollision, type Position } from './player-simulation';
 import type { CombatantState } from './combat-definitions';
-import { segmentBlocked, discBlocked, type CollisionBox } from './collision-math';
+import { courtyardSolids, segmentBlocked, discBlocked, type CollisionBox } from './collision-math';
 
 export type { CollisionBox } from './collision-math';
 let initialized: Promise<void> | null = null;
@@ -27,7 +27,7 @@ export class RapierPlayerCollision implements PlayerCollision {
   install(boxes: readonly CollisionBox[]): void {
     if (this.installed) return; this.installed = true;
     // The legacy practice-post collider is replaced by live target colliders.
-    this.boxes = boxes.filter(b => !(b.position.x === 1.5 && b.position.z === 3.4 && b.half.x === .24));
+    this.boxes = courtyardSolids(boxes);
     for (const { position: p, half: h } of this.boxes) this.world.createCollider(RAPIER.ColliderDesc.cuboid(h.x, h.y, h.z).setTranslation(p.x, p.y, p.z));
     this.world.step();
   }
@@ -42,6 +42,8 @@ export class RapierPlayerCollision implements PlayerCollision {
   reset(position: Position): void { this.body.setTranslation({ x: position.x, y: position.y + 0.87, z: position.z }, true); this.world.step(); }
   blocked(from: Position, to: Position): boolean { return segmentBlocked(from, to, this.boxes); }
   syncTargets(states: readonly CombatantState[]): void {
+    const activeIds = new Set(states.map(t => t.id));
+    for (const [id, entry] of this.targets) if (!activeIds.has(id)) { entry.active = false; entry.collider.setEnabled(false); }
     for (const t of states) {
       let entry = this.targets.get(t.id);
       if (!entry) { entry = { collider: this.world.createCollider(RAPIER.ColliderDesc.cylinder(.8, .3)), position: { ...t.position }, active: true }; this.targets.set(t.id, entry); }

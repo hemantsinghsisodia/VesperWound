@@ -23,3 +23,4 @@ await run(blender, ['-b', '--factory-startup', '--disable-autoexec', '--python',
 if (createHash('sha256').update(await readFile('art/source/medic-player-animations.blend')).digest('hex') !== animationBefore) throw new Error('The saved animation source changed during export.');
 await run(process.execPath, ['tools/optimize-player-animations.mjs']);
 await run(process.execPath, ['tools/record-provenance.mjs']);
+await run(process.execPath, ['tools/build-enemy.mjs']);

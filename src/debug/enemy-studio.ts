@@ -1,0 +1,25 @@
+// Standalone development evidence page; not imported by the production entry.
+import { Box3 } from 'three/webgpu';
+import { RendererAdapter } from '../rendering/renderer-adapter';
+import { AssetManager } from '../assets/asset-manager';
+import { CharacterInspection } from '../world/character-inspection';
+import { MEDIC } from '../world/character-definition';
+import { QUALITY_PROFILES } from '../performance/quality';
+import type { InspectionView } from '../world/presentation';
+import type { CharacterDefinition } from '../world/character-definition';
+const canvas=document.querySelector<HTMLCanvasElement>('#world')!;
+const options=new URLSearchParams(location.search);
+const adapter=new RendererAdapter(canvas,options.get('backend')==='webgl2'?'webgl2':'webgpu-required');
+await adapter.init('auto',reason=>{document.querySelector('#status')!.textContent=reason;});
+const variant=options.get('variant')??'desktop';
+const assets=new AssetManager(adapter.renderer);await assets.init(`/docs/qa/phase4a/${variant}-manifest.json`);
+const definition:CharacterDefinition={...MEDIC,displayName:'Zombie 7',clips:[],cameras:structuredClone(MEDIC.cameras),diagnostics:{feet:['mixamorigLeftFoot','mixamorigRightFoot']}};
+const studio=new CharacterInspection(canvas,definition);
+await studio.load(assets);studio.configure(QUALITY_PROFILES.High);studio.resize(innerWidth,innerHeight);adapter.resize(innerWidth,innerHeight,QUALITY_PROFILES.High,1);adapter.configure(studio.scene,studio.camera,{...QUALITY_PROFILES.High,bloom:false});adapter.renderer.toneMappingExposure=1;studio.activate();
+studio.actor.paused=true;studio.actor.selectClip({kind:'clip',name:'Idle'});studio.actor.seek(0);
+const select=document.querySelector<HTMLSelectElement>('#clip')!;for(const clip of studio.actor.clips)select.add(new Option(clip.name,clip.name));select.value='Idle';
+select.onchange=()=>{studio.actor.selectClip({kind:'clip',name:select.value});studio.actor.paused=false;studio.actor.update(.2);studio.actor.paused=true;studio.actor.seek(0);};document.querySelector<HTMLButtonElement>('#turn')!.onclick=()=>studio.actor.turn();document.querySelector<HTMLSelectElement>('#view')!.onchange=e=>{const value=(e.target as HTMLSelectElement).value;if(value==='hands'||value==='feet'){const y=value==='hands'?1.1:.18;definition.cameras.equipment={target:[0,y,.2],position:[0,y,1.55],near:.3,far:3};studio.selectView('equipment');}else studio.selectView(value as InspectionView);};
+document.querySelector<HTMLButtonElement>('#pause')!.onclick=()=>{studio.actor.paused=!studio.actor.paused;};document.querySelector<HTMLInputElement>('#time')!.oninput=e=>{studio.actor.seek(Number((e.target as HTMLInputElement).value)*studio.actor.duration(select.value));};
+let previous=0;await adapter.renderer.setAnimationLoop(t=>{studio.update(previous?(t-previous)/1000:0);previous=t;adapter.render();});
+const bounds=new Box3().setFromObject(studio.actor.group,true);canvas.dataset.bounds=JSON.stringify({min:bounds.min.toArray(),max:bounds.max.toArray()});document.querySelector('#status')!.textContent=`${variant} · ${adapter.backend} · neutral source comparison`;
+window.addEventListener('pagehide',()=>{studio.dispose();assets.dispose();adapter.dispose();},{once:true});

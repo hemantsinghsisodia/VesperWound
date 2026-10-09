@@ -1,0 +1,63 @@
+{
+  "before": {
+    "position": {
+      "x": 0.7093096313664756,
+      "y": 0.02897321086144075,
+      "z": 3.37164331586476
+    },
+    "previous": {
+      "x": 0.7093096313664756,
+      "y": 0.028973133350664287,
+      "z": 3.3716428234490943
+    },
+    "facing": 1.5707963161521121,
+    "health": 100,
+    "pressure": 100,
+    "action": "idle",
+    "actionTime": 0.24999999999999997,
+    "actionSequence": 2,
+    "attack": null,
+    "grounded": true,
+    "strikes": 0,
+    "targetHits": 0,
+    "invulnerable": false,
+    "wardRemaining": 0,
+    "combo": 0,
+    "criticals": 0,
+    "blocks": 0,
+    "defeats": 0,
+    "ventWarning": false,
+    "ventRemaining": 0.6666666666666665
+  },
+  "after": {
+    "position": {
+      "x": 0.7577435994839887,
+      "y": 0.029466120629002862,
+      "z": 3.3745438795455387
+    },
+    "previous": {
+      "x": 0.816669164816163,
+      "y": 0.029366120631529075,
+      "z": 3.3156183142133644
+    },
+    "facing": -0.5190682685071887,
+    "health": 100,
+    "pressure": 100,
+    "action": "run",
+    "actionTime": 0.09999999999999999,
+    "actionSequence": 7,
+    "attack": null,
+    "grounded": true,
+    "strikes": 1,
+    "targetHits": 1,
+    "invulnerable": false,
+    "wardRemaining": 0,
+    "combo": 0,
+    "criticals": 0,
+    "blocks": 0,
+    "defeats": 0,
+    "ventWarning": false,
+    "ventRemaining": 1.7666666666666675
+  },
+  "errors": []
+}
