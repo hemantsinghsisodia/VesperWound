@@ -1,0 +1,1564 @@
+{
+  "baseline": {
+    "backend": "WebGL2",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 16.799999999999272,
+    "cpuMs": 7.399999976158142,
+    "fps": 53.98920215956815,
+    "p95": 33.19999999999982,
+    "draws": 94,
+    "triangles": 277165,
+    "textures": 54,
+    "estimatedGpuBytes": 55698103,
+    "resources": 35,
+    "references": 5,
+    "voices": 3,
+    "overruns": 0,
+    "fixtureLoads": 1,
+    "markerX": -1.5999994443478216,
+    "markerZ": 3.3999986240373743,
+    "listeners": 62,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Baton_Idle",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.403357833667383,
+          0.10833517031339879,
+          3.614065510802946
+        ],
+        [
+          -1.803710533082284,
+          0.10154919965657605,
+          3.1812121098366815
+        ]
+      ],
+      "gripDistances": []
+    },
+    "weaponContact": {
+      "base": [
+        -1.9247710410338248,
+        0.8585675792045271,
+        3.3088971658489634
+      ],
+      "tip": [
+        -2.1369128419662777,
+        1.0080156842680352,
+        3.601467920977076
+      ],
+      "grip": 0.134200211556339
+    },
+    "player": {
+      "target": null,
+      "weapon": "baton",
+      "position": {
+        "x": -1.5999994443478216,
+        "y": 0.02931096592161339,
+        "z": 3.3999986240373743
+      },
+      "previous": {
+        "x": -1.5999994443478216,
+        "y": 0.029224185909843076,
+        "z": 3.3999986240373743
+      },
+      "facing": 0,
+      "health": 100,
+      "pressure": 100,
+      "action": "idle",
+      "actionTime": 0.16666666666666666,
+      "actionSequence": 1,
+      "attack": null,
+      "grounded": true,
+      "strikes": 0,
+      "targetHits": 0,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 0,
+      "blocks": 0,
+      "defeats": 0,
+      "ventWarning": false,
+      "ventRemaining": 1.8333333333333333
+    },
+    "targets": [
+      {
+        "id": "isolated",
+        "label": "COMBO TARGET",
+        "position": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 0,
+        "previous": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "heavy",
+        "label": "HEAVY TARGET",
+        "position": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "maxHealth": 160,
+        "mass": 2,
+        "generation": 0,
+        "previous": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "spawn": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "health": 160,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "grouped",
+        "label": "GROUP TARGET",
+        "position": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 0,
+        "previous": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "spawn": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      }
+    ],
+    "encounter": "training",
+    "enemies": [],
+    "enemyLoading": false
+  },
+  "before": {
+    "backend": "WebGL2",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 16.600000000000364,
+    "cpuMs": 8.100000023841858,
+    "fps": 0,
+    "p95": 0,
+    "draws": 90,
+    "triangles": 311043,
+    "textures": 60,
+    "estimatedGpuBytes": 56270728,
+    "resources": 60,
+    "references": 6,
+    "voices": 3,
+    "overruns": 0,
+    "fixtureLoads": 1,
+    "markerX": -1.5999994443478216,
+    "markerZ": 3.3999986223839844,
+    "listeners": 62,
+    "audioState": "suspended",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Baton_Idle",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "rig": {
+      "feet": [
+        [
+          -1.435455069117063,
+          0.12165236403040153,
+          3.640709509147727
+        ],
+        [
+          -1.8337279968888738,
+          0.11877205768557014,
+          3.2051009458424864
+        ]
+      ],
+      "gripDistances": []
+    },
+    "weaponContact": {
+      "base": [
+        -1.9858430023964004,
+        0.8406653854759049,
+        3.0874632068486263
+      ],
+      "tip": [
+        -2.3164069043061017,
+        1.007932042569921,
+        3.212734340136696
+      ],
+      "grip": 0.13420145225478072
+    },
+    "player": {
+      "target": null,
+      "weapon": "baton",
+      "position": {
+        "x": -1.5999994443478216,
+        "y": 0.029324095976480752,
+        "z": 3.3999986223740044
+      },
+      "previous": {
+        "x": -1.5999994443478216,
+        "y": 0.02931096592161339,
+        "z": 3.3999986240373743
+      },
+      "facing": 0,
+      "health": 100,
+      "pressure": 100,
+      "action": "idle",
+      "actionTime": 0.18333333333333332,
+      "actionSequence": 2,
+      "attack": null,
+      "grounded": true,
+      "strikes": 0,
+      "targetHits": 0,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 0,
+      "blocks": 0,
+      "defeats": 0,
+      "ventWarning": false,
+      "ventRemaining": 0
+    },
+    "targets": [
+      {
+        "id": "zombie7-0",
+        "generation": 2,
+        "label": "Zombie 7 · 1",
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "position": {
+          "x": 1.225000000000021,
+          "y": 0.035,
+          "z": 3.399999909080941
+        },
+        "previous": {
+          "x": 1.2500000000000184,
+          "y": 0.035,
+          "z": 3.39999992045301
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 0.16666666666666666,
+        "facing": -1.5707967816776645,
+        "sequence": 1,
+        "attackInstance": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      },
+      {
+        "id": "zombie7-1",
+        "generation": 2,
+        "label": "Zombie 7 · 2",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 2.7
+        },
+        "position": {
+          "x": 2.029325406217611,
+          "y": 0.035,
+          "z": 2.748582551196258
+        },
+        "previous": {
+          "x": 2.053932187816652,
+          "y": 0.035,
+          "z": 2.744165957561216
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 0.16666666666666666,
+        "facing": -1.393200481975471,
+        "sequence": 1,
+        "attackInstance": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      },
+      {
+        "id": "zombie7-2",
+        "generation": 2,
+        "label": "Zombie 7 · 3",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 4.1
+        },
+        "position": {
+          "x": 2.02932543080455,
+          "y": 0.035,
+          "z": 4.051417311819378
+        },
+        "previous": {
+          "x": 2.053932209325933,
+          "y": 0.035,
+          "z": 4.0558339226013675
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 0.16666666666666666,
+        "facing": -1.7483928684526722,
+        "sequence": 1,
+        "attackInstance": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      }
+    ],
+    "encounter": "encounter",
+    "enemies": [
+      {
+        "id": "zombie7-0",
+        "generation": 2,
+        "label": "Zombie 7 · 1",
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "position": {
+          "x": 1.225000000000021,
+          "y": 0.035,
+          "z": 3.399999909080941
+        },
+        "previous": {
+          "x": 1.2500000000000184,
+          "y": 0.035,
+          "z": 3.39999992045301
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 0.16666666666666666,
+        "facing": -1.5707967816776645,
+        "sequence": 1,
+        "attackInstance": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      },
+      {
+        "id": "zombie7-1",
+        "generation": 2,
+        "label": "Zombie 7 · 2",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 2.7
+        },
+        "position": {
+          "x": 2.029325406217611,
+          "y": 0.035,
+          "z": 2.748582551196258
+        },
+        "previous": {
+          "x": 2.053932187816652,
+          "y": 0.035,
+          "z": 2.744165957561216
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 0.16666666666666666,
+        "facing": -1.393200481975471,
+        "sequence": 1,
+        "attackInstance": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      },
+      {
+        "id": "zombie7-2",
+        "generation": 2,
+        "label": "Zombie 7 · 3",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 4.1
+        },
+        "position": {
+          "x": 2.02932543080455,
+          "y": 0.035,
+          "z": 4.051417311819378
+        },
+        "previous": {
+          "x": 2.053932209325933,
+          "y": 0.035,
+          "z": 4.0558339226013675
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 0.16666666666666666,
+        "facing": -1.7483928684526722,
+        "sequence": 1,
+        "attackInstance": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      }
+    ],
+    "enemyLoading": false
+  },
+  "cycles": [
+    {
+      "backend": "WebGL2",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.600000000002183,
+      "cpuMs": 3.899999976158142,
+      "fps": 8.938832843825796,
+      "p95": 633.2999999999993,
+      "draws": 94,
+      "triangles": 277165,
+      "textures": 54,
+      "estimatedGpuBytes": 55624167,
+      "resources": 35,
+      "references": 5,
+      "voices": 3,
+      "overruns": 4,
+      "fixtureLoads": 3,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 62,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4355060645581479,
+            0.12233661160927106,
+            3.6407177352383213
+          ],
+          [
+            -1.8337788750755157,
+            0.11945610853403399,
+            3.205114385216956
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.9846386947030332,
+          0.8404103347936845,
+          3.0854895269150964
+        ],
+        "tip": [
+          -2.3164125410507004,
+          1.0060251899128378,
+          3.2097527340347627
+        ],
+        "grip": 0.1342014442660231
+      },
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6,
+          "y": 0.02995710572227836,
+          "z": 3.4
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0.016666666666666666,
+        "actionSequence": 7,
+        "attack": null,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.9833333333333334
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 7,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 8,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 9,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGL2",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.69999999999709,
+      "cpuMs": 10.200000047683716,
+      "fps": 8.402352658744464,
+      "p95": 666.5,
+      "draws": 94,
+      "triangles": 277165,
+      "textures": 54,
+      "estimatedGpuBytes": 55624167,
+      "resources": 35,
+      "references": 5,
+      "voices": 3,
+      "overruns": 6,
+      "fixtureLoads": 3,
+      "markerX": -1.6000000648157755,
+      "markerZ": 3.399999870368449,
+      "listeners": 62,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4355010856884545,
+            0.12164682358396389,
+            3.6407169213150157
+          ],
+          [
+            -1.8337739084989222,
+            0.1187663403252876,
+            3.205113049374422
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.985931632888381,
+          0.8405245218231501,
+          3.0875404298073104
+        ],
+        "tip": [
+          -2.3165383783603284,
+          1.0078379119054144,
+          3.212635980458293
+        ],
+        "grip": 0.13420145101157457
+      },
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6000000650760797,
+          "y": 0.02932436691131443,
+          "z": 3.3999998698478406
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.02995710572227836,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0.03333333333333333,
+        "actionSequence": 9,
+        "attack": null,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.9666666666666668
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 11,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 12,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 13,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGL2",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.700000000004366,
+      "cpuMs": 4.399999976158142,
+      "fps": 7.318501170960141,
+      "p95": 566.3999999999978,
+      "draws": 94,
+      "triangles": 277165,
+      "textures": 54,
+      "estimatedGpuBytes": 55624167,
+      "resources": 35,
+      "references": 5,
+      "voices": 3,
+      "overruns": 7,
+      "fixtureLoads": 3,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 62,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4355060645581479,
+            0.12727864800143723,
+            3.6407177352383213
+          ],
+          [
+            -1.8337788750755157,
+            0.12439814492620016,
+            3.205114385216956
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.9846386947030332,
+          0.8453523711858507,
+          3.0854895269150964
+        ],
+        "tip": [
+          -2.3164125410507004,
+          1.010967226305004,
+          3.2097527340347627
+        ],
+        "grip": 0.1342014442660231
+      },
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6,
+          "y": 0.02995710572227836,
+          "z": 3.4
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0.016666666666666666,
+        "actionSequence": 11,
+        "attack": null,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.9833333333333343
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 15,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 16,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 17,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGL2",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 16.60000000000582,
+      "cpuMs": 3.100000023841858,
+      "fps": 8.002133902373936,
+      "p95": 633.1999999999971,
+      "draws": 71,
+      "triangles": 275839,
+      "textures": 54,
+      "estimatedGpuBytes": 55624167,
+      "resources": 35,
+      "references": 5,
+      "voices": 3,
+      "overruns": 8,
+      "fixtureLoads": 3,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 62,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "rig": {
+        "feet": [
+          [
+            -1.4354556247692416,
+            0.12732834683425015,
+            3.6407108867637423
+          ],
+          [
+            -1.8337285525410523,
+            0.12444804048941865,
+            3.205102323458502
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.985843558048579,
+          0.8463413682797533,
+          3.0874645844646413
+        ],
+        "tip": [
+          -2.3164074599582802,
+          1.0136080253737694,
+          3.212735717752711
+        ],
+        "grip": 0.13420145225478072
+      },
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0,
+        "actionSequence": 13,
+        "attack": null,
+        "grounded": false,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 2
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 19,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 20,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 21,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    }
+  ],
+  "errors": [],
+  "requests": [
+    "http://127.0.0.1:5180/?backend=webgl2",
+    "http://127.0.0.1:5180/@vite/client",
+    "http://127.0.0.1:5180/src/main.ts?t=1791645186989",
+    "http://127.0.0.1:5180/src/app/application.ts?t=1791645186987",
+    "http://127.0.0.1:5180/src/ui/styles.css?t=1791645186989",
+    "http://127.0.0.1:5180/node_modules/vite/dist/client/env.mjs",
+    "http://127.0.0.1:5180/src/core/lifetime.ts",
+    "http://127.0.0.1:5180/src/core/events.ts",
+    "http://127.0.0.1:5180/src/core/clock.ts",
+    "http://127.0.0.1:5180/src/platform/settings.ts",
+    "http://127.0.0.1:5180/src/platform/capabilities.ts",
+    "http://127.0.0.1:5180/src/ui/interface.ts",
+    "http://127.0.0.1:5180/src/input/input-manager.ts",
+    "http://127.0.0.1:5180/src/audio/audio-manager.ts",
+    "http://127.0.0.1:5180/src/performance/quality.ts",
+    "http://127.0.0.1:5180/src/performance/metrics.ts",
+    "http://127.0.0.1:5180/src/rendering/renderer-adapter.ts",
+    "http://127.0.0.1:5180/src/player/weapon-pickup.ts",
+    "http://127.0.0.1:5180/src/player/weapon-definitions.ts",
+    "http://127.0.0.1:5180/src/assets/asset-manager.ts",
+    "http://127.0.0.1:5180/src/world/visual-showcase.ts?t=1791644999613",
+    "http://127.0.0.1:5180/src/world/presentation.ts",
+    "http://127.0.0.1:5180/src/camera/courtyard-camera.ts",
+    "http://127.0.0.1:5180/src/enemies/encounter-simulation.ts?t=1791645186987",
+    "http://127.0.0.1:5180/src/player/courtyard-collision.json?import",
+    "http://127.0.0.1:5180/src/world/character-definition.ts",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_webgpu.js?v=8e599186",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_tsl.js?v=12483eac",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_addons_tsl_display_BloomNode__js.js?v=a4aa8479",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=3691ffa0",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_addons_loaders_KTX2Loader__js.js?v=76dd88d0",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_addons_libs_meshopt___decoder__module__js.js?v=f87aaf70",
+    "http://127.0.0.1:5180/src/assets/resource-cache.ts",
+    "http://127.0.0.1:5180/src/assets/manifest.ts",
+    "http://127.0.0.1:5180/src/player/baton-contact.json?import",
+    "http://127.0.0.1:5180/src/world/baton-presentation.ts",
+    "http://127.0.0.1:5180/src/world/preview-actor.ts",
+    "http://127.0.0.1:5180/src/player/player-animation.ts",
+    "http://127.0.0.1:5180/src/player/player-simulation.ts?t=1791644999613",
+    "http://127.0.0.1:5180/src/player/combat-definitions.ts",
+    "http://127.0.0.1:5180/src/world/combat-presentation.ts?t=1791644999613",
+    "http://127.0.0.1:5180/src/player/collision-math.ts",
+    "http://127.0.0.1:5180/src/enemies/navigation.ts",
+    "http://127.0.0.1:5180/src/enemies/enemy-definition.ts",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three.core-BTfOrhf1.js?v=fd8adc83",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three.module-9ILK-mrG.js?v=fd8adc83",
+    "http://127.0.0.1:5180/src/world/baton-grip.json?import",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=b7090ae8",
+    "http://127.0.0.1:5180/src/player/combat-targeting.ts?t=1791644999613",
+    "http://127.0.0.1:5180/src/player/weapon-contact.ts",
+    "http://127.0.0.1:5180/assets/showcase/desktop/manifest.json",
+    "http://127.0.0.1:5180/src/player/player-collision.ts?t=1791644999613",
+    "http://127.0.0.1:5180/mark.svg",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/@dimforge_rapier3d-compat.js?v=67bded74",
+    "http://127.0.0.1:5180/assets/showcase/desktop/character.glb",
+    "http://127.0.0.1:5180/assets/showcase/desktop/ash-quay.glb",
+    "http://127.0.0.1:5180/assets/showcase/shared/animations.glb",
+    "http://127.0.0.1:5180/assets/weapons/baton/baton.glb",
+    "blob:http://127.0.0.1:5180/c04983b0-7649-410f-a063-d020364216b5",
+    "blob:http://127.0.0.1:5180/7464de41-0c29-4c90-bb95-d234e0522eac",
+    "blob:http://127.0.0.1:5180/abff769f-844f-4d89-8488-9dc8c0b52ffa",
+    "blob:http://127.0.0.1:5180/9d21dbb9-34b7-4ed7-bb8c-9640e3900ad8",
+    "blob:http://127.0.0.1:5180/65677b2d-58aa-44be-8f85-16737295f4fc",
+    "blob:http://127.0.0.1:5180/b95e04da-8b26-4c0d-a0a8-2b9d0c6ecebc",
+    "blob:http://127.0.0.1:5180/7e75a454-6880-42d2-be2f-9464d828f9ab",
+    "blob:http://127.0.0.1:5180/40756779-1c3d-435c-ac96-a044a18dea2b",
+    "blob:http://127.0.0.1:5180/890805fd-bad1-4381-8c5e-3e9669a4fa67",
+    "blob:http://127.0.0.1:5180/fd3fcff4-2853-4a0b-a538-c1375b057527",
+    "blob:http://127.0.0.1:5180/0ee3c99a-a600-4819-b63e-7d2c2aadd1c3",
+    "blob:http://127.0.0.1:5180/b8fee2f9-6d56-4783-8b49-fd7fff50bb5d",
+    "blob:http://127.0.0.1:5180/815ea58e-0edf-4d6b-bdba-7f92fc334ef1",
+    "blob:http://127.0.0.1:5180/1f6d543d-d16e-424b-a51b-9483da550dc8",
+    "blob:http://127.0.0.1:5180/4e7a0681-ee7a-4b57-9abe-e0e8f648d095",
+    "blob:http://127.0.0.1:5180/4d2d2cba-ba9d-42f4-a13e-70c6f1045f27",
+    "blob:http://127.0.0.1:5180/751c2c0b-8a33-47c1-b360-f623d3d6a0cc",
+    "blob:http://127.0.0.1:5180/9953ed82-b0a3-4bca-a395-5c494f930cd7",
+    "blob:http://127.0.0.1:5180/1d34cc8c-acf8-4507-b756-f896a6171adf",
+    "blob:http://127.0.0.1:5180/085905cf-4e82-4149-b563-272584bc5a45",
+    "blob:http://127.0.0.1:5180/c02cdce4-0959-478e-b3b4-517a5ab90edc",
+    "blob:http://127.0.0.1:5180/88079997-28ae-4082-aad7-f02932328ff9",
+    "blob:http://127.0.0.1:5180/abcf07c3-4e6c-42d1-bf1c-7768d72ea818",
+    "blob:http://127.0.0.1:5180/083868de-e69c-4f05-b8bb-541206e515a7",
+    "blob:http://127.0.0.1:5180/d7754434-5b17-4359-9289-2cc3fed18dac",
+    "blob:http://127.0.0.1:5180/db6dae99-c248-40e1-bca5-2a4620b74218",
+    "blob:http://127.0.0.1:5180/7db55926-729e-4d53-a3a7-0a13ead33550",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/8f38561c-8e5c-439a-a1c9-ce0f61b12f40",
+    "blob:http://127.0.0.1:5180/8f38561c-8e5c-439a-a1c9-ce0f61b12f40",
+    "http://127.0.0.1:5180/src/debug/debug-tools.ts",
+    "http://127.0.0.1:5180/mark.svg",
+    "http://127.0.0.1:5180/assets/weapons/baton/manifest.json",
+    "http://127.0.0.1:5180/assets/weapons/baton/animations.glb",
+    "http://127.0.0.1:5180/src/world/enemy-presentation.ts?t=1791644831071",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "blob:http://127.0.0.1:5180/c357a5bb-86ae-4f9a-afd3-7b766f6d77ea",
+    "blob:http://127.0.0.1:5180/6260bd37-c63c-4be5-9410-ff6c7e8b875b",
+    "blob:http://127.0.0.1:5180/efb52b63-2f8e-40c4-b392-d642f9301252",
+    "blob:http://127.0.0.1:5180/59c44965-d550-4ddd-9bc5-af0b57fd9090",
+    "blob:http://127.0.0.1:5180/a11995df-95c9-4208-b4cb-b810a29a78b2",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/42bf3c29-cf0b-46de-9394-ad295fff9498",
+    "blob:http://127.0.0.1:5180/42bf3c29-cf0b-46de-9394-ad295fff9498",
+    "http://127.0.0.1:5180/assets/showcase/mobile/manifest.json",
+    "http://127.0.0.1:5180/assets/showcase/mobile/character.glb",
+    "http://127.0.0.1:5180/assets/showcase/mobile/ash-quay.glb",
+    "http://127.0.0.1:5180/assets/showcase/shared/animations.glb",
+    "http://127.0.0.1:5180/assets/weapons/baton/baton.glb",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "http://127.0.0.1:5180/assets/encounter/mobile/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/mobile/zombie7.glb",
+    "http://127.0.0.1:5180/assets/showcase/mobile/manifest.json",
+    "http://127.0.0.1:5180/assets/showcase/mobile/character.glb",
+    "http://127.0.0.1:5180/assets/showcase/mobile/ash-quay.glb",
+    "http://127.0.0.1:5180/assets/showcase/shared/animations.glb",
+    "http://127.0.0.1:5180/assets/weapons/baton/baton.glb",
+    "blob:http://127.0.0.1:5180/500ee6aa-7269-4560-a655-0fc97f73edf6",
+    "blob:http://127.0.0.1:5180/c11dccff-ff51-458c-a605-762f9e8210b6",
+    "blob:http://127.0.0.1:5180/1a0b43ab-fb33-4168-94ea-9e0c2b192923",
+    "blob:http://127.0.0.1:5180/d894f4f9-9b3d-4f6a-b635-26e40368e39d",
+    "blob:http://127.0.0.1:5180/d0dfd121-f772-4009-9c98-fd23c030f51e",
+    "blob:http://127.0.0.1:5180/50c4ad61-5138-4d6d-bc9e-9c8b722c69ee",
+    "blob:http://127.0.0.1:5180/d7680963-4413-4607-927a-8e5d76b8e808",
+    "blob:http://127.0.0.1:5180/e92972c7-d6ac-4b6c-83cc-3a2ae657c1a5",
+    "blob:http://127.0.0.1:5180/57899a99-8742-4ee8-85a5-231d14750d46",
+    "blob:http://127.0.0.1:5180/a117ccd0-546b-42dd-a7f6-b39356921fef",
+    "blob:http://127.0.0.1:5180/c957f363-ecb7-4395-b267-065266e69ce7",
+    "blob:http://127.0.0.1:5180/3e6774d4-8da4-49eb-982f-5ea096fa64d7",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/be835e01-38e3-475d-88e9-4d5901033db5",
+    "blob:http://127.0.0.1:5180/fc9f8be3-3bba-486f-a2b8-ea29cf57f354",
+    "blob:http://127.0.0.1:5180/d22eba46-51e5-4091-8593-71e59e12aad6",
+    "blob:http://127.0.0.1:5180/f85ea789-b677-483c-af90-dc47c302ea86",
+    "blob:http://127.0.0.1:5180/3ca3cab1-4462-4615-bef4-3f1b7d4f1411",
+    "blob:http://127.0.0.1:5180/2d755a4c-04ab-4610-be70-a231df01a83e",
+    "blob:http://127.0.0.1:5180/d3dc342c-9455-4c87-82c9-b8aa16ea3311",
+    "blob:http://127.0.0.1:5180/ee8ea075-d868-4adb-bbb1-0f1f23145d0f",
+    "blob:http://127.0.0.1:5180/a94e8def-46b8-4d1f-abdb-627523bc2fc4",
+    "blob:http://127.0.0.1:5180/acec6c64-9527-4fad-90a6-912b76e8cf33",
+    "blob:http://127.0.0.1:5180/7aa38c0e-f50a-41a9-84e4-21c744036fde",
+    "blob:http://127.0.0.1:5180/1df41600-9e64-4542-b056-9fc109e9137c",
+    "blob:http://127.0.0.1:5180/97944aec-b6e6-43db-95a6-1c12f7f26d99",
+    "blob:http://127.0.0.1:5180/7dab6e82-33dd-40aa-8cfe-5ab11f9c7f5f",
+    "blob:http://127.0.0.1:5180/a9a85d63-b588-47ae-87d5-8d99f5888066",
+    "blob:http://127.0.0.1:5180/4c4c6216-383c-45cf-8d7c-3033df672d54",
+    "blob:http://127.0.0.1:5180/4c4c6216-383c-45cf-8d7c-3033df672d54",
+    "http://127.0.0.1:5180/assets/encounter/mobile/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/mobile/zombie7.glb",
+    "blob:http://127.0.0.1:5180/45616213-2f50-4d36-a04f-222223a0f869",
+    "blob:http://127.0.0.1:5180/6846aef5-9be0-4e7d-b6ed-a99fc7172f35",
+    "blob:http://127.0.0.1:5180/32d93683-2e58-4436-95a2-644e97b7ccc9",
+    "blob:http://127.0.0.1:5180/4b65ab58-dc82-4a2b-833d-4856cb6a851c",
+    "blob:http://127.0.0.1:5180/96585d49-f31e-4f16-a092-38a66725977c",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/28e6b77e-9a0f-4874-a273-9483118abe67",
+    "blob:http://127.0.0.1:5180/28e6b77e-9a0f-4874-a273-9483118abe67",
+    "http://127.0.0.1:5180/assets/showcase/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/showcase/desktop/character.glb",
+    "http://127.0.0.1:5180/assets/showcase/desktop/ash-quay.glb",
+    "http://127.0.0.1:5180/assets/showcase/shared/animations.glb",
+    "http://127.0.0.1:5180/assets/weapons/baton/baton.glb",
+    "blob:http://127.0.0.1:5180/607203f5-4c3f-4034-a195-d3dd4ef4d636",
+    "blob:http://127.0.0.1:5180/47513fb6-309f-4bc7-ab26-1f9e6af06b6a",
+    "blob:http://127.0.0.1:5180/4120895c-f586-4b29-8888-71ccedb93a18",
+    "blob:http://127.0.0.1:5180/e015294e-fb5e-4774-a23e-b5048f16d882",
+    "blob:http://127.0.0.1:5180/7a85fe86-3daf-4607-8087-c256985d3d44",
+    "blob:http://127.0.0.1:5180/e203e1b8-b7f5-40e2-8d61-3f2a4e433bba",
+    "blob:http://127.0.0.1:5180/9b287a86-727a-4598-811f-1edd75ea8d6f",
+    "blob:http://127.0.0.1:5180/e45a5213-eec4-40c5-85cd-2dc16a2e9bf3",
+    "blob:http://127.0.0.1:5180/d05fa1d1-2488-49c8-abf4-dbb4f7da0964",
+    "blob:http://127.0.0.1:5180/0a905048-9978-4e7c-80c8-9b1501d98c5d",
+    "blob:http://127.0.0.1:5180/e13da0a2-b023-4064-af73-7f10e6a61d5a",
+    "blob:http://127.0.0.1:5180/a74be3af-8bd2-4a3f-a131-c778c52cc6d8",
+    "blob:http://127.0.0.1:5180/6445a903-7ecf-48a1-b1bb-c883418c28ce",
+    "blob:http://127.0.0.1:5180/196c9b7d-f6a9-482f-92ab-f2e39b933865",
+    "blob:http://127.0.0.1:5180/213525c7-840a-40d9-b651-989e608c0552",
+    "blob:http://127.0.0.1:5180/95693ad9-c0b9-4a39-b8fe-3d0e4c14aa21",
+    "blob:http://127.0.0.1:5180/a9995f3f-b8fd-4dc9-8a2a-76a39b0afa57",
+    "blob:http://127.0.0.1:5180/e59d3135-7f46-44f0-b020-4c521a79e083",
+    "blob:http://127.0.0.1:5180/24436986-cd2b-4809-b8d4-9cead564910f",
+    "blob:http://127.0.0.1:5180/4fb27117-9fdb-4b27-ada3-8fba532ee905",
+    "blob:http://127.0.0.1:5180/b6685459-417d-4aad-a07c-d0215015a131",
+    "blob:http://127.0.0.1:5180/a4f793f8-588b-4f6a-b268-0ccca374e48c",
+    "blob:http://127.0.0.1:5180/1a4ba8ea-5c5f-4213-b7db-f7efa5e218ee",
+    "blob:http://127.0.0.1:5180/94051749-513b-4422-9b44-df007752042d",
+    "blob:http://127.0.0.1:5180/ebb37565-2083-4332-b18d-13007e97bc27",
+    "blob:http://127.0.0.1:5180/b77028ab-7454-434d-872d-0bc2e4605ce2",
+    "blob:http://127.0.0.1:5180/a55a245b-38cc-498a-ae9a-61af935af8bd",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/9a99b93a-e171-4f48-8e2e-296b513b28d8",
+    "blob:http://127.0.0.1:5180/9a99b93a-e171-4f48-8e2e-296b513b28d8",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "blob:http://127.0.0.1:5180/cfc3beb0-8800-474e-8e04-126caa7a1378",
+    "blob:http://127.0.0.1:5180/aaf144a1-d59f-420a-bca5-344854521dce",
+    "blob:http://127.0.0.1:5180/7612a505-f162-4dd7-8e6f-d0786a42948d",
+    "blob:http://127.0.0.1:5180/e271211e-1216-4d6e-8641-893911fa3a4a",
+    "blob:http://127.0.0.1:5180/e3d3f672-d1f7-4bcf-a16b-2e6068feb36f",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/81e98804-0234-4ec0-9d6b-6b933c680435",
+    "blob:http://127.0.0.1:5180/81e98804-0234-4ec0-9d6b-6b933c680435",
+    "http://127.0.0.1:5180/src/world/character-inspection.ts",
+    "http://127.0.0.1:5180/node_modules/.vite/deps/three_addons_controls_OrbitControls__js.js?v=18778794",
+    "http://127.0.0.1:5180/assets/showcase/cinematic/manifest.json",
+    "http://127.0.0.1:5180/assets/showcase/cinematic/character.glb",
+    "http://127.0.0.1:5180/assets/showcase/shared/animations.glb",
+    "http://127.0.0.1:5180/assets/weapons/baton/baton.glb",
+    "blob:http://127.0.0.1:5180/fa9a1824-1676-4e5b-ac6d-61e853b8b5f8",
+    "blob:http://127.0.0.1:5180/ccba4626-981d-4476-a1d9-1f388d39417d",
+    "blob:http://127.0.0.1:5180/a437c212-5ad5-42e4-8d33-71c1e975704d",
+    "blob:http://127.0.0.1:5180/77da8e3b-577f-491f-9bd9-a4d72fe3f687",
+    "blob:http://127.0.0.1:5180/6a20e149-85e5-4f2b-97f9-bc66daaeea0e",
+    "blob:http://127.0.0.1:5180/3c32ddb8-5944-44a2-bd44-2aa8d43e711f",
+    "blob:http://127.0.0.1:5180/7360b28e-fd95-49b0-b663-c9a26ef990d5",
+    "blob:http://127.0.0.1:5180/8f4d9cc1-c62e-40f5-bd5b-4c9a4f407ba5",
+    "blob:http://127.0.0.1:5180/fac99598-6a92-461b-9f55-82317e7ef1ae",
+    "blob:http://127.0.0.1:5180/71c29d38-6dab-4ccf-a946-fad01cd5c486",
+    "blob:http://127.0.0.1:5180/0b80fb5c-ce64-4c43-ba1b-4ef80e142944",
+    "blob:http://127.0.0.1:5180/16ed0094-9462-4e84-9a2b-056b6dea7137",
+    "blob:http://127.0.0.1:5180/f41d2f3d-8472-4479-8e92-33ae851383c5",
+    "blob:http://127.0.0.1:5180/b2d6857f-fc54-45a6-add7-8409fb950fb7",
+    "blob:http://127.0.0.1:5180/3a4d856f-2581-48e6-aecd-00b4fe4e8500",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/307ffb3c-e8d4-4f2e-8d52-abf74bdddc27",
+    "blob:http://127.0.0.1:5180/307ffb3c-e8d4-4f2e-8d52-abf74bdddc27",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "blob:http://127.0.0.1:5180/fe09d706-d4ce-45f2-beeb-c0ecca53d7ff",
+    "blob:http://127.0.0.1:5180/90db9d60-9dcd-46c4-8eed-42e2369c6dde",
+    "blob:http://127.0.0.1:5180/6b335a02-9821-44d4-ba08-82ecb4331757",
+    "blob:http://127.0.0.1:5180/122bf92a-52df-4ac0-8f0c-b547ad27d67e",
+    "blob:http://127.0.0.1:5180/d62c5f8b-fc84-43ba-a2f2-e0e4448bdedc",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/fdb35629-6700-4243-a920-d80a7035f597",
+    "blob:http://127.0.0.1:5180/fdb35629-6700-4243-a920-d80a7035f597",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "blob:http://127.0.0.1:5180/267f1221-43b8-4f83-b225-2521427299ef",
+    "blob:http://127.0.0.1:5180/066ce99f-ba32-4d00-bdd0-edddcfcc2868",
+    "blob:http://127.0.0.1:5180/f78e4101-960e-426a-8d1e-b64e5f4ab9d1",
+    "blob:http://127.0.0.1:5180/91963400-0049-4e08-b439-b178cdbac97e",
+    "blob:http://127.0.0.1:5180/77709829-074c-4d24-be2c-c1747123253c",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/ea5981e3-1e0f-4a15-82f3-95a902a054d9",
+    "blob:http://127.0.0.1:5180/ea5981e3-1e0f-4a15-82f3-95a902a054d9",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "blob:http://127.0.0.1:5180/c3da920c-de0a-466e-8f6c-d58480edf8fc",
+    "blob:http://127.0.0.1:5180/7f3ec29a-49e5-4e41-b268-26001ae2df7c",
+    "blob:http://127.0.0.1:5180/3689150a-75bd-40a7-9e0d-410f3103838a",
+    "blob:http://127.0.0.1:5180/4b604c52-030a-4ddf-a7c3-aa90eed1ae89",
+    "blob:http://127.0.0.1:5180/1ea21cc5-7c93-49bd-9e1d-e9e2454db122",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/f837c33c-94a5-45bb-9db9-5275296c3fef",
+    "blob:http://127.0.0.1:5180/f837c33c-94a5-45bb-9db9-5275296c3fef",
+    "http://127.0.0.1:5180/assets/encounter/desktop/manifest.json",
+    "http://127.0.0.1:5180/assets/encounter/desktop/zombie7.glb",
+    "blob:http://127.0.0.1:5180/46ab1b4d-7f57-4a07-8f83-5fd8d90a80cd",
+    "blob:http://127.0.0.1:5180/9a007282-5eb3-494b-9a50-7d3003191a39",
+    "blob:http://127.0.0.1:5180/f710d787-8557-4fdd-88a1-aedc9a0bb22c",
+    "blob:http://127.0.0.1:5180/dc6061b4-7db5-4e3c-9ab2-9a9b72a75c2e",
+    "blob:http://127.0.0.1:5180/8fa1c040-cc86-4498-8a6e-a94e23713d8c",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5180/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5180/d523a14b-84b8-4e7f-b4c5-1c75808f7831",
+    "blob:http://127.0.0.1:5180/d523a14b-84b8-4e7f-b4c5-1c75808f7831"
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "date": "2026-10-10T15:36:19.472827+00:00",
+  "captures": [
+    {
+      "source": "docs/qa/baton/browser/combat.json",
+      "capture": "regressions/baton/browser/combat.json",
+      "sha256": "bca08692ca62109cc6af7d2a4a9a2458148144fa4c78971e34b618ef252aec7b"
+    },
+    {
+      "source": "docs/qa/baton/browser/lifecycle.json",
+      "capture": "regressions/baton/browser/lifecycle.json",
+      "sha256": "3ad87d2a496137ebcf975d10213fb1211e0ecbf3eb29984abc198f02163d2ef6"
+    },
+    {
+      "source": "docs/qa/baton/browser/mobile-left.png",
+      "capture": "regressions/baton/browser/mobile-left.png",
+      "sha256": "9ad6913baf9aea2a403524a92c4238f98b2bfdd1b5dd283e8080825b13618baa"
+    },
+    {
+      "source": "docs/qa/baton/browser/mobile.json",
+      "capture": "regressions/baton/browser/mobile.json",
+      "sha256": "d3740a833bf619043dec9147332539523d28c90f85fcd77590587e97f3fb661b"
+    },
+    {
+      "source": "docs/qa/baton/browser/victory.png",
+      "capture": "regressions/baton/browser/victory.png",
+      "sha256": "0d967da09a518a57da205a73b04b320d5885f061aa911282a2bf4ba91278d5ad"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-Death.png",
+      "capture": "regressions/baton/browser/webgl2-Death.png",
+      "sha256": "882225de7d4faa84e99f32ed7aecb20dd303cfeb2eecf75c6bc08035a3bced7f"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-grip.png",
+      "capture": "regressions/baton/browser/webgl2-grip.png",
+      "sha256": "f16a21620cbbad7bdc745f7c217c043103bb7fafb7a38e690f146d22be4c153d"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-Heavy.png",
+      "capture": "regressions/baton/browser/webgl2-Heavy.png",
+      "sha256": "58e79e97b04efebe043a1c79cec3a604a4e5973f228b85651f10ed236b0a01d6"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-Hit.png",
+      "capture": "regressions/baton/browser/webgl2-Hit.png",
+      "sha256": "ba15f586cbb1888aab6dbc62e0793ffdd31a5bc162c02513577e2007fe0e290f"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-idle.png",
+      "capture": "regressions/baton/browser/webgl2-idle.png",
+      "sha256": "cfeea85553dc8f46d40d51f47d508c30781ebb4c1434d7cd5accca0733fcfee3"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-Light1.png",
+      "capture": "regressions/baton/browser/webgl2-Light1.png",
+      "sha256": "d8536e9a1eca8bd7a6b34272ee763f254677106f9a8ac1f9411f4bbf4777a9d6"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-Light2.png",
+      "capture": "regressions/baton/browser/webgl2-Light2.png",
+      "sha256": "19a41c35b6d3126a703030c8b876f81b9b0b0be7602719ce423f90dff11d424a"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-pickup.png",
+      "capture": "regressions/baton/browser/webgl2-pickup.png",
+      "sha256": "ed931d1fb855bacad5b7c494e771851a7dee973b4bc4bbce86f49731510dd0c3"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2-Ward.png",
+      "capture": "regressions/baton/browser/webgl2-Ward.png",
+      "sha256": "700fd678db681b683f9c6ef49820f1b09c6029ff1ed720a93a4d952e7bf16629"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgl2.json",
+      "capture": "regressions/baton/browser/webgl2.json",
+      "sha256": "ccfeeacaeb79f257db2093ff419c805cda2d979d91d4bfb64982771cd859ecf5"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgpu-required-grip.png",
+      "capture": "regressions/baton/browser/webgpu-required-grip.png",
+      "sha256": "54b5998c409ac8f1ea6e68f2584c41143da0786c200454673406f66b5a452420"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgpu-required-idle.png",
+      "capture": "regressions/baton/browser/webgpu-required-idle.png",
+      "sha256": "73b07bc90e2c1f80b23e89abb4a891618bb87dced175ab4c39defe331bd6c58e"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgpu-required-Light3.png",
+      "capture": "regressions/baton/browser/webgpu-required-Light3.png",
+      "sha256": "aa6a204ddbe1e414232f6c0c8b67cdb491b4ab14d31a2ab4ed605fd3fa34099a"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgpu-required-pickup.png",
+      "capture": "regressions/baton/browser/webgpu-required-pickup.png",
+      "sha256": "f4ca3b4cd3ffeb692e465d55321714d34a17b61e782fb94ad4938266c17afb69"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgpu-required-Walk.png",
+      "capture": "regressions/baton/browser/webgpu-required-Walk.png",
+      "sha256": "14001ebb9e0263c22f3970af67cf4dd58612d0bf325ed5cd3a8b8af22f0b2c33"
+    },
+    {
+      "source": "docs/qa/baton/browser/webgpu-required.json",
+      "capture": "regressions/baton/browser/webgpu-required.json",
+      "sha256": "24ee21e093ead5b9c01ff5961e44e49f61eff55726473315b16dacb0a420813d"
+    },
+    {
+      "source": "docs/qa/baton/pickup-combat.webm",
+      "capture": "regressions/baton/pickup-combat.webm",
+      "sha256": "cb841835d248c5db7fd25d216c4862bc67a7a2f6b4ba526b50747822ce06fa8f"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/combat-demonstration.json",
+      "capture": "regressions/phase4a/browser/combat-demonstration.json",
+      "sha256": "e712a099cd3b483ad988684a7ffa16c7fbb78a891b1b4a5b24ba95a3d38c08d9"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/critical-victory.png",
+      "capture": "regressions/phase4a/browser/critical-victory.png",
+      "sha256": "262d83bd9e1c6bfaab035d63435e74e45923d7af1a239ca396b119fcad124bfb"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/death.png",
+      "capture": "regressions/phase4a/browser/death.png",
+      "sha256": "28b404687df54b120e4f881a3b23d233b14e1f582ee7a92914a32cf7af3f024d"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/loading-pooling.json",
+      "capture": "regressions/phase4a/browser/loading-pooling.json",
+      "sha256": "9558366e64e0f6cf577af453a75d09b9bfcbb56ee82d544a0877ef9a1de68687"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/mobile-left.png",
+      "capture": "regressions/phase4a/browser/mobile-left.png",
+      "sha256": "b798fc710754db90a53432afbe55904d5badcba6f5f3fea739245e8646ca5f10"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/mobile.json",
+      "capture": "regressions/phase4a/browser/mobile.json",
+      "sha256": "17115d06d828eef6017e1e663d30461fc0d78e6e87c377af6829ed33f7d41540"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/stagger.png",
+      "capture": "regressions/phase4a/browser/stagger.png",
+      "sha256": "59139386723b4d836c278d3357f60565038b1ad319c15fb518c5d1d005aed70a"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/webgl2-lifecycle.json",
+      "capture": "regressions/phase4a/browser/webgl2-lifecycle.json",
+      "sha256": "1953be1ae97cfe1bd4190c1370dd1014ae62d4c52ffbbc1d937e330c6852248e"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/webgl2-ward.png",
+      "capture": "regressions/phase4a/browser/webgl2-ward.png",
+      "sha256": "e5bff4d89673d3b2184ad3dfb216fae728647cc4eabfadd4cce1f35dd7982cb1"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/webgl2-windup.png",
+      "capture": "regressions/phase4a/browser/webgl2-windup.png",
+      "sha256": "d54a0dca5e6cd03e6cc011b186aa17d56a10c1d1281bcc881650deaa98f076e7"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/webgpu-required-lifecycle.json",
+      "capture": "regressions/phase4a/browser/webgpu-required-lifecycle.json",
+      "sha256": "cd60a6ddb63b1ca24fece0507959fede78be5ca79f799f30d4dbe129498cc541"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/webgpu-required-ward.png",
+      "capture": "regressions/phase4a/browser/webgpu-required-ward.png",
+      "sha256": "f07de7b0b9fb50d8e738bc964aff444b9e86dcdacdd538e46d8ebe9879826c22"
+    },
+    {
+      "source": "docs/qa/phase4a/browser/webgpu-required-windup.png",
+      "capture": "regressions/phase4a/browser/webgpu-required-windup.png",
+      "sha256": "8d6260ae82ad3ef333e83ca18642b63c608991fe6e4fd5b7d69c245729bf81bb"
+    },
+    {
+      "source": "docs/qa/phase4a/combat-demonstration.webm",
+      "capture": "regressions/phase4a/combat-demonstration.webm",
+      "sha256": "8efa43611c567f1bfdf5c138f79abe2da7a75dc8b4ee4b1200316637aa3ab486"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/desktop-death.png",
+      "capture": "regressions/phase4a/regressions/browser/desktop-death.png",
+      "sha256": "ae9882f8e6619fa434b3a7a09495eb9d3c72329d7275a6220b790d5fae74b849"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/desktop-dodge.png",
+      "capture": "regressions/phase4a/regressions/browser/desktop-dodge.png",
+      "sha256": "74085c91011c99f7b6893423d4f890a49811803e8bcbac384bc031fba9c5bfda"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/desktop-punch.png",
+      "capture": "regressions/phase4a/regressions/browser/desktop-punch.png",
+      "sha256": "a59efabe920c5eba494604d6c12a6a772feda6ffba070752c48dc8cb860cd1e0"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/mobile-left.png",
+      "capture": "regressions/phase4a/regressions/browser/mobile-left.png",
+      "sha256": "ae7259b14f8b579a8df10feb6d724514643986692d0037e8e01ddf68d9f153a4"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/mobile-player.png",
+      "capture": "regressions/phase4a/regressions/browser/mobile-player.png",
+      "sha256": "f0ade08075d64c536fd7850ca5fb1107414c51633a81594779d418e00e13d51d"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/mobile-right.png",
+      "capture": "regressions/phase4a/regressions/browser/mobile-right.png",
+      "sha256": "04d287325f3c6299d11adb9028b63dad38a2011780670ff0c85e46568a0b576b"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/ward.png",
+      "capture": "regressions/phase4a/regressions/browser/ward.png",
+      "sha256": "e264363d53694c9f5ad485ba8cd8b026ec6726d5282e0c596acddbdc878d086b"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/webgl2-combo.png",
+      "capture": "regressions/phase4a/regressions/browser/webgl2-combo.png",
+      "sha256": "12ee901395385cce33b073a9b140f6eae5211ecf0fe515d9ae1728565497e159"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/webgl2-critical.png",
+      "capture": "regressions/phase4a/regressions/browser/webgl2-critical.png",
+      "sha256": "65497bedd0cd12a43712813c1e30f9b9668360791c02543470a05d71fa88421e"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/webgl2-stagger.png",
+      "capture": "regressions/phase4a/regressions/browser/webgl2-stagger.png",
+      "sha256": "9c5cf7ef67e2531dd97bf91a1fedf593af8df2f78aad9ea45800b7bd3c543ea7"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/webgpu-required-combo.png",
+      "capture": "regressions/phase4a/regressions/browser/webgpu-required-combo.png",
+      "sha256": "3109e3d2cad0b2975175df345b2360d77753aad4fb003847d7f8aa8ea5e4d458"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/webgpu-required-critical.png",
+      "capture": "regressions/phase4a/regressions/browser/webgpu-required-critical.png",
+      "sha256": "d76b4ab117b1843ed3a6a61133cc679651c402be8e687f2a2b5144b1b2bba721"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/browser/webgpu-required-stagger.png",
+      "capture": "regressions/phase4a/regressions/browser/webgpu-required-stagger.png",
+      "sha256": "1d7d24297ea2d3a07c3142702d6aafdf60d94b9e60da153e43a32483a537eaa2"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/combat-webgl2.json",
+      "capture": "regressions/phase4a/regressions/combat-webgl2.json",
+      "sha256": "7c0f56b52ce621504b7c0540b752ef176f606bdca5d07d83b63856accd274602"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/combat-webgl2.webm",
+      "capture": "regressions/phase4a/regressions/combat-webgl2.webm",
+      "sha256": "e7c7cbec596dcbd2f1a32688bb80e25eae46203e456b37c57eed487e595ab586"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/combat-webgpu-required.json",
+      "capture": "regressions/phase4a/regressions/combat-webgpu-required.json",
+      "sha256": "4eca42abf5fe969809cb937015c1d883c7c0936048e741e5a4caea6478f04868"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/combat-webgpu-required.webm",
+      "capture": "regressions/phase4a/regressions/combat-webgpu-required.webm",
+      "sha256": "c70423d501279e5892b624d7e9519d1277afde115cc156e053d88a9c58816e73"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/mobile-combat.json",
+      "capture": "regressions/phase4a/regressions/mobile-combat.json",
+      "sha256": "74d8633c4240d2750d01a9af94f16e0309c2e09330dcd025d77380edff9bb54a"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/player-death.json",
+      "capture": "regressions/phase4a/regressions/player-death.json",
+      "sha256": "0df06f587f02882194f98ed38fb329fbc2f6654dbdb28e424a3e4773893b8a47"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/player-desktop.json",
+      "capture": "regressions/phase4a/regressions/player-desktop.json",
+      "sha256": "585a6615c2899de3d60c2d6ed4d7c48be0153de03a323a7f67fd5ce739ecfb33"
+    },
+    {
+      "source": "docs/qa/phase4a/regressions/ward.json",
+      "capture": "regressions/phase4a/regressions/ward.json",
+      "sha256": "5bc5105bb4a1647ccff73516e44f6615d9b180ceb2f75243ae99eca93cfa648f"
+    }
+  ]
+}

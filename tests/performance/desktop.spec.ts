@@ -1,9 +1,9 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
-import { exerciseEncounter, type ExerciseTotals } from '../helpers/encounter-driver';
+import { exerciseGroup, type GroupTotals } from '../helpers/group-driver';
 interface FrameMeasurement { started: number; previous: number; frames: number[]; stopped: boolean }
 declare global { interface Window { __PERFORMANCE_MEASUREMENT__?: FrameMeasurement } }
-for (const mode of ['encounter', 'cinematic']) test(`production sustained five-minute armed ${mode} WebGPU measurement`, async ({ page, browser }) => {
+for (const mode of ['group', 'cinematic']) test(`production sustained five-minute armed ${mode} WebGPU measurement`, async ({ page, browser }) => {
   test.skip(process.env.VESPER_PERFORMANCE !== '1', 'Opt in with VESPER_PERFORMANCE=1; five-minute hardware measurement.');
   const errors: string[] = [], warnings: string[] = [];
   page.on('pageerror', e => errors.push(e.message)); page.on('console', m => { if (m.type() === 'warning') warnings.push(m.text()); });
@@ -12,11 +12,11 @@ for (const mode of ['encounter', 'cinematic']) test(`production sustained five-m
   await page.locator('#resume').click(); await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
   await page.keyboard.press('f'); await expect(page.locator('#app')).toHaveAttribute('data-weapon', 'baton');
   if (mode === 'cinematic') { await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active'); }
-  else { await page.locator('#encounter-start').click(); await expect(page.locator('#app')).toHaveAttribute('data-encounter', 'active'); }
+  else { await page.locator('#encounter-group').click(); await expect(page.locator('#app')).toHaveAttribute('data-encounter', 'active'); }
   expect(await page.evaluate(() => typeof window.__VESPER_DEBUG__)).toBe('undefined');
-  const totals: ExerciseTotals = { encounters: 0, victories: 0, hits: 0, criticals: 0, blocks: 0, strikes: 0 };
+  const totals: GroupTotals = { encounters: 0, victories: 0, hits: 0, criticals: 0, blocks: 0, strikes: 0, multiTargetAttacks:0, defeated:0 };
   let running = true;
-  const driver = mode === 'encounter' ? exerciseEncounter(page, () => running, totals) : Promise.resolve();
+  const driver = mode === 'group' ? exerciseGroup(page, () => running, totals) : Promise.resolve();
   await page.waitForTimeout(30000);
   const hardware = await page.evaluate(async () => {
     const c = document.querySelector('canvas')!, adapter = await navigator.gpu?.requestAdapter({ powerPreference: 'high-performance' });
@@ -45,11 +45,11 @@ for (const mode of ['encounter', 'cinematic']) test(`production sustained five-m
     const m = window.__PERFORMANCE_MEASUREMENT__!; m.stopped=true; const f=m.frames.sort((a,b)=>a-b);
     return { durationSeconds:(performance.now()-m.started)/1000, frameCount:f.length, fps:1000*f.length/f.reduce((s,v)=>s+v,0), p95FrameMs:f[Math.floor((f.length-1)*.95)]!,maxFrameMs:f.at(-1)!,intervalsOver50Ms:f.filter(v=>v>50).length,intervalsOver100Ms:f.filter(v=>v>100).length };
   });
-  await mkdir('docs/qa/baton',{recursive:true});
-  await writeFile(`docs/qa/baton/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
+  await mkdir('docs/qa/phase4b',{recursive:true});
+  await writeFile(`docs/qa/phase4b/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
     method:'External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.',
-    renderingUncapped:true,viewport:{width:1440,height:900},quality:'High',adaptiveResolution:false,warmupSeconds:30,exercise:mode==='encounter'?'Real-input equipped baton pursuit, heavy swings, Ward, stagger, criticals, defeat and restart':'Looped equipped Baton_Idle skeletal animation',totals,hardware,samples,metrics,errors,warnings },null,2));
+    renderingUncapped:true,viewport:{width:1440,height:900},quality:'High',adaptiveResolution:false,warmupSeconds:30,exercise:mode==='group'?'Real-input three-zombie equipped baton pursuit, targeting, light/heavy sweeps, Ward, stagger, criticals, group victory and restart':'Looped equipped Baton_Idle skeletal animation',totals,hardware,samples,metrics,errors,warnings },null,2));
   expect(errors).toEqual([]);expect(warnings.filter(m=>m.includes('Vertex attribute'))).toEqual([]); expect(metrics.durationSeconds).toBeGreaterThanOrEqual(300);expect(metrics.durationSeconds).toBeLessThan(330);
   expect(metrics.p95FrameMs).toBeLessThanOrEqual(mode==='cinematic'?35:18.5);
-  if(mode==='encounter'){expect(totals.victories).toBeGreaterThan(10);expect(totals.criticals).toBeGreaterThan(10);expect(totals.blocks).toBeGreaterThan(10);}
+  if(mode==='group'){expect(totals.victories).toBeGreaterThanOrEqual(5);expect(totals.criticals).toBeGreaterThanOrEqual(5);expect(totals.blocks).toBeGreaterThanOrEqual(5);expect(totals.defeated).toBeGreaterThanOrEqual(15);expect(totals.multiTargetAttacks).toBeGreaterThan(0);}
 });

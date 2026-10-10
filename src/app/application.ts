@@ -20,7 +20,7 @@ import { artVariant, type WorldPresentation, type InspectionState } from '../wor
 import type { CharacterInspection } from '../world/character-inspection';
 import { CourtyardCamera } from '../camera/courtyard-camera';
 import type { PlayerSimulation } from '../player/player-simulation';
-import { EncounterSimulation } from '../enemies/encounter-simulation';
+import { EncounterSimulation, type EncounterKind } from '../enemies/encounter-simulation';
 import type { EnemyPresentation } from '../world/enemy-presentation';
 import type { CombatEvent } from '../player/combat-definitions';
 import type { RapierPlayerCollision } from '../player/player-collision';
@@ -118,6 +118,7 @@ export class Application {
       restart: () => { this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       resetTargets: () => { this.player?.resetTargets(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterStart: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter(); },
+      encounterGroup: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter('group'); },
       encounterRestart: () => { this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterReturn: () => this.returnToTraining(),
     });
@@ -167,7 +168,7 @@ export class Application {
       await adapter.compile(this.courtyard.scene, this.camera.camera);
       if (this.disposed) return;
       adapter.render();
-      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run'), heavy: this.ui.get('#heavy'), ward: this.ui.get('#ward'), interact: this.ui.get('#pickup') } : undefined);
+      this.input = new InputManager(this.ui.canvas, this.ui.stick, this.ui.pulse, this.player ? { dodge: this.ui.get('#dodge'), run: this.ui.get('#run'), heavy: this.ui.get('#heavy'), ward: this.ui.get('#ward'), interact: this.ui.get('#pickup'), target: this.ui.get('#target-cycle') } : undefined);
       this.clock.reset(); this.metrics.resetTiming(); this.lastFrame = 0;
       await adapter.renderer.setAnimationLoop((time) => this.frame(time));
       if (import.meta.env.DEV && !this.debug) {
@@ -240,7 +241,7 @@ export class Application {
           const input = this.input?.sample();
           if (!input) return;
           if (world instanceof VisualShowcase) {
-            world.aim = input.aimActive ? this.camera.aim(input.aim, world.target.y) : this.player?.nearestTarget();
+            world.aim = this.player?.combatAim(input.aimActive ? this.camera.aim(input.aim, world.target.y) : undefined,input.pressed.has('target'));
             if(world.playing){
               this.encounter?.update(dt,input,world.aim);
               if(this.player){
@@ -409,7 +410,7 @@ export class Application {
     const request=this.pendingEnemy;if(request){request.cancelled=true;request.view?.dispose();request.assets?.dispose();this.pendingEnemy=null;}
     this.encounterError='';this.updateEncounterUi();
   }
-  private async startEncounter():Promise<void> {
+  private async startEncounter(kind:EncounterKind='single'):Promise<void> {
     if(!this.encounter||!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.reloading||this.inspection||this.pendingEnemy)return;
     this.cancelWeaponLoad();
     const adapter=this.adapter,world=this.courtyard,simulation=this.encounter;
@@ -419,7 +420,7 @@ export class Application {
       const {EnemyPresentation}=await import('../world/enemy-presentation');if(!current())return;
       request.assets=new AssetManager(adapter.renderer);await request.assets.init(`/assets/encounter/${world.variant}/manifest.json`);if(!current())return;
       request.view=new EnemyPresentation(simulation);await request.view.load(request.assets);if(!current())return;
-      simulation.start();world.setEnemy(request.view);this.enemyAssets=request.assets;request.view=null;request.assets=null;
+      simulation.start(kind==='group'?3:1);world.setEnemy(request.view);this.enemyAssets=request.assets;request.view=null;request.assets=null;
       this.input?.clear();this.camera.selectView('player',world.target,true);world.setPlaying(true);this.ui.mode('player');this.ui.canvas.focus();
       this.clock.reset();this.metrics.resetTiming();this.lastFrame=0;
     } catch(error){if(current())this.encounterError=`Enemy could not be loaded. Training retained. ${error instanceof Error?error.message:String(error)}`;}

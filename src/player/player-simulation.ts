@@ -1,6 +1,7 @@
 import type { InputFrame } from '../core/input-frame';
 import { UNARMED, TRAINING_TARGETS, attackTouches, type AttackId, type CombatEvent, type CombatEventPayload, type EntityHandle, type CombatantState, type CombatStyleDefinition, type Position, type WeaponId } from './combat-definitions';
 import { BATON, BATON_PICKUP } from './weapon-definitions';
+import { CombatTargeting } from './combat-targeting';
 import { weaponTouches } from './weapon-contact';
 export type { Position } from './combat-definitions';
 export interface PlayerCollision {
@@ -12,7 +13,7 @@ export interface PlayerCollision {
 }
 export type PlayerAction = 'idle' | 'walk' | 'run' | 'attack' | 'heavy' | 'ward' | 'dodge' | 'hit' | 'dead';
 export interface PlayerState {
-  weapon: WeaponId; position: Position; previous: Position; facing: number; health: number; pressure: number;
+  target: EntityHandle | null; weapon: WeaponId; position: Position; previous: Position; facing: number; health: number; pressure: number;
   action: PlayerAction; actionTime: number; actionSequence: number; attack: AttackId | null;
   grounded: boolean; strikes: number; targetHits: number; invulnerable: boolean;
   wardRemaining: number; combo: number; criticals: number; blocks: number; defeats: number;
@@ -24,12 +25,13 @@ export const PRESSURE_VENT: Position = { x: -4.2, y: 0, z: 1.2 };
 const DURATIONS = { dodge: .72, hit: .42, ward: .8 };
 export class PlayerSimulation {
   readonly state: PlayerState = {
-    weapon: 'unarmed', position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100,
+    target:null, weapon: 'unarmed', position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100,
     action: 'idle', actionTime: 0, actionSequence: 0, attack: null, grounded: false,
     strikes: 0, targetHits: 0, invulnerable: false, wardRemaining: 0, combo: 0,
     criticals: 0, blocks: 0, defeats: 0, ventWarning: false, ventRemaining: 2,
   };
   readonly targets: CombatantState[] = TRAINING_TARGETS.map(t => ({ ...t, generation: 0, position: { ...t.position }, previous: { ...t.position }, spawn: { ...t.position }, health: t.maxHealth, posture: 0, exposedUntil: 0, defeatedUntil: 0, velocity: { x: 0, z: 0 }, hits: 0 }));
+  private readonly targeting = new CombatTargeting();
   generation = 0;
   training = true;
   get time(): number { return this.clock; }
@@ -53,9 +55,12 @@ export class PlayerSimulation {
   canPickupBaton(): boolean { const s=this.state; return s.weapon==='unarmed' && s.health>0 && ['idle','walk','run'].includes(s.action) && Math.hypot(s.position.x-BATON_PICKUP.x,s.position.y-BATON_PICKUP.y,s.position.z-BATON_PICKUP.z)<=1.25 && !this.collision.blocked?.({...s.position,y:s.position.y+.6},{...BATON_PICKUP,y:BATON_PICKUP.y+.6}); }
   equipBaton(): boolean { if(!this.canPickupBaton())return false; this.state.weapon='baton'; this.state.combo=0; this.clearQueued(); this.state.actionSequence++; return true; }
   drainEvents(): CombatEvent[] { return this.events.splice(0); }
-  nearestTarget(range = 1.8): Position | undefined {
-    return this.targets.filter(t => t.health > 0).sort((a, b) => this.distance(a.position) - this.distance(b.position)).find(t => this.distance(t.position) < range)?.position;
+  combatAim(pointer?: { x:number;z:number }, cycle=false): {x:number;z:number}|undefined {
+    if(this.state.health<=0){this.targeting.clear();this.state.target=null;return undefined;}
+    const aim=this.targeting.resolve(this.targets,this.state.position,this.collision.blocked?.bind(this.collision),pointer,cycle);
+    this.state.target=this.targeting.selected;return aim;
   }
+  nearestTarget(): {x:number;z:number}|undefined { return this.combatAim(); }
   private distance(p: Position): number { return Math.hypot(p.x - this.state.position.x, p.z - this.state.position.z); }
   update(dt: number, input: InputFrame, aim?: { x: number; z: number }, deferHits = false): void {
     if (dt <= 0 || this.disposed) return;
@@ -155,8 +160,8 @@ export class PlayerSimulation {
   private resetTarget(t: CombatantState): void { t.generation++; Object.assign(t, { position: { ...t.spawn }, previous: { ...t.spawn }, health: t.maxHealth, posture: 0, exposedUntil: 0, defeatedUntil: 0, velocity: { x: 0, z: 0 }, hits: 0 }); this.emit({ type: 'reset', target: t.id, position: { ...t.position } }); }
   resetTargets(): void { for (const t of this.targets) this.resetTarget(t); this.collision.syncTargets?.(this.targets); }
   reset(): void {
-    this.generation++;
-    Object.assign(this.state, { position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100, action: 'idle', actionTime: 0, actionSequence: this.state.actionSequence + 1, attack: null, grounded: false, strikes: 0, targetHits: 0, invulnerable: false, wardRemaining: 0, combo: 0, criticals: 0, blocks: 0, defeats: 0, ventWarning: false, ventRemaining: 2 });
+    this.generation++;this.targeting.clear();
+    Object.assign(this.state, { target:null, position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100, action: 'idle', actionTime: 0, actionSequence: this.state.actionSequence + 1, attack: null, grounded: false, strikes: 0, targetHits: 0, invulnerable: false, wardRemaining: 0, combo: 0, criticals: 0, blocks: 0, defeats: 0, ventWarning: false, ventRemaining: 2 });
     this.verticalSpeed = 0; this.queued.clear(); this.hitTargets.clear(); this.chainUntil = -1; this.quietSince = this.clock; this.ventAt = this.clock + 2; this.warned = false;
     this.resetTargets(); this.events.length = 0; this.collision.reset(PLAYER_SPAWN);
   }

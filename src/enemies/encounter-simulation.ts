@@ -6,8 +6,9 @@ import { GroundNavigation } from './navigation';
 import { ZOMBIE7, type EnemyDefinition, type EnemyAction } from './enemy-definition';
 export interface EnemyState extends CombatantState {
   action: EnemyAction; actionTime: number; facing: number; sequence: number; attackInstance: number;
-  hitPlayer: boolean; attackRecipient: EntityHandle | null; unreachable: number;
+  hitPlayer: boolean; attackRecipient: EntityHandle | null; unreachable: number; lastAttackOrder: number;
 }
+export type EncounterKind = 'single' | 'group';
 const distance=(a:Position,b:Position)=>Math.hypot(a.x-b.x,a.z-b.z);
 /** Owns combat ordering, AI, navigation and entity lifetimes across art reloads. */
 export class EncounterSimulation {
@@ -19,6 +20,9 @@ export class EncounterSimulation {
   private generation = 0;
   private events: CombatEvent[] = [];
   private slot: string|null = null;
+  private attackCandidate: string|null = null;
+  private attackOrder = 0;
+  get kind(): EncounterKind { return this.enemies.length > 1 ? 'group' : 'single'; }
   constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7) {
     this.player=new PlayerSimulation(collision);this.navigation=new GroundNavigation(courtyardSolids(boxes));
     this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes)));
@@ -26,15 +30,15 @@ export class EncounterSimulation {
   get victorious(): boolean {return this.mode==='encounter'&&this.enemies.length>0&&this.enemies.every(e=>e.health===0);}
   start(count=1): void {
     if(count<1||count>3||!Number.isInteger(count)) throw new Error('Encounter capacity is three');
-    this.generation++;this.mode='encounter';this.player.training=false;this.enemies.length=0;
+    this.generation++;this.mode='encounter';this.player.training=false;this.enemies.length=0;this.attackOrder=0;this.attackCandidate=null;
     for(let i=0;i<count;i++) {
-      const spawn={...this.definition.spawn,x:this.definition.spawn.x+i*.8};
-      this.enemies.push({id:`zombie7-${i}`,generation:this.generation,label:this.definition.displayName,spawn,position:{...spawn},previous:{...spawn},health:this.definition.maxHealth,maxHealth:this.definition.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,mass:1,velocity:{x:0,z:0},hits:0,action:'idle',actionTime:0,facing:-Math.PI/2,sequence:0,attackInstance:0,hitPlayer:false,attackRecipient:null,unreachable:0});
+      const spawn={...this.definition.spawn,x:this.definition.spawn.x+(i===0?0:.8),z:this.definition.spawn.z+(i===1?-.7:i===2?.7:0)};
+      this.enemies.push({id:`zombie7-${i}`,generation:this.generation,label:count===1?this.definition.displayName:`${this.definition.displayName} · ${i+1}`,spawn,position:{...spawn},previous:{...spawn},health:this.definition.maxHealth,maxHealth:this.definition.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,mass:1,velocity:{x:0,z:0},hits:0,action:'idle',actionTime:0,facing:-Math.PI/2,sequence:0,attackInstance:0,hitPlayer:false,attackRecipient:null,unreachable:0,lastAttackOrder:0});
     }
     this.player.targets.splice(0,this.player.targets.length,...this.enemies);this.player.reset();this.slot=null;this.events=[];
   }
   training(): void {
-    this.mode='training';this.enemies.length=0;this.slot=null;this.player.training=true;
+    this.mode='training';this.enemies.length=0;this.slot=null;this.attackCandidate=null;this.player.training=true;
     this.player.targets.splice(0,this.player.targets.length,...TRAINING_TARGETS.map(t=>({...t,generation:++this.generation,position:{...t.position},previous:{...t.position},spawn:{...t.position},health:t.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,velocity:{x:0,z:0},hits:0})));
     this.player.reset();this.events=[];
   }
@@ -45,8 +49,10 @@ export class EncounterSimulation {
     if(this.mode==='training'){this.player.update(dt,input,aim);this.events.push(...this.player.drainEvents());return;}
     const time=this.player.time+dt;
     this.navigation.plan(this.player.state.position,time);
+    this.attackCandidate=this.slot===null?this.enemies.filter(e=>e.health>0&&e.exposedUntil<=time&&['idle','approach'].includes(e.action)&&distance(e.position,this.player.state.position)<1.05&&this.navigation.reachable(e.position)&&!this.obstructed(e.position,this.player.state.position))
+      .sort((a,b)=>a.lastAttackOrder-b.lastAttackOrder||distance(a.position,this.player.state.position)-distance(b.position,this.player.state.position)||a.id.localeCompare(b.id))[0]?.id??null:null;
     const previous=this.enemies.map(e=>({...e.position}));
-    for(const e of this.enemies) this.advance(e,dt,time);
+    for(const e of this.enemies) { this.advance(e,dt,time);this.collision.syncTargets?.(this.enemies); }
     this.collision.syncTargets?.(this.enemies);
     this.player.update(dt,input,aim,true);
     this.enemies.forEach((e,i)=>{e.previous=previous[i]!;});
@@ -66,11 +72,12 @@ export class EncounterSimulation {
   private obstructed(a:Position,b:Position):boolean{return this.collision.blocked?.({...a,y:a.y+1},{...b,y:b.y+1})??false;}
   private action(e:EnemyState,action:EnemyAction):void {
     if(e.action===action)return;
-    if(['recovery','stagger','dead','return','idle'].includes(action)&&this.slot===e.id)this.slot=null;
+    if((['approach','stagger','dead','return','idle'].includes(action)||(action==='recovery'&&this.kind==='single'))&&this.slot===e.id)this.slot=null;
     e.action=action;e.actionTime=0;e.sequence++;
   }
   private advance(e:EnemyState,dt:number,time:number):void {
     e.actionTime+=dt;
+    if(e.health<=0){this.action(e,'dead');return;}
     if(e.action==='dead')return;
     if(this.player.state.action==='dead'){this.action(e,'idle');return;}
     if(e.action==='stagger'){if(e.exposedUntil<=time){e.exposedUntil=0;e.posture=0;this.action(e,'approach');}else return;}
@@ -90,18 +97,18 @@ export class EncounterSimulation {
     if(e.action==='idle'){if(d<=this.definition.detection&&this.navigation.reachable(e.position)&&!this.obstructed(e.position,this.player.state.position))this.action(e,'approach');else return;}
     if(!this.navigation.reachable(e.position)){e.unreachable+=dt;if(e.unreachable>=2)this.action(e,'return');return;}e.unreachable=0;
     const aim=Math.atan2(this.player.state.position.x-e.position.x,this.player.state.position.z-e.position.z);e.facing=aim;
-    if(d<1.05&&!this.obstructed(e.position,this.player.state.position)&&this.slot===null) {
-      this.slot=e.id;e.hitPlayer=false;e.attackInstance++;e.attackRecipient=this.player.handle;this.action(e,'windup');
+    if(d<1.05&&!this.obstructed(e.position,this.player.state.position)&&this.slot===null&&this.attackCandidate===e.id) {
+      this.slot=e.id;e.lastAttackOrder=++this.attackOrder;e.hitPlayer=false;e.attackInstance++;e.attackRecipient=this.player.handle;this.action(e,'windup');
       this.events.push({type:'enemy-warning',position:{...e.position},source:{id:e.id,generation:e.generation},recipient:this.player.handle,attackInstance:e.attackInstance});return;
     }
-    if(d<.7)return;
+    if(d<.7){this.move(e,{x:0,z:0},dt);return;}
     this.move(e,this.navigation.direction(e.position,this.player.state.position),dt);
   }
   private move(e:EnemyState,direction:{x:number;z:number}|null,dt:number):void {
     if(!direction)return;
     let x=direction.x,z=direction.z;
-    for(const other of this.enemies)if(other!==e&&other.health>0){const d=distance(e.position,other.position);if(d<.9&&d>.001){x+=(e.position.x-other.position.x)/d*(.9-d)*2;z+=(e.position.z-other.position.z)/d*(.9-d)*2;}}
-    const magnitude=Math.max(1,Math.hypot(x,z));x/=magnitude;z/=magnitude;e.facing=Math.atan2(x,z);
+    for(const other of this.enemies)if(other!==e&&other.health>0){const d=distance(e.position,other.position);if(d<.9){const angle=this.enemies.indexOf(e)<this.enemies.indexOf(other)?-Math.PI/2:Math.PI/2;x+=(d>.001?(e.position.x-other.position.x)/d:Math.sin(angle))*(.9-d)*2;z+=(d>.001?(e.position.z-other.position.z)/d:Math.cos(angle))*(.9-d)*2;}}
+    const magnitude=Math.max(1,Math.hypot(x,z));x/=magnitude;z/=magnitude;if(Math.hypot(x,z)>.001)e.facing=Math.atan2(x,z);
     const displacement={x:x*this.definition.speed*dt,y:0,z:z*this.definition.speed*dt};
     const next=this.collision.moveTarget?.(e.id,e.position,displacement)??{x:e.position.x+displacement.x,y:e.position.y,z:e.position.z+displacement.z};
     if(Math.abs(next.x)<=7.5&&Math.abs(next.z)<=7.5)e.position=next;

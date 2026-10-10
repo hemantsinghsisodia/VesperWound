@@ -37,3 +37,8 @@
 .pickup-button { position:absolute;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translateX(-50%) scale(var(--ui-scale));transform-origin:bottom center;min-height:44px;padding:.7rem 1rem;background:#20332f;border:1px solid #a1b4a4;color:#e7e3d4;pointer-events:auto; }
 #pickup-status {color:#d8c28b;} #equipped-weapon {color:#c9d5cc;margin:.3rem 0;}
 @media (pointer:fine) { .pickup-button { display:none; } }
+
+.target-button{font:11px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;position:absolute;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translateX(-50%) scale(var(--ui-scale));transform-origin:bottom center;min-height:44px;padding:.7rem 1rem;background:#20332f;border:1px solid #a1b4a4;color:#e7e3d4;pointer-events:auto;}
+@media(pointer:fine){.target-button{display:none;}}
+
+#app[data-encounter-kind=group] .pickup-button{bottom:calc(142px + env(safe-area-inset-bottom));}

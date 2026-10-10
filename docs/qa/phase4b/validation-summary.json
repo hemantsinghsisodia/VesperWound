@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-10T15:36:19.475832+00:00",
+  "branch": "codex/phase4b-group-encounter",
+  "baseMain": "1acc2dfa10463186a2892033abf338b85deac2f2",
+  "check": {
+    "passed": true,
+    "unitPassed": 81,
+    "files": 14,
+    "typecheck": true,
+    "lint": true,
+    "productionBuild": true
+  },
+  "browser": {
+    "passed": 21,
+    "projectSpecificSkipped": 21,
+    "projects": [
+      "hardware-player-desktop",
+      "hardware-player-mobile"
+    ],
+    "suites": [
+      "player",
+      "combat",
+      "encounter",
+      "weapon",
+      "group"
+    ]
+  },
+  "spatialAudio": {
+    "passed": 4,
+    "projects": [
+      "desktop",
+      "mobile"
+    ]
+  },
+  "production": {
+    "passed": 4
+  },
+  "performance": {
+    "passed": 2,
+    "secondsPerScenario": 300,
+    "reports": [
+      "group-performance.json",
+      "cinematic-performance.json"
+    ]
+  },
+  "size": {
+    "passed": true,
+    "report": "delivery.json"
+  },
+  "physicalPhone": "unverified",
+  "userCombatVisualReview": "awaiting",
+  "preservedRegressionCaptures": 57,
+  "validationServerPorts": [
+    5173,
+    5180,
+    4173
+  ],
+  "serversStopped": true
+}

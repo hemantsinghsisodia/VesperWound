@@ -42,7 +42,7 @@ export class Interface {
           <label id="animation-label" for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
           <p>MEDIC · SCIFI MEDIC</p>
           <button id="inspection-toggle" hidden>Detailed inspection</button>
-          <div class="encounter-controls"><button id="encounter-start">Start encounter</button><button id="encounter-restart" hidden>Restart encounter</button><button id="encounter-return" hidden>Return to training</button><span id="encounter-status" role="status"></span></div>
+          <div class="encounter-controls"><button id="encounter-start">Start encounter</button><button id="encounter-group">Start group encounter</button><button id="encounter-restart" hidden>Restart encounter</button><button id="encounter-return" hidden>Return to training</button><span id="encounter-progress" role="status"></span><span id="encounter-status" role="status"></span></div>
           <div id="inspection-controls" hidden>
             <label for="inspection-view">View</label><select id="inspection-view"><option value="full-body">Full body</option><option value="portrait">Portrait</option><option value="equipment">Equipment</option></select>
             <label for="inspection-lighting">Lighting</label><select id="inspection-lighting"><option value="neutral">Neutral</option><option value="ash-quay">Ash Quay</option></select>
@@ -54,7 +54,7 @@ export class Interface {
         </section>
         <div id="controls-hint" class="controls-hint" hidden><span>W A S D <small>move the light</small></span><span>SPACE / CLICK <small>release pressure</small></span><span>ESC <small>settings</small></span></div>
         <section id="player-hud" class="player-hud" aria-label="Player status" hidden><label for="health">MEDIC <span id="health-value">100 / 100</span></label><progress id="health" max="100" value="100" aria-label="Medic health"></progress><label for="pressure">PRESSURE <span id="pressure-value">100 / 100</span></label><progress id="pressure" max="100" value="100" aria-label="Ward pressure"></progress><p id="player-message" role="status">Chain three light hits, then use heavy to break posture.</p><p id="equipped-weapon">Unarmed</p><p id="pickup-status" role="status"></p><p id="combat-score">HITS 0 · CRITICALS 0 · BLOCKS 0</p><button id="reset-targets">Reset targets</button><button id="restart-player" hidden>Return to the intake</button></section>
-        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><button id="pickup" class="pickup-button" aria-label="Pick up steel baton" hidden>Pick up</button><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button><button id="heavy" aria-label="Heavy attack">HEAVY</button><button id="ward" aria-label="Ward">WARD</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
+        <div id="touch-controls" class="touch-controls" hidden><div id="movement-stick" class="movement-stick" role="group" aria-label="Movement joystick"><span class="stick-knob"></span></div><button id="target-cycle" class="target-button" aria-label="Next living target" hidden>Next target</button><button id="pickup" class="pickup-button" aria-label="Pick up steel baton" hidden>Pick up</button><div class="player-touch-actions"><button id="run" aria-label="Run">RUN</button><button id="dodge" aria-label="Dodge">DODGE</button><button id="heavy" aria-label="Heavy attack">HEAVY</button><button id="ward" aria-label="Ward">WARD</button></div><button id="pulse" class="pulse-button" aria-label="Release pressure"><span aria-hidden="true">◈</span><small>PRESSURE</small></button></div>
         <div class="session-tag"><span class="status-dot"></span><span id="session-status">INTAKE CLOSED</span></div>
         <section id="rotate" class="rotate-panel" hidden><span aria-hidden="true">↻</span><h2>Turn toward the Works</h2><p>Rotate your phone to landscape to continue.</p></section>
         <section id="error" class="error-panel" hidden role="alert"><p class="eyebrow">CONNECTION INTERRUPTED</p><h2>The Works are silent.</h2><p id="error-detail"></p><button id="retry" class="primary-button">TRY AGAIN <span aria-hidden="true">↗</span></button><button id="compatibility" class="text-button">Use compatibility graphics</button></section>
@@ -94,7 +94,7 @@ export class Interface {
     camera(view: CameraView): void; animation(clip: PreviewClip): void; turn(): void;
     inspection(): void; inspectionView(view: InspectionView): void;
     inspectionLighting(lighting: InspectionLighting): void; inspectionPause(): void; restart(): void; resetTargets(): void;
-    encounterStart(): void; encounterRestart(): void; encounterReturn(): void;
+    encounterStart(): void; encounterGroup(): void; encounterRestart(): void; encounterReturn(): void;
   }): void {
     this.lifetime.listen(this.start, 'click', () => callbacks.start());
     for (const view of ['player', 'courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
@@ -104,6 +104,7 @@ export class Interface {
     this.lifetime.listen(this.get('#restart-player'), 'click', () => callbacks.restart());
     this.lifetime.listen(this.get('#reset-targets'), 'click', () => callbacks.resetTargets());
     this.lifetime.listen(this.get('#encounter-start'), 'click', () => callbacks.encounterStart());
+    this.lifetime.listen(this.get('#encounter-group'), 'click', () => callbacks.encounterGroup());
     this.lifetime.listen(this.get('#encounter-restart'), 'click', () => callbacks.encounterRestart());
     this.lifetime.listen(this.get('#encounter-return'), 'click', () => callbacks.encounterReturn());
     this.lifetime.listen(this.get('#animation'), 'change', () => { const value = this.get<HTMLSelectElement>('#animation').value; callbacks.animation(value === 'pose' ? { kind: 'pose' } : { kind: 'clip', name: value.slice(5) }); });
@@ -159,7 +160,7 @@ export class Interface {
     this.get('#controls-hint').hidden = !playing;
     if (playing) {
       this.pulse.setAttribute('aria-label', 'Attack'); this.pulse.querySelector('small')!.textContent = 'ATTACK';
-      this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK / RIGHT CLICK <small>light / heavy</small></span><span>SPACE / Q <small>dodge / Ward</small></span><span>ESC <small>settings</small></span>';
+      this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK / RIGHT CLICK <small>light / heavy</small></span><span>SPACE / Q <small>dodge / Ward · T next target</small></span><span>ESC <small>settings</small></span>';
     }
   }
   player(state: PlayerState): void {
@@ -191,14 +192,24 @@ export class Interface {
   encounter(simulation: EncounterSimulation | null, loading: boolean, error = ''): void {
     const active=simulation?.mode==='encounter';
     this.get('#encounter-start').hidden=active;
+    this.get('#encounter-group').hidden=active||loading;
+    const living=simulation?.enemies.filter(e=>e.health>0)??[];
+    this.get('#target-cycle').hidden=!active||living.length<2;
+    this.get<HTMLButtonElement>('#target-cycle').disabled=simulation?.player.state.action==='dead';
+    this.get('#encounter-progress').textContent=active?`${simulation!.kind==='group'?'GROUP':'ENCOUNTER'} · ${living.length} / ${simulation!.enemies.length} remaining`:'';
     this.get('#encounter-start').textContent=loading?'Cancel encounter load':error?'Retry encounter':'Start encounter';
     this.get('#encounter-restart').hidden=!active;this.get('#encounter-return').hidden=!active;
     this.get('#encounter-status').textContent=loading?'Preparing Zombie 7…':error;
     this.get('#reset-targets').hidden=active||simulation?.player.state.action==='dead';
-    if(active&&simulation?.victorious)this.get('#player-message').textContent='ENCOUNTER COMPLETE · Restart to fight again.';
-    else if(active&&simulation?.player.state.action!=='dead'&&simulation?.player.state.action==='idle')this.get('#player-message').textContent='Watch the windup · step into punch range · dodge or Ward.';
+    if(active&&simulation?.victorious)this.get('#player-message').textContent=simulation.kind==='group'?'GROUP COMPLETE · All three defeated.':'ENCOUNTER COMPLETE · Restart to fight again.';
+    else if(active&&simulation?.player.state.action!=='dead'&&simulation?.player.state.action==='idle')this.get('#player-message').textContent=simulation?.kind==='group'?'Watch the attacker · T / Next target cycles living enemies.':'Watch the windup · step into striking range · dodge or Ward.';
     this.root.dataset.encounter=active?'active':loading?'loading':error?'failed':'training';
     this.canvas.dataset.encounter=this.root.dataset.encounter;
+    this.root.dataset.encounterKind=active?simulation!.kind:'none';
+    this.canvas.dataset.encounterKind=this.root.dataset.encounterKind;
+    this.canvas.dataset.enemiesRemaining=String(living.length);
+    this.canvas.dataset.enemyRoster=JSON.stringify(simulation?.enemies.map(e=>({id:e.id,generation:e.generation,x:e.position.x,z:e.position.z,health:e.health,action:e.action,actionTime:e.actionTime}))??[]);
+    this.canvas.dataset.focusTarget=simulation?.player.state.target?.id??'';
     this.canvas.dataset.enemyState=simulation?.enemies[0]?.action??'none';
     this.canvas.dataset.enemyHealth=String(simulation?.enemies[0]?.health??0);
     this.canvas.dataset.enemyPosition=simulation?.enemies[0]?`${simulation.enemies[0].position.x.toFixed(3)},${simulation.enemies[0].position.z.toFixed(3)}`:'';
@@ -206,7 +217,7 @@ export class Interface {
   animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip.kind === 'pose' ? 'pose' : `clip:${clip.name}`; }
   artLoading(loading: boolean, message = ''): void {
     this.get('#art-status').textContent = message;
-    for (const selector of ['#animation', '#turn-character', '#quality', '#encounter-start', '#encounter-restart', '#encounter-return']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
+    for (const selector of ['#animation', '#turn-character', '#quality', '#encounter-start', '#encounter-group', '#encounter-restart', '#encounter-return']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
   }
   inspection(state: InspectionState, eligible: boolean): void {
     const active = state.status === 'active';
