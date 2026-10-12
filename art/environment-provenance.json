@@ -1,8 +1,8 @@
 {
-  "milestone": "Ash Quay rebuild / Checkpoint A",
+  "milestone": "Ash Quay rebuild / Checkpoint B",
   "status": "Awaiting browser art review",
-  "master": "art/source/ash-quay-master.blend",
-  "masterSha256": "3a14fdd9dca31054d68702acf61fbf4df5d336bad01e171fba2af342f28072fd",
+  "master": "art/source/ash-quay-district.blend",
+  "masterSha256": "92793b6f1290ab0e29c7853204c7a857eae0cc980e4b1aa9d9e1c7c263910533",
   "sourceAssets": [
     {
       "id": "modular_factory_facade",
@@ -232,44 +232,107 @@
           "sha256": "fcd31243e9fa7169e892f5bcc12bc137d151986d43b1be35fc2773ebca7fc5d9"
         }
       ]
+    },
+    {
+      "id": "concrete_floor_worn_02",
+      "title": "Concrete Floor Worn 02",
+      "authors": [
+        "Dimitrios Savva"
+      ],
+      "source": "https://polyhaven.com/a/concrete_floor_worn_02",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "acquired": "2026-10-12",
+      "files": [
+        {
+          "path": "art/imports/environment/concrete_floor_worn_02/Diffuse.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_worn_02/concrete_floor_worn_02_diff_1k.jpg",
+          "bytes": 708284,
+          "md5": "ccd9c2b165411c6aec1270fc6226d335",
+          "sha256": "ff489f9196bb19d908981f4e9cde48f915a9860986b6718357c04e8a088bb744"
+        },
+        {
+          "path": "art/imports/environment/concrete_floor_worn_02/nor_gl.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_worn_02/concrete_floor_worn_02_nor_gl_1k.jpg",
+          "bytes": 1163338,
+          "md5": "4fb1700c31672f2c1d50553238035d41",
+          "sha256": "9bfd5d33849043dc13d938b2901b51c2cfd03b4e9a87b52a629b86a8bdbe1dc7"
+        },
+        {
+          "path": "art/imports/environment/concrete_floor_worn_02/Rough.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_worn_02/concrete_floor_worn_02_rough_1k.jpg",
+          "bytes": 253558,
+          "md5": "579be67d20f4362704ff7f575462214b",
+          "sha256": "3035395368dc4e1e23424f566bac0cb21326fa42a4a9af7031e5467d4ba42150"
+        }
+      ],
+      "modifications": [
+        "Metre-scaled UV projection, subtle material tint, tier compression and mipmaps"
+      ]
     }
   ],
   "retainedSources": "Existing verified Poly Haven materials, including Rusty Metal 04, and wooden crate in art/provenance.json",
   "originalWork": [
     "Pressure vessel, flanges, handwheels, gauges and sight glass",
     "Architecture composition, signs, harbour and skyline",
-    "District blockout, maintenance slabs, drains and dressing"
+    "Arrival quay crane, loading canopy, mooring furniture and ground flags"
   ],
   "modifications": [
     "Curated factory facade and pipe modules with retained UVs",
-    "Packed textures in editable master",
-    "Runtime paving and iron PBR tint factors",
+    "Packed textures in editable master; Checkpoint A source retained separately",
+    "Shared runtime bounds for collision and authored solids",
     "Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps",
     "Source-scene panoramic reflection bake",
-    "Read-only saved-source export; 64m blockout excluded from runtime"
+    "Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime"
   ],
   "exports": [
     {
       "tier": "desktop",
+      "section": "court",
       "output": "public/assets/showcase/desktop/ash-quay.glb",
-      "bytes": 11443876,
-      "triangles": 103494,
-      "meshes": 38,
-      "textures": 37,
+      "bytes": 12204284,
+      "triangles": 111184,
+      "meshes": 40,
+      "textures": 40,
       "maximumTexture": 1024,
-      "reflectionBytes": 29544,
-      "sha256": "4badd049a4846b8290c81a26d633f4c4c8a70dcf4260e75a96cf76d5b5ab221d"
+      "reflectionBytes": 21492,
+      "sha256": "78e2e39f8b0c6b3c041fa5986c4639b8919830d4e2759df06d408d82666ee7ad"
+    },
+    {
+      "tier": "desktop",
+      "section": "quay",
+      "output": "public/assets/district/desktop/arrival-quay.glb",
+      "bytes": 7825144,
+      "triangles": 29406,
+      "meshes": 75,
+      "textures": 25,
+      "maximumTexture": 1024,
+      "reflectionBytes": 21492,
+      "sha256": "769aad88d05fed1efcb6b5f8034df9f191883e32c73af1c56574237d98cf2493"
     },
     {
       "tier": "mobile",
+      "section": "court",
       "output": "public/assets/showcase/mobile/ash-quay.glb",
-      "bytes": 3416332,
-      "triangles": 103494,
-      "meshes": 38,
-      "textures": 37,
+      "bytes": 3674920,
+      "triangles": 111184,
+      "meshes": 40,
+      "textures": 40,
       "maximumTexture": 512,
-      "reflectionBytes": 29544,
-      "sha256": "6efc1a71c8c913e88660c22bb38c8c4218a8e1f61c616fd7e09ab8afb3fc6ebb"
+      "reflectionBytes": 21492,
+      "sha256": "efc84cd5baecf12bf0b3d14c6a611d9834e96c93bd9c723b7b255060579ee546"
+    },
+    {
+      "tier": "mobile",
+      "section": "quay",
+      "output": "public/assets/district/mobile/arrival-quay.glb",
+      "bytes": 2157608,
+      "triangles": 29406,
+      "meshes": 75,
+      "textures": 25,
+      "maximumTexture": 512,
+      "reflectionBytes": 21492,
+      "sha256": "061f2663be011a96a627749c5076edacdb5b4180add8b0dafc4cf3ebd9609274"
     }
   ]
 }

@@ -19,6 +19,7 @@
     "assets:fetch": "node --use-system-ca tools/fetch-art.mjs",
     "assets:build": "node tools/build-art.mjs",
     "assets:environment": "node tools/build-environment.mjs",
+    "assets:district:author": "node tools/author-district.mjs",
     "assets:environment:author": "\"C:/Program Files/Blender Foundation/Blender 5.2/blender.exe\" -b --factory-startup --disable-autoexec --python tools/blender/author_ash_quay.py",
     "check": "npm run typecheck && npm run lint && npm run test && npm run build",
     "size": "node tools/report-size.mjs"

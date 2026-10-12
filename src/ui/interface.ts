@@ -6,6 +6,7 @@ import type { CameraView, PreviewClip, InspectionView, InspectionLighting, Inspe
 import type { WeaponPickup } from '../player/weapon-pickup';
 import type { PlayerSimulation, PlayerState } from '../player/player-simulation';
 import type { EncounterSimulation } from '../enemies/encounter-simulation';
+import type { SectionStatus } from '../assets/section-stream';
 
 export class Interface {
   canvas: HTMLCanvasElement;
@@ -18,6 +19,7 @@ export class Interface {
   private readonly settings: HTMLDialogElement;
   private readonly rotate: HTMLElement;
   private readonly errorPanel: HTMLElement;
+  private districtDisplay = '';
 
   constructor(readonly root: HTMLElement, preferences: Preferences) {
     root.innerHTML = `
@@ -37,7 +39,8 @@ export class Interface {
           <p class="entry-footnote">THE VESPER WORKS · MEDIC AT ASH QUAY · <a href="/credits.html" target="_blank" rel="noopener">Credits</a></p>
         </section>
         <section id="location" class="location" hidden><p class="eyebrow">THE VESPER WORKS / 01</p><h2>Ash Quay</h2><p>The last light at the intake.</p></section>
-        <div class="scene-feedback" role="status"><span id="scene-loading"></span><span id="scene-inspection-feedback"></span><span id="scene-encounter-feedback"></span></div>
+        <div class="scene-feedback" role="status"><span id="scene-loading"></span><span id="scene-inspection-feedback"></span><span id="scene-encounter-feedback"></span><span id="district-status"></span><button id="district-retry" hidden>Retry quay passage</button></div>
+        <aside id="district-guide" hidden><strong id="district-area">Pressure Court</strong><span id="district-direction">Follow the south passage to Arrival Quay</span></aside>
         <section id="showcase-controls" class="showcase-controls" aria-label="Visual showcase" hidden>
           <div class="view-buttons"><button id="view-player" aria-pressed="true">Play</button><button id="view-courtyard" aria-pressed="false">Courtyard</button><button id="view-character" aria-pressed="false">Medic</button><button id="turn-character" aria-label="Turn Medic">↻</button></div>
           <label id="animation-label" for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
@@ -92,6 +95,7 @@ export class Interface {
     return element;
   }
   bind(callbacks: {
+    districtRetry(): void;
     start(): void; pause(paused: boolean): void; retry(compatibility: boolean): void;
     preferences(values: Partial<Preferences>): void;
     camera(view: CameraView): void; animation(clip: PreviewClip): void; turn(): void;
@@ -100,6 +104,7 @@ export class Interface {
     encounterStart(): void; encounterGroup(): void; encounterRestart(): void; encounterReturn(): void;
   }): void {
     this.lifetime.listen(this.start, 'click', () => callbacks.start());
+    this.lifetime.listen(this.get('#district-retry'), 'click', () => callbacks.districtRetry());
     for (const view of ['player', 'courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
       callbacks.camera(view);
       for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
@@ -178,7 +183,7 @@ export class Interface {
     this.get('#pressure-value').textContent = `${Math.floor(state.pressure)} / 100`;
     this.get('#restart-player').hidden = state.action !== 'dead';
     this.get('#reset-targets').hidden = state.action === 'dead';
-    this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.';
+    this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning && state.position.z < 8 ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.';
     this.get('#combat-score').textContent = `HITS ${state.targetHits} · CRITICALS ${state.criticals} · BLOCKS ${state.blocks}`;
     this.root.dataset.playerAction = state.action;
     this.root.dataset.combatFeedback = String(state.action === 'dead' || state.wardRemaining > 0 || state.ventWarning);
@@ -271,6 +276,17 @@ export class Interface {
     this.get('#session-status').textContent = 'INTAKE OFFLINE'; this.root.dataset.state = 'error';
   }
   clearError(): void { this.errorPanel.hidden = true; }
+  district(area: string, status: SectionStatus): void {
+    const display = `${area}/${status}/${this.root.dataset.mode}/${this.root.dataset.inspection}`;
+    if (display === this.districtDisplay) return;
+    this.districtDisplay = display;
+    this.root.dataset.district = status; this.canvas.dataset.district = status; this.canvas.dataset.area = area;
+    this.get('#district-guide').hidden = this.root.dataset.mode !== 'player' || this.root.dataset.inspection === 'active';
+    this.get('#district-area').textContent = area;
+    this.get('#district-direction').textContent = area === 'Arrival Quay' ? 'Loading bay · mooring overlook · return through Pump Alley' : area === 'Pump Alley' ? 'South: Arrival Quay · North: Pressure Court' : 'South passage → Arrival Quay';
+    this.get('#district-status').textContent = status === 'loading' ? 'Preparing quay passage…' : status === 'failed' ? 'Quay passage unavailable. You can stay in the court or retry.' : '';
+    this.get('#district-retry').hidden = status !== 'failed';
+  }
   private placeSceneTools(): void {
     const preview = this.root.dataset.inspection === 'active' || ['courtyard', 'character'].includes(this.root.dataset.mode ?? '');
     const parent = preview ? this.get('.experience') : this.get('#scene-tools-slot');

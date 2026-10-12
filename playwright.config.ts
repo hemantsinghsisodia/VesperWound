@@ -14,8 +14,8 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'desktop', testIgnore: ['**/ash-quay.spec.ts', '**/group.spec.ts', '**/encounter.spec.ts', '**/combat.spec.ts', '**/weapon.spec.ts', '**/player.spec.ts', '**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { viewport: { width: 1440, height: 900 } } },
-    { name: 'mobile', testIgnore: ['**/ash-quay.spec.ts', '**/group.spec.ts', '**/encounter.spec.ts', '**/combat.spec.ts', '**/weapon.spec.ts', '**/player.spec.ts', '**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 } } },
+    { name: 'desktop', testIgnore: ['**/district.spec.ts', '**/ash-quay.spec.ts', '**/group.spec.ts', '**/encounter.spec.ts', '**/combat.spec.ts', '**/weapon.spec.ts', '**/player.spec.ts', '**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { viewport: { width: 1440, height: 900 } } },
+    { name: 'mobile', testIgnore: ['**/district.spec.ts', '**/ash-quay.spec.ts', '**/group.spec.ts', '**/encounter.spec.ts', '**/combat.spec.ts', '**/weapon.spec.ts', '**/player.spec.ts', '**/webgpu.spec.ts', '**/performance.spec.ts', '**/showcase-lifecycle.spec.ts', '**/inspection.spec.ts'], use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 } } },
     { name: 'hardware-player-desktop', testMatch: ['**/player.spec.ts', '**/combat.spec.ts', '**/encounter.spec.ts', '**/group.spec.ts', '**/weapon.spec.ts'], use: { viewport: { width: 1440, height: 900 }, launchOptions: { args: [] } } },
     { name: 'hardware-player-mobile', testMatch: ['**/player.spec.ts', '**/combat.spec.ts', '**/encounter.spec.ts', '**/group.spec.ts', '**/weapon.spec.ts'], use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 }, launchOptions: { args: [] } } },
     { name: 'hardware-inspection', testMatch: '**/inspection.spec.ts', use: { viewport: { width: 1440, height: 900 }, launchOptions: { args: [] } } },

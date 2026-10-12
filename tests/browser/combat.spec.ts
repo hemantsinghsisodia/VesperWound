@@ -22,7 +22,7 @@ async function approachTarget(page: Page) {
 for (const backend of ['webgpu-required', 'webgl2']) test(`three-light combo, stagger and critical demonstration on ${backend}`, async ({ page }) => {
   test.skip(!test.info().project.name.endsWith('desktop'), 'Desktop hardware demonstration.'); test.setTimeout(120000);
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message)); await enter(page, backend);
-  await mkdir('docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser', { recursive: true });
+  await mkdir('docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser', { recursive: true });
   expect((await snapshot(page)).backend).toBe(backend === 'webgl2' ? 'WebGL2' : 'WebGPU');
   await page.keyboard.down('d'); await page.keyboard.down('s'); await expect.poll(async () => (await snapshot(page)).player!.position.x, { intervals: [30] }).toBeGreaterThan(.6); await page.keyboard.up('d'); await page.keyboard.up('s'); await page.waitForTimeout(300);
   const attacks = [];
@@ -32,12 +32,12 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`three-light combo, st
     await page.mouse.click(aim.x, aim.y, { button: i >= 3 ? 'right' : 'left' });
     await expect.poll(async () => (await snapshot(page)).player!.targetHits, { intervals: [20] }).toBe(before + 1);
     attacks.push(await snapshot(page));
-    if (i === 2) await page.screenshot({ path: `docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/${backend}-combo.png` });
-    if (i === 3) { expect((await snapshot(page)).targets![0]!.posture).toBe(100); await page.screenshot({ path: `docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/${backend}-stagger.png` }); }
+    if (i === 2) await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/${backend}-combo.png` });
+    if (i === 3) { expect((await snapshot(page)).targets![0]!.posture).toBe(100); await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/${backend}-stagger.png` }); }
     await expect.poll(async () => (await snapshot(page)).player!.action, { intervals: [20] }).toBe('idle');
   }
   const final = await snapshot(page); expect(final.player!.criticals).toBe(1); expect(final.targets![0]!.health).toBe(0); expect(final.player!.defeats).toBe(1);
-  await page.screenshot({ path: `docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/${backend}-critical.png` });
+  await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/${backend}-critical.png` });
   await clickSceneTool(page, '#reset-targets'); expect((await snapshot(page)).targets!.every(t => t.health === t.maxHealth && t.posture === 0)).toBe(true);
   await page.getByRole('button', { name: 'Open settings' }).click(); await page.locator('#reduced-motion').check(); await page.locator('#quality').selectOption('Low'); await expect(page.locator('#quality')).toBeEnabled(); await page.locator('#resume').click();
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
@@ -51,8 +51,8 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`three-light combo, st
     await expect.poll(async () => (await snapshot(page)).player!.action).toBe('idle');
   }
   await expect.poll(async () => (await snapshot(page)).voices).toBe(3);
-  expect(errors).toEqual([]); await writeFile(`docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/combat-${backend}.json`, JSON.stringify({ attacks, final, lowAttacks, afterQualityChange: await snapshot(page), errors }, null, 2));
-  const video = page.video(); await page.context().close(); await video?.saveAs(`docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/combat-${backend}.webm`);
+  expect(errors).toEqual([]); await writeFile(`docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/combat-${backend}.json`, JSON.stringify({ attacks, final, lowAttacks, afterQualityChange: await snapshot(page), errors }, null, 2));
+  const video = page.video(); await page.context().close(); await video?.saveAs(`docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/combat-${backend}.webm`);
 });
 test('Ward absorbs a telegraphed vent pulse and consumes pressure', async ({ page }) => {
   test.skip(!test.info().project.name.endsWith('desktop'), 'Keyboard Ward timing.'); await enter(page);
@@ -60,9 +60,9 @@ test('Ward absorbs a telegraphed vent pulse and consumes pressure', async ({ pag
   await expect.poll(async () => (await snapshot(page)).player!.ventRemaining, { intervals: [20] }).toBeLessThan(.4);
   await expect(page.locator('#player-message')).toContainText('VENT PULSE'); await page.keyboard.press('q');
   await expect.poll(async () => (await snapshot(page)).player!.wardRemaining, { intervals: [20] }).toBeGreaterThan(0);
-  await page.screenshot({ path: 'docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/ward.png' });
+  await page.screenshot({ path: 'docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/ward.png' });
   await expect.poll(async () => (await snapshot(page)).player!.blocks, { intervals: [20] }).toBe(1);
-  const s = await snapshot(page); expect(s.player!.health).toBe(100); expect(s.player!.pressure).toBe(75); await writeFile('docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/ward.json', JSON.stringify(s, null, 2));
+  const s = await snapshot(page); expect(s.player!.health).toBe(100); expect(s.player!.pressure).toBe(75); await writeFile('docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/ward.json', JSON.stringify(s, null, 2));
 });
 test('mobile Heavy and Ward controls remain distinct at maximum scale and both handedness settings', async ({ page }) => {
   test.skip(!test.info().project.name.endsWith('mobile'), 'Touch controls.'); await enter(page);
@@ -76,8 +76,8 @@ test('mobile Heavy and Ward controls remain distinct at maximum scale and both h
     const pressureBeforeWard = (await snapshot(page)).player!.pressure;
     await page.locator('#ward').tap(); await expect.poll(async () => (await snapshot(page)).player!.action).toBe('ward');
     expect((await snapshot(page)).player!.pressure).toBeLessThanOrEqual(pressureBeforeWard - 24);
-    await page.screenshot({ path: `docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/mobile-${left ? 'left' : 'right'}.png` }); await expect.poll(async () => (await snapshot(page)).player!.action).toBe('idle');
+    await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/mobile-${left ? 'left' : 'right'}.png` }); await expect.poll(async () => (await snapshot(page)).player!.action).toBe('idle');
   }
   expect(requests.some(r => r.includes('/cinematic/'))).toBe(false);
-  await writeFile('docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/mobile-combat.json', JSON.stringify({ snapshot: await snapshot(page), requests }, null, 2));
+  await writeFile('docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/mobile-combat.json', JSON.stringify({ snapshot: await snapshot(page), requests }, null, 2));
 });

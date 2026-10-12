@@ -21,6 +21,10 @@
       "kind": "texture",
       "url": "reflection.ktx2",
       "colorSpace": "srgb"
+    },
+    "quayside": {
+      "kind": "model",
+      "url": "../../district/desktop/arrival-quay.glb"
     }
   }
 }

@@ -16,6 +16,7 @@ export class AssetManager {
   private manifestUrl = '';
   private disposed = false;
   private decodes = 0;
+  private preparations = 0;
 
   constructor(readonly renderer: WebGPURenderer) {
     this.ktx.detectSupport(renderer);
@@ -55,14 +56,24 @@ export class AssetManager {
       throw new Error(`Could not load asset "${id}" (${definition.url}): ${error instanceof Error ? error.message : String(error)}`, { cause: error });
     }
   }
-  async model(id: string): Promise<AssetHandle<GLTF>> {
+  async model(id: string, prepare?: (model: GLTF) => Promise<void>): Promise<AssetHandle<GLTF>> {
     const handle = await this.cache.acquire(id);
     if (handle.value.kind !== 'model') { handle.release(); throw new Error(`${id} is not a model.`); }
+    if (this.disposed) { handle.release(); throw new Error('Asset manager was disposed.'); }
+    if (prepare) {
+      this.preparations++;
+      try {
+        await prepare(handle.value.gltf);
+        if (this.disposed) throw new Error('Asset preparation was cancelled.');
+      } catch (error) { handle.release(); throw error; }
+      finally { this.preparations--; if (this.disposed && this.preparations === 0) this.cache.dispose(); }
+    }
     return { value: handle.value.gltf, release: handle.release };
   }
   async texture(id: string): Promise<AssetHandle<Texture>> {
     const handle = await this.cache.acquire(id);
     if (handle.value.kind !== 'texture') { handle.release(); throw new Error(`${id} is not a texture.`); }
+    if (this.disposed) { handle.release(); throw new Error('Asset manager was disposed.'); }
     return { value: handle.value.texture, release: handle.release };
   }
   private destroy(resource: Resource): void {
@@ -91,6 +102,10 @@ export class AssetManager {
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
     for (const controller of this.pending) controller.abort();
-    this.pending.clear(); this.cache.dispose(); if (this.decodes === 0) this.ktx.dispose();
+    this.pending.clear();
+    // Shader preparation may still be reading a leased model. Its finally block
+    // releases the cache after that work ends, preventing disposed GPU inputs.
+    if (this.preparations === 0) this.cache.dispose();
+    if (this.decodes === 0) this.ktx.dispose();
   }
 }

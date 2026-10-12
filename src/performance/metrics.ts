@@ -14,6 +14,7 @@ export interface FrameStatistics {
   player?: PlayerState;
   targets?: CombatantState[];
   encounter?: 'training'|'encounter'; enemies?: EnemyState[]; enemyLoading?: boolean;
+  district?: string; area?: string; hiddenCutaways?: number;
 }
 export class FrameMetrics {
   private readonly frames: number[] = [];

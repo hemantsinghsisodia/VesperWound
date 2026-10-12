@@ -227,5 +227,42 @@
         "sha256": "fcd31243e9fa7169e892f5bcc12bc137d151986d43b1be35fc2773ebca7fc5d9"
       }
     ]
+  },
+  {
+    "id": "concrete_floor_worn_02",
+    "title": "Concrete Floor Worn 02",
+    "authors": [
+      "Dimitrios Savva"
+    ],
+    "source": "https://polyhaven.com/a/concrete_floor_worn_02",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "acquired": "2026-10-12",
+    "files": [
+      {
+        "path": "art/imports/environment/concrete_floor_worn_02/Diffuse.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_worn_02/concrete_floor_worn_02_diff_1k.jpg",
+        "bytes": 708284,
+        "md5": "ccd9c2b165411c6aec1270fc6226d335",
+        "sha256": "ff489f9196bb19d908981f4e9cde48f915a9860986b6718357c04e8a088bb744"
+      },
+      {
+        "path": "art/imports/environment/concrete_floor_worn_02/nor_gl.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_worn_02/concrete_floor_worn_02_nor_gl_1k.jpg",
+        "bytes": 1163338,
+        "md5": "4fb1700c31672f2c1d50553238035d41",
+        "sha256": "9bfd5d33849043dc13d938b2901b51c2cfd03b4e9a87b52a629b86a8bdbe1dc7"
+      },
+      {
+        "path": "art/imports/environment/concrete_floor_worn_02/Rough.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_worn_02/concrete_floor_worn_02_rough_1k.jpg",
+        "bytes": 253558,
+        "md5": "579be67d20f4362704ff7f575462214b",
+        "sha256": "3035395368dc4e1e23424f566bac0cb21326fa42a4a9af7031e5467d4ba42150"
+      }
+    ],
+    "modifications": [
+      "Metre-scaled UV projection, subtle material tint, tier compression and mipmaps"
+    ]
   }
 ]

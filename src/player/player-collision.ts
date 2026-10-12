@@ -2,6 +2,7 @@ import RAPIER from '@dimforge/rapier3d-compat';
 import { PLAYER_SPAWN, type PlayerCollision, type Position } from './player-simulation';
 import type { CombatantState } from './combat-definitions';
 import { courtyardSolids, segmentBlocked, discBlocked, type CollisionBox } from './collision-math';
+import { DISTRICT_GATE } from '../world/district-definition';
 
 export type { CollisionBox } from './collision-math';
 let initialized: Promise<void> | null = null;
@@ -16,6 +17,8 @@ export class RapierPlayerCollision implements PlayerCollision {
   private installed = false;
   private disposed = false;
   private boxes: readonly CollisionBox[] = [];
+  private districtGate: RAPIER.Collider | null = null;
+  private districtReady = true;
   private readonly targets = new Map<string, { collider: RAPIER.Collider; position: Position; active: boolean }>();
   constructor() {
     // The existing raised landing overlaps its narrow stair meshes. A capsule
@@ -31,6 +34,15 @@ export class RapierPlayerCollision implements PlayerCollision {
     for (const { position: p, half: h } of this.boxes) this.world.createCollider(RAPIER.ColliderDesc.cuboid(h.x, h.y, h.z).setTranslation(p.x, p.y, p.z));
     this.world.step();
   }
+  setDistrictReady(ready: boolean): void {
+    if (ready === this.districtReady) return;
+    this.districtReady = ready;
+    if (!this.districtGate) {
+      const { position: p, half: h } = DISTRICT_GATE;
+      this.districtGate = this.world.createCollider(RAPIER.ColliderDesc.cuboid(h.x, h.y, h.z).setTranslation(p.x, p.y, p.z));
+    }
+    this.districtGate.setEnabled(!ready);
+  }
   move(position: Position, displacement: Position): { position: Position; grounded: boolean } {
     this.body.setTranslation({ x: position.x, y: position.y + 0.87, z: position.z }, true);
     this.controller.computeColliderMovement(this.capsule, displacement);
@@ -40,7 +52,7 @@ export class RapierPlayerCollision implements PlayerCollision {
     return { position: next, grounded: this.controller.computedGrounded() };
   }
   reset(position: Position): void { this.body.setTranslation({ x: position.x, y: position.y + 0.87, z: position.z }, true); this.world.step(); }
-  blocked(from: Position, to: Position): boolean { return segmentBlocked(from, to, this.boxes); }
+  blocked(from: Position, to: Position): boolean { return segmentBlocked(from, to, this.boxes) || !this.districtReady && segmentBlocked(from, to, [DISTRICT_GATE]); }
   syncTargets(states: readonly CombatantState[]): void {
     const activeIds = new Set(states.map(t => t.id));
     for (const [id, entry] of this.targets) if (!activeIds.has(id)) { entry.active = false; entry.collider.setEnabled(false); }
@@ -53,7 +65,7 @@ export class RapierPlayerCollision implements PlayerCollision {
   }
   moveTarget(id: string, position: Position, displacement: Position): Position {
     const p = { ...position }; const steps = Math.max(1, Math.ceil(Math.hypot(displacement.x, displacement.z) / .08));
-    const blocked = (next: Position) => discBlocked(next, this.boxes) || [...this.targets].some(([other, t]) => other !== id && t.active && Math.hypot(t.position.x - next.x, t.position.z - next.z) < .6) || Math.hypot(this.body.translation().x - next.x, this.body.translation().z - next.z) < .58;
+    const blocked = (next: Position) => discBlocked(next, this.boxes) || !this.districtReady && discBlocked(next, [DISTRICT_GATE]) || [...this.targets].some(([other, t]) => other !== id && t.active && Math.hypot(t.position.x - next.x, t.position.z - next.z) < .6) || Math.hypot(this.body.translation().x - next.x, this.body.translation().z - next.z) < .58;
     for (let i = 0; i < steps; i++) {
       const x = { ...p, x: p.x + displacement.x / steps }; if (!blocked(x)) p.x = x.x;
       const z = { ...p, z: p.z + displacement.z / steps }; if (!blocked(z)) p.z = z.z;

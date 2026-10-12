@@ -6,12 +6,15 @@ const groups = { bootstrap: { raw: 0, gzip: 0, limit: 5 * 1024 * 1024 }, desktop
 groups.encounterDesktop = { raw: 0, gzip: 0, limit: 8 * 1024 * 1024 };
 groups.encounterMobile = { raw: 0, gzip: 0, limit: 4 * 1024 * 1024 };
 groups.weaponAnimations = { raw: 0, gzip: 0, limit: 512 * 1024 };
+groups.quayDesktop = { raw: 0, gzip: 0, limit: 12 * 1024 * 1024 };
+groups.quayMobile = { raw: 0, gzip: 0, limit: 6 * 1024 * 1024 };
 async function visit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = `${directory}/${entry.name}`;
     if (entry.isDirectory()) await visit(path);
     else {
       const bytes = await readFile(path);
+      if (path.includes('/district/')) { const group = path.includes('/district/desktop/') ? groups.quayDesktop : groups.quayMobile; group.raw += bytes.length; group.gzip += gzipSync(bytes).byteLength; continue; }
       if (path.includes('/weapons/baton/animations.glb') || path.includes('/weapons/baton/manifest.json')) { groups.weaponAnimations.raw += bytes.length; groups.weaponAnimations.gzip += gzipSync(bytes).byteLength; continue; }
       if (path.includes('/weapons/baton/baton.glb')) { for (const tier of ['desktop','mobile','cinematic']) { groups[tier].raw += bytes.length; groups[tier].gzip += gzipSync(bytes).byteLength; } continue; }
       if (path.includes('/showcase/shared/')) {

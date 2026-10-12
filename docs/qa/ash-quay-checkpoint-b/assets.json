@@ -1,0 +1,50 @@
+[
+  {
+    "tier": "desktop",
+    "section": "court",
+    "output": "public/assets/showcase/desktop/ash-quay.glb",
+    "bytes": 12204284,
+    "triangles": 111184,
+    "meshes": 40,
+    "textures": 40,
+    "maximumTexture": 1024,
+    "reflectionBytes": 21492,
+    "sha256": "78e2e39f8b0c6b3c041fa5986c4639b8919830d4e2759df06d408d82666ee7ad"
+  },
+  {
+    "tier": "desktop",
+    "section": "quay",
+    "output": "public/assets/district/desktop/arrival-quay.glb",
+    "bytes": 7825144,
+    "triangles": 29406,
+    "meshes": 75,
+    "textures": 25,
+    "maximumTexture": 1024,
+    "reflectionBytes": 21492,
+    "sha256": "769aad88d05fed1efcb6b5f8034df9f191883e32c73af1c56574237d98cf2493"
+  },
+  {
+    "tier": "mobile",
+    "section": "court",
+    "output": "public/assets/showcase/mobile/ash-quay.glb",
+    "bytes": 3674920,
+    "triangles": 111184,
+    "meshes": 40,
+    "textures": 40,
+    "maximumTexture": 512,
+    "reflectionBytes": 21492,
+    "sha256": "efc84cd5baecf12bf0b3d14c6a611d9834e96c93bd9c723b7b255060579ee546"
+  },
+  {
+    "tier": "mobile",
+    "section": "quay",
+    "output": "public/assets/district/mobile/arrival-quay.glb",
+    "bytes": 2157608,
+    "triangles": 29406,
+    "meshes": 75,
+    "textures": 25,
+    "maximumTexture": 512,
+    "reflectionBytes": 21492,
+    "sha256": "061f2663be011a96a627749c5076edacdb5b4180add8b0dafc4cf3ebd9609274"
+  }
+]

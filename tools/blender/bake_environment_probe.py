@@ -2,7 +2,7 @@
 import bpy, math
 from pathlib import Path
 root=Path.cwd()
-bpy.ops.wm.open_mainfile(filepath=str(root/'art/source/ash-quay-master.blend'),load_ui=False)
+bpy.ops.wm.open_mainfile(filepath=str(root/'art/source/ash-quay-district.blend'),load_ui=False)
 scene=bpy.context.scene
 scene.render.engine='CYCLES';scene.cycles.samples=16;scene.cycles.use_denoising=True
 scene.render.resolution_x=512;scene.render.resolution_y=256;scene.render.resolution_percentage=100

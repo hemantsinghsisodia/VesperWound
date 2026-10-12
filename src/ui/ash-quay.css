@@ -32,6 +32,11 @@
 .scene-feedback{position:absolute;left:50%;top:24px;transform:translateX(-50%);max-width:48vw;z-index:5;color:#d5c69d;font:11px/1.5 Arial,sans-serif;pointer-events:none}
 .scene-feedback span{display:block;background:#102023e8;padding:8px 12px;border:1px solid #7e8a7044}
 .scene-feedback span:empty{display:none}
+#district-guide{position:absolute;left:28px;bottom:34px;display:flex;flex-direction:column;gap:5px;max-width:360px;color:#bcc9c1;pointer-events:none;font:10px/1.4 Arial,sans-serif}
+#district-guide strong{font:18px Georgia,serif;color:#dfd4b9}
+#district-guide[hidden],#app[data-inspection=active] #district-guide{display:none}
+#district-retry{pointer-events:auto;min-height:44px;padding:10px 18px;background:#203432;color:#eadfc1;border:1px solid #9c8759}
+#app[data-scene=showcase] .location{display:none}
 @media(pointer:coarse),(max-height:550px){
   #app[data-scene=showcase] .player-hud{left:18px;top:65px;width:174px;padding:8px 10px}
   #app[data-scene=showcase] .player-hud label{font-size:8px}
@@ -40,4 +45,7 @@
   #app[data-scene=showcase] .location{display:none}
   #app[data-scene=showcase] .masthead{padding:12px 18px 0}
   .settings-panel{max-height:90dvh}
+  #district-guide{left:50%;bottom:auto;top:14px;transform:translateX(-50%);max-width:42vw;text-align:center;font-size:8px}
+  #district-guide strong{font-size:12px}
+  .scene-feedback{top:62px;max-width:42vw}
 }

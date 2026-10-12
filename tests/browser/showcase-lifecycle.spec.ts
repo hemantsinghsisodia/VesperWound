@@ -15,7 +15,7 @@ for (const backend of ['webgl2', 'webgpu-required']) test(`ten scene reloads and
     await page.waitForTimeout(100);
     loads.push(await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot()));
   }
-  const report = `docs/qa/ash-quay-rebuild/lifecycle${backend === 'webgl2' ? '' : '-webgpu'}.json`;
+  const report = `docs/qa/ash-quay-checkpoint-b/lifecycle${backend === 'webgl2' ? '' : '-webgpu'}.json`;
   await writeFile(report, JSON.stringify({ before, loads, errors }, null, 2));
   for (const stats of loads) {
     expect(stats?.references).toBe(5); expect(stats?.resources).toBe(before?.resources); expect(stats?.listeners).toBe(before?.listeners);

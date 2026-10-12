@@ -7,7 +7,7 @@ test('authored Ash Quay proof, compact HUD, practice and retained inspection', a
   const backend = name === 'proof-webgpu' ? 'webgpu-required' : 'webgl2';
   const errors: string[] = [], requests: string[] = [];
   page.on('pageerror', e => errors.push(e.message)); page.on('request', r => requests.push(r.url()));
-  const folder = 'docs/qa/ash-quay-rebuild'; await mkdir(folder, { recursive: true });
+  const folder = 'docs/qa/ash-quay-checkpoint-b'; await mkdir(folder, { recursive: true });
   await page.goto(`/?backend=${backend}`); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');
   await page.locator('#start').click(); await page.waitForTimeout(1500);
   await expect(page.locator('#showcase-controls')).toBeHidden();

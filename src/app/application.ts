@@ -24,7 +24,7 @@ import { EncounterSimulation, type EncounterKind } from '../enemies/encounter-si
 import type { EnemyPresentation } from '../world/enemy-presentation';
 import type { CombatEvent } from '../player/combat-definitions';
 import type { RapierPlayerCollision } from '../player/player-collision';
-import collisionBoxes from '../player/courtyard-collision.json';
+import { DISTRICT_BOXES, DISTRICT_BOUNDS, districtGround, districtArea } from '../world/district-definition';
 
 interface SessionEvents { pressureReleased: { x: number; z: number }; combat: CombatEvent }
 
@@ -50,6 +50,7 @@ export class Application {
   private committedQuality: QualityName = 'High';
   private input: InputManager | null = null;
   private player: PlayerSimulation | null = null;
+  private collision: RapierPlayerCollision | null = null;
   private encounter: EncounterSimulation | null = null;
   private enemyAssets: AssetManager | null = null;
   private pendingEnemy: { assets: AssetManager | null; view: EnemyPresentation | null; cancelled: boolean } | null = null;
@@ -91,6 +92,7 @@ export class Application {
       if (!reduced && event.type === 'damage') this.camera.impulse(.08);
     });
     this.ui.bind({
+      districtRetry: () => { if (this.courtyard instanceof VisualShowcase) this.courtyard.district?.stream.retry(); this.ui.canvas.focus(); },
       start: () => this.start(),
       pause: (paused) => {
         this.modalPaused = paused;
@@ -153,8 +155,8 @@ export class Application {
       if (this.options.scene === 'showcase') {
         const physics = await import('../player/player-collision'); await physics.initializePhysics();
         if (this.disposed) return;
-        const collision: RapierPlayerCollision = new physics.RapierPlayerCollision(); collision.install(collisionBoxes);
-        this.encounter = new EncounterSimulation(collision, collisionBoxes); this.player=this.encounter.player;
+        const collision: RapierPlayerCollision = new physics.RapierPlayerCollision(); collision.install(DISTRICT_BOXES); collision.setDistrictReady(false); this.collision = collision;
+        this.encounter = new EncounterSimulation(collision, DISTRICT_BOXES, undefined, DISTRICT_BOUNDS, districtGround); this.player=this.encounter.player;
       }
       this.courtyard = await this.createWorld(); await this.courtyard.load(assets, this.options.missingFixture);
       if (this.disposed) return;
@@ -243,6 +245,8 @@ export class Application {
           if (world instanceof VisualShowcase) {
             world.aim = this.player?.combatAim(input.aimActive ? this.camera.aim(input.aim, world.target.y) : undefined,input.pressed.has('target'));
             if(world.playing){
+              world.district?.update(this.player?.state.position.z ?? 0);
+              this.collision?.setDistrictReady(world.district?.stream.status === 'ready');
               this.encounter?.update(dt,input,world.aim);
               if(this.player){
                 const id=this.pickup.update(this.player,input.pressed.has('interact'),!this.pendingEnemy&&!this.pendingInspection);
@@ -261,6 +265,11 @@ export class Application {
         }, this.timeScale);
         world.interpolate(alpha);
         if (!this.inspection) this.camera.update(this.courtyard.target, delta);
+        if (!this.inspection && this.courtyard instanceof VisualShowcase) {
+          this.courtyard.district?.visibility(this.camera.camera, this.courtyard.target, this.courtyard.playing);
+          const stream = this.courtyard.district?.stream;
+          this.ui.district(districtArea(this.courtyard.target.z), stream?.status ?? 'closed');
+        }
         const observedCamera = this.inspection?.camera ?? this.camera.camera;
         observedCamera.updateMatrixWorld(true);
         this.ui.canvas.dataset.cameraProjection = JSON.stringify({ projection: observedCamera.projectionMatrix.elements, inverseWorld: observedCamera.matrixWorldInverse.elements });
@@ -460,7 +469,7 @@ export class Application {
       const { Courtyard } = await import('../world/courtyard'); return new Courtyard();
     }
     if (!this.player) throw new Error('Player simulation is unavailable.');
-    return new VisualShowcase(artVariant(this.quality.selected), this.player);
+    return new VisualShowcase(artVariant(this.quality.selected), this.player, this.camera.camera);
   }
   private snapshot(): FrameStatistics {
     const info = this.adapter?.renderer.info;
@@ -481,6 +490,7 @@ export class Application {
       characterTier: this.inspection ? 'cinematic' : this.courtyard instanceof VisualShowcase ? this.courtyard.variant : 'fixture',
       inspection: this.inspectionState.status, inspectionPaused: this.inspection?.actor.paused ?? false,
       artLoading: this.reloading,
+      ...(this.courtyard instanceof VisualShowcase ? { district: this.courtyard.district?.stream.status ?? 'closed', area: districtArea(this.courtyard.target.z), hiddenCutaways: this.courtyard.district?.hiddenCutaways ?? 0 } : {}),
       ...(import.meta.env.DEV && this.preview ? { rig: this.preview.inspection() } : {}),
       ...(import.meta.env.DEV && this.courtyard instanceof VisualShowcase && this.courtyard.baton && this.player?.state.weapon==='baton' ? { weaponContact: this.courtyard.baton.diagnostics() } : {}),
       ...(this.player ? { player: structuredClone(this.player.state), targets: structuredClone(this.player.targets) } : {}),
@@ -500,7 +510,7 @@ export class Application {
     this.loadingWorld?.dispose(); this.loadingWorld = null;
     this.loadingAssets?.dispose(); this.loadingAssets = null;
     this.assets?.dispose(); this.assets = null;
-    this.enemyAssets?.dispose();this.enemyAssets=null;this.encounter?.dispose();this.encounter=null;this.player = null;
+    this.enemyAssets?.dispose();this.enemyAssets=null;this.encounter?.dispose();this.encounter=null;this.player = null;this.collision = null;
     adapter?.dispose(); this.clock.reset();
   }
   async dispose(): Promise<void> {

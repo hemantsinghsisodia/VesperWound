@@ -1,0 +1,22 @@
+[
+  {"name":"Pump Alley foundation","kind":"ground","material":"slate","position":{"x":0,"y":-0.3,"z":12.5},"half":{"x":2.5,"y":0.335,"z":4.5}},
+  {"name":"Arrival Quay foundation","kind":"ground","material":"slate","position":{"x":0,"y":-0.3,"z":24},"half":{"x":8,"y":0.335,"z":7}},
+  {"name":"Pump Alley west wall","kind":"solid","material":"brick","position":{"x":-2.65,"y":1.6,"z":12.5},"half":{"x":0.15,"y":1.6,"z":4.5}},
+  {"name":"Pump Alley east parapet","kind":"solid","material":"stone","position":{"x":2.65,"y":0.55,"z":12.5},"half":{"x":0.15,"y":0.55,"z":4.5}},
+  {"name":"West quay edge","kind":"solid","material":"stone","position":{"x":-8.1,"y":0.45,"z":24},"half":{"x":0.1,"y":0.45,"z":7.2}},
+  {"name":"East quay edge","kind":"solid","material":"stone","position":{"x":8.1,"y":0.45,"z":24},"half":{"x":0.1,"y":0.45,"z":7.2}},
+  {"name":"Harbour edge","kind":"solid","material":"stone","position":{"x":0,"y":0.45,"z":31.1},"half":{"x":8.2,"y":0.45,"z":0.1}},
+  {"name":"North west quay edge","kind":"solid","material":"stone","position":{"x":-5.35,"y":0.45,"z":16.9},"half":{"x":2.65,"y":0.45,"z":0.1}},
+  {"name":"North east quay edge","kind":"solid","material":"stone","position":{"x":5.35,"y":0.45,"z":16.9},"half":{"x":2.65,"y":0.45,"z":0.1}},
+  {"name":"Loading house wall","kind":"solid","material":"brick","position":{"x":-7.65,"y":2.5,"z":21.5},"half":{"x":0.25,"y":2.5,"z":4}},
+  {"name":"Loading house north wall","kind":"solid","material":"brick","position":{"x":-5.7,"y":2.5,"z":17.7},"half":{"x":1.7,"y":2.5,"z":0.2}},
+  {"name":"Loading canopy roof","kind":"cutaway","material":"iron","position":{"x":-5.7,"y":3.4,"z":21.6},"half":{"x":2.15,"y":0.13,"z":3.8}},
+  {"name":"Canopy pier north","kind":"solid","material":"iron","position":{"x":-3.65,"y":1.7,"z":18.2},"half":{"x":0.1,"y":1.7,"z":0.1}},
+  {"name":"Canopy pier south","kind":"solid","material":"iron","position":{"x":-3.65,"y":1.7,"z":24.9},"half":{"x":0.1,"y":1.7,"z":0.1}},
+  {"name":"Sealed freight 01","kind":"solid","material":"wood","position":{"x":-6.55,"y":0.63,"z":19.5},"half":{"x":0.65,"y":0.6,"z":0.55}},
+  {"name":"Sealed freight 02","kind":"solid","material":"wood","position":{"x":-6.5,"y":0.63,"z":21.5},"half":{"x":0.65,"y":0.6,"z":0.55}},
+  {"name":"Harbour crane plinth","kind":"solid","material":"stone","position":{"x":4.8,"y":0.4,"z":24.4},"half":{"x":0.85,"y":0.4,"z":0.85}},
+  {"name":"Harbour crane mast","kind":"solid","material":"iron","position":{"x":4.8,"y":2.65,"z":24.4},"half":{"x":0.23,"y":2.1,"z":0.23}},
+  {"name":"Mooring bollard west","kind":"solid","material":"iron","position":{"x":-3.5,"y":0.42,"z":29.7},"half":{"x":0.24,"y":0.42,"z":0.24}},
+  {"name":"Mooring bollard east","kind":"solid","material":"iron","position":{"x":3.5,"y":0.42,"z":29.7},"half":{"x":0.24,"y":0.42,"z":0.24}}
+]

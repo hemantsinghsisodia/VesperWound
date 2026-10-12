@@ -2,7 +2,7 @@ import type { InputFrame } from '../core/input-frame';
 import { PlayerSimulation, type PlayerCollision } from '../player/player-simulation';
 import { TRAINING_TARGETS, attackTouches, type CombatEvent, type CombatantState, type EntityHandle, type Position } from '../player/combat-definitions';
 import { courtyardSolids, type CollisionBox } from '../player/collision-math';
-import { GroundNavigation } from './navigation';
+import { GroundNavigation, type NavigationBounds } from './navigation';
 import { ZOMBIE7, type EnemyDefinition, type EnemyAction } from './enemy-definition';
 export interface EnemyState extends CombatantState {
   action: EnemyAction; actionTime: number; facing: number; sequence: number; attackInstance: number;
@@ -23,9 +23,9 @@ export class EncounterSimulation {
   private attackCandidate: string|null = null;
   private attackOrder = 0;
   get kind(): EncounterKind { return this.enemies.length > 1 ? 'group' : 'single'; }
-  constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7) {
-    this.player=new PlayerSimulation(collision);this.navigation=new GroundNavigation(courtyardSolids(boxes));
-    this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes)));
+  constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7, bounds?: NavigationBounds, walkable?: (p: Position) => boolean) {
+    this.player=new PlayerSimulation(collision);this.navigation=new GroundNavigation(courtyardSolids(boxes),bounds,walkable);
+    this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes),bounds,walkable));
   }
   get victorious(): boolean {return this.mode==='encounter'&&this.enemies.length>0&&this.enemies.every(e=>e.health===0);}
   start(count=1): void {

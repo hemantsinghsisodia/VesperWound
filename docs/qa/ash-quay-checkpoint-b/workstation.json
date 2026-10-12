@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-12T19:01:33.6638021+05:30",
+  "processor": [
+    {
+      "Name": "13th Gen Intel(R) Core(TM) i7-13620H",
+      "NumberOfCores": 10,
+      "NumberOfLogicalProcessors": 16
+    }
+  ],
+  "displayAdapters": [
+    {
+      "Name": "Intel(R) UHD Graphics",
+      "DriverVersion": "32.0.101.6078"
+    },
+    {
+      "Name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+      "DriverVersion": "32.0.16.1714"
+    }
+  ],
+  "platform": "Windows desktop; browser-selected adapter is recorded separately in each measurement"
+}

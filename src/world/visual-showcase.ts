@@ -4,7 +4,7 @@ import {
   Sprite, SpriteMaterial, CanvasTexture,
   PlaneGeometry, MeshStandardNodeMaterial,
   PMREMGenerator, type BufferGeometry, type RenderTarget, type WebGPURenderer,
-  type Texture, type Material, type AnimationClip,
+  type Texture, type Material, type AnimationClip, type Camera,
 } from 'three/webgpu';
 import type { AssetManager } from '../assets/asset-manager';
 import type { InputFrame } from '../core/input-frame';
@@ -18,6 +18,8 @@ import { type PlayerSimulation } from '../player/player-simulation';
 import { type CombatEvent } from '../player/combat-definitions';
 import { CombatPresentation } from './combat-presentation';
 import type { EnemyPresentation } from './enemy-presentation';
+import { DistrictPresentation } from './district-presentation';
+import { configureEnvironmentMesh } from './environment-mesh';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
@@ -44,9 +46,10 @@ export class VisualShowcase implements WorldPresentation {
   baton: BatonPresentation | null = null;
   equipBaton(clips: readonly AnimationClip[]): void { this.baton?.equip(clips); }
   private enemy: EnemyPresentation | null = null;
+  district: DistrictPresentation | null = null;
   setEnemy(view: EnemyPresentation | null): void { this.enemy?.dispose(); if (this.enemy) this.scene.remove(this.enemy.group); this.enemy = view; if (view) this.scene.add(view.group); }
 
-  constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation) {
+  constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation, private readonly camera: Camera) {
     this.combat = new CombatPresentation(player); this.scene.add(this.combat.group);
     this.scene.background = new Color(0x1b2931);
     this.scene.fog = new FogExp2(0x1b2931, 0.025);
@@ -77,9 +80,12 @@ export class VisualShowcase implements WorldPresentation {
     this.preview.attach({ scene: hero.value.value.scene, animations: animations.value.value.animations }); this.scene.add(court.value.value.scene);
     const baton=loaded[3];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.preview,baton.value.value);this.scene.add(this.baton.ground);
     this.scene.traverse((object) => {
-      if (object instanceof Mesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = !('isSkinnedMesh' in object); }
+      if (object instanceof Mesh) { configureEnvironmentMesh(object); object.frustumCulled = !('isSkinnedMesh' in object); }
     });
     this.surfaceDetails(); this.applyPlayer(1);
+    this.district = new DistrictPresentation(assets, this.scene, this.camera); this.scene.add(this.district.group);
+    if (this.player.state.position.z > 5.5) await this.district.stream.prepare();
+    if (this.disposed) throw new Error('Showcase load was cancelled.');
     this.update(0, { movement: { x: 0, y: 0 }, aim: { x: 0, y: 0 }, pressed: new Set(), held: new Set() }, true);
   }
   selectClip(name: PreviewClip): void { this.preview.selectClip(name); }
@@ -105,6 +111,9 @@ export class VisualShowcase implements WorldPresentation {
     this.enemy?.update(dt, reducedMotion);
     this.scene.updateMatrixWorld(true);
     this.engine.intensity = 12 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * .4);
+    // Keep the shadow footprint around the current area, with a stable light direction.
+    const lightZ = Math.max(0, this.target.z - 4);
+    this.key.position.set(-6, 15, 8 + lightZ); this.key.target.position.set(0, 0, -2 + lightZ);
     this.steam.forEach((puff, index) => {
       const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
       const flue = index % 3;
@@ -154,9 +163,10 @@ export class VisualShowcase implements WorldPresentation {
       this.steam.push(puff); this.scene.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton ? 2 : 0) + (this.enemy?.ownedResources ?? 0); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton ? 2 : 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
+    this.district?.dispose(); this.district = null;
     this.baton?.dispose(); this.baton=null; this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;
     this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;

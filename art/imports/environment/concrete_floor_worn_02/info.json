@@ -1,0 +1,60 @@
+{
+  "name": "Concrete Floor Worn 02",
+  "type": 1,
+  "tags": [
+    "rough",
+    "uneven",
+    "weathered",
+    "chipped",
+    "cracked",
+    "damaged",
+    "exterior",
+    "dry",
+    "concrete",
+    "rocks",
+    "cracked cement",
+    "timeworn",
+    "floor",
+    "outdoor flooring",
+    "cement",
+    "crumbling"
+  ],
+  "authors": {
+    "Dimitrios Savva": "All"
+  },
+  "info": null,
+  "dimensions": [
+    1999.9996423721313,
+    1999.9996423721313
+  ],
+  "date_published": 1701907200,
+  "staging": null,
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "files_hash": "f78e80877f2fbc4909efe126798ce38f7dac27e9",
+  "description": "Free 8K texture: weathered exterior concrete floor with dry, uneven, chipped, cracked and crumbling surface, rough rocky detail.",
+  "categories": [
+    "floor",
+    "man made",
+    "concrete",
+    "plaster-concrete"
+  ],
+  "category_id": "0a7b70c3-bc79-531b-8cf3-cadeb4cbf686",
+  "category": "Concrete/Cast Walls & Floors/Bare Cast",
+  "attributes": {
+    "surface_use": "floor",
+    "condition": [
+      "weathered",
+      "cracked",
+      "damaged",
+      "worn"
+    ],
+    "origin": "man_made",
+    "setting": "outdoor"
+  },
+  "img_version": "7d7eece4",
+  "download_count": 23314,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/concrete_floor_worn_02.png?width=256&height=256&format=webp&v=7d7eece4"
+}

@@ -1,4 +1,4 @@
-param([ValidateSet('all', 'group', 'cinematic')][string]$Scenario = 'all')
+param([ValidateSet('all', 'group', 'cinematic', 'traversal')][string]$Scenario = 'all')
 $ErrorActionPreference = 'Stop'
 
 # Keep this Windows workstation awake only for the measurement. This does not
