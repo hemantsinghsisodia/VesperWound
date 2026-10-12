@@ -1,6 +1,7 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- Ash Quay district rebuild is authorized on 2026-10-11. Implement Checkpoint A on `codex/ash-quay-rebuild`: an authored environment proof, closer gameplay camera, compact HUD/pause-menu scene tools, verified CC0 architecture, editable source and browser validation. Preserve current combat and collision for this proof. Stop for visual review before expanding the 64 m district or adding streaming/traversal. Missions, progression and new combat content remain excluded. Stop validation servers, including port 5173.
 - Phase 4B is authorized on 2026-10-10: a three-zombie group encounter, spacing and fair coordinated attacks, living-target cycling, multi-target baton contact, group victory/restart and desktop/touch/five-minute validation. Preserve training, single-enemy encounters, accepted assets and combat tuning. Stop on its review branch; additional archetypes, hordes and later phases remain deferred.
 - The first weapon milestone is authorized: an original steel baton pickup, armed animations, fixed-step weapon contact, retained session equipment and validation. Group encounters remain deferred. Stop validation servers when finished, including port 5173.
 - Phase 4A is authorized on 2026-10-09: one Zombie Number 7 melee encounter, verified licensed imported art, precise manual punch spacing, session-owned enemy simulation/navigation, optional encounter loading and five-minute production measurements per scenario. Stop for review after this enemy; additional archetypes and hordes remain excluded.

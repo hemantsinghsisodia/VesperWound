@@ -1,0 +1,13 @@
+import { defineConfig, devices } from '@playwright/test';
+export default defineConfig({
+  testDir: './tests/browser', testMatch: '**/ash-quay.spec.ts', workers: 1,
+  outputDir: '.cache/proof-browser-results',
+  timeout: 150000, expect: { timeout: 30000 }, reporter: 'list',
+  use: { baseURL: 'http://127.0.0.1:5173', channel: 'chrome', launchOptions: { args: [] }, video: { mode: 'on', size: { width: 1440, height: 900 } } },
+  projects: [
+    { name: 'proof-webgpu', use: { viewport: { width: 1440, height: 900 } } },
+    { name: 'proof-webgl2', use: { viewport: { width: 1440, height: 900 } } },
+    { name: 'proof-mobile', use: { ...devices['Pixel 7'], viewport: { width: 915, height: 412 } } },
+  ],
+  webServer: { command: 'npm run dev', url: 'http://127.0.0.1:5173', reuseExistingServer: true },
+});

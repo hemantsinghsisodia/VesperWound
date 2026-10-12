@@ -1,0 +1,24 @@
+[
+  {
+    "tier": "desktop",
+    "output": "public/assets/showcase/desktop/ash-quay.glb",
+    "bytes": 11443876,
+    "triangles": 103494,
+    "meshes": 38,
+    "textures": 37,
+    "maximumTexture": 1024,
+    "reflectionBytes": 29544,
+    "sha256": "4badd049a4846b8290c81a26d633f4c4c8a70dcf4260e75a96cf76d5b5ab221d"
+  },
+  {
+    "tier": "mobile",
+    "output": "public/assets/showcase/mobile/ash-quay.glb",
+    "bytes": 3416332,
+    "triangles": 103494,
+    "meshes": 38,
+    "textures": 37,
+    "maximumTexture": 512,
+    "reflectionBytes": 29544,
+    "sha256": "6efc1a71c8c913e88660c22bb38c8c4218a8e1f61c616fd7e09ab8afb3fc6ebb"
+  }
+]

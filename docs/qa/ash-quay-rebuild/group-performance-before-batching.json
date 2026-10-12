@@ -1,0 +1,251 @@
+{
+  "date": "2026-10-11T06:05:27.759Z",
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "build": "production",
+  "mode": "group",
+  "method": "External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.",
+  "renderingUncapped": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "warmupSeconds": 30,
+  "exercise": "Real-input three-zombie equipped baton pursuit, targeting, light/heavy sweeps, Ward, stagger, criticals, group victory and restart",
+  "totals": {
+    "encounters": 18,
+    "victories": 18,
+    "hits": 336,
+    "criticals": 30,
+    "blocks": 106,
+    "strikes": 207,
+    "multiTargetAttacks": 101,
+    "defeated": 54
+  },
+  "hardware": {
+    "webgpu": true,
+    "renderResolution": {
+      "width": 1440,
+      "height": 900
+    },
+    "rendererAllocation": {
+      "estimatedBytes": 57909288,
+      "textures": 85
+    },
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "samples": [
+    {
+      "elapsedSeconds": 30.015299999952315,
+      "frames": 2411,
+      "fps": 80.01564750440085,
+      "p95FrameMs": 20,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 3,
+        "victories": 3,
+        "hits": 54,
+        "criticals": 6,
+        "blocks": 20,
+        "strikes": 34,
+        "multiTargetAttacks": 21,
+        "defeated": 9
+      }
+    },
+    {
+      "elapsedSeconds": 60.07019999992848,
+      "frames": 4874,
+      "fps": 81.53244764937428,
+      "p95FrameMs": 19.20000000001164,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 5,
+        "victories": 5,
+        "hits": 90,
+        "criticals": 9,
+        "blocks": 33,
+        "strikes": 58,
+        "multiTargetAttacks": 28,
+        "defeated": 15
+      }
+    },
+    {
+      "elapsedSeconds": 90.13269999992848,
+      "frames": 7345,
+      "fps": 83.05379578917257,
+      "p95FrameMs": 20.10000000000582,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 6,
+        "victories": 6,
+        "hits": 107,
+        "criticals": 11,
+        "blocks": 38,
+        "strikes": 69,
+        "multiTargetAttacks": 39,
+        "defeated": 18
+      }
+    },
+    {
+      "elapsedSeconds": 120.16589999997616,
+      "frames": 9761,
+      "fps": 81.12017954599743,
+      "p95FrameMs": 19.39999999999418,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 8,
+        "victories": 8,
+        "hits": 145,
+        "criticals": 14,
+        "blocks": 50,
+        "strikes": 91,
+        "multiTargetAttacks": 48,
+        "defeated": 24
+      }
+    },
+    {
+      "elapsedSeconds": 150.2147999999523,
+      "frames": 12279,
+      "fps": 83.88988055013115,
+      "p95FrameMs": 19.20000000001164,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 10,
+        "victories": 10,
+        "hits": 184,
+        "criticals": 18,
+        "blocks": 63,
+        "strikes": 117,
+        "multiTargetAttacks": 56,
+        "defeated": 30
+      }
+    },
+    {
+      "elapsedSeconds": 180.24369999992848,
+      "frames": 14832,
+      "fps": 85.02397203656031,
+      "p95FrameMs": 19.39999999999418,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 12,
+        "victories": 12,
+        "hits": 224,
+        "criticals": 23,
+        "blocks": 73,
+        "strikes": 140,
+        "multiTargetAttacks": 67,
+        "defeated": 36
+      }
+    },
+    {
+      "elapsedSeconds": 210.27929999995231,
+      "frames": 17327,
+      "fps": 83.02276668757604,
+      "p95FrameMs": 17.79999999998836,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 13,
+        "victories": 13,
+        "hits": 242,
+        "criticals": 24,
+        "blocks": 78,
+        "strikes": 151,
+        "multiTargetAttacks": 77,
+        "defeated": 39
+      }
+    },
+    {
+      "elapsedSeconds": 240.30879999995233,
+      "frames": 19751,
+      "fps": 79.96517072563944,
+      "p95FrameMs": 21.29999999998836,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 15,
+        "victories": 15,
+        "hits": 279,
+        "criticals": 27,
+        "blocks": 89,
+        "strikes": 174,
+        "multiTargetAttacks": 85,
+        "defeated": 45
+      }
+    },
+    {
+      "elapsedSeconds": 270.3402999999523,
+      "frames": 22168,
+      "fps": 80.28223666311357,
+      "p95FrameMs": 20,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 17,
+        "victories": 17,
+        "hits": 317,
+        "criticals": 28,
+        "blocks": 101,
+        "strikes": 196,
+        "multiTargetAttacks": 94,
+        "defeated": 51
+      }
+    },
+    {
+      "elapsedSeconds": 300.37,
+      "frames": 24681,
+      "fps": 83.90043814673254,
+      "p95FrameMs": 19.29999999998836,
+      "visible": "visible",
+      "estimatedRendererBytes": 57978732,
+      "rendererTextures": 85,
+      "exercise": {
+        "encounters": 18,
+        "victories": 18,
+        "hits": 336,
+        "criticals": 30,
+        "blocks": 106,
+        "strikes": 207,
+        "multiTargetAttacks": 101,
+        "defeated": 54
+      }
+    }
+  ],
+  "metrics": {
+    "durationSeconds": 300.4716999999285,
+    "frameCount": 24689,
+    "fps": 82.17236726578278,
+    "p95FrameMs": 19.69999999999709,
+    "maxFrameMs": 63.30000000000291,
+    "intervalsOver50Ms": 4,
+    "intervalsOver100Ms": 0
+  },
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127"
+  ]
+}

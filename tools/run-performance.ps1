@@ -1,3 +1,4 @@
+param([ValidateSet('all', 'group', 'cinematic')][string]$Scenario = 'all')
 $ErrorActionPreference = 'Stop'
 
 # Keep this Windows workstation awake only for the measurement. This does not
@@ -15,7 +16,9 @@ $powerRequest = [VesperBenchmarkPower]::SetThreadExecutionState([uint32]21474836
 if ($powerRequest -eq 0) { throw 'Could not request temporary protection from idle sleep.' }
 try {
     $env:VESPER_PERFORMANCE = '1'
-    npm run test:performance
+    $benchmarkArguments = @('run', 'test:performance')
+    if ($Scenario -ne 'all') { $benchmarkArguments += @('--', '--grep', "armed $Scenario ") }
+    & npm @benchmarkArguments
     if ($LASTEXITCODE -ne 0) { throw "Performance test failed with exit code $LASTEXITCODE." }
 }
 finally {

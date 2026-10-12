@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { PerspectiveCamera, Vector3 } from 'three';
+import { clickSceneTool, projectGround } from './scene-menu';
 export interface ExerciseTotals { encounters: number; victories: number; hits: number; criticals: number; blocks: number; strikes: number }
 /** Drives real production controls; reads only UI state, never mutates simulation. */
 export async function exerciseEncounter(page: Page, running: () => boolean, totals: ExerciseTotals): Promise<void> {
@@ -20,7 +20,7 @@ export async function exerciseEncounter(page: Page, running: () => boolean, tota
       if (s.enemyHealth === 0 || s.health === 0) {
         await move([]); totals.encounters++; totals.victories += Number(s.enemyHealth === 0);
         totals.hits += s.hits; totals.criticals += s.criticals; totals.blocks += s.blocks; totals.strikes += s.strikes;
-        await page.waitForTimeout(300); if (running()) await page.locator('#encounter-restart').click();
+        await page.waitForTimeout(300); if (running()) await clickSceneTool(page, '#encounter-restart');
         continue;
       }
       const free = ['idle', 'walk', 'run'].includes(s.action);
@@ -32,10 +32,8 @@ export async function exerciseEncounter(page: Page, running: () => boolean, tota
       } else {
         await move([]);
         if (free && ['recovery', 'stagger', 'approach'].includes(s.enemy)) {
-          const v = page.viewportSize()!, camera = new PerspectiveCamera(38, v.width / v.height, .1, 100);
-          camera.position.set(s.p[0]! + 9.5, s.p[1]! + .85 + 15, s.p[2]! + 9.5); camera.lookAt(s.p[0]!, s.p[1]! + .85, s.p[2]!); camera.updateMatrixWorld();
-          const projected = new Vector3(s.e[0]!, s.p[1]!, s.e[1]!).project(camera);
-          await page.mouse.click((projected.x + 1) * v.width / 2, (1 - projected.y) * v.height / 2, { button: 'right' });
+          const projected = await projectGround(page, { x: s.e[0]!, y: s.p[1]!, z: s.e[1]! });
+          await page.mouse.click(projected.x, projected.y, { button: 'right' });
         }
       }
       await page.waitForTimeout(70);

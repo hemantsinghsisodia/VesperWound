@@ -16,6 +16,11 @@
     "baton": {
       "kind": "model",
       "url": "../../weapons/baton/baton.glb"
+    },
+    "reflection": {
+      "kind": "texture",
+      "url": "reflection.ktx2",
+      "colorSpace": "srgb"
     }
   }
 }

@@ -1,0 +1,43 @@
+/* Live play stays unobstructed. Scene tools belong to the pause menu; character
+   previews retain their own visible controls and never overlap touch actions. */
+#app[data-scene=showcase] .player-hud{width:216px;left:28px;top:82px;padding:12px 14px;background:linear-gradient(110deg,#071315d9,#07131500);border-left:1px solid #c2a66d66}
+#app[data-scene=showcase] .player-hud label{font-size:9px;letter-spacing:1.2px}
+#app[data-scene=showcase] .player-hud progress{height:5px;margin:5px 0 10px}
+#app[data-scene=showcase] #equipped-weapon{font-size:10px;color:#c5d2ca;letter-spacing:.04em}
+#app[data-scene=showcase][data-combat-feedback=false][data-victorious=false][data-player-action=idle] #player-message,
+#app[data-scene=showcase][data-combat-feedback=false][data-victorious=false][data-player-action=walk] #player-message,
+#app[data-scene=showcase][data-combat-feedback=false][data-victorious=false][data-player-action=run] #player-message{display:none}
+#app[data-scene=showcase] .controls-hint{font-size:8px;gap:18px;opacity:.65;right:28px;bottom:22px}
+#app[data-scene=showcase] .session-tag{display:none}
+#app[data-scene=showcase] .location{left:28px;bottom:44px}
+#app[data-scene=showcase] .location h2{font-size:32px}
+.location-arrival{animation:quay-arrival 6s forwards}
+@keyframes quay-arrival{0%{opacity:0;transform:translateY(8px)}12%,65%{opacity:1;transform:none}100%{opacity:0;visibility:hidden}}
+.reduced-motion .location-arrival{animation:none;opacity:0;visibility:hidden}
+#scene-tools-slot{border-top:1px solid #75807744;border-bottom:1px solid #75807744;padding:12px 0;margin-bottom:12px}
+#scene-tools-slot h3{font:10px Arial,sans-serif;text-transform:uppercase;letter-spacing:2px;color:#c4ad79;margin:0 0 12px}
+#scene-tools-slot .showcase-controls{position:static!important;border:0;padding:0!important;background:none;max-width:none;width:100%;transform:none;display:flex;flex-direction:column;gap:9px}
+#scene-tools-slot .view-buttons{display:flex;gap:8px;flex-wrap:wrap}
+#scene-tools-slot .showcase-controls button,#scene-tools-slot>button{min-height:44px;font:11px Arial,sans-serif;border:1px solid #778b7b66;background:#203432;color:#e3d3ae;padding:10px 12px}
+#scene-tools-slot .encounter-controls{max-width:none}
+#scene-tools-slot #combat-score{font:10px Arial,sans-serif;color:#9cafa5;margin:12px 0 0}
+#scene-tools-slot>button{margin-top:10px}
+#scene-tools-slot .showcase-controls select{min-height:44px}
+#scene-tools-slot .showcase-controls>p{display:none}
+#scene-tools-slot #inspection-toggle{width:100%}
+#scene-tools-slot .showcase-controls [hidden]{display:none!important}
+#app[data-scene=showcase] .masthead{padding-top:18px;padding-left:28px;padding-right:28px}
+#app[data-scene=showcase] .wordmark{font-size:9px;letter-spacing:3px}
+#app[data-scene=showcase] .sigil{font-size:25px}
+.scene-feedback{position:absolute;left:50%;top:24px;transform:translateX(-50%);max-width:48vw;z-index:5;color:#d5c69d;font:11px/1.5 Arial,sans-serif;pointer-events:none}
+.scene-feedback span{display:block;background:#102023e8;padding:8px 12px;border:1px solid #7e8a7044}
+.scene-feedback span:empty{display:none}
+@media(pointer:coarse),(max-height:550px){
+  #app[data-scene=showcase] .player-hud{left:18px;top:65px;width:174px;padding:8px 10px}
+  #app[data-scene=showcase] .player-hud label{font-size:8px}
+  #app[data-scene=showcase] .player-hud progress{margin:4px 0 7px}
+  #app[data-scene=showcase] .controls-hint{display:none}
+  #app[data-scene=showcase] .location{display:none}
+  #app[data-scene=showcase] .masthead{padding:12px 18px 0}
+  .settings-panel{max-height:90dvh}
+}

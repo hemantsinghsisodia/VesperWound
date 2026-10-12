@@ -6,6 +6,7 @@ export class CourtyardCamera {
   private readonly aimCamera = new PerspectiveCamera(38, 1, 0.1, 100);
   private readonly lookAt = new Vector3(0, 0.6, -1.8);
   private readonly offset = new Vector3(15, 19, 15);
+  private mobileLandscape = false;
   private showcase = false;
   private readonly ray = new Raycaster();
   view: CameraView = 'courtyard';
@@ -27,11 +28,16 @@ export class CourtyardCamera {
   selectView(view: CameraView, target: Vector3, showcase: boolean): void {
     this.showcase = showcase; this.view = view;
     this.kick = 0;
-    const offset: [number, number, number] = showcase ? view === 'player' ? [9.5, 15, 9.5] : view === 'character' ? [2.1, 1.0, 3.2] : [11.7, 13, 14] : [15, 19, 15];
+    const offset: [number, number, number] = showcase ? view === 'player' ? this.playerOffset() : view === 'character' ? [2.1, 1.0, 3.2] : [11.7, 13, 14] : [15, 19, 15];
     this.offset.set(...offset);
     this.update(target, 1);
   }
-  resize(width: number, height: number): void { this.camera.aspect = width / Math.max(1, height); this.camera.updateProjectionMatrix(); this.aimCamera.aspect = this.camera.aspect; this.aimCamera.updateProjectionMatrix(); }
+  private playerOffset(): [number, number, number] { return this.mobileLandscape ? [5.7, 8.5, 5.7] : [6.5, 9.5, 6.5]; }
+  resize(width: number, height: number): void {
+    this.mobileLandscape = height < 550 && width > height;
+    if (this.showcase && this.view === 'player') this.offset.set(...this.playerOffset());
+    this.camera.aspect = width / Math.max(1, height); this.camera.updateProjectionMatrix(); this.aimCamera.aspect = this.camera.aspect; this.aimCamera.updateProjectionMatrix();
+  }
   aim(point: { x: number; y: number }, ground: number): { x: number; z: number } | undefined {
     this.ray.setFromCamera(new Vector2(point.x, point.y), this.aimCamera);
     const hit = this.ray.ray.intersectPlane(new Plane(new Vector3(0, 1, 0), -ground), new Vector3());

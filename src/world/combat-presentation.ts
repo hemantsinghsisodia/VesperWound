@@ -29,8 +29,7 @@ export class CombatPresentation {
       const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 128;
       const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; this.textures.push(texture);
       const labelMaterial = new SpriteMaterial({ map: texture, depthTest: false, transparent: true }); this.materials.push(labelMaterial);
-      const label = new Sprite(labelMaterial); label.geometry = label.geometry.clone(); this.geometries.push(label.geometry); label.position.y = t.id === 'grouped' ? 5.6 : t.id === 'isolated' ? 4.5 : 3.2; label.scale.set(2.1, 1.05, 1);
-      if (label.position.y > 3) { const guide = new Mesh(post, iron); const height = label.position.y - .55 - 1.6; guide.scale.set(.08, height / 1.6, .08); guide.position.y = 1.6 + height / 2; group.add(guide); }
+      const label = new Sprite(labelMaterial); label.geometry = label.geometry.clone(); this.geometries.push(label.geometry); label.position.y = 2.1; label.scale.set(1.4, .7, 1);
       group.add(label); this.group.add(group); this.targets.push({ group, plate: face, material, label, canvas, texture, key: '', flash: 0, critical: 0, damage: 0 });
     }
     this.ward = new Mesh(sphere, this.wardMaterial); this.ward.scale.set(1, 1.25, 1); this.group.add(this.ward);
@@ -52,6 +51,7 @@ export class CombatPresentation {
       view.group.visible = this.player.training;
       if (!this.player.training) return;
       const t = this.player.targets[i]!; view.flash = Math.max(0, view.flash - dt); view.critical = Math.max(0, view.critical - dt); view.material.emissiveIntensity = reduced ? .08 : view.flash > 0 ? 1.2 : t.exposedUntil > 0 ? .4 : .08;
+      view.label.visible = t.posture > 0 || view.flash > 0 || Math.hypot(t.position.x - this.player.state.position.x, t.position.z - this.player.state.position.z) < 2.5;
       view.plate.rotation.z = t.health === 0 ? Math.PI / 2 : t.exposedUntil > 0 ? .2 : Math.min(.12, Math.hypot(t.velocity.x, t.velocity.z) * .06);
       view.plate.position.y = t.health === 0 ? .15 : 1.2;
       const label = view.critical > 0 ? `CRITICAL · ${view.damage}` : t.health === 0 ? 'DEFEATED · RESETTING' : t.exposedUntil > 0 ? 'EXPOSED · HEAVY' : t.label;

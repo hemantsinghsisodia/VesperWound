@@ -1,5 +1,5 @@
 import type { Page } from '@playwright/test';
-import { PerspectiveCamera, Vector3 } from 'three';
+import { clickSceneTool, projectGround } from './scene-menu';
 import type { ExerciseTotals } from './encounter-driver';
 
 export interface GroupTotals extends ExerciseTotals { multiTargetAttacks: number; defeated: number }
@@ -28,7 +28,7 @@ export async function exerciseGroup(page: Page, running: () => boolean, totals: 
         await move([]); totals.encounters++; totals.victories += Number(!living.length); totals.defeated += s.enemies.length - living.length;
         totals.hits += s.hits; totals.criticals += s.criticals; totals.blocks += s.blocks; totals.strikes += s.strikes;
         previousHits = 0; previousStrike = -1;
-        await page.waitForTimeout(300); if (running()) await page.locator('#encounter-restart').click();
+        await page.waitForTimeout(300); if (running()) await clickSceneTool(page, '#encounter-restart');
         continue;
       }
       const distance = (enemy: ObservedEnemy) => Math.hypot(enemy.x - s.p[0]!, enemy.z - s.p[2]!);
@@ -42,13 +42,11 @@ export async function exerciseGroup(page: Page, running: () => boolean, totals: 
       } else {
         await move([]);
         if (free && !living.some(e => e.action === 'active' && distance(e) < 1.3)) {
-          const viewport = page.viewportSize()!, camera = new PerspectiveCamera(38, viewport.width / viewport.height, .1, 100);
-          camera.position.set(s.p[0]! + 9.5, s.p[1]! + .85 + 15, s.p[2]! + 9.5); camera.lookAt(s.p[0]!, s.p[1]! + .85, s.p[2]!); camera.updateMatrixWorld();
           const neighbour=[...living].filter(e=>e!==enemy&&distance(e)<1.2).sort((a,b)=>distance(a)-distance(b))[0];
           const light=!!neighbour&&enemy.action!=='stagger'&&s.strikes%4!==3;
           const point=light?{x:(enemy.x+neighbour!.x)/2,z:(enemy.z+neighbour!.z)/2}:enemy;
-          const projected = new Vector3(point.x, s.p[1]!, point.z).project(camera);
-          await page.mouse.click((projected.x + 1) * viewport.width / 2, (1 - projected.y) * viewport.height / 2, { button: light?'left':'right' });
+          const projected = await projectGround(page, { x: point.x, y: s.p[1]!, z: point.z });
+          await page.mouse.click(projected.x, projected.y, { button: light?'left':'right' });
         }
       }
       await page.waitForTimeout(70);

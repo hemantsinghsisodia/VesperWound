@@ -1,6 +1,6 @@
 import {
   Scene, Color, FogExp2, Mesh,
-  DirectionalLight, HemisphereLight, PointLight, Vector3, CubeTexture, SRGBColorSpace,
+  DirectionalLight, HemisphereLight, PointLight, Vector3, EquirectangularReflectionMapping,
   Sprite, SpriteMaterial, CanvasTexture,
   PlaneGeometry, MeshStandardNodeMaterial,
   PMREMGenerator, type BufferGeometry, type RenderTarget, type WebGPURenderer,
@@ -30,9 +30,9 @@ export class VisualShowcase implements WorldPresentation {
   private readonly geometries: BufferGeometry[] = [];
   private readonly materials: Material[] = [];
   private readonly textures: Texture[] = [];
-  private readonly key = new DirectionalLight(0xc8dcdf, 3.2);
-  private readonly engine = new PointLight(0xb4e4d4, 38, 10, 2);
-  private readonly gate = new PointLight(0xffc784, 35, 10, 2);
+  private readonly key = new DirectionalLight(0xd6dfeb, 2.6);
+  private readonly engine = new PointLight(0xaddaca, 12, 6, 2);
+  private readonly gate = new PointLight(0xffc784, 24, 8, 2);
   private readonly steam: Sprite[] = [];
   private reflection: RenderTarget | null = null;
   private time = 0;
@@ -48,8 +48,8 @@ export class VisualShowcase implements WorldPresentation {
 
   constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation) {
     this.combat = new CombatPresentation(player); this.scene.add(this.combat.group);
-    this.scene.background = new Color(0x142126);
-    this.scene.fog = new FogExp2(0x142126, 0.028);
+    this.scene.background = new Color(0x1b2931);
+    this.scene.fog = new FogExp2(0x1b2931, 0.025);
     this.actor.position.copy(this.target); this.actor.rotation.y = 0.25;
     this.scene.add(this.actor);
     this.key.position.set(-6, 15, 8); this.key.target.position.set(0, 0, -2);
@@ -57,7 +57,7 @@ export class VisualShowcase implements WorldPresentation {
     Object.assign(this.key.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
     this.key.shadow.bias = -0.0006; this.key.shadow.normalBias = 0.035;
     this.engine.position.set(0, 2.8, -2); this.gate.position.set(-5, 3.1, -6);
-    this.scene.add(this.key, this.key.target, new HemisphereLight(0xa5c5d6, 0x444235, 2), this.engine, this.gate);
+    this.scene.add(this.key, this.key.target, new HemisphereLight(0xa0b6cb, 0x39382e, 1.35), this.engine, this.gate);
   }
   async load(assets: AssetManager, missingFixture: boolean): Promise<void> {
     const loaded = await Promise.allSettled([assets.model(missingFixture ? 'missing-character' : 'character'), assets.model('courtyard'), assets.model('animations'), assets.model('baton')]);
@@ -69,7 +69,10 @@ export class VisualShowcase implements WorldPresentation {
     if (failure?.status === 'rejected') { this.dispose(); throw failure.reason; }
     const hero = loaded[0]; const court = loaded[1];
     if (hero?.status !== 'fulfilled' || court?.status !== 'fulfilled') throw new Error('The art collection is incomplete.');
-    this.reflectionEnvironment(assets.renderer);
+    const reflection = await assets.texture('reflection').catch((error: unknown) => { this.dispose(); throw error; });
+    if (this.disposed) { reflection.release(); throw new Error('Showcase load was cancelled.'); }
+    this.handles.push(reflection);
+    this.reflectionEnvironment(assets.renderer, reflection.value);
     const animations = loaded[2]; if (animations?.status !== 'fulfilled') throw new Error('The player animations are incomplete.');
     this.preview.attach({ scene: hero.value.value.scene, animations: animations.value.value.animations }); this.scene.add(court.value.value.scene);
     const baton=loaded[3];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.preview,baton.value.value);this.scene.add(this.baton.ground);
@@ -101,7 +104,7 @@ export class VisualShowcase implements WorldPresentation {
     if (this.playing) this.combat.update(dt, reducedMotion);
     this.enemy?.update(dt, reducedMotion);
     this.scene.updateMatrixWorld(true);
-    this.engine.intensity = 38 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * 2);
+    this.engine.intensity = 12 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * .4);
     this.steam.forEach((puff, index) => {
       const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
       const flue = index % 3;
@@ -122,19 +125,11 @@ export class VisualShowcase implements WorldPresentation {
     if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) { this.preview.selectClip({ kind: 'clip', name }); this.animationSequence = s.actionSequence; }
     this.preview.playbackRate(s.attack ? attackPlaybackRate(this.player.attackDefinition(s.attack), s.actionTime, this.preview.duration(name)) : s.action === 'ward' ? this.preview.duration(name) / .8 : PLAYER_CLIP_RATES[s.action]);
   }
-  private reflectionEnvironment(renderer: WebGPURenderer): void {
-    const faces = Array.from({ length: 6 }, (_, index) => {
-      const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64;
-      const context = canvas.getContext('2d'); if (!context) throw new Error('Reflection canvas is unavailable.');
-      const gradient = context.createLinearGradient(0, 0, 0, 64);
-      gradient.addColorStop(0, index === 2 ? '#afc1c2' : '#6b878e'); gradient.addColorStop(0.48, '#41525a'); gradient.addColorStop(1, '#191f20');
-      context.fillStyle = gradient; context.fillRect(0, 0, 64, 64);
-      return canvas;
-    });
-    const texture = new CubeTexture(faces); texture.colorSpace = SRGBColorSpace; texture.needsUpdate = true;
+  private reflectionEnvironment(renderer: WebGPURenderer, texture: Texture): void {
+    texture.mapping = EquirectangularReflectionMapping;
     const generator = new PMREMGenerator(renderer);
-    try { this.reflection = generator.fromCubemap(texture); this.scene.environment = this.reflection.texture; }
-    finally { generator.dispose(); texture.dispose(); }
+    try { this.reflection = generator.fromEquirectangular(texture); this.scene.environment = this.reflection.texture; }
+    finally { generator.dispose(); }
     this.scene.environmentIntensity = 0.65;
   }
   private surfaceDetails(): void {

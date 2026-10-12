@@ -1,3 +1,4 @@
+import { clickSceneTool } from '../helpers/scene-menu';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import { exerciseGroup, type GroupTotals } from '../helpers/group-driver';
@@ -11,8 +12,8 @@ for (const mode of ['group', 'cinematic']) test(`production sustained five-minut
   await page.locator('#settings-open').click(); await page.locator('#quality').selectOption('High'); await page.locator('#adaptive').uncheck();
   await page.locator('#resume').click(); await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
   await page.keyboard.press('f'); await expect(page.locator('#app')).toHaveAttribute('data-weapon', 'baton');
-  if (mode === 'cinematic') { await page.locator('#inspection-toggle').click(); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active'); }
-  else { await page.locator('#encounter-group').click(); await expect(page.locator('#app')).toHaveAttribute('data-encounter', 'active'); }
+  if (mode === 'cinematic') { await clickSceneTool(page, '#inspection-toggle'); await expect(page.locator('#app')).toHaveAttribute('data-inspection', 'active'); }
+  else { await clickSceneTool(page, '#encounter-group'); await expect(page.locator('#app')).toHaveAttribute('data-encounter', 'active'); }
   expect(await page.evaluate(() => typeof window.__VESPER_DEBUG__)).toBe('undefined');
   const totals: GroupTotals = { encounters: 0, victories: 0, hits: 0, criticals: 0, blocks: 0, strikes: 0, multiTargetAttacks:0, defeated:0 };
   let running = true;
@@ -45,8 +46,8 @@ for (const mode of ['group', 'cinematic']) test(`production sustained five-minut
     const m = window.__PERFORMANCE_MEASUREMENT__!; m.stopped=true; const f=m.frames.sort((a,b)=>a-b);
     return { durationSeconds:(performance.now()-m.started)/1000, frameCount:f.length, fps:1000*f.length/f.reduce((s,v)=>s+v,0), p95FrameMs:f[Math.floor((f.length-1)*.95)]!,maxFrameMs:f.at(-1)!,intervalsOver50Ms:f.filter(v=>v>50).length,intervalsOver100Ms:f.filter(v=>v>100).length };
   });
-  await mkdir('docs/qa/phase4b',{recursive:true});
-  await writeFile(`docs/qa/phase4b/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
+  await mkdir('docs/qa/ash-quay-rebuild',{recursive:true});
+  await writeFile(`docs/qa/ash-quay-rebuild/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
     method:'External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.',
     renderingUncapped:true,viewport:{width:1440,height:900},quality:'High',adaptiveResolution:false,warmupSeconds:30,exercise:mode==='group'?'Real-input three-zombie equipped baton pursuit, targeting, light/heavy sweeps, Ward, stagger, criticals, group victory and restart':'Looped equipped Baton_Idle skeletal animation',totals,hardware,samples,metrics,errors,warnings },null,2));
   expect(errors).toEqual([]);expect(warnings.filter(m=>m.includes('Vertex attribute'))).toEqual([]); expect(metrics.durationSeconds).toBeGreaterThanOrEqual(300);expect(metrics.durationSeconds).toBeLessThan(330);

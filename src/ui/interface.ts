@@ -37,6 +37,7 @@ export class Interface {
           <p class="entry-footnote">THE VESPER WORKS · MEDIC AT ASH QUAY · <a href="/credits.html" target="_blank" rel="noopener">Credits</a></p>
         </section>
         <section id="location" class="location" hidden><p class="eyebrow">THE VESPER WORKS / 01</p><h2>Ash Quay</h2><p>The last light at the intake.</p></section>
+        <div class="scene-feedback" role="status"><span id="scene-loading"></span><span id="scene-inspection-feedback"></span><span id="scene-encounter-feedback"></span></div>
         <section id="showcase-controls" class="showcase-controls" aria-label="Visual showcase" hidden>
           <div class="view-buttons"><button id="view-player" aria-pressed="true">Play</button><button id="view-courtyard" aria-pressed="false">Courtyard</button><button id="view-character" aria-pressed="false">Medic</button><button id="turn-character" aria-label="Turn Medic">↻</button></div>
           <label id="animation-label" for="animation">Animation</label><select id="animation"><option value="pose">Static pose</option></select>
@@ -58,7 +59,8 @@ export class Interface {
         <div class="session-tag"><span class="status-dot"></span><span id="session-status">INTAKE CLOSED</span></div>
         <section id="rotate" class="rotate-panel" hidden><span aria-hidden="true">↻</span><h2>Turn toward the Works</h2><p>Rotate your phone to landscape to continue.</p></section>
         <section id="error" class="error-panel" hidden role="alert"><p class="eyebrow">CONNECTION INTERRUPTED</p><h2>The Works are silent.</h2><p id="error-detail"></p><button id="retry" class="primary-button">TRY AGAIN <span aria-hidden="true">↗</span></button><button id="compatibility" class="text-button">Use compatibility graphics</button></section>
-        <dialog id="settings" class="settings-panel"><div class="settings-heading"><p class="eyebrow">THE VESPER WORKS</p><button id="settings-close" class="icon-button" aria-label="Close settings">×</button></div><h2>Settings</h2>
+        <dialog id="settings" class="settings-panel"><div class="settings-heading"><p class="eyebrow">THE VESPER WORKS</p><button id="settings-close" class="icon-button" aria-label="Close settings">×</button></div><h2>Pause</h2>
+          <div id="scene-tools-slot"><h3>Practice &amp; character</h3></div>
           <label class="setting-row">Graphics quality<select id="quality">${QUALITY_NAMES.map((name) => `<option>${name}</option>`).join('')}</select></label>
           <label class="setting-row">Adaptive resolution<input id="adaptive" type="checkbox" /></label>
           <label class="setting-row">Audio volume<input id="volume" type="range" min="0" max="1" step="0.05" /></label>
@@ -73,6 +75,7 @@ export class Interface {
     this.canvas = this.get('#world'); this.stick = this.get('#movement-stick'); this.pulse = this.get('#pulse');
     this.entry = this.get('#entry'); this.start = this.get('#start'); this.status = this.get('#load-status');
     this.settings = this.get('#settings'); this.rotate = this.get('#rotate'); this.errorPanel = this.get('#error');
+    this.get('#scene-tools-slot').append(this.get('#showcase-controls'), this.get('#reset-targets'), this.get('#combat-score'));
     this.get('#view-character').textContent = MEDIC.displayName;
     this.get('#turn-character').setAttribute('aria-label', `Turn ${MEDIC.displayName}`);
     this.get<HTMLSelectElement>('#quality').value = preferences.quality;
@@ -100,16 +103,17 @@ export class Interface {
     for (const view of ['player', 'courtyard', 'character'] as const) this.lifetime.listen(this.get(`#view-${view}`), 'click', () => {
       callbacks.camera(view);
       for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
+      close();
     });
     this.lifetime.listen(this.get('#restart-player'), 'click', () => callbacks.restart());
-    this.lifetime.listen(this.get('#reset-targets'), 'click', () => callbacks.resetTargets());
-    this.lifetime.listen(this.get('#encounter-start'), 'click', () => callbacks.encounterStart());
-    this.lifetime.listen(this.get('#encounter-group'), 'click', () => callbacks.encounterGroup());
-    this.lifetime.listen(this.get('#encounter-restart'), 'click', () => callbacks.encounterRestart());
-    this.lifetime.listen(this.get('#encounter-return'), 'click', () => callbacks.encounterReturn());
+    this.lifetime.listen(this.get('#reset-targets'), 'click', () => { callbacks.resetTargets(); close(); });
+    this.lifetime.listen(this.get('#encounter-start'), 'click', () => { callbacks.encounterStart(); close(); });
+    this.lifetime.listen(this.get('#encounter-group'), 'click', () => { callbacks.encounterGroup(); close(); });
+    this.lifetime.listen(this.get('#encounter-restart'), 'click', () => { callbacks.encounterRestart(); close(); });
+    this.lifetime.listen(this.get('#encounter-return'), 'click', () => { callbacks.encounterReturn(); close(); });
     this.lifetime.listen(this.get('#animation'), 'change', () => { const value = this.get<HTMLSelectElement>('#animation').value; callbacks.animation(value === 'pose' ? { kind: 'pose' } : { kind: 'clip', name: value.slice(5) }); });
     this.lifetime.listen(this.get('#turn-character'), 'click', () => callbacks.turn());
-    this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => callbacks.inspection());
+    this.lifetime.listen(this.get('#inspection-toggle'), 'click', () => { callbacks.inspection(); close(); });
     this.lifetime.listen(this.get('#inspection-view'), 'change', () => callbacks.inspectionView(this.get<HTMLSelectElement>('#inspection-view').value as InspectionView));
     this.lifetime.listen(this.get('#inspection-lighting'), 'change', () => callbacks.inspectionLighting(this.get<HTMLSelectElement>('#inspection-lighting').value as InspectionLighting));
     this.lifetime.listen(this.get('#animation-pause'), 'click', () => callbacks.inspectionPause());
@@ -150,6 +154,9 @@ export class Interface {
     this.get('#location').hidden = false; this.get('#controls-hint').hidden = false; this.get('#touch-controls').hidden = false;
     this.get('#showcase-controls').hidden = !showcase;
     this.get('#session-status').textContent = 'PRESSURE STABLE'; this.canvas.focus(); this.root.dataset.state = 'running';
+    this.get('#location').classList.remove('location-arrival');
+    void this.get('#location').offsetWidth;
+    this.get('#location').classList.add('location-arrival');
     if (showcase) this.mode('player');
   }
   scene(name: 'foundation' | 'showcase'): void { this.root.dataset.scene = name; }
@@ -158,6 +165,7 @@ export class Interface {
     for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
     this.get('#player-hud').hidden = !playing; this.get('#touch-controls').hidden = !playing;
     this.get('#controls-hint').hidden = !playing;
+    this.placeSceneTools();
     if (playing) {
       this.pulse.setAttribute('aria-label', 'Attack'); this.pulse.querySelector('small')!.textContent = 'ATTACK';
       this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK / RIGHT CLICK <small>light / heavy</small></span><span>SPACE / Q <small>dodge / Ward · T next target</small></span><span>ESC <small>settings</small></span>';
@@ -173,6 +181,7 @@ export class Interface {
     this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.';
     this.get('#combat-score').textContent = `HITS ${state.targetHits} · CRITICALS ${state.criticals} · BLOCKS ${state.blocks}`;
     this.root.dataset.playerAction = state.action;
+    this.root.dataset.combatFeedback = String(state.action === 'dead' || state.wardRemaining > 0 || state.ventWarning);
     // Read-only state also supports production measurements without dev commands.
     this.canvas.dataset.playerPosition = `${state.position.x.toFixed(3)},${state.position.y.toFixed(3)},${state.position.z.toFixed(3)}`;
     this.canvas.dataset.playerAction = state.action;
@@ -200,10 +209,12 @@ export class Interface {
     this.get('#encounter-start').textContent=loading?'Cancel encounter load':error?'Retry encounter':'Start encounter';
     this.get('#encounter-restart').hidden=!active;this.get('#encounter-return').hidden=!active;
     this.get('#encounter-status').textContent=loading?'Preparing Zombie 7…':error;
+    this.get('#scene-encounter-feedback').textContent=loading?'Preparing encounter · Pause to cancel':error;
     this.get('#reset-targets').hidden=active||simulation?.player.state.action==='dead';
     if(active&&simulation?.victorious)this.get('#player-message').textContent=simulation.kind==='group'?'GROUP COMPLETE · All three defeated.':'ENCOUNTER COMPLETE · Restart to fight again.';
     else if(active&&simulation?.player.state.action!=='dead'&&simulation?.player.state.action==='idle')this.get('#player-message').textContent=simulation?.kind==='group'?'Watch the attacker · T / Next target cycles living enemies.':'Watch the windup · step into striking range · dodge or Ward.';
     this.root.dataset.encounter=active?'active':loading?'loading':error?'failed':'training';
+    this.root.dataset.victorious = String(active && simulation?.victorious);
     this.canvas.dataset.encounter=this.root.dataset.encounter;
     this.root.dataset.encounterKind=active?simulation!.kind:'none';
     this.canvas.dataset.encounterKind=this.root.dataset.encounterKind;
@@ -217,11 +228,13 @@ export class Interface {
   animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip.kind === 'pose' ? 'pose' : `clip:${clip.name}`; }
   artLoading(loading: boolean, message = ''): void {
     this.get('#art-status').textContent = message;
+    this.get('#scene-loading').textContent = message;
     for (const selector of ['#animation', '#turn-character', '#quality', '#encounter-start', '#encounter-group', '#encounter-restart', '#encounter-return']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
   }
   inspection(state: InspectionState, eligible: boolean): void {
     const active = state.status === 'active';
     this.root.dataset.inspection = state.status;
+    this.placeSceneTools();
     const button = this.get<HTMLButtonElement>('#inspection-toggle'); button.hidden = !eligible;
     button.textContent = active ? 'Return to Ash Quay' : state.status === 'loading' ? 'Cancel inspection' : state.status === 'failed' ? 'Retry detailed inspection' : 'Detailed inspection';
     this.get('#inspection-controls').hidden = !active;
@@ -235,6 +248,7 @@ export class Interface {
     }
     this.get('#location').hidden = active || !['running', 'paused'].includes(this.root.dataset.state ?? '');
     this.get('#inspection-status').textContent = state.status === 'loading' ? 'Preparing detailed Medic…' : state.status === 'failed' ? state.message : '';
+    this.get('#scene-inspection-feedback').textContent = state.status === 'loading' ? 'Preparing detailed Medic · Pause to cancel' : state.status === 'failed' ? state.message : '';
     if (active) {
       this.get<HTMLSelectElement>('#inspection-view').value = state.view;
       this.get<HTMLSelectElement>('#inspection-lighting').value = state.lighting;
@@ -257,6 +271,12 @@ export class Interface {
     this.get('#session-status').textContent = 'INTAKE OFFLINE'; this.root.dataset.state = 'error';
   }
   clearError(): void { this.errorPanel.hidden = true; }
+  private placeSceneTools(): void {
+    const preview = this.root.dataset.inspection === 'active' || ['courtyard', 'character'].includes(this.root.dataset.mode ?? '');
+    const parent = preview ? this.get('.experience') : this.get('#scene-tools-slot');
+    const tools = this.get('#showcase-controls');
+    if (tools.parentElement !== parent) parent.append(tools);
+  }
   dispose(): void { this.lifetime.dispose(); this.settings.close(); this.root.replaceChildren(); }
   get listenerCount(): number { return this.lifetime.cleanupCount; }
 }

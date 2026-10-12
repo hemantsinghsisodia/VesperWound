@@ -1,6 +1,7 @@
 import { WebGPURenderer, RenderPipeline, ACESFilmicToneMapping, SRGBColorSpace, type Scene, type Camera } from 'three/webgpu';
-import { pass } from 'three/tsl';
+import { pass, rtt, luminance, smoothstep } from 'three/tsl';
 import { bloom } from 'three/addons/tsl/display/BloomNode.js';
+import { gaussianBlur } from 'three/addons/tsl/display/GaussianBlurNode.js';
 import type { BackendMode } from '../platform/capabilities';
 import { effectivePixelRatio, type QualityProfile } from '../performance/quality';
 
@@ -10,6 +11,8 @@ export class RendererAdapter {
   private pipeline: RenderPipeline | null = null;
   private scenePass: ReturnType<typeof pass> | null = null;
   private bloomPass: ReturnType<typeof bloom> | null = null;
+  private glowThreshold: ReturnType<typeof rtt> | null = null;
+  private glowBlur: ReturnType<typeof gaussianBlur> | null = null;
   private width = 1;
   private height = 1;
   constructor(canvas: HTMLCanvasElement, mode: BackendMode) {
@@ -29,12 +32,15 @@ export class RendererAdapter {
     this.disposePasses();
     this.scenePass = pass(scene, camera);
     const output = this.scenePass.getTextureNode('output');
-    this.bloomPass = profile.bloom ? bloom(output, 0.18, 0.35, 1.1) : null;
-    // Broad industrial glows do not require a half-resolution blur pyramid.
-    // Keep the scene at full resolution; Ultra retains the finer bloom buffer.
-    this.bloomPass?.setResolutionScale(profile.name === 'Ultra' ? 0.5 : 0.25);
+    this.bloomPass = profile.bloom && profile.name === 'Ultra' ? bloom(output, 0.18, 0.35, 1.1) : null;
+    if (profile.bloom && !this.bloomPass) {
+      // High uses one highlight extraction and two blur passes. The full scene
+      // stays at native resolution; avoid twelve submissions for restrained glow.
+      this.glowThreshold = rtt(output.mul(smoothstep(1.1, 1.2, luminance(output.rgb))), null, null, { resolutionScale: .25, depthBuffer: false });
+      this.glowBlur = gaussianBlur(this.glowThreshold, 1, 4);
+    }
     this.pipeline = new RenderPipeline(this.renderer);
-    this.pipeline.outputNode = this.bloomPass ? output.add(this.bloomPass) : output;
+    this.pipeline.outputNode = this.bloomPass ? output.add(this.bloomPass) : this.glowBlur ? output.add(this.glowBlur.mul(.18)) : output;
     this.renderer.shadowMap.enabled = true;
   }
   resize(width: number, height: number, profile: QualityProfile, scale: number): void {
@@ -46,7 +52,8 @@ export class RendererAdapter {
   render(): void { this.renderer.info.reset(); this.pipeline?.render(); }
   get resolution(): string { const ratio = this.renderer.getPixelRatio(); return `${Math.round(this.width * ratio)} × ${Math.round(this.height * ratio)}`; }
   private disposePasses(): void {
-    this.pipeline?.dispose(); this.bloomPass?.dispose(); this.scenePass?.dispose();
+    this.pipeline?.dispose(); this.bloomPass?.dispose(); this.glowBlur?.dispose(); this.glowThreshold?.dispose(); this.scenePass?.dispose();
+    this.glowBlur = null; this.glowThreshold = null;
     this.pipeline = null; this.bloomPass = null; this.scenePass = null;
   }
   dispose(): void { this.renderer.setAnimationLoop(null); this.disposePasses(); this.renderer.dispose(); }

@@ -1,0 +1,275 @@
+{
+  "milestone": "Ash Quay rebuild / Checkpoint A",
+  "status": "Awaiting browser art review",
+  "master": "art/source/ash-quay-master.blend",
+  "masterSha256": "3a14fdd9dca31054d68702acf61fbf4df5d336bad01e171fba2af342f28072fd",
+  "sourceAssets": [
+    {
+      "id": "modular_factory_facade",
+      "title": "Modular Factory Facade",
+      "authors": [
+        "James Ray Cock"
+      ],
+      "source": "https://polyhaven.com/a/modular_factory_facade",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "acquired": "2026-10-11",
+      "files": [
+        {
+          "path": "art/imports/environment/modular_factory_facade/source.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/modular_factory_facade/modular_factory_facade_1k.blend",
+          "bytes": 2457480,
+          "md5": "dd6763bf48a5558e51c2ed9855a2cc93",
+          "sha256": "7f4eaef1a85d87c90191c1e26ecc85d17bc634b656f7ee233e217efe55a8fa90"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_doors_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_doors_nor_gl_1k.png",
+          "bytes": 4485734,
+          "md5": "5279c7bed3077d6f79f04e75d1f15437",
+          "sha256": "d43071cd087a65e49b32d4d626514e58b3fae48c252053a3ceb0076c371252f8"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_garage_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_garage_nor_gl_1k.png",
+          "bytes": 4694227,
+          "md5": "c43f9d8ab1b7cd7b339d7fab0f6ab6b8",
+          "sha256": "67908705338fef9198138a19817705ae6da248d91b184bb920bec48ab75ed2ad"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_trim_01_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_trim_01_diff_1k.png",
+          "bytes": 6090548,
+          "md5": "9f134862c4811c896c548fee5dfc1ff0",
+          "sha256": "211f7df2132a9d89bc19a3ce880768621dea2f6ee9447b129225f2e7fcd7537f"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_brick_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_brick_diff_1k.png",
+          "bytes": 2236869,
+          "md5": "45f0a5ff434187c0ebbb984e7e1d77f2",
+          "sha256": "08de23b32b85545e55a86d26c2af7f9e7e88ea7313c84d46ebae7a4511aa9218"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_garage_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_garage_rough_1k.png",
+          "bytes": 1569816,
+          "md5": "ef4ab45198cf0580afdf48647f178083",
+          "sha256": "cfdad255812c626766b538b51e33ce89ac16e600a99ca0b1341630fc6f4effe1"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_windows_alpha_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_windows_alpha_1k.png",
+          "bytes": 857712,
+          "md5": "37537215300e6f2545aab3e7a927258b",
+          "sha256": "6acaa83811b54dec07aaf7139a77fb132a022c3cf017a00174d2f9d67e13af4b"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_doors_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_doors_diff_1k.png",
+          "bytes": 5447504,
+          "md5": "65367a0b2897d28b52786cfad5f2c3b9",
+          "sha256": "368dfc40ecd95840d874ceacd5b9dc3dbb2ba3217df1fe2d1b910648d844ad68"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_windows_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_windows_diff_1k.png",
+          "bytes": 5772527,
+          "md5": "105af3492cd56164d909865e9f3b608f",
+          "sha256": "7dcba265db1ff2659c0c170cce53319fd07fddbdb644e0dee076121767af4b65"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_doors_metal_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_doors_metal_1k.png",
+          "bytes": 391285,
+          "md5": "225c0cd4bde59d2aef571a14d93eafc4",
+          "sha256": "1c051c7ce382ab4bde9ae4d4ed15880693b4cf6835269e2651915a741caebae8"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_brick_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_brick_rough_1k.png",
+          "bytes": 2375677,
+          "md5": "9bed0216de1ce27f8cf23738813e5656",
+          "sha256": "7d047377b54b4551e5f8fc17d517cce2be56530f0afa080d9975d2c03c092abe"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_trim_01_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_trim_01_rough_1k.png",
+          "bytes": 1836232,
+          "md5": "cd795c6d102162b3f836e951b8352731",
+          "sha256": "a129385d61a52ac4ffd2cd9ef91f0b686d4b229e5f8b1222faaeaea20550d6e1"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_windows_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_windows_nor_gl_1k.png",
+          "bytes": 4727012,
+          "md5": "82b0a87ee0950fd845715dc6a2ee1598",
+          "sha256": "7bca73d31c0b3041a6a53bb14a57da8067e80771686315ff2d20230a61361314"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_trim_01_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_trim_01_nor_gl_1k.png",
+          "bytes": 5470617,
+          "md5": "fc132be856c2a507f2e3e52209dcb714",
+          "sha256": "e279fb7b627a6a829f0de16fa5337deda180a26aff39bd3375b833216ecd5f37"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_brick_disp_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_brick_disp_1k.png",
+          "bytes": 2222116,
+          "md5": "a4958db3c40be7ec717380ad94591e86",
+          "sha256": "fe291301bb8b6d2314ee6138a9b7812334f8898f726acdfed7db8a3933417675"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_garage_metal_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_garage_metal_1k.png",
+          "bytes": 68723,
+          "md5": "e393e0d8e9a40b12b9cea6f192ae0bcf",
+          "sha256": "79c10da6c45fe5eb08020611b70ac31901dac110a1753999d9693d02760a3320"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_garage_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_garage_diff_1k.png",
+          "bytes": 5325499,
+          "md5": "3ecdc5fd1fcd3eeafbce92eed336021a",
+          "sha256": "2f5116c9ee3ebd8a0c98a86899a147d285a6e955c26636b33f6a2e24d88964df"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_windows_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_windows_rough_1k.png",
+          "bytes": 1619107,
+          "md5": "38d4d0137d35c6cbeecf6229b195c14b",
+          "sha256": "edf82ddc7f514e43362bf6cdb142a88e7838335c085bf3fca21cee0ac79d0d21"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_brick_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_brick_nor_gl_1k.png",
+          "bytes": 5620433,
+          "md5": "2d4088b818beaac58ea401347e3c7854",
+          "sha256": "ea1f2705733ca9a5cf670bbef9488c9bf05dbf63ae3084a89847a86396d736a4"
+        },
+        {
+          "path": "art/imports/environment/modular_factory_facade/textures/modular_factory_facade_doors_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_factory_facade/modular_factory_facade_doors_rough_1k.png",
+          "bytes": 1586977,
+          "md5": "7313ed6977adddfa789106ff58f477ae",
+          "sha256": "251b28428da628115483659934baf102ba4e9e2bd8cf07f2fbfe060a51c96eac"
+        }
+      ]
+    },
+    {
+      "id": "modular_industrial_pipes_01",
+      "title": "Modular Industrial Pipes 01",
+      "authors": [
+        "Jorge Camacho"
+      ],
+      "source": "https://polyhaven.com/a/modular_industrial_pipes_01",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "acquired": "2026-10-11",
+      "files": [
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/source.blend",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/blend/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_1k.blend",
+          "bytes": 397766,
+          "md5": "c6a4ce8afa968f8b572a53c7ea88dff4",
+          "sha256": "e3023e757efb3b6c7195ceecd3bdc8557a437c22f871194df5091ff05d715670"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group01_metal_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group01_metal_1k.png",
+          "bytes": 530197,
+          "md5": "0301bf0faf55e9eb1af1654eb22c6f84",
+          "sha256": "cb4069cb26f96a2334ed17a513e3e1ea2352638e868a671f00af9a013d661ad0"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group02_metal_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group02_metal_1k.png",
+          "bytes": 543858,
+          "md5": "57a04caa94b2acec7d62c64112228d42",
+          "sha256": "d41358d2b4b48658bf65be8c81c6cde88beb82bc535a1beb4d00926546ae7fb0"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group01_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group01_nor_gl_1k.png",
+          "bytes": 1439922,
+          "md5": "8adb80a130ff0d8074e9dfb3a3449aad",
+          "sha256": "c9e9b28ffb9ddb76ab7ff5e9ea366d5e973ca41d7340dcb9080a18cd30353884"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group02_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group02_diff_1k.png",
+          "bytes": 1270339,
+          "md5": "5ad48de5238afe7b725fed4691e08328",
+          "sha256": "43918d226e03d632d7c62eb0e13a0dc1c1d3ad13a32ede158fd4f34fa0d44b75"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group02_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group02_rough_1k.png",
+          "bytes": 649920,
+          "md5": "d6ecd22305a7f94834ab7b4d3c9a5ac6",
+          "sha256": "b76e3cdbb4818ca68fa1b03b0822556d06206be78523dbc06942508ff7244a98"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group01_rough_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group01_rough_1k.png",
+          "bytes": 603051,
+          "md5": "74bf85b04648f0c469952e3a0fb658ba",
+          "sha256": "0a3b266bcd56c068393b2bc5c78d97fd22ef664a235d336a10180793e872293d"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group01_diff_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group01_diff_1k.png",
+          "bytes": 1173645,
+          "md5": "88fd1b1d432cdb2d9c430478acfa7794",
+          "sha256": "3be640fe78415bf3ae4ea70b78d6775ed77a84dc9961d4f15622fcefb43de264"
+        },
+        {
+          "path": "art/imports/environment/modular_industrial_pipes_01/textures/modular_industrial_pipes_01_group02_nor_gl_1k.png",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/1k/modular_industrial_pipes_01/modular_industrial_pipes_01_group02_nor_gl_1k.png",
+          "bytes": 1549785,
+          "md5": "c623312a84db36125b83a8243c25609b",
+          "sha256": "fcd31243e9fa7169e892f5bcc12bc137d151986d43b1be35fc2773ebca7fc5d9"
+        }
+      ]
+    }
+  ],
+  "retainedSources": "Existing verified Poly Haven materials, including Rusty Metal 04, and wooden crate in art/provenance.json",
+  "originalWork": [
+    "Pressure vessel, flanges, handwheels, gauges and sight glass",
+    "Architecture composition, signs, harbour and skyline",
+    "District blockout, maintenance slabs, drains and dressing"
+  ],
+  "modifications": [
+    "Curated factory facade and pipe modules with retained UVs",
+    "Packed textures in editable master",
+    "Runtime paving and iron PBR tint factors",
+    "Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps",
+    "Source-scene panoramic reflection bake",
+    "Read-only saved-source export; 64m blockout excluded from runtime"
+  ],
+  "exports": [
+    {
+      "tier": "desktop",
+      "output": "public/assets/showcase/desktop/ash-quay.glb",
+      "bytes": 11443876,
+      "triangles": 103494,
+      "meshes": 38,
+      "textures": 37,
+      "maximumTexture": 1024,
+      "reflectionBytes": 29544,
+      "sha256": "4badd049a4846b8290c81a26d633f4c4c8a70dcf4260e75a96cf76d5b5ab221d"
+    },
+    {
+      "tier": "mobile",
+      "output": "public/assets/showcase/mobile/ash-quay.glb",
+      "bytes": 3416332,
+      "triangles": 103494,
+      "meshes": 38,
+      "textures": 37,
+      "maximumTexture": 512,
+      "reflectionBytes": 29544,
+      "sha256": "6efc1a71c8c913e88660c22bb38c8c4218a8e1f61c616fd7e09ab8afb3fc6ebb"
+    }
+  ]
+}

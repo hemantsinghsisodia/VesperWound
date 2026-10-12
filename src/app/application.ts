@@ -261,6 +261,9 @@ export class Application {
         }, this.timeScale);
         world.interpolate(alpha);
         if (!this.inspection) this.camera.update(this.courtyard.target, delta);
+        const observedCamera = this.inspection?.camera ?? this.camera.camera;
+        observedCamera.updateMatrixWorld(true);
+        this.ui.canvas.dataset.cameraProjection = JSON.stringify({ projection: observedCamera.projectionMatrix.elements, inverseWorld: observedCamera.matrixWorldInverse.elements });
         if (this.preview) this.ui.animation(this.preview.clip);
         if (this.player) this.ui.player(this.player.state);
         this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);

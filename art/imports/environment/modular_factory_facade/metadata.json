@@ -1,0 +1,59 @@
+{
+  "name": "Modular Factory Facade",
+  "type": 2,
+  "tags": [
+    "industrial",
+    "factory",
+    "modular",
+    "architecture",
+    "warehouse",
+    "facade",
+    "exterior"
+  ],
+  "authors": {
+    "James Ray Cock": "All"
+  },
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "categories": [
+    "collection: hidden_alley",
+    "structures",
+    "buildings"
+  ],
+  "polycount": 175014,
+  "texel_density": 2693.588878638538,
+  "dimensions": [
+    53329.99801635742,
+    5356.249764561653,
+    29000
+  ],
+  "date_published": 1717545600,
+  "staging": null,
+  "files_hash": "4716a794d840f5d4ebf75b1db1d8a8b7e8d57a61",
+  "description": "Free 8K modular factory facade model with brick panels, varied windows, doors and loading bays - industrial warehouse exterior tiles for flexible assembly.",
+  "sponsors": [
+    "146648879",
+    "7934315"
+  ],
+  "category_id": "8a2e109d-c6ee-5ed6-a1d6-fd5463dd0ee4",
+  "category": "Architecture/Facades & Modules/Building Facades",
+  "collections": [
+    "hidden_alley"
+  ],
+  "attributes": {
+    "condition": [
+      "worn"
+    ],
+    "material": [
+      "stone",
+      "concrete",
+      "metal",
+      "glass"
+    ]
+  },
+  "img_version": "5fa35649",
+  "download_count": 7418,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/modular_factory_facade.png?width=256&height=256&format=webp&v=5fa35649"
+}

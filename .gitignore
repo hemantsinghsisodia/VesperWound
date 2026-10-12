@@ -8,4 +8,5 @@ playwright-report/
 art/cache/
 *.blend1
 art/work/
+art/source/environment/*.glb
 tools/blender/__pycache__/

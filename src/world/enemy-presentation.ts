@@ -61,7 +61,7 @@ export class EnemyPresentation {
       } else {view.actor.playbackRate(e.action==='stagger'?view.actor.duration(name)/2:['approach','return'].includes(e.action)?d.speed/d.walkCycleSpeed:1);view.actor.update(dt);}
       view.critical=Math.max(0,view.critical-dt);
       view.hurt=Math.max(0,view.hurt-dt);view.actor.group.rotation.z=reduced?0:Math.sin(view.hurt/.22*Math.PI)*.045;
-      const status=view.critical>0?`CRITICAL · ${view.damage}`:e.action==='dead'?'DEFEATED':e.action==='stagger'?'EXPOSED · HEAVY':view.hurt>0?`HIT · ${view.damage}`:e.action==='windup'?'STRIKE INCOMING':e.label.toUpperCase();
+      const status=view.critical>0?`CRITICAL · ${view.damage}`:e.action==='dead'?'DEFEATED':e.action==='stagger'?'EXPOSED · HEAVY':view.hurt>0?`HIT · ${view.damage}`:e.action==='windup'?'STRIKE INCOMING':'RESTLESS';
       const key=`${status}/${e.health}/${e.posture}`;
       if(view.key!==key){const ctx=view.canvas.getContext('2d');if(ctx){ctx.clearRect(0,0,384,128);ctx.fillStyle='#102128e8';ctx.fillRect(0,0,384,128);ctx.fillStyle=e.action==='stagger'?'#f0c375':'#e8d4a7';ctx.font='24px Arial';ctx.textAlign='center';ctx.fillText(status,192,30);ctx.fillStyle='#283b3e';ctx.fillRect(16,46,352,18);ctx.fillRect(16,76,352,12);ctx.fillStyle='#a7b79a';ctx.fillRect(16,46,352*e.health/e.maxHealth,18);ctx.fillStyle='#d1a559';ctx.fillRect(16,76,352*e.posture/100,12);ctx.fillStyle='#d0d9cf';ctx.font='20px Arial';ctx.fillText(`HP ${e.health}/${e.maxHealth} · POSTURE ${e.posture}`,192,116);view.texture.needsUpdate=true;}view.key=key;}
       view.cue.visible=e.action==='windup';view.cue.scale.setScalar(reduced?1:1+e.actionTime*.25);

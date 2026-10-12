@@ -1,3 +1,4 @@
+import { clickSceneTool } from '../helpers/scene-menu';
 import { expect, test } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 
@@ -11,18 +12,18 @@ test('Medic and Ash Quay render with selected assets and animation previews', as
   const detail = await page.locator('#error-detail').textContent();
   expect(await page.locator('#app').getAttribute('data-state'), detail ?? '').toBe('ready');
   await page.getByRole('button', { name: 'ENTER THE WORKS' }).click();
-  await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeVisible();
+  await expect(page.locator('#showcase-controls')).toBeHidden();
   const variant = test.info().project.name === 'mobile' ? 'mobile' : 'desktop';
   const stats = await page.evaluate(() => window.__VESPER_DEBUG__?.snapshot());
-  expect(stats?.variant).toBe(variant); expect(stats?.references).toBe(3); expect(stats?.scene).toBe('showcase');
+  expect(stats?.variant).toBe(variant); expect(stats?.references).toBe(5); expect(stats?.scene).toBe('showcase');
   expect(requests.filter((url) => url.includes('/showcase/') && url.includes(`/${variant === 'mobile' ? 'desktop' : 'mobile'}/`))).toEqual([]);
   expect(requests.some((url) => url.includes('/showcase/cinematic/'))).toBe(false);
   if (variant === 'mobile') await expect(page.locator('#inspection-toggle')).toBeHidden();
-  await mkdir('docs/qa/medic/browser', { recursive: true });
-  await page.screenshot({ path: `docs/qa/phase4a/regressions/browser/courtyard-webgl2-${variant}.png` });
-  await page.getByRole('button', { name: 'Medic', exact: true }).click();
+  await mkdir('docs/qa/ash-quay-rebuild/regressions/medic/browser', { recursive: true });
+  await page.screenshot({ path: `docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/courtyard-webgl2-${variant}.png` });
+  await clickSceneTool(page, '#view-character');
   await page.waitForTimeout(300);
-  await page.screenshot({ path: `docs/qa/phase4a/regressions/browser/medic-webgl2-${variant}.png` });
+  await page.screenshot({ path: `docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/medic-webgl2-${variant}.png` });
   await expect(page.locator('#animation option')).toHaveText(['Static pose', 'Idle_Loop', 'Walk_Loop', 'Jog_Fwd_Loop', 'Punch_Jab', 'Punch_Cross', 'Spell_Simple_Shoot', 'Roll', 'Hit_Chest', 'Death01']);
   expect(stats?.animation).toBe('Idle_Loop');
   expect(errors).toEqual([]);
@@ -43,5 +44,5 @@ test('Medic and Ash Quay render with selected assets and animation previews', as
     await expect(page.locator('#inspection-toggle')).toBeHidden();
     expect(requests.some((url) => url.includes('/showcase/cinematic/'))).toBe(false);
   }
-  await writeFile(`docs/qa/phase4a/regressions/browser/webgl2-${variant}.json`, JSON.stringify({ stats, errors, viewport: page.viewportSize(), browser: test.info().project.use.channel, userAgent: await page.evaluate(() => navigator.userAgent) }, null, 2));
+  await writeFile(`docs/qa/ash-quay-rebuild/regressions/phase4a/regressions/browser/webgl2-${variant}.json`, JSON.stringify({ stats, errors, viewport: page.viewportSize(), browser: test.info().project.use.channel, userAgent: await page.evaluate(() => navigator.userAgent) }, null, 2));
 });

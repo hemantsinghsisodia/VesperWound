@@ -1,3 +1,4 @@
+import { clickSceneTool } from '../helpers/scene-menu';
 import { expect, test } from '@playwright/test';
 import { exerciseGroup, type GroupTotals } from '../helpers/group-driver';
 import { exerciseEncounter, type ExerciseTotals } from '../helpers/encounter-driver';
@@ -18,6 +19,8 @@ test('production ignores development flags and excludes diagnostics', async ({ p
   expect(requests.some((url) => url.includes('debug-tools'))).toBe(false);
   expect(requests.some((url) => url.endsWith('/assets/showcase/desktop/character.glb'))).toBe(true);
   expect(requests.some((url) => url.includes('/assets/fixtures/'))).toBe(false);
+  await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeHidden();
+  await page.locator('#settings-open').click();
   await expect(page.getByRole('region', { name: 'Visual showcase' })).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -25,29 +28,29 @@ test('production loads the enemy only on selection and completes a real encounte
   const requests:string[]=[],errors:string[]=[];page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();
   expect(requests.some(r=>r.includes('/encounter/'))).toBe(false);
-  await page.locator('#encounter-start').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');
+  await clickSceneTool(page, '#encounter-start');await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');
   expect(requests.some(r=>r.includes('/encounter/desktop/zombie7.glb'))).toBe(true);expect(requests.some(r=>r.includes('/encounter/mobile/'))).toBe(false);
   const totals:ExerciseTotals={encounters:0,victories:0,hits:0,criticals:0,blocks:0,strikes:0};let running=true;
   const driver=exerciseEncounter(page,()=>running,totals);await expect.poll(()=>totals.victories,{timeout:60000,intervals:[100]}).toBeGreaterThan(0);running=false;await driver;
-  await page.locator('#encounter-return').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');expect(errors).toEqual([]);
+  await clickSceneTool(page, '#encounter-return');await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');expect(errors).toEqual([]);
 });
 
 test('production requests armed clips only on pickup and retains the baton through encounter and inspection',async({page})=>{
   const requests:string[]=[],errors:string[]=[];page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();expect(requests.some(r=>r.includes('/weapons/baton/animations.glb'))).toBe(false);
   await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');expect(requests.some(r=>r.includes('/weapons/baton/animations.glb'))).toBe(true);
-  await page.locator('#inspection-toggle').click();await expect(page.locator('#app')).toHaveAttribute('data-inspection','active');await expect(page.locator('#animation')).toHaveValue('clip:Baton_Idle');await page.locator('#inspection-toggle').click();
-  await page.locator('#encounter-start').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');await page.locator('#encounter-restart').click();await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');await page.locator('#encounter-return').click();await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');expect(errors).toEqual([]);expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');
+  await clickSceneTool(page, '#inspection-toggle');await expect(page.locator('#app')).toHaveAttribute('data-inspection','active');await expect(page.locator('#animation')).toHaveValue('clip:Baton_Idle');await clickSceneTool(page, '#inspection-toggle');
+  await clickSceneTool(page, '#encounter-start');await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');await clickSceneTool(page, '#encounter-restart');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');await clickSceneTool(page, '#encounter-return');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');expect(errors).toEqual([]);expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');
 });
 
 
 test('production three-zombie encounter uses one selected payload and wins through real input',async({page})=>{
   test.setTimeout(150000);const requests:string[]=[],errors:string[]=[];page.on('request',r=>requests.push(r.url()));page.on('pageerror',e=>errors.push(e.message));
   await page.goto('/');await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();expect(requests.some(r=>r.includes('/encounter/'))).toBe(false);
-  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');await page.locator('#encounter-group').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter-kind','group');
+  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');await clickSceneTool(page, '#encounter-group');await expect(page.locator('#app')).toHaveAttribute('data-encounter-kind','group');
   expect(requests.filter(r=>r.endsWith('/encounter/desktop/zombie7.glb'))).toHaveLength(1);expect(requests.some(r=>r.includes('/encounter/mobile/'))).toBe(false);
   const totals:GroupTotals={encounters:0,victories:0,hits:0,criticals:0,blocks:0,strikes:0,multiTargetAttacks:0,defeated:0};let running=true;const driver=exerciseGroup(page,()=>running,totals);
   await expect.poll(()=>totals.victories,{timeout:100000,intervals:[100]}).toBeGreaterThan(0);running=false;await driver;expect(totals.defeated).toBeGreaterThanOrEqual(3);expect(totals.multiTargetAttacks).toBeGreaterThan(0);expect(totals.blocks).toBeGreaterThan(0);expect(totals.criticals).toBeGreaterThan(0);
-  await expect(page.locator('#player-message')).toContainText('GROUP COMPLETE');await page.locator('#encounter-restart').click();await expect(page.locator('#world')).toHaveAttribute('data-enemies-remaining','3');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');
-  await page.locator('#encounter-return').click();await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');expect(errors).toEqual([]);expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');
+  await expect(page.locator('#player-message')).toContainText('GROUP COMPLETE');await clickSceneTool(page, '#encounter-restart');await expect(page.locator('#world')).toHaveAttribute('data-enemies-remaining','3');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');
+  await clickSceneTool(page, '#encounter-return');await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');expect(errors).toEqual([]);expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');
 });

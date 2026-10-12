@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="740" viewBox="0 0 960 740" role="img" aria-labelledby="title description">
+<title id="title">Ash Quay district composition — 64 metre blockout</title>
+<desc id="description">Six connected spaces around a loop. This is the planned district, not the playable area in Checkpoint A.</desc>
+<defs><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#34454b" stroke-width="1"/></pattern></defs>
+<rect width="960" height="740" fill="#101d23"/>
+<g font-family="Arial,sans-serif"><text x="42" y="44" fill="#d4bd87" font-size="13" letter-spacing="3">VESPERWOUND / ASH QUAY</text><text x="42" y="79" fill="#ede4d0" font-size="30">District composition</text><text x="42" y="105" fill="#94aaa7" font-size="14">64 × 64 m envelope · ground-floor loop · Checkpoint B after visual approval</text></g>
+<rect x="42" y="138" width="512" height="512" fill="url(#grid)" stroke="#82958c"/>
+<path d="M120 300L204 286L310 355L424 330L432 519L183 519L120 300M310 355L310 212" fill="none" stroke="#b9a46d" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+<g stroke="#a3b3a1" stroke-width="2">
+<rect x="81" y="238" width="96" height="96" rx="3" fill="#465c55"/>
+<rect x="181" y="206" width="64" height="192" rx="3" fill="#394f50"/>
+<rect x="242" y="292" width="192" height="160" rx="3" fill="#5a604e"/>
+<rect x="409" y="279" width="128" height="112" rx="3" fill="#394a46"/>
+<rect x="151" y="491" width="320" height="96" rx="3" fill="#244b57"/>
+<rect x="252" y="165" width="128" height="80" rx="3" fill="#59615b"/>
+</g>
+<g font-family="Arial,sans-serif" font-size="12" text-anchor="middle" fill="#eee4cb">
+<text x="129" y="279">INTAKE</text><text x="129" y="297">GATE</text>
+<text x="213" y="278">PUMP</text><text x="213" y="297">ALLEY</text>
+<text x="338" y="323">PRESSURE COURT</text><text x="338" y="342" font-size="10">Existing practice modes</text>
+<text x="473" y="319">LOADING</text><text x="473" y="337">HALL</text>
+<text x="311" y="527">QUAYSIDE / PIER</text><text x="311" y="548" font-size="10">Waterfront and distant city</text>
+<text x="316" y="197">MORTUARY</text><text x="316" y="215">PORTICO</text>
+</g>
+<circle cx="338" cy="382" r="18" fill="#87b5a1" stroke="#d6c18e" stroke-width="3"/>
+<g font-family="Arial,sans-serif" fill="#b8c6bd"><text x="596" y="185" font-size="18" fill="#e2d4ae">The route</text><text x="596" y="220" font-size="14">Arrival arch → narrow alley</text><text x="596" y="247" font-size="14">→ pressure-engine reveal</text><text x="596" y="274" font-size="14">→ covered loading hall</text><text x="596" y="301" font-size="14">→ open waterfront → arrival</text>
+<text x="596" y="365" font-size="18" fill="#e2d4ae">The visual gate</text><text x="596" y="400" font-size="14">Checkpoint A proves the facade,</text><text x="596" y="426" font-size="14">machinery, paving, camera and HUD.</text><text x="596" y="463" font-size="14">The full district and streamed</text><text x="596" y="489" font-size="14">traversal are not implemented yet.</text>
+<text x="42" y="692" font-size="13">Composition blockout only. Final traversal and collision follow the approved art proof.</text></g>
+</svg>

@@ -26,3 +26,4 @@ await run(process.execPath, ['tools/record-provenance.mjs']);
 await run(process.execPath, ['tools/build-enemy.mjs']);
 
 await run(process.execPath, ['tools/build-baton.mjs']);
+await run(process.execPath, ['tools/build-environment.mjs']);
