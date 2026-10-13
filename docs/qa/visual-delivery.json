@@ -1,7 +1,7 @@
 {
   "bootstrap": {
-    "rawBytes": 6888036,
-    "gzipBytes": 2578290,
+    "rawBytes": 6891459,
+    "gzipBytes": 2579383,
     "limitBytes": 5242880,
     "passed": true
   },

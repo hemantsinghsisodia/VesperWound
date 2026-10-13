@@ -90,7 +90,7 @@ export class CharacterInspection implements WorldPresentation {
     this.controls.update(); return false;
   }
   interpolate(): void { /* Skeletal previews are in place. */ }
-  get ownedResources(): number { return 4 + (this.baton?2:0); }
+  get ownedResources(): number { return 4 + (this.baton?.ownedResources ?? 0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
     this.controls.dispose(); this.baton?.dispose();this.baton=null; this.actor.dispose(); this.scene.clear(); this.scene.environment = null;

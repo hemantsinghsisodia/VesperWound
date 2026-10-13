@@ -163,7 +163,7 @@ export class VisualShowcase implements WorldPresentation {
       this.steam.push(puff); this.scene.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton ? 2 : 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton?.ownedResources ?? 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
     this.district?.dispose(); this.district = null;
