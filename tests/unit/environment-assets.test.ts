@@ -16,7 +16,12 @@ test('authored environment exports preserve source, spatial batches, tier and te
     expect(root.listAnimations()).toHaveLength(0); expect(root.listSkins()).toHaveLength(0);
     expect(root.listNodes().some(n => n.getName().includes('BLOCKOUT'))).toBe(false);
     expect(root.listNodes().filter(n => n.getName().startsWith('Quay cell')).length).toBeGreaterThan(4);
-    if (section === 'quay') expect(root.listNodes().some(n => n.getName().includes('Cutaway canopy'))).toBe(true);
+    if (section === 'quay') {
+      expect(root.listNodes().some(n => n.getName().includes('Cutaway canopy'))).toBe(true);
+      const paving = root.listMaterials().filter(m => m.getName().startsWith('District / dock limestone'));
+      expect(paving).toHaveLength(3);
+      expect(new Set(paving.map(m => m.getBaseColorFactor().join(','))).size).toBe(3);
+    }
     expect(root.listExtensionsRequired().map(e => e.extensionName)).toEqual(expect.arrayContaining(['KHR_texture_basisu', 'EXT_meshopt_compression']));
     for (const t of root.listTextures()) {
       const k = read(t.getImage()!);

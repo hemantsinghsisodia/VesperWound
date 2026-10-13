@@ -66,12 +66,17 @@ for (const tier of ['desktop', 'mobile']) for (const section of ['court', 'quay'
     if (!cell) { cell = doc.createNode(`Quay cell ${key}`); cells.set(key, cell); scene.addChild(cell); }
     cell.addChild(node);
   }
-  await doc.transform(dedup(), join({ keepNamed: false }), prune());
+  // Apply authored variant tints before deduplication: the source texture links
+  // otherwise make these materials structurally identical to the optimizer.
   for (const material of doc.getRoot().listMaterials()) {
     if (/worn paving/.test(material.getName())) material.setBaseColorFactor([.5, .55, .53, 1]);
     if (material.getName() === 'Quay / patinated iron') material.setBaseColorFactor([.2, .3, .28, 1]);
     if (/District \/ weathered concrete/.test(material.getName())) material.setBaseColorFactor([.62, .64, .62, 1]);
+    if (material.getName() === 'District / dock limestone warm') material.setBaseColorFactor([.65, .62, .54, 1]);
+    if (material.getName() === 'District / dock limestone cool') material.setBaseColorFactor([.56, .59, .57, 1]);
+    if (material.getName() === 'District / dock limestone worn') material.setBaseColorFactor([.60, .59, .54, 1]);
   }
+  await doc.transform(dedup(), join({ keepNamed: false }), prune());
   for (const texture of doc.getRoot().listTextures()) {
     const slots = listTextureSlots(texture), normal = slots.includes('normalTexture');
     const srgb = slots.some(s => s === 'baseColorTexture' || s === 'emissiveTexture');
@@ -108,8 +113,8 @@ for (const tier of ['desktop', 'mobile']) for (const section of ['court', 'quay'
 }
 const sources = JSON.parse(await readFile('art/imports/environment/acquisition.json', 'utf8'));
 if (before !== await hash(master)) throw new Error('Environment build modified the authored master');
-const record = { milestone: 'Ash Quay rebuild / Checkpoint B', status: 'Awaiting browser art review', master, masterSha256: before, sourceAssets: sources, retainedSources: 'Existing verified Poly Haven materials, including Rusty Metal 04, and wooden crate in art/provenance.json', originalWork: ['Pressure vessel, flanges, handwheels, gauges and sight glass', 'Architecture composition, signs, harbour and skyline', 'Arrival quay crane, loading canopy, mooring furniture and ground flags'], modifications: ['Curated factory facade and pipe modules with retained UVs', 'Packed textures in editable master; Checkpoint A source retained separately', 'Shared runtime bounds for collision and authored solids', 'Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps', 'Source-scene panoramic reflection bake', 'Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime'], exports: reports };
+const record = { milestone: 'Ash Quay rebuild / Checkpoint C', status: 'Awaiting browser art review', master, masterSha256: before, sourceAssets: sources, retainedSources: 'Existing verified Poly Haven materials, including Rusty Metal 04, and wooden crate in art/provenance.json', originalWork: ['Pressure vessel, flanges, handwheels, gauges and sight glass', 'Architecture composition, signs, harbour and skyline', 'Arrival quay crane, loading canopy, mooring furniture and ground flags', 'Checkpoint C paving repairs, loading marks, freight construction and crane fittings'], modifications: ['Curated factory facade and pipe modules with retained UVs', 'Packed textures in editable master; Checkpoint A source retained separately and B preserved in Git', 'Shared runtime bounds for collision and authored solids', 'Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps', 'Source-scene panoramic reflection bake', 'Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime', 'Repositioned sign and loading lamps for visibility; varied quay paving UVs and restrained tints'], exports: reports };
 await publish('art/environment-provenance.json', JSON.stringify(record, null, 2));
 await publish('public/assets/licenses/environment-provenance.json', JSON.stringify(record, null, 2));
-await mkdir('docs/qa/ash-quay-checkpoint-b', { recursive: true });
-await publish('docs/qa/ash-quay-checkpoint-b/assets.json', JSON.stringify(reports, null, 2));
+await mkdir('docs/qa/ash-quay-checkpoint-c', { recursive: true });
+await publish('docs/qa/ash-quay-checkpoint-c/assets.json', JSON.stringify(reports, null, 2));

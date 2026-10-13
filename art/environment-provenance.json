@@ -1,8 +1,8 @@
 {
-  "milestone": "Ash Quay rebuild / Checkpoint B",
+  "milestone": "Ash Quay rebuild / Checkpoint C",
   "status": "Awaiting browser art review",
   "master": "art/source/ash-quay-district.blend",
-  "masterSha256": "92793b6f1290ab0e29c7853204c7a857eae0cc980e4b1aa9d9e1c7c263910533",
+  "masterSha256": "6eb48895abbc6b132e96810d7378193d47a3757fcb9ed52fb40617d5cf38c819",
   "sourceAssets": [
     {
       "id": "modular_factory_facade",
@@ -275,64 +275,66 @@
   "originalWork": [
     "Pressure vessel, flanges, handwheels, gauges and sight glass",
     "Architecture composition, signs, harbour and skyline",
-    "Arrival quay crane, loading canopy, mooring furniture and ground flags"
+    "Arrival quay crane, loading canopy, mooring furniture and ground flags",
+    "Checkpoint C paving repairs, loading marks, freight construction and crane fittings"
   ],
   "modifications": [
     "Curated factory facade and pipe modules with retained UVs",
-    "Packed textures in editable master; Checkpoint A source retained separately",
+    "Packed textures in editable master; Checkpoint A source retained separately and B preserved in Git",
     "Shared runtime bounds for collision and authored solids",
     "Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps",
     "Source-scene panoramic reflection bake",
-    "Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime"
+    "Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime",
+    "Repositioned sign and loading lamps for visibility; varied quay paving UVs and restrained tints"
   ],
   "exports": [
     {
       "tier": "desktop",
       "section": "court",
       "output": "public/assets/showcase/desktop/ash-quay.glb",
-      "bytes": 12204284,
+      "bytes": 12204364,
       "triangles": 111184,
       "meshes": 40,
       "textures": 40,
       "maximumTexture": 1024,
-      "reflectionBytes": 21492,
-      "sha256": "78e2e39f8b0c6b3c041fa5986c4639b8919830d4e2759df06d408d82666ee7ad"
+      "reflectionBytes": 21594,
+      "sha256": "1b88ec047a18e10d6c5e4369d33adcfa87243a02c026cdd7d5128254314d0a58"
     },
     {
       "tier": "desktop",
       "section": "quay",
       "output": "public/assets/district/desktop/arrival-quay.glb",
-      "bytes": 7825144,
-      "triangles": 29406,
-      "meshes": 75,
+      "bytes": 7938476,
+      "triangles": 31826,
+      "meshes": 104,
       "textures": 25,
       "maximumTexture": 1024,
-      "reflectionBytes": 21492,
-      "sha256": "769aad88d05fed1efcb6b5f8034df9f191883e32c73af1c56574237d98cf2493"
+      "reflectionBytes": 21594,
+      "sha256": "280933eaedc44fad4cde8a6aebf9edd3b153042e1ee96bf6a2af0c08c475a9e8"
     },
     {
       "tier": "mobile",
       "section": "court",
       "output": "public/assets/showcase/mobile/ash-quay.glb",
-      "bytes": 3674920,
+      "bytes": 3675000,
       "triangles": 111184,
       "meshes": 40,
       "textures": 40,
       "maximumTexture": 512,
-      "reflectionBytes": 21492,
-      "sha256": "efc84cd5baecf12bf0b3d14c6a611d9834e96c93bd9c723b7b255060579ee546"
+      "reflectionBytes": 21594,
+      "sha256": "117f35dadc564778602764e9b96e94691c39d12dff0fcf8e7b8fd8d9ed4b399f"
     },
     {
       "tier": "mobile",
       "section": "quay",
       "output": "public/assets/district/mobile/arrival-quay.glb",
-      "bytes": 2157608,
-      "triangles": 29406,
-      "meshes": 75,
+      "bytes": 2270940,
+      "triangles": 31826,
+      "meshes": 104,
       "textures": 25,
       "maximumTexture": 512,
-      "reflectionBytes": 21492,
-      "sha256": "061f2663be011a96a627749c5076edacdb5b4180add8b0dafc4cf3ebd9609274"
+      "reflectionBytes": 21594,
+      "sha256": "69eeb913f1ec4df9ab68c36b70e9a4f0bee20129552fe39fe69d888cc2d035d8"
     }
   ]
 }

@@ -1,0 +1,41 @@
+{
+  "browser": "154.0.8037.98",
+  "backend": "WebGPU",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "quality": "High",
+  "adaptiveResolution": false,
+  "method": "Three real-input court/lane/quay/return cycles in production. Final frame samples have CPU profiling/tracing disabled. Short diagnostic, separate from five-minute acceptance.",
+  "baselineProfile": {
+    "durationSeconds": 26.999556,
+    "selfMilliseconds": {
+      "writeTexture": 3631.491,
+      "writeBuffer": 4084.874
+    }
+  },
+  "finalCycles": [
+    {
+      "frames": 953,
+      "p95": 15.600000000000364,
+      "max": 125.30000000000018,
+      "over50": 9,
+      "over100": 5
+    },
+    {
+      "frames": 743,
+      "p95": 12.700000000000728,
+      "max": 19.100000000000364,
+      "over50": 0,
+      "over100": 0
+    },
+    {
+      "frames": 764,
+      "p95": 11.700000000000728,
+      "max": 19.799999999999272,
+      "over50": 0,
+      "over100": 0
+    }
+  ]
+}

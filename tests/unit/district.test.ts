@@ -24,6 +24,27 @@ test('cancelled section results cannot attach after a new request', async () => 
   expect(stream.value).toBe(2); expect(attach).toHaveBeenCalledTimes(1); expect(releaseOld).toHaveBeenCalledOnce();
   stream.dispose(); expect(releaseNew).toHaveBeenCalledOnce();
 });
+
+test('one warmed section reattaches without uploads and releases on scene disposal', async () => {
+  const release = vi.fn(), attach = vi.fn(), detach = vi.fn();
+  const load = vi.fn(async () => ({ value: 7, release }));
+  const stream = new SectionStream(load, attach, detach, true);
+  await stream.prepare(); stream.update(0);
+  expect(stream.status).toBe('closed'); expect(stream.value).toBeNull(); expect(release).not.toHaveBeenCalled();
+  await stream.prepare(); stream.update(0); await stream.prepare();
+  expect(load).toHaveBeenCalledOnce(); expect(attach).toHaveBeenCalledTimes(3);
+  stream.update(0);
+  stream.dispose(); stream.dispose(); expect(release).toHaveBeenCalledOnce();
+});
+
+test('warm retention does not retain a cancelled first load', async () => {
+  let resolve!: (h: AssetHandle<number>) => void;
+  const release = vi.fn(), attach = vi.fn();
+  const stream = new SectionStream<number>(() => new Promise(r => { resolve = r; }), attach, vi.fn(), true);
+  const pending = stream.prepare(); stream.update(0); resolve({ value: 1, release }); await pending;
+  expect(attach).not.toHaveBeenCalled(); expect(release).toHaveBeenCalledOnce();
+  stream.dispose(); expect(release).toHaveBeenCalledOnce();
+});
 test('failed section remains blocked until explicit retry and disposal releases late assets', async () => {
   const release = vi.fn(); let resolve!: (h: AssetHandle<number>) => void;
   const load = vi.fn<() => Promise<AssetHandle<number>>>().mockRejectedValueOnce(new Error('offline')).mockImplementationOnce(() => new Promise(r => { resolve = r; }));

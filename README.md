@@ -1,6 +1,6 @@
 # VESPERWOUND
 
-Ash Quay district rebuild, **Checkpoint B approved on 2026-10-13**. Pressure Court now connects through Pump Alley to Arrival Quay, with a loading canopy, harbour crane, mooring overlook and optional section loading. Follow the ARRIVAL QUAY sign at the south opening. The full 64 m district remains deferred. Medic, baton, single/group encounters and combat rules are retained. See the [Checkpoint B review and validation](docs/qa/ash-quay-checkpoint-b/validation.md) and [district workflow](docs/ash-quay-checkpoint-b.md).
+Ash Quay district rebuild, **Checkpoint C approved** for merge into `main`. Pressure Court connects through Pump Alley to Arrival Quay. This checkpoint retains one visited quay to smooth return trips, refines waterfront paving/freight and improves foreground visibility. Follow the ARRIVAL QUAY sign at the south opening. The full 64 m district remains deferred. Medic, baton, single/group encounters and combat rules are retained. See the [Checkpoint C validation](docs/qa/ash-quay-checkpoint-c/validation.md) and [district workflow](docs/ash-quay-checkpoint-c.md).
 
 Press **Esc** or the top-right menu button for **Practice & character**: Start encounter, Start group encounter, Restart encounter, Return to training, Reset targets, Courtyard, Medic and Detailed inspection. These tools no longer cover the live gameplay view. See the [before/after review](docs/qa/ash-quay-rebuild/index.html) and [authored environment workflow](docs/ash-quay-art-workflow.md).
 

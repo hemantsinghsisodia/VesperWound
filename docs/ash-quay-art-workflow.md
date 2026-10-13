@@ -1,7 +1,7 @@
 # Ash Quay authored environment workflow
 
-Checkpoint B is now the active review build. `npm run assets:environment` exports
-`art/source/ash-quay-district.blend`; see [the current district workflow](ash-quay-checkpoint-b.md).
+Checkpoint C is now the active review build. `npm run assets:environment` exports
+`art/source/ash-quay-district.blend`; see [the current district workflow](ash-quay-checkpoint-c.md).
 The notes below document the accepted Checkpoint A source and its preparation.
 
 Checkpoint A stopped for browser art review. Its proof preserves the original playable collision footprint and all

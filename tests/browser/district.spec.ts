@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { walkTo, observedPosition } from '../helpers/district-driver';
 import { clickSceneTool } from '../helpers/scene-menu';
-const folder = 'docs/qa/ash-quay-checkpoint-b';
+const folder = 'docs/qa/ash-quay-checkpoint-c';
 test('two-area traversal, loaded-tier ownership, cutaway and return', async ({ page, browser }) => {
   const name = test.info().project.name, mobile = name === 'district-mobile', backend = name === 'district-webgpu' ? 'webgpu-required' : 'webgl2';
   const errors: string[] = [], requests: string[] = [];
@@ -40,7 +40,9 @@ test('two-area traversal, loaded-tier ownership, cutaway and return', async ({ p
   }
   await walkTo(page, { x: 0, z: 23 }, mobile); await walkTo(page, { x: 0, z: 6.8 }, mobile); await walkTo(page, { x: 0, z: 1 }, mobile);
   await expect(page.locator('#app')).toHaveAttribute('data-district', 'closed');
-  // Exercise fresh section leases, not only the first request and cached quality swap.
+  // Warm re-entry must not request or upload a fresh section. The single retained
+  // lease belongs to this scene and is released with it.
+  const sectionRequests = requests.filter(r => r.includes('/district/')).length;
   const cycles = [];
   for (let cycle = 0; cycle < 2; cycle++) {
     await walkTo(page, { x: 0, z: 6.8 }, mobile); await expect(page.locator('#app')).toHaveAttribute('data-district', 'ready');
@@ -49,12 +51,19 @@ test('two-area traversal, loaded-tier ownership, cutaway and return', async ({ p
     await page.waitForTimeout(200); cycles.push(await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot()));
   }
   const final = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot());
-  expect(final.references).toBe(initial.references); expect(final.resources).toBe(initial.resources); expect(final.listeners).toBe(initial.listeners);
+  expect(final.references).toBe(initial.references + 1); expect(final.resources).toBe(initial.resources + 1); expect(final.listeners).toBe(initial.listeners);
+  expect(requests.filter(r => r.includes('/district/')).length).toBe(sectionRequests);
   expect(final.player!.weapon).toBe('baton'); expect(errors).toEqual([]);
   if (mobile) expect(requests.some(r => r.includes('/district/desktop/') || r.includes('/showcase/cinematic/'))).toBe(false);
   await writeFile(`${folder}/${name}.json`, JSON.stringify({ browser: browser.version(), initial, inside, cycles, final, errors, requests }, null, 2));
   expect(cycles[1]!.textures).toBeLessThanOrEqual(cycles[0]!.textures + 1);
   expect(cycles[1]!.estimatedGpuBytes).toBeLessThanOrEqual(cycles[0]!.estimatedGpuBytes * 1.02);
+  // A scene reload from the court releases the warm section; the new scene
+  // must return to its baseline references without requesting another quay.
+  await page.evaluate(async () => { await window.__VESPER_DEBUG__!.reloadFixture(); });
+  const released = await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot());
+  expect(released.references).toBe(initial.references); expect(released.resources).toBe(initial.resources);
+  expect(requests.filter(r => r.includes('/district/')).length).toBe(sectionRequests);
   const video = page.video(); await page.context().close(); await video?.saveAs(`${folder}/${name}.webm`);
 });
 
@@ -71,7 +80,9 @@ test('failed and cancelled passage loads retain safe collision and retry', async
   await page.route('**/assets/district/**', async route => { await delayed; await route.continue(); });
   await page.locator('#district-retry').click(); await expect(page.locator('#app')).toHaveAttribute('data-district', 'loading');
   await walkTo(page, { x: 0, z: 1 }); await expect(page.locator('#app')).toHaveAttribute('data-district', 'closed'); finish();
-  await page.waitForTimeout(2500); expect((await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot())).references).toBe(5);
+  // Cancelled preparation retains its lease until the last scheduled GPU task
+  // settles. Assert eventual exact cleanup rather than a fixed wall-clock delay.
+  await expect.poll(async () => (await page.evaluate(() => window.__VESPER_DEBUG__!.snapshot())).references).toBe(5);
   await page.unroute('**/assets/district/**'); await walkTo(page, { x: 0, z: 7 }); await expect(page.locator('#app')).toHaveAttribute('data-district', 'ready');
   await walkTo(page, { x: 0, z: 18 }); expect((await observedPosition(page)).z).toBeGreaterThan(17);
 });

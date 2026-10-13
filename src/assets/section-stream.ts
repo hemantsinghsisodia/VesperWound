@@ -7,10 +7,11 @@ export class SectionStream<T> {
   error = '';
   private generation = 0;
   private handle: AssetHandle<T> | null = null;
+  private warm: AssetHandle<T> | null = null;
   private pending: Promise<void> | null = null;
   private disposed = false;
   get value(): T | null { return this.handle?.value ?? null; }
-  constructor(private readonly load: () => Promise<AssetHandle<T>>, private readonly attach: (value: T) => void, private readonly detach: (value: T) => void) {}
+  constructor(private readonly load: () => Promise<AssetHandle<T>>, private readonly attach: (value: T) => void, private readonly detach: (value: T) => void, private readonly retainWarm = false) {}
   update(z: number): void {
     if (this.disposed) return;
     if (z < 1.5) this.release();
@@ -20,6 +21,11 @@ export class SectionStream<T> {
     if (this.disposed) throw new Error('Section disposed');
     if (this.status === 'ready') return;
     if (this.pending) return this.pending;
+    if (this.warm) {
+      const handle = this.warm; this.warm = null;
+      try { this.attach(handle.value); this.handle = handle; this.status = 'ready'; return; }
+      catch (error) { this.detach(handle.value); handle.release(); this.status = 'failed'; this.error = error instanceof Error ? error.message : String(error); throw error; }
+    }
     const generation = ++this.generation;
     this.status = 'loading'; this.error = '';
     const pending = this.load().then(handle => {
@@ -37,8 +43,12 @@ export class SectionStream<T> {
   private release(): void {
     if (this.status === 'closed') return;
     this.generation++; this.pending = null;
-    if (this.handle) { this.detach(this.handle.value); this.handle.release(); this.handle = null; }
+    if (this.handle) {
+      this.detach(this.handle.value);
+      if (this.retainWarm && !this.disposed) this.warm = this.handle; else this.handle.release();
+      this.handle = null;
+    }
     this.status = 'closed'; this.error = '';
   }
-  dispose(): void { this.release(); this.disposed = true; }
+  dispose(): void { this.disposed = true; this.release(); this.warm?.release(); this.warm = null; }
 }

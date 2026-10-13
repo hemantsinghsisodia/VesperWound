@@ -1,4 +1,4 @@
-import { Box3, Group, Mesh, BoxGeometry, MeshStandardNodeMaterial, Ray, Vector3, type Camera, type Scene } from 'three/webgpu';
+import { Box3, Group, Mesh, BoxGeometry, MeshStandardNodeMaterial, Ray, Texture, Vector3, type Camera, type Scene } from 'three/webgpu';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { AssetManager } from '../assets/asset-manager';
 import { SectionStream } from '../assets/section-stream';
@@ -29,9 +29,21 @@ export class DistrictPresentation {
         if (object instanceof Mesh) { configureEnvironmentMesh(object); object.frustumCulled = false; meshes.push(object); }
       });
       const preparation = (async () => { try {
+        const textures = new Set<Texture>();
+        for (const mesh of meshes) for (const material of Array.isArray(mesh.material) ? mesh.material : [mesh.material]) {
+          for (const value of Object.values(material)) if (value instanceof Texture) textures.add(value);
+        }
+        // Upload one texture per browser turn, before shader construction can
+        // implicitly upload all maps for several materials in one long task.
+        for (const texture of textures) {
+          await preparationFrame();
+          if (this.disposed) return;
+          assets.renderer.initTexture(texture);
+        }
         // Prepare off-scene against the actual lighting. The section remains
         // gated until asynchronous shader construction has yielded and completed.
         for (const mesh of meshes) {
+          await preparationFrame();
           if (this.disposed) break;
           await assets.renderer.compileAsync(mesh, camera, scene);
         }
@@ -46,7 +58,7 @@ export class DistrictPresentation {
         while (parent && !parent.name.includes('Cutaway')) parent = parent.parent;
         if (parent) this.cutaways.push({ mesh: object, bounds: new Box3().setFromObject(object) });
       });
-    }, gltf => { this.group.remove(gltf.scene); this.cutaways.length = 0; this.gate.visible = true; });
+    }, gltf => { this.group.remove(gltf.scene); this.cutaways.length = 0; this.gate.visible = true; }, true);
   }
   update(z: number): void { this.stream.update(z); this.gate.visible = this.stream.status !== 'ready'; }
   visibility(camera: Camera, target: Vector3, playing: boolean): void {
@@ -60,4 +72,12 @@ export class DistrictPresentation {
   }
   get hiddenCutaways(): number { return this.cutaways.filter(({ mesh }) => !mesh.visible).length; }
   dispose(): void { this.disposed = true; this.stream.dispose(); this.gateGeometry.dispose(); this.gateMaterial.dispose(); this.group.clear(); }
+}
+
+/** Permit a drawn frame between upload batches; background tabs still settle. */
+function preparationFrame(): Promise<void> {
+  return new Promise(resolve => {
+    const finish = () => { clearTimeout(timer); cancelAnimationFrame(frame); resolve(); };
+    const frame = requestAnimationFrame(finish), timer = setTimeout(finish, 100);
+  });
 }

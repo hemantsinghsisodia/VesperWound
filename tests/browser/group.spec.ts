@@ -4,7 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { exerciseGroup, type GroupTotals } from '../helpers/group-driver';
 
 test.use({ video: { mode: 'on', size: { width: 1440, height: 900 } } });
-const root = 'docs/qa/ash-quay-checkpoint-b/regressions/phase4b';
+const root = 'docs/qa/ash-quay-checkpoint-c/regressions/phase4b';
 const snapshot = (page: Page) => page.evaluate(() => window.__VESPER_DEBUG__!.snapshot());
 async function enter(page: Page, backend: string, touch = false) {
   await page.goto(`/?backend=${backend}`); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready');

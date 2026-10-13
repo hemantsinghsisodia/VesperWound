@@ -1,19 +1,19 @@
 {
   "bootstrap": {
-    "rawBytes": 6887014,
-    "gzipBytes": 2577958,
+    "rawBytes": 6888036,
+    "gzipBytes": 2578290,
     "limitBytes": 5242880,
     "passed": true
   },
   "desktop": {
-    "rawBytes": 18994797,
-    "gzipBytes": 17593076,
+    "rawBytes": 18994979,
+    "gzipBytes": 17593177,
     "limitBytes": 20971520,
     "passed": true
   },
   "mobile": {
-    "rawBytes": 10465432,
-    "gzipBytes": 9066779,
+    "rawBytes": 10465614,
+    "gzipBytes": 9066944,
     "limitBytes": 10485760,
     "passed": true
   },
@@ -42,14 +42,14 @@
     "passed": true
   },
   "quayDesktop": {
-    "rawBytes": 7825144,
-    "gzipBytes": 7491104,
+    "rawBytes": 7938476,
+    "gzipBytes": 7525955,
     "limitBytes": 12582912,
     "passed": true
   },
   "quayMobile": {
-    "rawBytes": 2157608,
-    "gzipBytes": 1825112,
+    "rawBytes": 2270940,
+    "gzipBytes": 1860151,
     "limitBytes": 6291456,
     "passed": true
   }

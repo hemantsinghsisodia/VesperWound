@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
@@ -30,5 +30,6 @@ async function visit(directory) {
 await visit(root);
 const report = Object.fromEntries(Object.entries(groups).map(([name, value]) => [name, { rawBytes: value.raw, gzipBytes: value.gzip, limitBytes: value.limit, passed: name === 'bootstrap' ? value.gzip <= value.limit : value.raw <= value.limit }]));
 console.log(JSON.stringify(report, null, 2));
-await writeFile('docs/qa/visual-delivery.json', JSON.stringify(report, null, 2));
+await writeFile('docs/qa/visual-delivery.json.partial', JSON.stringify(report, null, 2));
+await rename('docs/qa/visual-delivery.json.partial', 'docs/qa/visual-delivery.json');
 if (Object.values(report).some((group) => !group.passed)) process.exitCode = 1;
