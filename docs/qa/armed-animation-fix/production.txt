@@ -1,0 +1,15 @@
+
+> vesperwound@0.1.0 test:production
+> playwright test --config playwright.production.config.ts --grep development flags|armed clips --output .cache/armed-production-results --reporter list
+
+[WebServer] (node:23840) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:376) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\production\production.spec.ts:6:1 › production ignores development flags and excludes diagnostics (10.3s)
+  ok 2 tests\production\production.spec.ts:38:1 › production requests armed clips only on pickup and retains the baton through encounter and inspection (14.1s)
+
+  2 passed (29.8s)

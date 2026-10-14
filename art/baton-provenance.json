@@ -1,7 +1,7 @@
 {
   "title": "Steel baton and Medic armed actions",
   "authorship": "Original VESPERWOUND weapon model and animation edits; project-owner work",
-  "date": "2026-10-09",
+  "date": "2026-10-14",
   "sources": [
     {
       "path": "art/source/steel-baton.blend",
@@ -9,7 +9,7 @@
     },
     {
       "path": "art/source/medic-baton-animations.blend",
-      "sha256": "4627bec2e2880da3319245dc2a8d148737a3075ddc733c922f252f3ce0c4c57e"
+      "sha256": "9789370a553386ab4b768225f011bf0dc0bc802b4f6a8654abbaf06a19117427"
     }
   ],
   "animationSource": {
@@ -36,8 +36,10 @@
   },
   "modifications": [
     "Retarget to accepted Medic rig",
-    "Offline arm IK and authored forehand/backhand/finisher/overhead paths",
-    "Baked closed right-hand fingers and retained vertical hip motion",
+    "Offline arm solve with stable elbow plane, bounded wrist roll and authored forehand/backhand/finisher/overhead paths",
+    "Full-range source-frame sampling at 60 Hz; clean unkeyed transforms per pose",
+    "Restrained sword weight shift aligned with baton strike windows",
+    "Baked closed right-hand fingers with unstretched thumb solve and retained vertical hip motion",
     "Separate armed actions; existing unarmed master retained",
     "Read-only saved-source export with Meshopt"
   ],
@@ -55,9 +57,9 @@
     "Baton_Heavy"
   ],
   "modelBytes": 9252,
-  "animationBytes": 427552,
+  "animationBytes": 437816,
   "runtimeHashes": {
     "model": "49abe8fd14bf2eb9636ccb664a9d4d449eca7edfb271c6386500008a8cd9f6c7",
-    "animations": "e9a77b188522f8dc97bba4c3ecb5bcadf28c6c0a81e5ab755e54fd617b00e07a"
+    "animations": "79e580a2a67b4faf8bd13aa911071d882e48e8791f246ed2248b46fa74be3cbb"
   }
 }

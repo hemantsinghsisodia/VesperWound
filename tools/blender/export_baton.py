@@ -1,12 +1,21 @@
 """Read-only export of saved weapon and armed animation sources."""
-import bpy,json
+import bpy,json,os,uuid
 from pathlib import Path
 from mathutils import Vector,Quaternion,Matrix
 base=Path.cwd(); folder=base/'art/source/baton'
+def export_saved(name, **options):
+    # Publish a completed file atomically; Windows readers can retain the old
+    # export without blocking Blender's attempt to truncate that same file.
+    staging=folder/(name+'-'+uuid.uuid4().hex+'.glb')
+    try:
+        bpy.ops.export_scene.gltf(filepath=str(staging),**options)
+        os.replace(staging,folder/(name+'.glb'))
+    finally:
+        if staging.exists():staging.unlink()
 bpy.ops.wm.open_mainfile(filepath=str(base/'art/source/steel-baton.blend'),load_ui=False)
-bpy.ops.export_scene.gltf(filepath=str(folder/'baton.glb'),export_format='GLB',export_yup=True,export_animations=False)
+export_saved('baton',export_format='GLB',export_yup=True,export_animations=False)
 bpy.ops.wm.open_mainfile(filepath=str(base/'art/source/medic-baton-animations.blend'),load_ui=False)
-bpy.ops.export_scene.gltf(filepath=str(folder/'animations.glb'),export_format='GLB',export_yup=True,export_animations=True,export_animation_mode='NLA_TRACKS',export_skins=True,export_def_bones=False)
+export_saved('animations',export_format='GLB',export_yup=True,export_animations=True,export_animation_mode='NLA_TRACKS',export_skins=True,export_def_bones=False)
 a=next(o for o in bpy.context.scene.objects if o.type=='ARMATURE')
 grip=json.loads(a['baton_grip']) if 'baton_grip' in a else json.loads((folder/'blender-grip.json').read_text())
 transform=Matrix.LocRotScale(Vector(grip['position']),Quaternion(grip['quaternion']),Vector((1,1,1)))
