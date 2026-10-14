@@ -1,4 +1,4 @@
-import { Box3, Group, Mesh, BoxGeometry, MeshStandardNodeMaterial, Ray, Texture, Vector3, type Camera, type Scene } from 'three/webgpu';
+import { Box3, Group, Mesh, BoxGeometry, MeshStandardNodeMaterial, Ray, Texture, Vector3, type Camera, type Scene, type Object3D } from 'three/webgpu';
 import type { GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import type { AssetManager } from '../assets/asset-manager';
 import { SectionStream } from '../assets/section-stream';
@@ -17,6 +17,9 @@ export class DistrictPresentation {
   private readonly hit = new Vector3();
   private disposed = false;
   private readonly preparations = new WeakMap<GLTF, Promise<void>>();
+  private mission = false;
+  private readonly harbourOriginals: Array<{ object:Object3D; x:number; visible:boolean; wall:boolean }> = [];
+  private readonly harbourSegments:Mesh[]=[];
   constructor(assets: AssetManager, scene: Scene, camera: Camera) {
     this.gate.position.set(0, .55, 8.05); this.gate.castShadow = true; this.group.add(this.gate);
     this.stream = new SectionStream(() => assets.model('quayside', async gltf => {
@@ -58,7 +61,39 @@ export class DistrictPresentation {
         while (parent && !parent.name.includes('Cutaway')) parent = parent.parent;
         if (parent) this.cutaways.push({ mesh: object, bounds: new Box3().setFromObject(object) });
       });
-    }, gltf => { this.group.remove(gltf.scene); this.cutaways.length = 0; this.gate.visible = true; }, true);
+      this.prepareHarbour(gltf.scene);
+    }, gltf => { this.restoreHarbour(); this.group.remove(gltf.scene); this.cutaways.length = 0; this.gate.visible = true; }, true);
+  }
+  private prepareHarbour(root:Object3D):void {
+    root.traverse(object=>{
+      const name=object.name.replaceAll('_',' ').replace(/\s+/g,' ').trim();
+      const wall=name==='Harbour edge';
+      if(wall||name.startsWith('Arrival sign post')||name==='Arrival harbour sign'||name==='Lettering ASH QUAY ARRIVALS')
+        this.harbourOriginals.push({object,x:object.position.x,visible:object.visible,wall});
+    });
+    // Share the loaded geometry/materials under the same asset lease. This
+    // opens a visual boarding gap, without extending the navigable quay.
+    for(const {object,wall} of this.harbourOriginals)if(wall&&object instanceof Mesh){
+      for(const x of [-4.65,4.65]){
+        const segment=object.clone();segment.name='Mission harbour side';
+        segment.position.x=x;segment.scale.x*=3.55/8.2;
+        object.parent?.add(segment);this.harbourSegments.push(segment);
+      }
+    }
+    this.applyHarbour();
+  }
+  setMission(active:boolean):void {if(active===this.mission)return;this.mission=active;this.applyHarbour();}
+  private applyHarbour():void {
+    for(const {object,x,visible,wall} of this.harbourOriginals){
+      object.position.x=x-(!wall&&this.mission?4.6:0);
+      object.visible=visible&&(!wall||!this.mission);
+    }
+    for(const segment of this.harbourSegments)segment.visible=this.mission;
+  }
+  private restoreHarbour():void {
+    for(const {object,x,visible} of this.harbourOriginals){object.position.x=x;object.visible=visible;}
+    for(const segment of this.harbourSegments)segment.removeFromParent();
+    this.harbourOriginals.length=0;this.harbourSegments.length=0;
   }
   update(z: number): void { this.stream.update(z); this.gate.visible = this.stream.status !== 'ready'; }
   visibility(camera: Camera, target: Vector3, playing: boolean): void {

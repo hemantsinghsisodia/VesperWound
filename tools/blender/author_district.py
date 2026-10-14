@@ -78,6 +78,9 @@ for a,b in [(-8,-2.5),(2.5,8)]:
 for o in scene.objects:
     if o.name.startswith('Wet scanned paving'):
         o.data.materials.clear();o.data.materials.append(slate)
+        # Recess the grout below the .04 m flag tops; coplanar layers z-fight.
+        top=max((o.matrix_world@Vector(v)).z for v in o.bound_box)
+        o.location.z+=.015-top
 random.seed(20261012)
 # Large irregular flags replace the tiny repeating checker across the court.
 for row in range(13):

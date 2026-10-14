@@ -1,5 +1,6 @@
 export type AudioBus = 'ambience' | 'effects' | 'ui' | 'music';
 import type { CombatEvent } from '../player/combat-definitions';
+import type { MissionCue } from '../mission/first-mission';
 
 interface SpatialAudioPosition {
   readonly positionX?: AudioParam;
@@ -24,6 +25,7 @@ export class AudioManager {
   private master: GainNode | null = null;
   private readonly buses = new Map<AudioBus, GainNode>();
   private readonly sources = new Set<AudioScheduledSourceNode>();
+  private readonly missionSources=new Map<AudioScheduledSourceNode,GainNode>();
   private ambienceStarted = false;
   private panner: PannerNode | null = null;
   private noise: AudioBuffer | null = null;
@@ -119,6 +121,23 @@ export class AudioManager {
     if (!this.context) return;
     setSpatialPosition(this.context.listener, x, 0, z);
   }
+  missionCue(cue:MissionCue):void {
+    const context=this.context,bus=this.buses.get('effects');
+    if(!context||!bus||context.state!=='running'||this.sources.size>=22)return;
+    const duration=cue==='winch'?6:cue==='complete'?1.8:.6;
+    const frequencies=cue==='winch'?[55,82]:cue==='complete'?[392,587]:cue==='regulator'?[440]:[110];
+    for(const frequency of frequencies){
+      const source=context.createOscillator(),gain=context.createGain();source.type=cue==='winch'?'triangle':'sine';
+      source.frequency.setValueAtTime(frequency,context.currentTime);source.frequency.linearRampToValueAtTime(cue==='winch'?frequency*1.6:frequency,context.currentTime+duration);
+      gain.gain.setValueAtTime(0,context.currentTime);gain.gain.linearRampToValueAtTime(.035,context.currentTime+.12);gain.gain.exponentialRampToValueAtTime(.001,context.currentTime+duration);
+      source.connect(gain);gain.connect(bus);this.sources.add(source);this.missionSources.set(source,gain);
+      source.onended=()=>{this.sources.delete(source);this.missionSources.delete(source);source.disconnect();gain.disconnect();};
+      source.start();source.stop(context.currentTime+duration);
+    }
+  }
+  stopMission():void {
+    for(const [source,gain] of this.missionSources){source.onended=null;source.stop();source.disconnect();gain.disconnect();this.sources.delete(source);}this.missionSources.clear();
+  }
   setBusVolume(name: AudioBus, value: number): void {
     const bus = this.buses.get(name);
     if (bus && this.context) bus.gain.setTargetAtTime(Math.min(1, Math.max(0, value)), this.context.currentTime, 0.03);
@@ -134,6 +153,7 @@ export class AudioManager {
   }
   get voiceCount(): number { return this.sources.size; }
   async dispose(): Promise<void> {
+    this.stopMission();
     for (const source of this.sources) { source.onended = null; source.stop(); source.disconnect(); }
     this.sources.clear(); this.buses.clear(); this.panner?.disconnect(); this.master?.disconnect();
     await this.context?.close(); this.context = null; this.noise = null; this.ambienceStarted = false; this.status = 'locked';

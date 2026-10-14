@@ -1,8 +1,8 @@
 {
-  "milestone": "Ash Quay rebuild / Checkpoint C",
+  "milestone": "First mission / paving depth review",
   "status": "Awaiting browser art review",
   "master": "art/source/ash-quay-district.blend",
-  "masterSha256": "6eb48895abbc6b132e96810d7378193d47a3757fcb9ed52fb40617d5cf38c819",
+  "masterSha256": "b97f33953581f886d52fa1810c81015dd5d96d6a142728819d456b8c94ae9060",
   "sourceAssets": [
     {
       "id": "modular_factory_facade",
@@ -285,56 +285,57 @@
     "Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps",
     "Source-scene panoramic reflection bake",
     "Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime",
-    "Repositioned sign and loading lamps for visibility; varied quay paving UVs and restrained tints"
+    "Repositioned sign and loading lamps for visibility; varied quay paving UVs and restrained tints",
+    "Recessed the retained court base to 0.015 m below 0.04 m flag tops to remove coplanar depth artifacts"
   ],
   "exports": [
     {
       "tier": "desktop",
       "section": "court",
       "output": "public/assets/showcase/desktop/ash-quay.glb",
-      "bytes": 12204364,
+      "bytes": 12204392,
       "triangles": 111184,
       "meshes": 40,
       "textures": 40,
       "maximumTexture": 1024,
-      "reflectionBytes": 21594,
-      "sha256": "1b88ec047a18e10d6c5e4369d33adcfa87243a02c026cdd7d5128254314d0a58"
+      "reflectionBytes": 26315,
+      "sha256": "60f998fcccd0e35b2457278f366b0dd50e1330db5c6d03373d5ca43376863d1f"
     },
     {
       "tier": "desktop",
       "section": "quay",
       "output": "public/assets/district/desktop/arrival-quay.glb",
-      "bytes": 7938476,
+      "bytes": 7938508,
       "triangles": 31826,
       "meshes": 104,
       "textures": 25,
       "maximumTexture": 1024,
-      "reflectionBytes": 21594,
-      "sha256": "280933eaedc44fad4cde8a6aebf9edd3b153042e1ee96bf6a2af0c08c475a9e8"
+      "reflectionBytes": 26315,
+      "sha256": "ac08de0032282dc7615644e653fa8767be8560edde9de6134ac15c889da7f535"
     },
     {
       "tier": "mobile",
       "section": "court",
       "output": "public/assets/showcase/mobile/ash-quay.glb",
-      "bytes": 3675000,
+      "bytes": 3675028,
       "triangles": 111184,
       "meshes": 40,
       "textures": 40,
       "maximumTexture": 512,
-      "reflectionBytes": 21594,
-      "sha256": "117f35dadc564778602764e9b96e94691c39d12dff0fcf8e7b8fd8d9ed4b399f"
+      "reflectionBytes": 26315,
+      "sha256": "76493ff438cd1401254308b97e8d0f1db0a276792385f9e45307c661ca000d10"
     },
     {
       "tier": "mobile",
       "section": "quay",
       "output": "public/assets/district/mobile/arrival-quay.glb",
-      "bytes": 2270940,
+      "bytes": 2270968,
       "triangles": 31826,
       "meshes": 104,
       "textures": 25,
       "maximumTexture": 512,
-      "reflectionBytes": 21594,
-      "sha256": "69eeb913f1ec4df9ab68c36b70e9a4f0bee20129552fe39fe69d888cc2d035d8"
+      "reflectionBytes": 26315,
+      "sha256": "1c9b760040b536a3d34c32ca8cf81832a9ecc1c357da0ce966828745d36d8ab6"
     }
   ]
 }

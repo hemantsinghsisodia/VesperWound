@@ -1,0 +1,20 @@
+#mission-hud{position:absolute;right:28px;top:88px;width:268px;padding:14px 16px;background:linear-gradient(110deg,#0b1b20ed,#0b1b20b8);border-left:2px solid #ba985e;color:#dce2d7;pointer-events:auto}
+#mission-hud small{font:9px Arial,sans-serif;letter-spacing:1.6px;color:#cbb381}
+#mission-hud h2{font:21px/1.15 Georgia,serif;margin:9px 0}
+#mission-hud p{font:12px/1.5 Arial,sans-serif;margin:8px 0}
+#mission-feedback:empty{display:none}
+#mission-hud button,.mission-menu button{min-height:44px;padding:10px 14px;background:#514730;color:#f4e7c4;border:1px solid #b5a16b;font:12px Arial,sans-serif;cursor:pointer}
+.mission-menu{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+#mission-hud[hidden],.mission-menu[hidden],#mission-hud button[hidden]{display:none}
+#app:not([data-mission=inactive]) .encounter-controls,#app:not([data-mission=inactive]) #reset-targets{display:none}
+#app:not([data-mission=inactive]) #district-guide{display:none}
+#app[data-state=paused] #mission-hud{pointer-events:none;opacity:.5}
+#app[data-mission=complete] #mission-hud{border-color:#9ce1c6}
+#app:not([data-mission=inactive]) #target-cycle[hidden]~.pickup-button{bottom:calc(72px + env(safe-area-inset-bottom));font:11px Arial,sans-serif}
+@media(pointer:coarse),(max-height:550px){
+ #mission-hud{top:12px;left:50%;right:auto;transform:translateX(-50%);width:34vw;max-width:320px;padding:8px 10px}
+ #mission-hud small{font-size:7px}#mission-hud h2{font-size:14px;margin:4px 0}#mission-hud p{font-size:10px;margin:4px 0;line-height:1.25}
+ #mission-hud button{padding:6px 10px;min-height:44px;font-size:10px}
+ #app[data-mission=inactive] #mission-detail{display:none}
+ #app[data-mission=inactive] #district-guide{display:none}
+}

@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-14T07:23:21.892Z",
+  "browser": "155.0.8059.41",
+  "scenario": "mission",
+  "hardware": {
+    "backend": "WebGPU",
+    "resolution": [
+      1440,
+      900
+    ],
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "quality": "High",
+  "adaptive": false,
+  "uncapped": true,
+  "warmupSeconds": 30,
+  "method": "External requestAnimationFrame intervals; Chrome frame limiter and GPU vsync disabled; includes scheduling and CPU, not isolated GPU timestamps.",
+  "metrics": {
+    "seconds": 300.2262000000002,
+    "frames": 28515,
+    "p95": 14.900000000008731,
+    "max": 101.39999999999418,
+    "over50": 4,
+    "over100": 1,
+    "combatFrames": 20136,
+    "combatP95": 14.700000000011642
+  },
+  "samples": [
+    {
+      "elapsed": 30.019899999999907,
+      "bytes": 59728987,
+      "textures": 105,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 60.0495,
+      "bytes": 59733915,
+      "textures": 105,
+      "stage": "powering",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 90.07639999999991,
+      "bytes": 59736619,
+      "textures": 105,
+      "stage": "regulator",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 120.0876000000001,
+      "bytes": 59736619,
+      "textures": 105,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 150.1147000000002,
+      "bytes": 59737547,
+      "textures": 105,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 180.13539999999992,
+      "bytes": 59738171,
+      "textures": 105,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 210.1535,
+      "bytes": 59738171,
+      "textures": 105,
+      "stage": "regulator",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 240.1696000000001,
+      "bytes": 59738171,
+      "textures": 105,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 270.18820000000017,
+      "bytes": 59738171,
+      "textures": 105,
+      "stage": "install",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 300.2046000000001,
+      "bytes": 59738171,
+      "textures": 105,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 3
+    }
+  ],
+  "completions": 4,
+  "driverError": "",
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances."
+  ]
+}

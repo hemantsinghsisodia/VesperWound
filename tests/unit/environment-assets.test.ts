@@ -16,6 +16,25 @@ test('authored environment exports preserve source, spatial batches, tier and te
     expect(root.listAnimations()).toHaveLength(0); expect(root.listSkins()).toHaveLength(0);
     expect(root.listNodes().some(n => n.getName().includes('BLOCKOUT'))).toBe(false);
     expect(root.listNodes().filter(n => n.getName().startsWith('Quay cell')).length).toBeGreaterThan(4);
+    if (section === 'court') {
+      // Check the decoded runtime geometry, including Meshopt quantization:
+      // the old continuous floor must remain recessed below every flag batch.
+      let baseTop = -Infinity;
+      const flagTops:number[]=[];
+      for(const node of root.listNodes())for(const primitive of node.getMesh()?.listPrimitives()??[]){
+        const name=primitive.getMaterial()?.getName()??'';
+        if(name!=='District / basalt base'&&!name.startsWith('District / weathered concrete'))continue;
+        const positions=primitive.getAttribute('POSITION')!,matrix=node.getWorldMatrix();
+        let top=-Infinity;
+        for(let i=0;i<positions.getCount();i++){
+          const v=positions.getElement(i,[]);
+          top=Math.max(top,matrix[1]!*v[0]!+matrix[5]!*v[1]!+matrix[9]!*v[2]!+matrix[13]!);
+        }
+        if(name==='District / basalt base')baseTop=Math.max(baseTop,top);else flagTops.push(top);
+      }
+      expect(Number.isFinite(baseTop)).toBe(true);expect(flagTops.length).toBeGreaterThan(0);
+      for(const top of flagTops)expect(top-baseTop).toBeGreaterThan(.02);
+    }
     if (section === 'quay') {
       expect(root.listNodes().some(n => n.getName().includes('Cutaway canopy'))).toBe(true);
       const paving = root.listMaterials().filter(m => m.getName().startsWith('District / dock limestone'));

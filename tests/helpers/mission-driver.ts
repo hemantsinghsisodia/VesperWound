@@ -1,0 +1,61 @@
+import { expect,type Page } from '@playwright/test';
+import { projectGround } from './scene-menu';
+import { walkTo } from './district-driver';
+
+interface Enemy {x:number;z:number;health:number;action:string;actionTime:number}
+/** Real desktop or touch controls; observations never alter game state. */
+export async function winMissionFight(page:Page,touch=false):Promise<void>{
+  const keys=new Set<string>();const session=touch?await page.context().newCDPSession(page):null;
+  const stick=touch?(await page.locator('#movement-stick').boundingBox())!:null;
+  const center=stick?{x:stick.x+stick.width/2,y:stick.y+stick.height/2}:null;
+  let touching=false;
+  const stop=async()=>{for(const key of keys)await page.keyboard.up(key);keys.clear();if(session&&touching){await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});touching=false;}};
+  const move=async(dx:number,dz:number)=>{
+    const x=dx-dz,y=dx+dz,l=Math.hypot(x,y);
+    if(session&&center&&stick){if(!touching){await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...center,id:0}]});touching=true;}await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:center.x+x/l*stick.width*.4,y:center.y+y/l*stick.height*.4,id:0}]});}
+    else{const threshold=Math.max(Math.abs(x),Math.abs(y))*.35,wanted=[...(Math.abs(x)>threshold?[x>0?'d':'a']:[]),...(Math.abs(y)>threshold?[y>0?'s':'w']:[])];for(const key of keys)if(!wanted.includes(key)){await page.keyboard.up(key);keys.delete(key);}for(const key of wanted)if(!keys.has(key)){await page.keyboard.down(key);keys.add(key);}}
+  };
+  let won=false;
+  const trace:unknown[]=[];
+  try{
+    for(let i=0;i<1800;i++){
+      const s=await page.evaluate(()=>{const c=document.querySelector('canvas')!;return {p:c.dataset.playerPosition!.split(',').map(Number),enemies:JSON.parse(c.dataset.enemyRoster!) as Enemy[],action:c.dataset.playerAction!,health:document.querySelector<HTMLProgressElement>('#health')!.value,pressure:document.querySelector<HTMLProgressElement>('#pressure')!.value,hits:c.dataset.combatHits,blocks:c.dataset.combatBlocks,strikes:c.dataset.combatStrikes};});
+      trace.push(s);if(trace.length>24)trace.shift();
+      expect(s.health,`Medic must survive the mission fight: ${JSON.stringify(trace)}`).toBeGreaterThan(0);
+      const living=s.enemies.filter(e=>e.health>0);if(!living.length){won=true;break;}
+      const distance=(e:Enemy)=>Math.hypot(e.x-s.p[0]!,e.z-s.p[2]!);
+      const enemy=[...living].sort((a,b)=>Number(b.action==='stagger')-Number(a.action==='stagger')||distance(a)-distance(b))[0]!;
+      const free=['idle','walk','run'].includes(s.action);
+      const threat=living.find(e=>e.action==='windup'&&distance(e)<1.3);
+      if(free&&threat&&s.pressure<25&&threat.actionTime>.35){
+        const dx=s.p[0]!-threat.x,dz=s.p[2]!-threat.z;await move(dx,dz);
+        if(session&&center&&stick){const b=(await page.locator('#dodge').boundingBox())!,x=dx-dz,y=dx+dz,l=Math.hypot(x,y);await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:center.x+x/l*stick.width*.4,y:center.y+y/l*stick.height*.4,id:0},{x:b.x+b.width/2,y:b.y+b.height/2,id:1}]});await page.waitForTimeout(100);}
+        else await page.keyboard.press('Space');
+      }
+      else if(free&&threat&&s.pressure>=25){await stop();if(touch)await page.locator('#ward').tap();else await page.keyboard.press('q');}
+      else if(free&&distance(enemy)>.8){
+        await move(enemy.x-s.p[0]!,enemy.z-s.p[2]!);
+      }else{
+        await stop();
+        // A heavy has committed windup: punish the attack slot's recovery rather
+        // than initiating into an approaching enemy's fresh windup.
+        const safeWindow=living.some(e=>e.action==='recovery'&&e.actionTime<.42)||enemy.action==='stagger';
+        if(free&&safeWindow&&!living.some(e=>['windup','active'].includes(e.action)&&distance(e)<1.3)){
+          if(touch)await page.locator('#heavy').tap();else{const p=await projectGround(page,{x:enemy.x,y:s.p[1]!,z:enemy.z});await page.mouse.click(p.x,p.y,{button:'right'});}
+        }
+      }
+      await page.waitForTimeout(70);
+    }
+  }finally{await stop();await session?.detach();}
+  expect(won,'Mission fight timed out').toBe(true);
+}
+
+export async function playMissionRoute(page:Page):Promise<void>{
+  if(await page.locator('#app').getAttribute('data-mission')==='prepare'){await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','quay');}
+  await walkTo(page,{x:0,z:6.8});await expect(page.locator('#app')).toHaveAttribute('data-district','ready');await walkTo(page,{x:0,z:17.9});
+  await winMissionFight(page);await expect(page.locator('#app')).toHaveAttribute('data-mission','regulator');
+  await walkTo(page,{x:-2,z:22.8});await walkTo(page,{x:-5,z:22.8});await expect.poll(()=>page.locator('#pressure').evaluate((p:HTMLProgressElement)=>p.value),{timeout:30000}).toBe(100);
+  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','winch-fight');await walkTo(page,{x:-2,z:23});await winMissionFight(page);
+  await expect(page.locator('#app')).toHaveAttribute('data-mission','install');await walkTo(page,{x:3,z:24.4});await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','board');
+  await walkTo(page,{x:0,z:28});await walkTo(page,{x:0,z:30});await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','complete');
+}

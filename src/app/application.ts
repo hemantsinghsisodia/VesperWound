@@ -25,6 +25,8 @@ import type { EnemyPresentation } from '../world/enemy-presentation';
 import type { CombatEvent } from '../player/combat-definitions';
 import type { RapierPlayerCollision } from '../player/player-collision';
 import { DISTRICT_BOXES, DISTRICT_BOUNDS, districtGround, districtArea } from '../world/district-definition';
+import { FirstMission } from '../mission/first-mission';
+import { MissionHud } from '../ui/mission-hud';
 
 interface SessionEvents { pressureReleased: { x: number; z: number }; combat: CombatEvent }
 
@@ -32,6 +34,10 @@ export class Application {
   private readonly lifetime = new Lifetime();
   private readonly settings: SettingsStore;
   private readonly ui: Interface;
+  private readonly missionHud:MissionHud;
+  private mission:FirstMission|null=null;
+  private missionLoading=false;
+  private missionError='';
   private readonly audio = new AudioManager();
   private readonly clock = new FixedClock();
   private readonly metrics = new FrameMetrics();
@@ -80,6 +86,7 @@ export class Application {
     this.settings = new SettingsStore(storage, defaultPreferences());
     this.quality = new QualityManager(this.settings.values.quality, this.settings.values.adaptive);
     this.ui = new Interface(root, this.settings.values);
+    this.missionHud=new MissionHud(root,{start:()=>{if(this.missionLoading)this.cancelEnemyLoad();else void this.startEncounter('single',true);},restart:()=>this.restartMission(),leave:()=>{this.returnToTraining();this.ui.get<HTMLDialogElement>('#settings').close();}});
     this.ui.scene(this.options.scene);
     this.ui.storage(this.settings.persistent);
     this.audio.setVolume(this.settings.values.volume, this.settings.values.muted);
@@ -117,7 +124,7 @@ export class Application {
       inspectionView: (view) => { this.inspection?.selectView(view); this.updateInspectionUi(); },
       inspectionLighting: (lighting) => { this.inspection?.selectLighting(lighting); this.updateInspectionUi(); },
       inspectionPause: () => { if (this.inspection) this.inspection.actor.paused = !this.inspection.actor.paused; this.updateInspectionUi(); },
-      restart: () => { this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
+      restart: () => { if(this.mission?.active){this.restartMission();return;}this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       resetTargets: () => { this.player?.resetTargets(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterStart: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter(); },
       encounterGroup: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter('group'); },
@@ -157,6 +164,7 @@ export class Application {
         if (this.disposed) return;
         const collision: RapierPlayerCollision = new physics.RapierPlayerCollision(); collision.install(DISTRICT_BOXES); collision.setDistrictReady(false); this.collision = collision;
         this.encounter = new EncounterSimulation(collision, DISTRICT_BOXES, undefined, DISTRICT_BOUNDS, districtGround); this.player=this.encounter.player;
+        this.mission=new FirstMission(this.encounter,collision);
       }
       this.courtyard = await this.createWorld(); await this.courtyard.load(assets, this.options.missingFixture);
       if (this.disposed) return;
@@ -244,9 +252,10 @@ export class Application {
           if (!input) return;
           if (world instanceof VisualShowcase) {
             world.aim = this.player?.combatAim(input.aimActive ? this.camera.aim(input.aim, world.target.y) : undefined,input.pressed.has('target'));
-            if(world.playing){
+            if(world.playing&&!this.pendingInspection){
               world.district?.update(this.player?.state.position.z ?? 0);
               this.collision?.setDistrictReady(world.district?.stream.status === 'ready');
+              this.collision?.setFerryReady(this.mission?.active??false,(this.mission?.ramp??0)>=1);
               this.encounter?.update(dt,input,world.aim);
               if(this.player){
                 const id=this.pickup.update(this.player,input.pressed.has('interact'),!this.pendingEnemy&&!this.pendingInspection);
@@ -256,6 +265,8 @@ export class Application {
                   this.weaponAssets=this.pendingWeapon.assets;this.weaponHandle=this.pendingWeapon.handle;this.armedClips=this.weaponHandle.value.animations;this.pendingWeapon=null;
                   world.equipBaton(this.armedClips);this.refreshAnimationUi();
                 }
+                this.mission?.update(dt,input.pressed.has('interact'),world.district?.stream.status==='ready');
+                for(const cue of this.mission?.drainCues()??[])this.audio.missionCue(cue);
               }
             }
           }
@@ -277,6 +288,7 @@ export class Application {
         if (this.player) this.ui.player(this.player.state);
         this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);
         if(this.player)this.ui.weapon(this.player,this.pickup);
+        this.missionHud.update(this.mission,this.missionLoading,this.missionError);
       }
       this.adapter.render();
       if (!paused) {
@@ -418,13 +430,21 @@ export class Application {
     return `/assets/showcase/${artVariant(this.quality.selected)}/manifest.json`;
   }
   private updateEncounterUi():void {this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);}
+  private restartMission():void {
+    if(!this.mission?.active||this.reloading||this.missionLoading)return;
+    this.closeInspection();this.cancelWeaponLoad();this.audio.stopMission();this.mission.start();
+    this.input?.clear();this.clock.reset();this.lastFrame=0;
+    if(this.courtyard instanceof VisualShowcase){this.courtyard.setPlaying(true);const p=this.player!.state.position;this.courtyard.target.set(p.x,p.y,p.z);this.camera.selectView('player',this.courtyard.target,true);}
+    this.ui.mode('player');this.ui.get<HTMLDialogElement>('#settings').close();this.ui.canvas.focus();
+  }
   private cancelEnemyLoad():void {
     const request=this.pendingEnemy;if(request){request.cancelled=true;request.view?.dispose();request.assets?.dispose();this.pendingEnemy=null;}
-    this.encounterError='';this.updateEncounterUi();
+    this.encounterError='';this.missionLoading=false;this.missionError='';this.updateEncounterUi();
   }
-  private async startEncounter(kind:EncounterKind='single'):Promise<void> {
+  private async startEncounter(kind:EncounterKind='single',mission=false):Promise<void> {
     if(!this.encounter||!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.reloading||this.inspection||this.pendingEnemy)return;
     this.cancelWeaponLoad();
+    this.missionLoading=mission;this.missionError='';
     const adapter=this.adapter,world=this.courtyard,simulation=this.encounter;
     const request={assets:null as AssetManager|null,view:null as EnemyPresentation|null,cancelled:false};this.pendingEnemy=request;this.encounterError='';this.updateEncounterUi();
     const current=()=>!request.cancelled&&!this.disposed&&this.adapter===adapter&&this.courtyard===world&&this.pendingEnemy===request;
@@ -432,14 +452,16 @@ export class Application {
       const {EnemyPresentation}=await import('../world/enemy-presentation');if(!current())return;
       request.assets=new AssetManager(adapter.renderer);await request.assets.init(`/assets/encounter/${world.variant}/manifest.json`);if(!current())return;
       request.view=new EnemyPresentation(simulation);await request.view.load(request.assets);if(!current())return;
-      simulation.start(kind==='group'?3:1);world.setEnemy(request.view);this.enemyAssets=request.assets;request.view=null;request.assets=null;
+      this.audio.stopMission();if(mission)this.mission?.start();else {this.mission?.leave();simulation.start(kind==='group'?3:1);}
+      world.setEnemy(request.view);this.enemyAssets?.dispose();this.enemyAssets=request.assets;request.view=null;request.assets=null;
       this.input?.clear();this.camera.selectView('player',world.target,true);world.setPlaying(true);this.ui.mode('player');this.ui.canvas.focus();
       this.clock.reset();this.metrics.resetTiming();this.lastFrame=0;
-    } catch(error){if(current())this.encounterError=`Enemy could not be loaded. Training retained. ${error instanceof Error?error.message:String(error)}`;}
-    finally{request.view?.dispose();request.assets?.dispose();if(this.pendingEnemy===request)this.pendingEnemy=null;this.updateEncounterUi();}
+    } catch(error){if(current()){const detail=error instanceof Error?error.message:String(error);if(mission)this.missionError=`Mission could not be loaded. Current play retained. ${detail}`;else this.encounterError=`Enemy could not be loaded. Training retained. ${detail}`;}}
+    finally{request.view?.dispose();request.assets?.dispose();if(this.pendingEnemy===request){this.pendingEnemy=null;this.missionLoading=false;}this.updateEncounterUi();this.missionHud.update(this.mission,this.missionLoading,this.missionError);}
   }
   private returnToTraining():void {
     if(this.reloading)return;
+    this.mission?.leave();this.audio.stopMission();this.collision?.setFerryReady(false,false);
     this.cancelWeaponLoad();this.cancelEnemyLoad();if(this.courtyard instanceof VisualShowcase)this.courtyard.setEnemy(null);
     this.enemyAssets?.dispose();this.enemyAssets=null;this.encounter?.training();this.input?.clear();this.updateEncounterUi();this.ui.canvas.focus();
   }
@@ -469,7 +491,7 @@ export class Application {
       const { Courtyard } = await import('../world/courtyard'); return new Courtyard();
     }
     if (!this.player) throw new Error('Player simulation is unavailable.');
-    return new VisualShowcase(artVariant(this.quality.selected), this.player, this.camera.camera);
+    return new VisualShowcase(artVariant(this.quality.selected), this.player, this.camera.camera,this.mission??undefined);
   }
   private snapshot(): FrameStatistics {
     const info = this.adapter?.renderer.info;
@@ -483,7 +505,7 @@ export class Application {
       references: (this.assets?.referenceCount ?? 0) + (this.inspectionAssets?.referenceCount ?? 0) + (this.enemyAssets?.referenceCount ?? 0) + (this.weaponAssets?.referenceCount ?? 0), voices: this.audio.voiceCount,
       overruns: this.clock.overruns, fixtureLoads: this.fixtureLoads,
       markerX: this.courtyard?.target.x ?? 0, markerZ: this.courtyard?.target.z ?? 0,
-      listeners: this.lifetime.cleanupCount + this.ui.listenerCount + (this.input?.listenerCount ?? 0) + this.events.listenerCount,
+      listeners: this.lifetime.cleanupCount + this.ui.listenerCount + this.missionHud.listenerCount + (this.input?.listenerCount ?? 0) + this.events.listenerCount,
       audioState: this.audio.status,
       scene: this.options.scene, variant: this.courtyard instanceof VisualShowcase ? this.courtyard.variant : 'fixture',
       animation: this.preview ? this.preview.clip.kind === 'pose' ? 'static-pose' : this.preview.clip.name : 'fixture', camera: this.inspection?.view ?? this.camera.view,
@@ -498,6 +520,7 @@ export class Application {
     };
   }
   private stopSession(): void {
+    this.mission?.leave();this.mission=null;this.audio.stopMission();
     this.cancelWeaponLoad();
     this.weaponHandle?.release();this.weaponHandle=null;this.weaponAssets?.dispose();this.weaponAssets=null;this.armedClips=null;
     this.pickup.status='available';
@@ -516,6 +539,6 @@ export class Application {
   async dispose(): Promise<void> {
     if (this.disposed) return;
     this.disposed = true; this.stopSession(); this.lifetime.dispose(); this.events.dispose();
-    this.debug?.dispose(); this.debug = null; this.ui.dispose(); await this.audio.dispose();
+    this.debug?.dispose(); this.debug = null;this.missionHud.dispose(); this.ui.dispose(); await this.audio.dispose();
   }
 }

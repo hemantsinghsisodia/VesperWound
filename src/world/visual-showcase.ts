@@ -20,6 +20,8 @@ import { CombatPresentation } from './combat-presentation';
 import type { EnemyPresentation } from './enemy-presentation';
 import { DistrictPresentation } from './district-presentation';
 import { configureEnvironmentMesh } from './environment-mesh';
+import type { FirstMission } from '../mission/first-mission';
+import { MissionPresentation } from './mission-presentation';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
@@ -42,6 +44,7 @@ export class VisualShowcase implements WorldPresentation {
   playing = true;
   aim: { x: number; z: number } | undefined;
   private readonly combat: CombatPresentation;
+  private readonly missionView:MissionPresentation|null;
   private animationSequence = -1;
   baton: BatonPresentation | null = null;
   equipBaton(clips: readonly AnimationClip[]): void { this.baton?.equip(clips); }
@@ -49,7 +52,8 @@ export class VisualShowcase implements WorldPresentation {
   district: DistrictPresentation | null = null;
   setEnemy(view: EnemyPresentation | null): void { this.enemy?.dispose(); if (this.enemy) this.scene.remove(this.enemy.group); this.enemy = view; if (view) this.scene.add(view.group); }
 
-  constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation, private readonly camera: Camera) {
+  constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation, private readonly camera: Camera, private readonly mission?:FirstMission) {
+    this.missionView=mission?new MissionPresentation(mission):null;if(this.missionView)this.scene.add(this.missionView.group);
     this.combat = new CombatPresentation(player); this.scene.add(this.combat.group);
     this.scene.background = new Color(0x1b2931);
     this.scene.fog = new FogExp2(0x1b2931, 0.025);
@@ -106,6 +110,8 @@ export class VisualShowcase implements WorldPresentation {
     void input;
     if (this.playing) this.applyPlayer(1);
     this.baton?.update(this.player.state.weapon==='baton');
+    this.missionView?.update(this.district?.stream.status==='ready');
+    this.district?.setMission(this.mission?.active??false);
     this.time += dt; this.preview.update(dt);
     if (this.playing) this.combat.update(dt, reducedMotion);
     this.enemy?.update(dt, reducedMotion);
@@ -163,10 +169,11 @@ export class VisualShowcase implements WorldPresentation {
       this.steam.push(puff); this.scene.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton?.ownedResources ?? 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton?.ownedResources ?? 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0) + (this.missionView?.ownedResources??0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
     this.district?.dispose(); this.district = null;
+    this.missionView?.dispose();
     this.baton?.dispose(); this.baton=null; this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;
     this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;

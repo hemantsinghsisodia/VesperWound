@@ -23,19 +23,25 @@ export class EncounterSimulation {
   private attackCandidate: string|null = null;
   private attackOrder = 0;
   get kind(): EncounterKind { return this.enemies.length > 1 ? 'group' : 'single'; }
-  constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7, bounds?: NavigationBounds, walkable?: (p: Position) => boolean) {
+  constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7, private readonly bounds: NavigationBounds = {minX:-7.5,maxX:7.5,minZ:-7.5,maxZ:7.5}, walkable?: (p: Position) => boolean) {
     this.player=new PlayerSimulation(collision);this.navigation=new GroundNavigation(courtyardSolids(boxes),bounds,walkable);
     this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes),bounds,walkable));
   }
   get victorious(): boolean {return this.mode==='encounter'&&this.enemies.length>0&&this.enemies.every(e=>e.health===0);}
-  start(count=1): void {
+  start(count=1, placements?:readonly Position[], resetPlayer=true): void {
     if(count<1||count>3||!Number.isInteger(count)) throw new Error('Encounter capacity is three');
+    if(placements && placements.length!==count)throw new Error('Encounter placements must match its capacity');
     this.generation++;this.mode='encounter';this.player.training=false;this.enemies.length=0;this.attackOrder=0;this.attackCandidate=null;
     for(let i=0;i<count;i++) {
-      const spawn={...this.definition.spawn,x:this.definition.spawn.x+(i===0?0:.8),z:this.definition.spawn.z+(i===1?-.7:i===2?.7:0)};
+      const spawn=placements?{...placements[i]!}:{...this.definition.spawn,x:this.definition.spawn.x+(i===0?0:.8),z:this.definition.spawn.z+(i===1?-.7:i===2?.7:0)};
       this.enemies.push({id:`zombie7-${i}`,generation:this.generation,label:count===1?this.definition.displayName:`${this.definition.displayName} · ${i+1}`,spawn,position:{...spawn},previous:{...spawn},health:this.definition.maxHealth,maxHealth:this.definition.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,mass:1,velocity:{x:0,z:0},hits:0,action:'idle',actionTime:0,facing:-Math.PI/2,sequence:0,attackInstance:0,hitPlayer:false,attackRecipient:null,unreachable:0,lastAttackOrder:0});
     }
-    this.player.targets.splice(0,this.player.targets.length,...this.enemies);this.player.reset();this.slot=null;this.events=[];
+    this.player.targets.splice(0,this.player.targets.length,...this.enemies);if(resetPlayer)this.player.reset();this.collision.syncTargets?.(this.enemies);this.player.clearQueued();this.slot=null;this.events=[];
+  }
+  clearEncounter(resetPlayer=false):void {
+    this.generation++;this.mode='encounter';this.enemies.length=0;this.player.targets.length=0;
+    this.player.training=false;this.slot=null;this.attackCandidate=null;this.events=[];
+    this.collision.syncTargets?.([]);this.player.clearQueued();if(resetPlayer)this.player.reset();
   }
   training(): void {
     this.mode='training';this.enemies.length=0;this.slot=null;this.attackCandidate=null;this.player.training=true;
@@ -111,7 +117,7 @@ export class EncounterSimulation {
     const magnitude=Math.max(1,Math.hypot(x,z));x/=magnitude;z/=magnitude;if(Math.hypot(x,z)>.001)e.facing=Math.atan2(x,z);
     const displacement={x:x*this.definition.speed*dt,y:0,z:z*this.definition.speed*dt};
     const next=this.collision.moveTarget?.(e.id,e.position,displacement)??{x:e.position.x+displacement.x,y:e.position.y,z:e.position.z+displacement.z};
-    if(Math.abs(next.x)<=7.5&&Math.abs(next.z)<=7.5)e.position=next;
+    if(next.x>=this.bounds.minX&&next.x<=this.bounds.maxX&&next.z>=this.bounds.minZ&&next.z<=this.bounds.maxZ)e.position=next;
   }
   drainEvents():CombatEvent[]{return this.events.splice(0);}
   dispose():void{this.events=[];this.enemies.length=0;this.player.dispose();}

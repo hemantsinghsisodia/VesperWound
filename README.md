@@ -1,5 +1,12 @@
 # VESPERWOUND
 
+**First mission — Restart the Ferry Winch**, including the paving-depth correction, was approved for merge into `main` on 2026-10-14.
+After **Enter the Works**, choose **Start mission**. Take the baton, clear the quay
+approach, retrieve the regulator, defeat the winch guards and restore the boarding
+ramp. Use **F** or the contextual touch button at marked interactions. Pause offers
+**Restart mission** and **Return to practice**. See the [mission workflow](docs/first-mission.md)
+and [validation and recordings](docs/qa/first-mission/validation.md).
+
 Ash Quay district rebuild, **Checkpoint C approved** for merge into `main`. Pressure Court connects through Pump Alley to Arrival Quay. This checkpoint retains one visited quay to smooth return trips, refines waterfront paving/freight and improves foreground visibility. Follow the ARRIVAL QUAY sign at the south opening. The full 64 m district remains deferred. Medic, baton, single/group encounters and combat rules are retained. See the [Checkpoint C validation](docs/qa/ash-quay-checkpoint-c/validation.md) and [district workflow](docs/ash-quay-checkpoint-c.md).
 
 Press **Esc** or the top-right menu button for **Practice & character**: Start encounter, Start group encounter, Restart encounter, Return to training, Reset targets, Courtyard, Medic and Detailed inspection. These tools no longer cover the live gameplay view. See the [before/after review](docs/qa/ash-quay-rebuild/index.html) and [authored environment workflow](docs/ash-quay-art-workflow.md).
@@ -27,6 +34,7 @@ npm run test:browser
 npm run test:production
 npm run size
 npx playwright test -c playwright.district.config.ts
+npx playwright test -c playwright.mission.config.ts
 ```
 
 Browser tests use installed Google Chrome (`channel: chrome`). Desktop/mobile foundation projects use SwiftShader for repeatable WebGL2 checks; their FPS is not a hardware performance result. Dedicated hardware projects test player flows, studio animation, WebGPU and repeated scene disposal. Touch emulation does not establish physical-phone performance.
