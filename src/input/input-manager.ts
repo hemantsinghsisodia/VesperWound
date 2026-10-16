@@ -22,7 +22,7 @@ export class InputManager {
     if (playerButtons) { this.bindings.set('Space', 'dodge'); this.bindings.set('KeyQ', 'ward'); this.bindings.set('KeyT', 'target'); this.bindings.set('ShiftLeft', 'run'); this.bindings.set('ShiftRight', 'run'); }
     const primary: InputAction = playerButtons ? 'attack' : 'pulse';
     this.lifetime.listen(window, 'keydown', (event) => {
-      if (this.isEditing(event.target)) return;
+      if (this.isEditing(event.target) || event.repeat) return;
       if (MOVEMENT_KEYS.has(event.code) || this.bindings.has(event.code)) event.preventDefault();
       if (!this.keys.has(event.code)) {
         const action = this.bindings.get(event.code);

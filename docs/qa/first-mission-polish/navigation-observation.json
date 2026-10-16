@@ -1,0 +1,46 @@
+{
+  "observed": "2026-10-16",
+  "description": "One returning guard stopped near the crane corner. The real-input driver waited for recovery/stagger and did not attempt a finishing hit. Driver now attacks reachable returning guards. No navigation rules changed in this milestone.",
+  "last": {
+    "p": [
+      3.997,
+      0.03,
+      25.711
+    ],
+    "enemies": [
+      {
+        "id": "zombie7-0",
+        "generation": 3,
+        "x": 3.639466117788648,
+        "z": 25.10377360437103,
+        "health": 24,
+        "action": "return",
+        "actionTime": 112.81666666666155
+      },
+      {
+        "id": "zombie7-1",
+        "generation": 3,
+        "x": 3.274395703493721,
+        "z": 25.15822760672106,
+        "health": 0,
+        "action": "dead",
+        "actionTime": 116.99999999999464
+      },
+      {
+        "id": "zombie7-2",
+        "generation": 3,
+        "x": 0.010508621091399297,
+        "z": 23.041963836784266,
+        "health": 0,
+        "action": "dead",
+        "actionTime": 126.89999999999408
+      }
+    ],
+    "action": "idle",
+    "health": 20,
+    "pressure": 100,
+    "hits": "18",
+    "blocks": "15",
+    "strikes": "18"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-16T09:51:51.989Z",
+  "browser": "155.0.8059.80",
+  "scenario": "inspection",
+  "hardware": {
+    "backend": "WebGPU",
+    "resolution": [
+      1440,
+      900
+    ],
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "quality": "High",
+  "adaptive": false,
+  "uncapped": true,
+  "warmupSeconds": 30,
+  "method": "External requestAnimationFrame intervals; Chrome frame limiter and GPU vsync disabled; includes scheduling and CPU, not isolated GPU timestamps.",
+  "metrics": {
+    "seconds": 300.17109999999406,
+    "frames": 121463,
+    "p95": 3.8999999999941792,
+    "max": 15.700000000011642,
+    "over50": 0,
+    "over100": 0,
+    "combatFrames": 0,
+    "combatP95": null,
+    "phases": {
+      "quay": {
+        "frames": 121463,
+        "p95": 3.8999999999941792,
+        "max": 15.700000000011642,
+        "over50": 0
+      }
+    }
+  },
+  "loading": {
+    "seconds": 3.31,
+    "frames": 247,
+    "p95": 32.900000000000546,
+    "max": 170.10000000000036,
+    "over50": 11
+  },
+  "samples": [
+    {
+      "elapsed": 30.0175,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 60.0275,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 90.03939999999106,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 120.04729999999702,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 150.054200000003,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 180.068299999997,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 210.08159999999404,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 240.097,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 270.10820000000297,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 300.12929999999704,
+      "bytes": 75437109,
+      "textures": 116,
+      "stage": "quay",
+      "visible": "visible",
+      "completions": 0
+    }
+  ],
+  "completions": 0,
+  "driverError": "",
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances."
+  ]
+}

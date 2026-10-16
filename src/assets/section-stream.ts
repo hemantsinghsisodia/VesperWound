@@ -1,5 +1,6 @@
 import type { AssetHandle } from './resource-cache';
 export type SectionStatus = 'closed' | 'loading' | 'ready' | 'failed';
+export interface SectionLease { readonly ready: Promise<void>; release(): void }
 
 /** One optional section lease, with hysteresis and ownership of late results. */
 export class SectionStream<T> {
@@ -10,12 +11,25 @@ export class SectionStream<T> {
   private warm: AssetHandle<T> | null = null;
   private pending: Promise<void> | null = null;
   private disposed = false;
+  private pins = 0;
+  private lastZ = 0;
   get value(): T | null { return this.handle?.value ?? null; }
   constructor(private readonly load: () => Promise<AssetHandle<T>>, private readonly attach: (value: T) => void, private readonly detach: (value: T) => void, private readonly retainWarm = false) {}
   update(z: number): void {
+    this.lastZ = z;
     if (this.disposed) return;
-    if (z < 1.5) this.release();
+    if (z < 1.5 && this.pins === 0) this.release();
     else if (z > 5.5 && this.status === 'closed') void this.prepare().catch(() => { /* Explicit retry keeps errors visible. */ });
+  }
+  /** A mission owns readiness independently of the player's streaming position. */
+  acquire(): SectionLease {
+    this.pins++;
+    let released = false;
+    return { ready: this.prepare(), release: () => {
+      if (released) return;
+      released = true; this.pins--;
+      if (!this.disposed && this.pins === 0 && this.lastZ < 5.5) this.release();
+    } };
   }
   async prepare(): Promise<void> {
     if (this.disposed) throw new Error('Section disposed');

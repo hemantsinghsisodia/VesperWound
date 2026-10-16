@@ -1,6 +1,6 @@
 import { expect,type Page } from '@playwright/test';
 import { projectGround } from './scene-menu';
-import { walkTo } from './district-driver';
+import { walkTo, observedPosition } from './district-driver';
 
 interface Enemy {x:number;z:number;health:number;action:string;actionTime:number}
 /** Real desktop or touch controls; observations never alter game state. */
@@ -39,7 +39,7 @@ export async function winMissionFight(page:Page,touch=false):Promise<void>{
         await stop();
         // A heavy has committed windup: punish the attack slot's recovery rather
         // than initiating into an approaching enemy's fresh windup.
-        const safeWindow=living.some(e=>e.action==='recovery'&&e.actionTime<.42)||enemy.action==='stagger';
+        const safeWindow=living.some(e=>e.action==='recovery'&&e.actionTime<.42)||enemy.action==='stagger'||enemy.action==='return';
         if(free&&safeWindow&&!living.some(e=>['windup','active'].includes(e.action)&&distance(e)<1.3)){
           if(touch)await page.locator('#heavy').tap();else{const p=await projectGround(page,{x:enemy.x,y:s.p[1]!,z:enemy.z});await page.mouse.click(p.x,p.y,{button:'right'});}
         }
@@ -47,7 +47,14 @@ export async function winMissionFight(page:Page,touch=false):Promise<void>{
       await page.waitForTimeout(70);
     }
   }finally{await stop();await session?.detach();}
-  expect(won,'Mission fight timed out').toBe(true);
+  expect(won,`Mission fight timed out: ${JSON.stringify(trace)}`).toBe(true);
+}
+
+/** Route around the solid crane plinth; combat can end on either side of it. */
+export async function walkToMissionWinch(page:Page,touch=false):Promise<void>{
+  const p=await observedPosition(page);
+  if(p.x>3.5){const z=p.z>=24.4?27:22.5;await walkTo(page,{x:p.x,z},touch);await walkTo(page,{x:3,z},touch);}
+  await walkTo(page,{x:3,z:24.4},touch);
 }
 
 export async function playMissionRoute(page:Page):Promise<void>{
@@ -55,7 +62,7 @@ export async function playMissionRoute(page:Page):Promise<void>{
   await walkTo(page,{x:0,z:6.8});await expect(page.locator('#app')).toHaveAttribute('data-district','ready');await walkTo(page,{x:0,z:17.9});
   await winMissionFight(page);await expect(page.locator('#app')).toHaveAttribute('data-mission','regulator');
   await walkTo(page,{x:-2,z:22.8});await walkTo(page,{x:-5,z:22.8});await expect.poll(()=>page.locator('#pressure').evaluate((p:HTMLProgressElement)=>p.value),{timeout:30000}).toBe(100);
-  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','winch-fight');await walkTo(page,{x:-2,z:23});await winMissionFight(page);
-  await expect(page.locator('#app')).toHaveAttribute('data-mission','install');await walkTo(page,{x:3,z:24.4});await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','board');
+  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','winch-approach');await walkTo(page,{x:-1.2,z:23.5});await expect(page.locator('#app')).toHaveAttribute('data-mission','winch-fight');await winMissionFight(page);
+  await expect(page.locator('#app')).toHaveAttribute('data-mission','install');await walkToMissionWinch(page);await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','board');
   await walkTo(page,{x:0,z:28});await walkTo(page,{x:0,z:30});await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-mission','complete');
 }

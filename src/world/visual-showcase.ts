@@ -21,11 +21,17 @@ import type { EnemyPresentation } from './enemy-presentation';
 import { DistrictPresentation } from './district-presentation';
 import { configureEnvironmentMesh } from './environment-mesh';
 import type { FirstMission } from '../mission/first-mission';
+import type { SectionLease } from '../assets/section-stream';
+import { MissionCamera } from '../camera/mission-camera';
 import { MissionPresentation } from './mission-presentation';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
   readonly scene = new Scene();
+  readonly missionCamera=new MissionCamera();
+  private missionLease:SectionLease|null=null;
+  retainMissionSection(lease:SectionLease):void {this.missionLease?.release();this.missionLease=lease;}
+  releaseMissionSection():void {this.missionLease?.release();this.missionLease=null;}
   readonly target = new Vector3(-1.6, 0.035, 3.4);
   readonly preview = new PreviewActor({ ...MEDIC, clips: PLAYER_CLIP_DESCRIPTORS });
   readonly actor = this.preview.group;
@@ -88,7 +94,8 @@ export class VisualShowcase implements WorldPresentation {
     });
     this.surfaceDetails(); this.applyPlayer(1);
     this.district = new DistrictPresentation(assets, this.scene, this.camera); this.scene.add(this.district.group);
-    if (this.player.state.position.z > 5.5) await this.district.stream.prepare();
+    if(this.mission?.active){this.retainMissionSection(this.district.stream.acquire());await this.missionLease!.ready;}
+    else if (this.player.state.position.z > 5.5) await this.district.stream.prepare();
     if (this.disposed) throw new Error('Showcase load was cancelled.');
     this.update(0, { movement: { x: 0, y: 0 }, aim: { x: 0, y: 0 }, pressed: new Set(), held: new Set() }, true);
   }
@@ -112,13 +119,16 @@ export class VisualShowcase implements WorldPresentation {
     this.baton?.update(this.player.state.weapon==='baton');
     this.missionView?.update(this.district?.stream.status==='ready');
     this.district?.setMission(this.mission?.active??false);
-    this.time += dt; this.preview.update(dt);
+    if(!this.mission?.active)this.releaseMissionSection();
+    this.actor.visible=!(this.mission?.snapshot.hidePlayer??false);
+    const animationDt=this.mission?.cinematic||this.mission?.stage==='complete'?0:dt;
+    this.time += dt; this.preview.update(animationDt);
     if (this.playing) this.combat.update(dt, reducedMotion);
-    this.enemy?.update(dt, reducedMotion);
+    this.enemy?.update(animationDt, reducedMotion);
     this.scene.updateMatrixWorld(true);
     this.engine.intensity = 12 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * .4);
     // Keep the shadow footprint around the current area, with a stable light direction.
-    const lightZ = Math.max(0, this.target.z - 4);
+    const lightZ = this.mission?.cinematic||this.mission?.stage==='complete'?24:Math.max(0, this.target.z - 4);
     this.key.position.set(-6, 15, 8 + lightZ); this.key.target.position.set(0, 0, -2 + lightZ);
     this.steam.forEach((puff, index) => {
       const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
@@ -172,6 +182,7 @@ export class VisualShowcase implements WorldPresentation {
   get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton?.ownedResources ?? 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0) + (this.missionView?.ownedResources??0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
+    this.releaseMissionSection();
     this.district?.dispose(); this.district = null;
     this.missionView?.dispose();
     this.baton?.dispose(); this.baton=null; this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;

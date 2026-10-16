@@ -124,8 +124,8 @@ export class AudioManager {
   missionCue(cue:MissionCue):void {
     const context=this.context,bus=this.buses.get('effects');
     if(!context||!bus||context.state!=='running'||this.sources.size>=22)return;
-    const duration=cue==='winch'?6:cue==='complete'?1.8:.6;
-    const frequencies=cue==='winch'?[55,82]:cue==='complete'?[392,587]:cue==='regulator'?[440]:[110];
+    const duration=cue==='departure'?1.8:cue==='complete'?1.2:cue==='release'?.45:.6;
+    const frequencies=cue==='departure'?[110,164.8]:cue==='release'?[620,930]:cue==='winch'?[55,82]:cue==='complete'?[392,587]:cue==='regulator'?[440]:[110];
     for(const frequency of frequencies){
       const source=context.createOscillator(),gain=context.createGain();source.type=cue==='winch'?'triangle':'sine';
       source.frequency.setValueAtTime(frequency,context.currentTime);source.frequency.linearRampToValueAtTime(cue==='winch'?frequency*1.6:frequency,context.currentTime+duration);

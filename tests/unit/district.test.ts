@@ -71,3 +71,13 @@ test('real capsule stops at unavailable section, traverses when ready and cannot
   expect(p.z).toBeGreaterThan(30); expect(p.z).toBeLessThan(31); expect(p.y).toBeGreaterThan(-.1);
   collision.dispose();
 });
+
+test('mission readiness leases pin the section without moving the player and cancel late results',async()=>{
+  const release=vi.fn(),attach=vi.fn();let resolve!:(h:AssetHandle<number>)=>void;
+  const stream=new SectionStream<number>(()=>new Promise(r=>{resolve=r;}),attach,vi.fn());
+  stream.update(3.4);const first=stream.acquire(),second=stream.acquire();stream.update(0);first.release();
+  resolve({value:5,release});await second.ready;expect(stream.status).toBe('ready');
+  second.release();second.release();expect(stream.status).toBe('closed');expect(release).toHaveBeenCalledOnce();
+  const late=stream.acquire();stream.update(3.4);late.release();resolve({value:6,release});await late.ready;
+  expect(attach).toHaveBeenCalledTimes(1);expect(release).toHaveBeenCalledTimes(2);stream.dispose();
+});

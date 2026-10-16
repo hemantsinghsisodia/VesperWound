@@ -18,3 +18,15 @@
  #app[data-mission=inactive] #mission-detail{display:none}
  #app[data-mission=inactive] #district-guide{display:none}
 }
+
+#mission-hint:empty{display:none}
+#mission-hint{color:#ecd39e}
+#mission-fade{position:absolute;inset:0;background:#071216;opacity:0;pointer-events:none;z-index:5}
+#app[data-mission-cinematic=true] #mission-hud,#app[data-mission=complete] #mission-hud{top:auto;bottom:32px;left:50%;right:auto;transform:translateX(-50%);width:min(560px,80vw);text-align:center;z-index:6}
+#mission-hud button{margin:4px}
+#app[data-mission-cinematic=true] .touch-controls,#app[data-mission=complete] .touch-controls{visibility:hidden}
+#app[data-mission-cinematic=true] #pickup-status,#app[data-mission-cinematic=true] #player-message{visibility:hidden}
+@media(pointer:coarse),(max-height:550px){#app[data-mission-cinematic=true] #mission-hud,#app[data-mission=complete] #mission-hud{bottom:12px;width:62vw;padding:8px}#mission-hint{max-width:100%}}
+
+#app[data-mission-cinematic=true] #player-hud,#app[data-mission-cinematic=true] #controls-hint,#app[data-mission=complete] #controls-hint{visibility:hidden}
+@media(min-height:551px) and (pointer:fine){#app[data-mission=introduction] #mission-hud{top:20px;bottom:auto}}

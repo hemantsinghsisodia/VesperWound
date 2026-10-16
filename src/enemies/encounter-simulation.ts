@@ -22,15 +22,19 @@ export class EncounterSimulation {
   private slot: string|null = null;
   private attackCandidate: string|null = null;
   private attackOrder = 0;
+  private waiting = false;
+  get awaitingActivation(): boolean { return this.waiting; }
+  activate(): void { this.waiting = false; }
   get kind(): EncounterKind { return this.enemies.length > 1 ? 'group' : 'single'; }
   constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7, private readonly bounds: NavigationBounds = {minX:-7.5,maxX:7.5,minZ:-7.5,maxZ:7.5}, walkable?: (p: Position) => boolean) {
     this.player=new PlayerSimulation(collision);this.navigation=new GroundNavigation(courtyardSolids(boxes),bounds,walkable);
     this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes),bounds,walkable));
   }
   get victorious(): boolean {return this.mode==='encounter'&&this.enemies.length>0&&this.enemies.every(e=>e.health===0);}
-  start(count=1, placements?:readonly Position[], resetPlayer=true): void {
+  start(count=1, placements?:readonly Position[], resetPlayer=true, waiting=false): void {
     if(count<1||count>3||!Number.isInteger(count)) throw new Error('Encounter capacity is three');
     if(placements && placements.length!==count)throw new Error('Encounter placements must match its capacity');
+    this.waiting=waiting;
     this.generation++;this.mode='encounter';this.player.training=false;this.enemies.length=0;this.attackOrder=0;this.attackCandidate=null;
     for(let i=0;i<count;i++) {
       const spawn=placements?{...placements[i]!}:{...this.definition.spawn,x:this.definition.spawn.x+(i===0?0:.8),z:this.definition.spawn.z+(i===1?-.7:i===2?.7:0)};
@@ -39,11 +43,13 @@ export class EncounterSimulation {
     this.player.targets.splice(0,this.player.targets.length,...this.enemies);if(resetPlayer)this.player.reset();this.collision.syncTargets?.(this.enemies);this.player.clearQueued();this.slot=null;this.events=[];
   }
   clearEncounter(resetPlayer=false):void {
+    this.waiting=false;
     this.generation++;this.mode='encounter';this.enemies.length=0;this.player.targets.length=0;
     this.player.training=false;this.slot=null;this.attackCandidate=null;this.events=[];
     this.collision.syncTargets?.([]);this.player.clearQueued();if(resetPlayer)this.player.reset();
   }
   training(): void {
+    this.waiting=false;
     this.mode='training';this.enemies.length=0;this.slot=null;this.attackCandidate=null;this.player.training=true;
     this.player.targets.splice(0,this.player.targets.length,...TRAINING_TARGETS.map(t=>({...t,generation:++this.generation,position:{...t.position},previous:{...t.position},spawn:{...t.position},health:t.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,velocity:{x:0,z:0},hits:0})));
     this.player.reset();this.events=[];
@@ -66,6 +72,8 @@ export class EncounterSimulation {
     // does not retroactively erase a strike already active on this same tick.
     const contacts=this.enemies.filter(e=>e.health>0&&e.action==='active'&&!e.hitPlayer&&e.attackRecipient?.generation===this.player.generation&&this.player.state.action!=='dead'&&attackTouches(this.definition.attack,e.position,e.facing,this.player.state.position,.28)&&!this.obstructed(e.position,this.player.state.position)).map(e=>({enemy:e,source:{id:e.id,generation:e.generation}}));
     this.player.resolveAttack();
+    // Waiting guards still have hurt volumes. A real hit wakes the whole group.
+    if(this.waiting&&this.enemies.some(e=>e.hits>0))this.activate();
     this.events.push(...this.player.drainEvents());
     for(const {enemy,source} of contacts){enemy.hitPlayer=true;if(this.player.damage(this.definition.attack.damage,source,enemy.attackInstance))this.events.push({type:'hit',attack:'enemy-strike',target:'medic',instance:enemy.attackInstance,damage:this.definition.attack.damage,posture:0,critical:false,position:{...this.player.state.position},source,recipient:this.player.handle,attackInstance:enemy.attackInstance});}
     this.events.push(...this.player.drainEvents());
@@ -84,6 +92,7 @@ export class EncounterSimulation {
   private advance(e:EnemyState,dt:number,time:number):void {
     e.actionTime+=dt;
     if(e.health<=0){this.action(e,'dead');return;}
+    if(this.waiting)return;
     if(e.action==='dead')return;
     if(this.player.state.action==='dead'){this.action(e,'idle');return;}
     if(e.action==='stagger'){if(e.exposedUntil<=time){e.exposedUntil=0;e.posture=0;this.action(e,'approach');}else return;}

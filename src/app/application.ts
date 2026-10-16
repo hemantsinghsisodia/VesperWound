@@ -25,6 +25,7 @@ import type { EnemyPresentation } from '../world/enemy-presentation';
 import type { CombatEvent } from '../player/combat-definitions';
 import type { RapierPlayerCollision } from '../player/player-collision';
 import { DISTRICT_BOXES, DISTRICT_BOUNDS, districtGround, districtArea } from '../world/district-definition';
+import type { SectionLease } from '../assets/section-stream';
 import { FirstMission } from '../mission/first-mission';
 import { MissionHud } from '../ui/mission-hud';
 
@@ -59,7 +60,7 @@ export class Application {
   private collision: RapierPlayerCollision | null = null;
   private encounter: EncounterSimulation | null = null;
   private enemyAssets: AssetManager | null = null;
-  private pendingEnemy: { assets: AssetManager | null; view: EnemyPresentation | null; cancelled: boolean } | null = null;
+  private pendingEnemy: { assets: AssetManager | null; view: EnemyPresentation | null; section: SectionLease | null; cancelled: boolean } | null = null;
   private encounterError = '';
   private readonly pickup=new WeaponPickup();
   private weaponAssets:AssetManager|null=null;
@@ -86,7 +87,7 @@ export class Application {
     this.settings = new SettingsStore(storage, defaultPreferences());
     this.quality = new QualityManager(this.settings.values.quality, this.settings.values.adaptive);
     this.ui = new Interface(root, this.settings.values);
-    this.missionHud=new MissionHud(root,{start:()=>{if(this.missionLoading)this.cancelEnemyLoad();else void this.startEncounter('single',true);},restart:()=>this.restartMission(),leave:()=>{this.returnToTraining();this.ui.get<HTMLDialogElement>('#settings').close();}});
+    this.missionHud=new MissionHud(root,{start:()=>{if(this.missionLoading)this.cancelEnemyLoad();else void this.startEncounter('single',true);},restart:()=>this.restartMission(),skip:()=>this.skipMission(),leave:()=>{this.returnToTraining();this.ui.get<HTMLDialogElement>('#settings').close();}});
     this.ui.scene(this.options.scene);
     this.ui.storage(this.settings.persistent);
     this.audio.setVolume(this.settings.values.volume, this.settings.values.muted);
@@ -110,7 +111,7 @@ export class Application {
       retry: (compatibility) => { void this.audio.unlock(); void this.boot(compatibility); },
       preferences: (values) => this.setPreferences(values),
       camera: (view) => {
-        if (this.courtyard && !this.inspection) {
+        if (this.courtyard && !this.inspection && !this.mission?.cinematic && this.mission?.stage!=='complete') {
           this.cancelWeaponLoad();
           if (this.courtyard instanceof VisualShowcase) this.courtyard.setPlaying(view === 'player');
           this.input?.clear(); this.ui.mode(view);
@@ -212,6 +213,7 @@ export class Application {
     this.ui.setPaused(paused); this.clock.reset(); this.metrics.resetTiming(); this.quality.resetObservation(); this.input?.clear();
     this.encounter?.clearQueued();
     if (paused) void this.audio.suspend();
+    else if (this.started) void this.audio.unlock();
   }
   private setPreferences(values: Partial<Preferences>): void {
     if (values.reducedMotion) this.camera.clearImpulse();
@@ -256,8 +258,13 @@ export class Application {
               world.district?.update(this.player?.state.position.z ?? 0);
               this.collision?.setDistrictReady(world.district?.stream.status === 'ready');
               this.collision?.setFerryReady(this.mission?.active??false,(this.mission?.ramp??0)>=1);
-              this.encounter?.update(dt,input,world.aim);
-              if(this.player){
+              const gameplay=this.mission?.gameplayEnabled??true;
+              if(!gameplay){
+                if(input.pressed.has('dodge')&&this.mission?.cinematic)this.skipMission();
+                else this.mission?.update(dt,false,world.district?.stream.status==='ready');
+                this.input?.clear();this.encounter?.clearQueued();
+              } else this.encounter?.update(dt,input,world.aim);
+              if(this.player&&gameplay){
                 const id=this.pickup.update(this.player,input.pressed.has('interact'),!this.pendingEnemy&&!this.pendingInspection);
                 if(id!==null)void this.loadBaton(id);
                 if(this.pendingWeapon&&this.pendingWeapon.id!==this.pickup.requestId)this.cancelWeaponLoad();
@@ -266,8 +273,8 @@ export class Application {
                   world.equipBaton(this.armedClips);this.refreshAnimationUi();
                 }
                 this.mission?.update(dt,input.pressed.has('interact'),world.district?.stream.status==='ready');
-                for(const cue of this.mission?.drainCues()??[])this.audio.missionCue(cue);
               }
+              for(const cue of this.mission?.drainCues()??[]){if(cue==='complete')this.audio.stopMission();this.audio.missionCue(cue);}
             }
           }
           if (world.update(dt, input, this.settings.values.reducedMotion)) this.events.emit('pressureReleased', { x: world.target.x, z: world.target.z });
@@ -277,7 +284,8 @@ export class Application {
         world.interpolate(alpha);
         if (!this.inspection) this.camera.update(this.courtyard.target, delta);
         if (!this.inspection && this.courtyard instanceof VisualShowcase) {
-          this.courtyard.district?.visibility(this.camera.camera, this.courtyard.target, this.courtyard.playing);
+          const cinematic=this.mission&&this.courtyard.missionCamera.apply(this.camera.camera,this.mission.snapshot,this.settings.values.reducedMotion);
+          this.courtyard.district?.visibility(this.camera.camera, cinematic?this.courtyard.missionCamera.focus:this.courtyard.target, this.courtyard.playing);
           const stream = this.courtyard.district?.stream;
           this.ui.district(districtArea(this.courtyard.target.z), stream?.status ?? 'closed');
         }
@@ -289,6 +297,7 @@ export class Application {
         this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);
         if(this.player)this.ui.weapon(this.player,this.pickup);
         this.missionHud.update(this.mission,this.missionLoading,this.missionError);
+        this.updateInspectionUi();
       }
       this.adapter.render();
       if (!paused) {
@@ -367,7 +376,7 @@ export class Application {
   }
   private get preview() { return this.inspection?.actor ?? (this.courtyard instanceof VisualShowcase ? this.courtyard.preview : null); }
   private get inspectionEligible(): boolean {
-    return this.courtyard instanceof VisualShowcase && this.courtyard.variant === 'desktop' && !matchMedia('(pointer: coarse)').matches;
+    return !this.mission?.cinematic && this.mission?.stage!=='complete' && this.courtyard instanceof VisualShowcase && this.courtyard.variant === 'desktop' && !matchMedia('(pointer: coarse)').matches;
   }
   private updateInspectionUi(): void {
     if (this.inspection) this.inspectionState = { status: 'active', view: this.inspection.view, lighting: this.inspection.lighting, paused: this.inspection.actor.paused };
@@ -375,7 +384,7 @@ export class Application {
   }
   private async enterInspection(): Promise<void> {
     if (!this.inspectionEligible || !this.adapter || this.reloading || this.pendingInspection || this.inspection || this.disposed) return;
-    this.cancelWeaponLoad();this.cancelEnemyLoad();this.encounter?.clearQueued();
+    this.audio.stopMission();this.cancelWeaponLoad();this.cancelEnemyLoad();this.encounter?.clearQueued();
     const adapter = this.adapter;
     const request = { world: null as CharacterInspection | null, assets: null as AssetManager | null, cancelled: false };
     this.pendingInspection = request; this.inspectionState = { status: 'loading' }; this.updateInspectionUi();
@@ -430,15 +439,20 @@ export class Application {
     return `/assets/showcase/${artVariant(this.quality.selected)}/manifest.json`;
   }
   private updateEncounterUi():void {this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);}
+  private skipMission():void {
+    if(!this.mission?.cinematic||this.modalPaused||this.visibilityPaused||this.portrait||this.reloading)return;
+    this.audio.stopMission();this.mission.skip();this.input?.clear();this.encounter?.clearQueued();this.ui.canvas.focus();
+    if(this.courtyard)this.camera.selectView('player',this.courtyard.target,true);
+  }
   private restartMission():void {
     if(!this.mission?.active||this.reloading||this.missionLoading)return;
-    this.closeInspection();this.cancelWeaponLoad();this.audio.stopMission();this.mission.start();
+    this.closeInspection();this.cancelWeaponLoad();this.audio.stopMission();this.mission.start(false);
     this.input?.clear();this.clock.reset();this.lastFrame=0;
     if(this.courtyard instanceof VisualShowcase){this.courtyard.setPlaying(true);const p=this.player!.state.position;this.courtyard.target.set(p.x,p.y,p.z);this.camera.selectView('player',this.courtyard.target,true);}
     this.ui.mode('player');this.ui.get<HTMLDialogElement>('#settings').close();this.ui.canvas.focus();
   }
   private cancelEnemyLoad():void {
-    const request=this.pendingEnemy;if(request){request.cancelled=true;request.view?.dispose();request.assets?.dispose();this.pendingEnemy=null;}
+    const request=this.pendingEnemy;if(request){request.cancelled=true;request.section?.release();request.view?.dispose();request.assets?.dispose();this.pendingEnemy=null;}
     this.encounterError='';this.missionLoading=false;this.missionError='';this.updateEncounterUi();
   }
   private async startEncounter(kind:EncounterKind='single',mission=false):Promise<void> {
@@ -446,22 +460,29 @@ export class Application {
     this.cancelWeaponLoad();
     this.missionLoading=mission;this.missionError='';
     const adapter=this.adapter,world=this.courtyard,simulation=this.encounter;
-    const request={assets:null as AssetManager|null,view:null as EnemyPresentation|null,cancelled:false};this.pendingEnemy=request;this.encounterError='';this.updateEncounterUi();
+    const request={assets:null as AssetManager|null,view:null as EnemyPresentation|null,section:null as SectionLease|null,cancelled:false};this.pendingEnemy=request;this.encounterError='';this.updateEncounterUi();
     const current=()=>!request.cancelled&&!this.disposed&&this.adapter===adapter&&this.courtyard===world&&this.pendingEnemy===request;
     try {
       const {EnemyPresentation}=await import('../world/enemy-presentation');if(!current())return;
       request.assets=new AssetManager(adapter.renderer);await request.assets.init(`/assets/encounter/${world.variant}/manifest.json`);if(!current())return;
       request.view=new EnemyPresentation(simulation);await request.view.load(request.assets);if(!current())return;
+      if(mission){
+        if(!world.district)throw new Error('Quay is unavailable');
+        request.section=world.district.stream.acquire();await request.section.ready;if(!current())return;
+        if(world.district.stream.status!=='ready')throw new Error('Quay preparation was cancelled');
+        world.retainMissionSection(request.section);request.section=null;
+      }
       this.audio.stopMission();if(mission)this.mission?.start();else {this.mission?.leave();simulation.start(kind==='group'?3:1);}
       world.setEnemy(request.view);this.enemyAssets?.dispose();this.enemyAssets=request.assets;request.view=null;request.assets=null;
       this.input?.clear();this.camera.selectView('player',world.target,true);world.setPlaying(true);this.ui.mode('player');this.ui.canvas.focus();
       this.clock.reset();this.metrics.resetTiming();this.lastFrame=0;
     } catch(error){if(current()){const detail=error instanceof Error?error.message:String(error);if(mission)this.missionError=`Mission could not be loaded. Current play retained. ${detail}`;else this.encounterError=`Enemy could not be loaded. Training retained. ${detail}`;}}
-    finally{request.view?.dispose();request.assets?.dispose();if(this.pendingEnemy===request){this.pendingEnemy=null;this.missionLoading=false;}this.updateEncounterUi();this.missionHud.update(this.mission,this.missionLoading,this.missionError);}
+    finally{request.section?.release();request.view?.dispose();request.assets?.dispose();if(this.pendingEnemy===request){this.pendingEnemy=null;this.missionLoading=false;}this.updateEncounterUi();this.missionHud.update(this.mission,this.missionLoading,this.missionError);}
   }
   private returnToTraining():void {
     if(this.reloading)return;
-    this.mission?.leave();this.audio.stopMission();this.collision?.setFerryReady(false,false);
+    this.closeInspection();this.mission?.leave();this.audio.stopMission();this.collision?.setFerryReady(false,false);
+    if(this.courtyard instanceof VisualShowcase){this.courtyard.releaseMissionSection();this.courtyard.setPlaying(true);this.camera.selectView('player',this.courtyard.target,true);this.ui.mode('player');}
     this.cancelWeaponLoad();this.cancelEnemyLoad();if(this.courtyard instanceof VisualShowcase)this.courtyard.setEnemy(null);
     this.enemyAssets?.dispose();this.enemyAssets=null;this.encounter?.training();this.input?.clear();this.updateEncounterUi();this.ui.canvas.focus();
   }
