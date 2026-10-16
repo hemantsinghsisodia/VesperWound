@@ -38,8 +38,8 @@ describe('first enemy encounter',()=>{
   it('stagger cancels windup and critical consumes exactly one opening',()=>{
     const e=create();e.start();const enemy=e.enemies[0]!;enemy.posture=50;enemy.action='windup';enemy.actionTime=.2;
     e.player.state.position={x:enemy.position.x-.75,y:.035,z:enemy.position.z};e.player.state.facing=Math.PI/2;e.player.state.action='heavy';e.player.state.attack='heavy';e.player.state.actionTime=.43;
-    e.update(1/60,frame());expect(enemy.action).toBe('stagger');expect(enemy.health).toBe(90);tick(e,.92);
-    e.player.state.position={x:enemy.position.x-.75,y:.035,z:enemy.position.z};e.update(1/60,frame(['heavy']),enemy.position);tick(e,.5);expect(enemy.health).toBe(30);expect(e.player.state.criticals).toBe(1);expect(enemy.exposedUntil).toBe(0);
+    e.update(1/60,frame());expect(enemy.action).toBe('stagger');expect(enemy.health).toBe(75);tick(e,.92);
+    e.player.state.position={x:enemy.position.x-.75,y:.035,z:enemy.position.z};e.update(1/60,frame(['heavy']),enemy.position);tick(e,.5);expect(enemy.health).toBe(0);expect(e.player.state.criticals).toBe(1);expect(enemy.exposedUntil).toBe(0);
   });
   it('recovers posture after two seconds and returns when unreachable without healing',()=>{
     const g=new Ground(),e=new EncounterSimulation(g,[]);e.start();const enemy=e.enemies[0]!;enemy.health=70;enemy.posture=100;enemy.exposedUntil=e.player.time+2;enemy.action='stagger';tick(e,2.05);expect(enemy.posture).toBe(0);

@@ -19,12 +19,12 @@ function strike(p: PlayerSimulation, action: 'attack' | 'heavy' = 'attack', targ
 describe('unarmed combat', () => {
   it('uses an injected combat-style chain without changing the damage system', () => {
     const p = new PlayerSimulation(new Ground(), { ...UNARMED, id: 'two-strike-test', light: ['cross', 'jab'] });
-    expect([strike(p), strike(p), strike(p)]).toEqual(['cross', 'jab', 'cross']); expect(p.targets[0]!.health).toBe(62);
+    expect([strike(p), strike(p), strike(p)]).toEqual(['cross', 'jab', 'cross']); expect(p.targets[0]!.health).toBe(43);
   });
   it('chains jab/cross/finisher, uses defined damage, and resets after the follow-up timeout', () => {
     const p = new PlayerSimulation(new Ground());
     expect([strike(p), strike(p), strike(p)]).toEqual(['jab', 'cross', 'finisher']);
-    expect(p.targets[0]!.health).toBe(56); expect(p.targets[0]!.posture).toBe(50);
+    expect(p.targets[0]!.health).toBe(34); expect(p.targets[0]!.posture).toBe(50);
     tick(p, .7); expect(strike(p)).toBe('jab');
   });
   it('deduplicates each target across the active window and awards pressure once for a group hit', () => {
@@ -53,9 +53,11 @@ describe('unarmed combat', () => {
   });
   it('stagger exposes for two seconds, one heavy consumes it, and subsequent heavies are ordinary', () => {
     const p = new PlayerSimulation(new Ground()); const target = p.targets[1]!; p.targets[2]!.position = { x: 30, y: .035, z: 30 };
+    // Keep this fixture alive through the critical and the following ordinary hit.
+    target.health = target.maxHealth = 240;
     strike(p, 'heavy', target); strike(p, 'heavy', target); expect(target.posture).toBe(100); expect(target.exposedUntil).toBeGreaterThan(0);
-    strike(p, 'heavy', target); expect(target.health).toBe(40); expect(p.state.criticals).toBe(1); expect(target.exposedUntil).toBe(0);
-    strike(p, 'heavy', target); expect(target.health).toBe(10); expect(p.state.criticals).toBe(1);
+    strike(p, 'heavy', target); expect(target.health).toBe(60); expect(p.state.criticals).toBe(1); expect(target.exposedUntil).toBe(0);
+    strike(p, 'heavy', target); expect(target.health).toBe(15); expect(p.state.criticals).toBe(1);
   });
   it('recovers posture after exposure expires without a critical', () => {
     const p = new PlayerSimulation(new Ground()); strike(p, 'heavy', p.targets[1]); strike(p, 'heavy', p.targets[1]); tick(p, 2.1);

@@ -1,0 +1,2179 @@
+{
+  "attacks": [
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 13.900000000000546,
+      "cpuMs": 7.899999991059303,
+      "fps": 80.37508372404555,
+      "p95": 20.899999999999636,
+      "draws": 109,
+      "triangles": 249168,
+      "textures": 75,
+      "estimatedGpuBytes": 57842717,
+      "resources": 53,
+      "references": 5,
+      "voices": 5,
+      "overruns": 1,
+      "fixtureLoads": 1,
+      "markerX": 3.2088177927460158,
+      "markerZ": 1.8926683398875639,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Punch_Jab",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.2914665487902104,
+            0.11118838960711247,
+            1.6686803619100723
+          ],
+          [
+            2.92555821188821,
+            0.10994542213769476,
+            2.1159585930992746
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 0
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2088177927460158,
+          "y": 0.02932671723479871,
+          "z": 1.8926683398875639
+        },
+        "previous": {
+          "x": 3.2088177927460158,
+          "y": 0.02922671724460088,
+          "z": 1.8926683398875639
+        },
+        "facing": 1.727032841947356,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.2833333333333333,
+        "actionSequence": 3,
+        "attack": "jab",
+        "grounded": true,
+        "strikes": 1,
+        "targetHits": 1,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 1,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": true,
+        "ventRemaining": 0.016666666666668828
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.813915948658759,
+            "y": 0.035,
+            "z": 1.7978186559871927
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 0,
+          "previous": {
+            "x": 3.809880276876464,
+            "y": 0.035,
+            "z": 1.7984512530666898
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 145,
+          "posture": 10,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.21191473609671913,
+            "z": -0.033217925140824014
+          },
+          "hits": 1
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 14,
+      "cpuMs": 4.5999999940395355,
+      "fps": 81.5106643119141,
+      "p95": 20.799999999999272,
+      "draws": 109,
+      "triangles": 249168,
+      "textures": 75,
+      "estimatedGpuBytes": 57842717,
+      "resources": 53,
+      "references": 5,
+      "voices": 5,
+      "overruns": 1,
+      "fixtureLoads": 1,
+      "markerX": 3.2088148174302407,
+      "markerZ": 1.8926677155896063,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Punch_Cross",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.2973703041545694,
+            0.11589559144523026,
+            1.6595167587755013
+          ],
+          [
+            2.993861738510377,
+            0.19033355856536305,
+            2.2193012765907163
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 0
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2088151094481336,
+          "y": 0.028726720596896488,
+          "z": 1.8926678615985528
+        },
+        "previous": {
+          "x": 3.2088146076991766,
+          "y": 0.02872668841533596,
+          "z": 1.8926676107240743
+        },
+        "facing": 1.7265089805344533,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.3,
+        "actionSequence": 5,
+        "attack": "cross",
+        "grounded": true,
+        "strikes": 2,
+        "targetHits": 2,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 2,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.2000000000000024
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.853787717370934,
+            "y": 0.035,
+            "z": 1.791568731094033
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 0,
+          "previous": {
+            "x": 3.8480236116111413,
+            "y": 0.035,
+            "z": 1.7924722488153852
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 124,
+          "posture": 25,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.3026754941467423,
+            "z": -0.04744407618059917
+          },
+          "hits": 2
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 7,
+      "cpuMs": 2.800000011920929,
+      "fps": 78.54945342671986,
+      "p95": 20.799999999999272,
+      "draws": 109,
+      "triangles": 249168,
+      "textures": 75,
+      "estimatedGpuBytes": 57842717,
+      "resources": 53,
+      "references": 5,
+      "voices": 5,
+      "overruns": 1,
+      "fixtureLoads": 1,
+      "markerX": 3.2088121925944546,
+      "markerZ": 1.892663794849965,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Punch_Jab",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.254039332938481,
+            0.11025752626214053,
+            1.6682132844105007
+          ],
+          [
+            2.886121972054819,
+            0.11007827867888803,
+            2.111409526605777
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 0
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2088121925944546,
+          "y": 0.029026650711020924,
+          "z": 1.892663794849965
+        },
+        "previous": {
+          "x": 3.2088121925944546,
+          "y": 0.028926650713547136,
+          "z": 1.892663794849965
+        },
+        "facing": 1.7261613168045975,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.26666666666666666,
+        "actionSequence": 7,
+        "attack": "finisher",
+        "grounded": true,
+        "strikes": 3,
+        "targetHits": 3,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 3,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": true,
+        "ventRemaining": 0.38333333333333863
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.9053155505242168,
+            "y": 0.035,
+            "z": 1.7834918682312062
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 0,
+          "previous": {
+            "x": 3.8934602986942752,
+            "y": 0.035,
+            "z": 1.7853500942800686
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 94,
+          "posture": 50,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.6225240055259875,
+            "z": -0.09757619152290212
+          },
+          "hits": 3
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 7,
+      "cpuMs": 3.7999999970197678,
+      "fps": 81.13041714556152,
+      "p95": 20.80000000000109,
+      "draws": 109,
+      "triangles": 249168,
+      "textures": 75,
+      "estimatedGpuBytes": 57842717,
+      "resources": 53,
+      "references": 5,
+      "voices": 5,
+      "overruns": 1,
+      "fixtureLoads": 1,
+      "markerX": 3.208805405084221,
+      "markerZ": 1.89266147900712,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Punch_Cross",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.2947464571323395,
+            0.1156951706774823,
+            1.6626964614395883
+          ],
+          [
+            2.999181192772016,
+            0.1899799326202921,
+            2.224410714180517
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 0
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.208805385053964,
+          "y": 0.028626732713892128,
+          "z": 1.8926614593463762
+        },
+        "previous": {
+          "x": 3.2088056235094062,
+          "y": 0.028826663048821505,
+          "z": 1.8926616934028482
+        },
+        "facing": 1.7421763588681087,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.44999999999999996,
+        "actionSequence": 9,
+        "attack": "heavy",
+        "grounded": true,
+        "strikes": 4,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.2666666666666693
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.914044678855609,
+            "y": 0.035,
+            "z": 1.7649007671555004
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 0,
+          "previous": {
+            "x": 3.914044678855609,
+            "y": 0.035,
+            "z": 1.7705861567597363
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 49,
+          "posture": 100,
+          "exposedUntil": 6.7499999999999885,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 1.724698808917253,
+            "z": -0.2985420773994903
+          },
+          "hits": 4
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 13.799999999999272,
+      "cpuMs": 3.7999999970197678,
+      "fps": 83.89261744966446,
+      "p95": 20.700000000000728,
+      "draws": 109,
+      "triangles": 249168,
+      "textures": 75,
+      "estimatedGpuBytes": 57842717,
+      "resources": 53,
+      "references": 5,
+      "voices": 5,
+      "overruns": 1,
+      "fixtureLoads": 1,
+      "markerX": 3.2087973427997234,
+      "markerZ": 1.8926550579753527,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Punch_Cross",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.2796675689803942,
+            0.11662334546662328,
+            1.6564507229426781
+          ],
+          [
+            3.018542984360491,
+            0.19134728184017424,
+            2.2367090125153397
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "grouped",
+          "generation": 0
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.20879732037967,
+          "y": 0.029626693216559946,
+          "z": 1.892655046765326
+        },
+        "previous": {
+          "x": 3.2087975588908755,
+          "y": 0.02952669321908616,
+          "z": 1.8926551660209288
+        },
+        "facing": 1.8001065748687175,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.4666666666666666,
+        "actionSequence": 11,
+        "attack": "heavy",
+        "grounded": true,
+        "strikes": 5,
+        "targetHits": 5,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 1,
+        "blocks": 0,
+        "defeats": 1,
+        "ventWarning": true,
+        "ventRemaining": 0.10000000000000675
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.925935702764438,
+            "y": 0.035,
+            "z": 1.7251688882744627
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 0,
+          "previous": {
+            "x": 3.925935702764438,
+            "y": 0.035,
+            "z": 1.7251688882744627
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 0,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 9.899999999999984,
+          "velocity": {
+            "x": 1.9475899632861464,
+            "z": -0.4548552900726426
+          },
+          "hits": 5
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 0,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    }
+  ],
+  "final": {
+    "backend": "WebGPU",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 13.700000000000728,
+    "cpuMs": 4,
+    "fps": 83.07372793354102,
+    "p95": 20.80000000000109,
+    "draws": 109,
+    "triangles": 249168,
+    "textures": 75,
+    "estimatedGpuBytes": 57842717,
+    "resources": 53,
+    "references": 5,
+    "voices": 3,
+    "overruns": 1,
+    "fixtureLoads": 1,
+    "markerX": 3.208794838171163,
+    "markerZ": 1.8926558290563729,
+    "listeners": 69,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Idle_Loop",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "district": "closed",
+    "area": "Pressure Court",
+    "hiddenCutaways": 0,
+    "rig": {
+      "feet": [
+        [
+          3.312489316165435,
+          0.11241013141193607,
+          1.657391596219523
+        ],
+        [
+          2.982372173498378,
+          0.11189091960639497,
+          2.1379418853993437
+        ]
+      ],
+      "gripDistances": []
+    },
+    "player": {
+      "target": {
+        "id": "grouped",
+        "generation": 0
+      },
+      "weapon": "unarmed",
+      "position": {
+        "x": 3.208794585951768,
+        "y": 0.02872670531010954,
+        "z": 1.8926558290563729
+      },
+      "previous": {
+        "x": 3.20879484020519,
+        "y": 0.028626705312635753,
+        "z": 1.8926558290563729
+      },
+      "facing": 1.8001065748687175,
+      "health": 100,
+      "pressure": 100,
+      "action": "idle",
+      "actionTime": 0.03333333333333333,
+      "actionSequence": 12,
+      "attack": null,
+      "grounded": true,
+      "strikes": 5,
+      "targetHits": 5,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 1,
+      "blocks": 0,
+      "defeats": 1,
+      "ventWarning": false,
+      "ventRemaining": 1.6500000000000004
+    },
+    "targets": [
+      {
+        "id": "isolated",
+        "label": "COMBO TARGET",
+        "position": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 0,
+        "previous": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "heavy",
+        "label": "HEAVY TARGET",
+        "position": {
+          "x": 3.925935702764438,
+          "y": 0.035,
+          "z": 1.7251688882744627
+        },
+        "maxHealth": 160,
+        "mass": 2,
+        "generation": 0,
+        "previous": {
+          "x": 3.925935702764438,
+          "y": 0.035,
+          "z": 1.7251688882744627
+        },
+        "spawn": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "health": 0,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 9.899999999999984,
+        "velocity": {
+          "x": 1.9475899632861464,
+          "z": -0.4548552900726426
+        },
+        "hits": 5
+      },
+      {
+        "id": "grouped",
+        "label": "GROUP TARGET",
+        "position": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 0,
+        "previous": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "spawn": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      }
+    ],
+    "encounter": "training",
+    "enemies": [],
+    "enemyLoading": false
+  },
+  "lowAttacks": [
+    {
+      "backend": "WebGPU",
+      "quality": "Low",
+      "resolution": "1440 × 900",
+      "frameMs": 13.899999999997817,
+      "cpuMs": 4,
+      "fps": 76.70720299345182,
+      "p95": 20.80000000000291,
+      "draws": 106,
+      "triangles": 249165,
+      "textures": 69,
+      "estimatedGpuBytes": 49472184,
+      "resources": 53,
+      "references": 5,
+      "voices": 6,
+      "overruns": 1,
+      "fixtureLoads": 2,
+      "markerX": 3.2087873343062148,
+      "markerZ": 1.892656502119409,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "mobile",
+      "animation": "Punch_Jab",
+      "camera": "player",
+      "characterTier": "mobile",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.3321065957937344,
+            0.1116053122479157,
+            1.67602838259745
+          ],
+          [
+            2.9675661417636188,
+            0.1090108670143467,
+            2.1263845378585593
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 1
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2087873327381735,
+          "y": 0.02922672871151008,
+          "z": 1.8926564989833263
+        },
+        "previous": {
+          "x": 3.2087873344242395,
+          "y": 0.02912672872131225,
+          "z": 1.8926565023554582
+        },
+        "facing": 1.7261633482696717,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.3833333333333333,
+        "actionSequence": 13,
+        "attack": "jab",
+        "grounded": true,
+        "strikes": 6,
+        "targetHits": 6,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 1,
+        "criticals": 1,
+        "blocks": 0,
+        "defeats": 1,
+        "ventWarning": true,
+        "ventRemaining": 0.4166666666666714
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8294970570407427,
+            "y": 0.035,
+            "z": 1.7953771472744073
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 1,
+          "previous": {
+            "x": 3.827683704812639,
+            "y": 0.035,
+            "z": 1.7956613403814883
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 145,
+          "posture": 10,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.09521984928381522,
+            "z": -0.01492309348638399
+          },
+          "hits": 1
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "Low",
+      "resolution": "1440 × 900",
+      "frameMs": 7,
+      "cpuMs": 3.5,
+      "fps": 81.14138887010608,
+      "p95": 20.80000000000291,
+      "draws": 106,
+      "triangles": 249165,
+      "textures": 69,
+      "estimatedGpuBytes": 49472184,
+      "resources": 53,
+      "references": 5,
+      "voices": 5,
+      "overruns": 1,
+      "fixtureLoads": 2,
+      "markerX": 3.208787453387361,
+      "markerZ": 1.8926587583507128,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "mobile",
+      "animation": "Punch_Cross",
+      "camera": "player",
+      "characterTier": "mobile",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.296909741432974,
+            0.11607980353057368,
+            1.6590982066468978
+          ],
+          [
+            2.991116279825376,
+            0.17895737406247775,
+            2.177184724604281
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 1
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.208787453387361,
+          "y": 0.02902672659925884,
+          "z": 1.8926587583507128
+        },
+        "previous": {
+          "x": 3.208787453387361,
+          "y": 0.028926726601785052,
+          "z": 1.8926587583507128
+        },
+        "facing": 1.7262541613287175,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.3833333333333333,
+        "actionSequence": 15,
+        "attack": "cross",
+        "grounded": true,
+        "strikes": 7,
+        "targetHits": 7,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 2,
+        "criticals": 1,
+        "blocks": 0,
+        "defeats": 1,
+        "ventWarning": false,
+        "ventRemaining": 1.4999999999999751
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.873452170610192,
+            "y": 0.035,
+            "z": 1.7884882610992532
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 1,
+          "previous": {
+            "x": 3.8704927698969556,
+            "y": 0.035,
+            "z": 1.788952077869149
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 124,
+          "posture": 25,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.1553993126748657,
+            "z": -0.024355203716251526
+          },
+          "hits": 2
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "Low",
+      "resolution": "1440 × 900",
+      "frameMs": 6.799999999999272,
+      "cpuMs": 2,
+      "fps": 90.00900090008996,
+      "p95": 14.100000000002183,
+      "draws": 106,
+      "triangles": 249165,
+      "textures": 69,
+      "estimatedGpuBytes": 49472184,
+      "resources": 53,
+      "references": 5,
+      "voices": 6,
+      "overruns": 1,
+      "fixtureLoads": 2,
+      "markerX": 3.2087850384963055,
+      "markerZ": 1.8926615401177735,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "mobile",
+      "animation": "Punch_Jab",
+      "camera": "player",
+      "characterTier": "mobile",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.3053840362822453,
+            0.11099758227510464,
+            1.6702475508284667
+          ],
+          [
+            2.939681064723853,
+            0.10946853200745021,
+            2.117937602776978
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 1
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2087850384963055,
+          "y": 0.028826939680729996,
+          "z": 1.8926615408742509
+        },
+        "previous": {
+          "x": 3.2087850384963055,
+          "y": 0.028726939690532166,
+          "z": 1.892661539139211
+        },
+        "facing": 1.7262976841191735,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.36666666666666664,
+        "actionSequence": 17,
+        "attack": "finisher",
+        "grounded": true,
+        "strikes": 8,
+        "targetHits": 8,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 3,
+        "criticals": 1,
+        "blocks": 0,
+        "defeats": 1,
+        "ventWarning": true,
+        "ventRemaining": 0.5666666666665954
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.9122707847085016,
+            "y": 0.035,
+            "z": 1.776320578095874
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 1,
+          "previous": {
+            "x": 3.9122707847085016,
+            "y": 0.035,
+            "z": 1.777155470908773
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 94,
+          "posture": 50,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.2797185765963294,
+            "z": -0.043840554846592834
+          },
+          "hits": 3
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "Low",
+      "resolution": "1440 × 900",
+      "frameMs": 14.099999999998545,
+      "cpuMs": 4.299999997019768,
+      "fps": 90.94353921940129,
+      "p95": 14.100000000002183,
+      "draws": 106,
+      "triangles": 249165,
+      "textures": 69,
+      "estimatedGpuBytes": 49472184,
+      "resources": 53,
+      "references": 5,
+      "voices": 3,
+      "overruns": 1,
+      "fixtureLoads": 2,
+      "markerX": 3.2087798612325167,
+      "markerZ": 1.8926610252196385,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "mobile",
+      "animation": "Punch_Cross",
+      "camera": "player",
+      "characterTier": "mobile",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.312673144260603,
+            0.11154654974433031,
+            1.6703933123610673
+          ],
+          [
+            2.95340887336915,
+            0.10894864395004666,
+            2.1276050636039976
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "heavy",
+          "generation": 1
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2087797148424033,
+          "y": 0.029026750835473653,
+          "z": 1.8926610252196385
+        },
+        "previous": {
+          "x": 3.208779963805181,
+          "y": 0.028926750837999865,
+          "z": 1.8926610252196385
+        },
+        "facing": 1.7423010223588782,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.8666666666666677,
+        "actionSequence": 19,
+        "attack": "heavy",
+        "grounded": true,
+        "strikes": 9,
+        "targetHits": 9,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 1,
+        "blocks": 0,
+        "defeats": 1,
+        "ventWarning": false,
+        "ventRemaining": 1.1333333333332902
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.924601811746673,
+            "y": 0.035,
+            "z": 1.7264677305746792
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 1,
+          "previous": {
+            "x": 3.924601811746673,
+            "y": 0.035,
+            "z": 1.7266705398834794
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 49,
+          "posture": 100,
+          "exposedUntil": 12.500000000000101,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0.06152699601707963,
+            "z": -0.010649597754930393
+          },
+          "hits": 4
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "Low",
+      "resolution": "1440 × 900",
+      "frameMs": 7,
+      "cpuMs": 3.0999999940395355,
+      "fps": 89.98875140607423,
+      "p95": 14.100000000002183,
+      "draws": 106,
+      "triangles": 249165,
+      "textures": 69,
+      "estimatedGpuBytes": 49472184,
+      "resources": 53,
+      "references": 5,
+      "voices": 4,
+      "overruns": 1,
+      "fixtureLoads": 2,
+      "markerX": 3.2087738204636826,
+      "markerZ": 1.8926587998315985,
+      "listeners": 69,
+      "audioState": "running",
+      "scene": "showcase",
+      "variant": "mobile",
+      "animation": "Punch_Cross",
+      "camera": "player",
+      "characterTier": "mobile",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            3.2996368212327067,
+            0.1113650924897458,
+            1.6647538513794367
+          ],
+          [
+            2.967419943844125,
+            0.10876718669546215,
+            2.1419805775714784
+          ]
+        ],
+        "gripDistances": []
+      },
+      "player": {
+        "target": {
+          "id": "grouped",
+          "generation": 1
+        },
+        "weapon": "unarmed",
+        "position": {
+          "x": 3.2087734285563307,
+          "y": 0.02872663562826347,
+          "z": 1.8926585469632489
+        },
+        "previous": {
+          "x": 3.2087740839197956,
+          "y": 0.028826732541492678,
+          "z": 1.8926589698200207
+        },
+        "facing": 1.8001750169721946,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.8666666666666677,
+        "actionSequence": 21,
+        "attack": "heavy",
+        "grounded": true,
+        "strikes": 10,
+        "targetHits": 10,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 2,
+        "blocks": 0,
+        "defeats": 2,
+        "ventWarning": false,
+        "ventRemaining": 1.966666666666665
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.9259361212649027,
+            "y": 0.035,
+            "z": 1.7251748061281582
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 1,
+          "previous": {
+            "x": 3.9259361212649027,
+            "y": 0.035,
+            "z": 1.7251748061281582
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 0,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 15.666666666666826,
+          "velocity": {
+            "x": 1.9475931978520074,
+            "z": -0.45484144015314987
+          },
+          "hits": 5
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 1,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    }
+  ],
+  "afterQualityChange": {
+    "backend": "WebGPU",
+    "quality": "Low",
+    "resolution": "1440 × 900",
+    "frameMs": 6.799999999999272,
+    "cpuMs": 3.4000000059604645,
+    "fps": 90.01575275673252,
+    "p95": 14.100000000002183,
+    "draws": 106,
+    "triangles": 249165,
+    "textures": 69,
+    "estimatedGpuBytes": 49472184,
+    "resources": 53,
+    "references": 5,
+    "voices": 3,
+    "overruns": 1,
+    "fixtureLoads": 2,
+    "markerX": 3.208770795690039,
+    "markerZ": 1.8926584351543971,
+    "listeners": 69,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "mobile",
+    "animation": "Idle_Loop",
+    "camera": "player",
+    "characterTier": "mobile",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "district": "closed",
+    "area": "Pressure Court",
+    "hiddenCutaways": 0,
+    "rig": {
+      "feet": [
+        [
+          3.3470175911298194,
+          0.12835948509715528,
+          1.6398828146741313
+        ],
+        [
+          3.021527187487671,
+          0.12614404953640102,
+          2.1107745535010154
+        ]
+      ],
+      "gripDistances": []
+    },
+    "player": {
+      "target": {
+        "id": "grouped",
+        "generation": 1
+      },
+      "weapon": "unarmed",
+      "position": {
+        "x": 3.208770795690039,
+        "y": 0.028726745102321732,
+        "z": 1.892658531837443
+      },
+      "previous": {
+        "x": 3.208770795690039,
+        "y": 0.028626745104847945,
+        "z": 1.8926580229793069
+      },
+      "facing": 1.8001750169721946,
+      "health": 100,
+      "pressure": 100,
+      "action": "idle",
+      "actionTime": 0.21666666666666665,
+      "actionSequence": 22,
+      "attack": null,
+      "grounded": true,
+      "strikes": 10,
+      "targetHits": 10,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 2,
+      "blocks": 0,
+      "defeats": 2,
+      "ventWarning": false,
+      "ventRemaining": 1.7166666666666526
+    },
+    "targets": [
+      {
+        "id": "isolated",
+        "label": "COMBO TARGET",
+        "position": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 1,
+        "previous": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "heavy",
+        "label": "HEAVY TARGET",
+        "position": {
+          "x": 3.9259361212649027,
+          "y": 0.035,
+          "z": 1.7251748061281582
+        },
+        "maxHealth": 160,
+        "mass": 2,
+        "generation": 1,
+        "previous": {
+          "x": 3.9259361212649027,
+          "y": 0.035,
+          "z": 1.7251748061281582
+        },
+        "spawn": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "health": 0,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 15.666666666666826,
+        "velocity": {
+          "x": 1.9475931978520074,
+          "z": -0.45484144015314987
+        },
+        "hits": 5
+      },
+      {
+        "id": "grouped",
+        "label": "GROUP TARGET",
+        "position": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 1,
+        "previous": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "spawn": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      }
+    ],
+    "encounter": "training",
+    "enemies": [],
+    "enemyLoading": false
+  },
+  "errors": []
+}

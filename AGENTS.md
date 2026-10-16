@@ -1,6 +1,8 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- Player damage balance review is approved on 2026-10-16, with explicit authorization to commit, merge into main and push. Retain the 50% outgoing damage increase and existing posture, timings, contact and enemy damage. No new performance or physical-phone measurement is claimed for this numeric balance change.
+- Player damage increase is authorized on 2026-10-16: increase Medic's outgoing unarmed and baton health damage by 50% on `codex/player-damage-balance`. Preserve posture, attack timing, contact, enemy damage and existing mechanics. Validate combat regressions and stop for review without merging. Stop validation servers.
 - First mission polish review is approved on 2026-10-16, with explicit authorization to commit, merge into main and push. Retain the documented loading hitches and crane-corner guard navigation observation; physical-phone performance and first-time human pacing remain unverified. Further milestones require new scope approval.
 - First mission polish is authorized on 2026-10-14: skippable opening and ferry departure, compact guidance, staged winch guards, machinery cues and transactional quay readiness on `codex/first-mission-polish`. Preserve map, combat and accepted armed animations. Validate complete desktop/touch missions and five-minute production performance, then stop for review without merging. Stop validation servers.
 - Armed animation repair is approved on 2026-10-14, with explicit authorization to commit, merge into main and push. Retain the corrected full-cycle locomotion, stable baton arm/grip, saved-source export workflow and animation regressions. Physical-phone performance remains unverified; no new five-minute benchmark is claimed for this repair.

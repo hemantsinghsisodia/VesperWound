@@ -5,10 +5,10 @@ export interface EntityHandle { id: string; generation: number }
 export interface ContactPose { time: number; base: readonly number[]; tip: readonly number[] }
 export interface AttackDefinition { id: CombatAttackId; kind: 'light' | 'heavy' | 'enemy'; clip: string; duration: number; active: readonly [number, number]; clipContact?: readonly [number, number]; contact?: readonly ContactPose[]; damage: number; posture: number; knockback: number; reach: number; radius: number }
 export const ATTACKS: Record<'jab' | 'cross' | 'finisher' | 'heavy', AttackDefinition> = {
-  jab: { id: 'jab', kind: 'light', clip: 'Punch_Jab', duration: .6, active: [.22, .32], damage: 10, posture: 10, knockback: .08, reach: .55, radius: .12 },
-  cross: { id: 'cross', kind: 'light', clip: 'Punch_Cross', duration: .65, active: [.25, .36], damage: 14, posture: 15, knockback: .1, reach: .58, radius: .12 },
-  finisher: { id: 'finisher', kind: 'light', clip: 'Punch_Jab', duration: .72, active: [.24, .36], damage: 20, posture: 25, knockback: .18, reach: .55, radius: .12 },
-  heavy: { id: 'heavy', kind: 'heavy', clip: 'Punch_Cross', duration: .9, active: [.42, .56], clipContact: [.3, .55], damage: 30, posture: 50, knockback: .5, reach: .58, radius: .12 },
+  jab: { id: 'jab', kind: 'light', clip: 'Punch_Jab', duration: .6, active: [.22, .32], damage: 15, posture: 10, knockback: .08, reach: .55, radius: .12 },
+  cross: { id: 'cross', kind: 'light', clip: 'Punch_Cross', duration: .65, active: [.25, .36], damage: 21, posture: 15, knockback: .1, reach: .58, radius: .12 },
+  finisher: { id: 'finisher', kind: 'light', clip: 'Punch_Jab', duration: .72, active: [.24, .36], damage: 30, posture: 25, knockback: .18, reach: .55, radius: .12 },
+  heavy: { id: 'heavy', kind: 'heavy', clip: 'Punch_Cross', duration: .9, active: [.42, .56], clipContact: [.3, .55], damage: 45, posture: 50, knockback: .5, reach: .58, radius: .12 },
 };
 export type WeaponId = 'unarmed' | 'baton';
 export type LocomotionAction = 'idle' | 'walk' | 'run' | 'dodge' | 'ward' | 'hit' | 'dead';

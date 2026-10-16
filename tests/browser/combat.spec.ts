@@ -2,29 +2,30 @@ import { clickSceneTool } from '../helpers/scene-menu';
 import { expect, test, type Page } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { projectGround } from '../helpers/scene-menu';
+import { walkTo } from '../helpers/district-driver';
 test.use({ video: { mode: 'on', size: { width: 1440, height: 900 } } });
 const snapshot = (page: Page) => page.evaluate(() => window.__VESPER_DEBUG__!.snapshot());
 async function enter(page: Page, backend = 'webgl2') {
   await page.goto(`/?backend=${backend}`); await expect(page.locator('#app')).toHaveAttribute('data-state', 'ready'); await page.locator('#start').click();
   await expect.poll(async () => (await snapshot(page)).player!.grounded).toBe(true);
 }
-async function aimTarget(page: Page, id = 'isolated') {
+async function aimTarget(page: Page, id = 'heavy') {
   const s = await snapshot(page); const p = s.player!.position; const t = s.targets!.find(t => t.id === id)!;
   return projectGround(page, { x: t.position.x, y: p.y, z: t.position.z });
 }
 async function approachTarget(page: Page) {
-  const s=await snapshot(page);
-  if(s.targets![0]!.position.x-s.player!.position.x<=.83)return;
-  await page.keyboard.down('d');await page.keyboard.down('s');
-  await expect.poll(async()=>{const s=await snapshot(page);return s.targets![0]!.position.x-s.player!.position.x;},{intervals:[20]}).toBeLessThan(.8);
-  await page.keyboard.up('d');await page.keyboard.up('s');await page.waitForTimeout(100);
+  const t=(await snapshot(page)).targets!.find(t=>t.id==='heavy')!;
+  await walkTo(page,{x:t.position.x-.6,z:t.position.z});
+  await page.waitForTimeout(100);
 }
 for (const backend of ['webgpu-required', 'webgl2']) test(`three-light combo, stagger and critical demonstration on ${backend}`, async ({ page }) => {
   test.skip(!test.info().project.name.endsWith('desktop'), 'Desktop hardware demonstration.'); test.setTimeout(120000);
   const errors: string[] = []; page.on('pageerror', e => errors.push(e.message)); await enter(page, backend);
-  await mkdir('docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser', { recursive: true });
+  const folder=process.env.VESPER_COMBAT_QA??'docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions';
+  await mkdir(`${folder}/browser`, { recursive: true });
   expect((await snapshot(page)).backend).toBe(backend === 'webgl2' ? 'WebGL2' : 'WebGPU');
-  await page.keyboard.down('d'); await page.keyboard.down('s'); await expect.poll(async () => (await snapshot(page)).player!.position.x, { intervals: [30] }).toBeGreaterThan(.6); await page.keyboard.up('d'); await page.keyboard.up('s'); await page.waitForTimeout(300);
+  // The 160-health target survives the stronger combo long enough to test a critical.
+  await approachTarget(page);
   const attacks = [];
   for (let i = 0; i < 5; i++) {
     await approachTarget(page);
@@ -32,12 +33,12 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`three-light combo, st
     await page.mouse.click(aim.x, aim.y, { button: i >= 3 ? 'right' : 'left' });
     await expect.poll(async () => (await snapshot(page)).player!.targetHits, { intervals: [20] }).toBe(before + 1);
     attacks.push(await snapshot(page));
-    if (i === 2) await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/${backend}-combo.png` });
-    if (i === 3) { expect((await snapshot(page)).targets![0]!.posture).toBe(100); await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/${backend}-stagger.png` }); }
+    if (i === 2) await page.screenshot({ path: `${folder}/browser/${backend}-combo.png` });
+    if (i === 3) { expect((await snapshot(page)).targets![1]!.posture).toBe(100); await page.screenshot({ path: `${folder}/browser/${backend}-stagger.png` }); }
     await expect.poll(async () => (await snapshot(page)).player!.action, { intervals: [20] }).toBe('idle');
   }
-  const final = await snapshot(page); expect(final.player!.criticals).toBe(1); expect(final.targets![0]!.health).toBe(0); expect(final.player!.defeats).toBe(1);
-  await page.screenshot({ path: `docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/browser/${backend}-critical.png` });
+  const final = await snapshot(page); expect(final.player!.criticals).toBe(1); expect(final.targets![1]!.health).toBe(0); expect(final.player!.defeats).toBe(1);
+  await page.screenshot({ path: `${folder}/browser/${backend}-critical.png` });
   await clickSceneTool(page, '#reset-targets'); expect((await snapshot(page)).targets!.every(t => t.health === t.maxHealth && t.posture === 0)).toBe(true);
   await page.getByRole('button', { name: 'Open settings' }).click(); await page.locator('#reduced-motion').check(); await page.locator('#quality').selectOption('Low'); await expect(page.locator('#quality')).toBeEnabled(); await page.locator('#resume').click();
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'running');
@@ -47,12 +48,12 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`three-light combo, st
     const hits = (await snapshot(page)).player!.targetHits; const aim = await aimTarget(page); await page.mouse.click(aim.x, aim.y, { button: i >= 3 ? 'right' : 'left' });
     await expect.poll(async () => (await snapshot(page)).player!.targetHits).toBe(hits + 1);
     const state = await snapshot(page); lowAttacks.push(state);
-    expect(state.targets![0]!.health).toBe(attacks[i]!.targets![0]!.health); expect(state.targets![0]!.posture).toBe(attacks[i]!.targets![0]!.posture);
+    expect(state.targets![1]!.health).toBe(attacks[i]!.targets![1]!.health); expect(state.targets![1]!.posture).toBe(attacks[i]!.targets![1]!.posture);
     await expect.poll(async () => (await snapshot(page)).player!.action).toBe('idle');
   }
   await expect.poll(async () => (await snapshot(page)).voices).toBe(3);
-  expect(errors).toEqual([]); await writeFile(`docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/combat-${backend}.json`, JSON.stringify({ attacks, final, lowAttacks, afterQualityChange: await snapshot(page), errors }, null, 2));
-  const video = page.video(); await page.context().close(); await video?.saveAs(`docs/qa/ash-quay-checkpoint-b/regressions/phase4a/regressions/combat-${backend}.webm`);
+  expect(errors).toEqual([]); await writeFile(`${folder}/combat-${backend}.json`, JSON.stringify({ attacks, final, lowAttacks, afterQualityChange: await snapshot(page), errors }, null, 2));
+  const video = page.video(); await page.context().close(); await video?.saveAs(`${folder}/combat-${backend}.webm`);
 });
 test('Ward absorbs a telegraphed vent pulse and consumes pressure', async ({ page }) => {
   test.skip(!test.info().project.name.endsWith('desktop'), 'Keyboard Ward timing.'); await enter(page);
