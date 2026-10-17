@@ -22,3 +22,28 @@ export function discBlocked(p: Position, boxes: readonly CollisionBox[]): boolea
     return Math.hypot(p.x - x, p.z - z) < .3;
   });
 }
+
+/** Exact horizontal sweep of the same 0.3 m disc used by enemy collision. */
+export function discPathBlocked(from: Position, to: Position, boxes: readonly CollisionBox[]): boolean {
+  const dx = to.x - from.x, dz = to.z - from.z, lengthSquared = dx * dx + dz * dz;
+  return boxes.some(({ position: p, half: h }) => {
+    if (p.y + h.y < from.y + .2 || p.y - h.y > from.y + 1.7) return false;
+    // Tangency is legal, matching discBlocked's strict radius comparison.
+    if (crossesRectangle(from.x - p.x, from.z - p.z, dx, dz, h.x + .3 - 1e-8, h.z) ||
+        crossesRectangle(from.x - p.x, from.z - p.z, dx, dz, h.x, h.z + .3 - 1e-8)) return true;
+    for (const x of [p.x - h.x, p.x + h.x]) for (const z of [p.z - h.z, p.z + h.z]) {
+      const t = lengthSquared ? Math.max(0, Math.min(1, ((x - from.x) * dx + (z - from.z) * dz) / lengthSquared)) : 0;
+      if ((from.x + t * dx - x) ** 2 + (from.z + t * dz - z) ** 2 < .09) return true;
+    }
+    return false;
+  });
+}
+
+function crossesRectangle(x: number, z: number, dx: number, dz: number, hx: number, hz: number): boolean {
+  let near = 0, far = 1;
+  if (Math.abs(dx) < 1e-8) { if (Math.abs(x) > hx) return false; }
+  else { const a = (-hx - x) / dx, b = (hx - x) / dx; near = Math.max(near, Math.min(a, b)); far = Math.min(far, Math.max(a, b)); }
+  if (Math.abs(dz) < 1e-8) { if (Math.abs(z) > hz) return false; }
+  else { const a = (-hz - z) / dz, b = (hz - z) / dz; near = Math.max(near, Math.min(a, b)); far = Math.min(far, Math.max(a, b)); }
+  return near <= far;
+}

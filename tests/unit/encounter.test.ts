@@ -4,6 +4,7 @@ import { GroundNavigation } from '../../src/enemies/navigation';
 import { ATTACKS, attackTouches, type Position } from '../../src/player/combat-definitions';
 import type { InputAction, InputFrame } from '../../src/core/input-frame';
 import type { PlayerCollision } from '../../src/player/player-simulation';
+import { discBlocked } from '../../src/player/collision-math';
 const frame=(pressed:InputAction[]=[]):InputFrame=>({movement:{x:0,y:0},aim:{x:0,y:0},pressed:new Set(pressed),held:new Set()});
 class Ground implements PlayerCollision {
   obstruction=false;
@@ -71,9 +72,9 @@ describe('first enemy encounter',()=>{
 });
 describe('courtyard navigation',()=>{
   it('routes around solids without cutting diagonal corners and rejects raised ground',()=>{
-    const nav=new GroundNavigation([{position:{x:0,y:1,z:0},half:{x:.4,y:1,z:1}}]);const goal={x:2,y:.035,z:0};nav.plan(goal,0);
+    const boxes=[{position:{x:0,y:1,z:0},half:{x:.4,y:1,z:1}}];const nav=new GroundNavigation(boxes);const goal={x:2,y:.035,z:0};nav.plan(goal,0);
     let p={x:-2,y:.035,z:0};expect(nav.reachable(p)).toBe(true);
-    for(let i=0;i<300;i++){const d=nav.direction(p,goal)!;p={x:p.x+d.x*.025,y:p.y,z:p.z+d.z*.025};expect(Math.abs(p.x)<.7&&Math.abs(p.z)<1.25).toBe(false);}
+    for(let i=0;i<300;i++){const d=nav.direction(p,goal)!;p={x:p.x+d.x*.025,y:p.y,z:p.z+d.z*.025};expect(discBlocked(p,boxes)).toBe(false);}
     expect(p.x).toBeGreaterThan(1.5);nav.plan({...goal,y:1},1);expect(nav.reachable(p)).toBe(false);
   });
 });

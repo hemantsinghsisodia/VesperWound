@@ -1,6 +1,8 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- Mission reliability review is approved on 2026-10-17, with explicit authorization to commit, merge into main and push. Retain the documented cold-loading hitches and brief guard-activation cost; first-time human pacing and physical-phone performance remain unverified. Further milestones require new scope approval.
+- Mission reliability pass is authorized on 2026-10-16: fix crane-corner navigation, reduce mission-loading hitches and validate complete missions with the accepted damage increase on `codex/mission-reliability`. Preserve map, assets, combat balance and mission structure. Stop for review without merging, and stop validation servers. Human first-time pacing and physical-phone performance remain separate gates.
 - Player damage balance review is approved on 2026-10-16, with explicit authorization to commit, merge into main and push. Retain the 50% outgoing damage increase and existing posture, timings, contact and enemy damage. No new performance or physical-phone measurement is claimed for this numeric balance change.
 - Player damage increase is authorized on 2026-10-16: increase Medic's outgoing unarmed and baton health damage by 50% on `codex/player-damage-balance`. Preserve posture, attack timing, contact, enemy damage and existing mechanics. Validate combat regressions and stop for review without merging. Stop validation servers.
 - First mission polish review is approved on 2026-10-16, with explicit authorization to commit, merge into main and push. Retain the documented loading hitches and crane-corner guard navigation observation; physical-phone performance and first-time human pacing remain unverified. Further milestones require new scope approval.

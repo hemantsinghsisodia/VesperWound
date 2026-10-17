@@ -1,0 +1,267 @@
+{
+  "method": "SHA-256 of encoded image buffer views in shipped GLBs; runtime sharing additionally compares decoded mip content and texture configuration.",
+  "tiers": {
+    "desktop": {
+      "courtImages": 40,
+      "quayImages": 25,
+      "matchingImages": [
+        {
+          "name": "normal_1k",
+          "bytes": 320553,
+          "sha256": "0a20922687abc809978afff24b3ec1108e3ca147e320a914f5f1194e8bb6953f"
+        },
+        {
+          "name": "diff_1k",
+          "bytes": 255541,
+          "sha256": "9ee8dafa2445201f1622a9898236b70f24cfd26fda33d5f6d48a05959adfb2a6"
+        },
+        {
+          "name": "rough_1k",
+          "bytes": 212714,
+          "sha256": "eb58aac9ffe98eea41ec4328b49809a249a0459837e5592fbf4e77a60a289c16"
+        },
+        {
+          "name": "nor_gl",
+          "bytes": 338151,
+          "sha256": "ef237ca0f100451a468edd3fff2dd18d917eb4e332450170d7180726f13a5212"
+        },
+        {
+          "name": "Diffuse",
+          "bytes": 216821,
+          "sha256": "0955ba2d672f9f5215b83a018fa0bfd5e332d13d9d4eb83dc5039aa67970d11a"
+        },
+        {
+          "name": "Rough",
+          "bytes": 63237,
+          "sha256": "4c0f2e487bf26e0f31053c15b2b3ab705ed15b42e994589a81a0f95e41397c06"
+        },
+        {
+          "name": "wooden_crate_01_nor_gl",
+          "bytes": 290895,
+          "sha256": "ea1539c3430bb1cd0c0f08e474e28920d5b5b719ff594f2a0fc48fe70b2651e7"
+        },
+        {
+          "name": "wooden_crate_01_diff_1k",
+          "bytes": 236787,
+          "sha256": "96164ff71206d1848786e70887c2cead7b80516e067c744f74167002e008c348"
+        },
+        {
+          "name": "wooden_crate_01_metal-wooden_crate_01_rough",
+          "bytes": 206980,
+          "sha256": "bc99b7295d9971ac95f12064bce5f3fe12539f9682c7684727f16f77cd50c5b6"
+        },
+        {
+          "name": "normal_2k",
+          "bytes": 1349860,
+          "sha256": "18f9089af1a2af14524caa32ccac18bb0d77f8e2a140d140947eff663858fe1b"
+        },
+        {
+          "name": "ao_2k.jpg-rough_2k.jpg",
+          "bytes": 230601,
+          "sha256": "4caaaed153404992cb6200d0bde7d7b1bb2ec3a4cf8515ca730a063a8ce343b7"
+        },
+        {
+          "name": "diff_2k",
+          "bytes": 254516,
+          "sha256": "dcc1da1271e5b9355ca88bd171debe504590be64dd76e96f56943e329c1fdb7a"
+        },
+        {
+          "name": "modular_factory_facade_brick_nor_gl_1k",
+          "bytes": 339039,
+          "sha256": "39e725429332f1cd118ce40a2e3aeed4591fa91c7a350380b72a377113cb6cfe"
+        },
+        {
+          "name": "modular_factory_facade_brick_diff_1k",
+          "bytes": 280692,
+          "sha256": "5441134688fa1a5eeb1779f8bd9190c882f4abadead60d54246830b15a1a13f6"
+        },
+        {
+          "name": "modular_factory_facade_brick_rough_1k",
+          "bytes": 132944,
+          "sha256": "224063f40d854c80767135c5836cac54e427600465b743b5abd5e349e1a82caa"
+        },
+        {
+          "name": "modular_factory_facade_windows_nor_gl_1k",
+          "bytes": 268549,
+          "sha256": "d65eb12946dbdd24e1fef5d060bb6a24d0e06ae9ce88978ea331db1e5edf7175"
+        },
+        {
+          "name": "modular_factory_facade_windows_diff-modular_factory_facade_windows_alpha",
+          "bytes": 293204,
+          "sha256": "2004e5ee67a005b17daa0938ec1fb4fb8edd708791cff53e3fe6227bc05f80f3"
+        },
+        {
+          "name": "modular_factory_facade_windows_rough_1k",
+          "bytes": 203171,
+          "sha256": "54dfa13809cde32a4daf8749b64c59773f139065f19e171a3f318f5372dcb5af"
+        },
+        {
+          "name": "modular_factory_facade_windows_diff_1k",
+          "bytes": 320115,
+          "sha256": "642be64f454b37f87ee08979e65cfab1bf92c54b86b8da7814778da33b603b5e"
+        },
+        {
+          "name": "modular_factory_facade_trim_01_nor_gl_1k",
+          "bytes": 320003,
+          "sha256": "924743233abcf8938b062461142bbddd46253cbb207642debe88f88e6389f0b1"
+        },
+        {
+          "name": "modular_factory_facade_trim_01_diff_1k",
+          "bytes": 215857,
+          "sha256": "b5964432a83bf02112fdb562a2e60bfdb52d117d3459d04fb3b0d951226481b4"
+        },
+        {
+          "name": "modular_factory_facade_trim_01_rough_1k",
+          "bytes": 203378,
+          "sha256": "7a997b4d5ab8dc80ca0b9a05f1d9a78bf813a073b969e70ad1fd5f51bf4d3903"
+        },
+        {
+          "name": "normal_2k",
+          "bytes": 340322,
+          "sha256": "5b42206f514c5c4af683173038754d7313aa0bb7ed555cfc8fc3f2c8537afae2"
+        },
+        {
+          "name": "ao_2k.jpg-rough_2k.jpg",
+          "bytes": 227297,
+          "sha256": "00de36a40c9dcce67649895f843f7ed0e3db073359114bd7e611242eb822a7e3"
+        },
+        {
+          "name": "diff_2k",
+          "bytes": 247607,
+          "sha256": "1b28b99d9f635be771f661bf0ea24dbd99b6b00b9b9880c29e6ce8dc986ff69f"
+        }
+      ]
+    },
+    "mobile": {
+      "courtImages": 40,
+      "quayImages": 25,
+      "matchingImages": [
+        {
+          "name": "normal_1k",
+          "bytes": 79109,
+          "sha256": "ec7c4a3da84309e3b702e1110349b75f47d6dd047cca0c12f8edb815a8fcb039"
+        },
+        {
+          "name": "diff_1k",
+          "bytes": 26772,
+          "sha256": "bcd23080a1b85fd791afc06ae50f70eb56497d9daaf1cad0c770e673f6a5fa0b"
+        },
+        {
+          "name": "rough_1k",
+          "bytes": 20727,
+          "sha256": "d3d948a054e9448cdf5575269934a2ee335e04bf7ada0f3250d17b30b7966d86"
+        },
+        {
+          "name": "nor_gl",
+          "bytes": 84490,
+          "sha256": "6d3df5ca8dedb7d2da675a94ac3363416d8e27da5fb407fc344de777b307e68a"
+        },
+        {
+          "name": "Diffuse",
+          "bytes": 22803,
+          "sha256": "77e59d14d47d98e4b2102114347b2c57d4ff137f8d0fc05b60005be2641f2785"
+        },
+        {
+          "name": "Rough",
+          "bytes": 9104,
+          "sha256": "28195a1b5ab32c3a7ea21a3a60d59d128e2a8fc5497778797b25c4d324ca0eb3"
+        },
+        {
+          "name": "wooden_crate_01_nor_gl",
+          "bytes": 73988,
+          "sha256": "cee0c7eae86258fd970d270d84bee7c703684dfa2227fe9ea0946bb80ee2d078"
+        },
+        {
+          "name": "wooden_crate_01_diff_1k",
+          "bytes": 25492,
+          "sha256": "95b8ce3cc02d1ec3311af9cea2deb2d6de99660054ad28c9aeeefb65330f9875"
+        },
+        {
+          "name": "wooden_crate_01_metal-wooden_crate_01_rough",
+          "bytes": 20416,
+          "sha256": "352e91b0dc84e08848db3536e8786aa8d670424126a5cadf8920a74b4813b301"
+        },
+        {
+          "name": "normal_2k",
+          "bytes": 337997,
+          "sha256": "dda16a4d68624f7ad69cf48c740b47f82c3421d0de6d5f65af81ef365fd6e15c"
+        },
+        {
+          "name": "ao_2k.jpg-rough_2k.jpg",
+          "bytes": 80490,
+          "sha256": "10a8cd417cbb8767ce6eafca331fe3f4daec1cc9b0d2b712421c4abd5a9b9de7"
+        },
+        {
+          "name": "diff_2k",
+          "bytes": 90293,
+          "sha256": "4d1e3108cdeb93a6b52994d8abdcc4eebf12fb92e2828f809d2a24343197f9ae"
+        },
+        {
+          "name": "modular_factory_facade_brick_nor_gl_1k",
+          "bytes": 84604,
+          "sha256": "e0af905e36a1543c6230818acba949ba41189acae681cdffc1640dcffe44e8be"
+        },
+        {
+          "name": "modular_factory_facade_brick_diff_1k",
+          "bytes": 95969,
+          "sha256": "c5b8e9d2ac6cc9a8fbb05fb48dfa83f6e3a63ce841cb769faf1d0440ebd28541"
+        },
+        {
+          "name": "modular_factory_facade_brick_rough_1k",
+          "bytes": 41320,
+          "sha256": "d129098ff3da99a0c1dee32c1fc6aaaf3ef96796d58112f3f857c6b2ffb12a0b"
+        },
+        {
+          "name": "modular_factory_facade_windows_nor_gl_1k",
+          "bytes": 70817,
+          "sha256": "3f688d7b31d7b22c1b8fe287ebf7e21a6b9531f1b5e39e480afaaa2da9b992f5"
+        },
+        {
+          "name": "modular_factory_facade_windows_diff-modular_factory_facade_windows_alpha",
+          "bytes": 105063,
+          "sha256": "542a56fca6bd7efc030f88c26271004eeaaa8508c59496f75e0eb815b8af3836"
+        },
+        {
+          "name": "modular_factory_facade_windows_rough_1k",
+          "bytes": 65159,
+          "sha256": "156515f64c73d0342b0b7c7e64385852d02c60fa102172c0d58e0ec6d5cb0f4f"
+        },
+        {
+          "name": "modular_factory_facade_windows_diff_1k",
+          "bytes": 110035,
+          "sha256": "8e18ae6038d0baa8f02ef583e3431b2056170168603a32fd8b0ad864c122ece2"
+        },
+        {
+          "name": "modular_factory_facade_trim_01_nor_gl_1k",
+          "bytes": 78883,
+          "sha256": "10364d4ca63c410887f6596af82ce7752319ef5efa685ed5b037aa90a9d7a92e"
+        },
+        {
+          "name": "modular_factory_facade_trim_01_diff_1k",
+          "bytes": 24048,
+          "sha256": "df64c37681b08c9589879d2342060d81be6d66bd6da68f41b71843dab984bda3"
+        },
+        {
+          "name": "modular_factory_facade_trim_01_rough_1k",
+          "bytes": 20302,
+          "sha256": "48ff513ac15c25c281c10d26af4ed9451ce85bd94f953bb5126834e5aeabf3c2"
+        },
+        {
+          "name": "normal_2k",
+          "bytes": 85354,
+          "sha256": "04495ee0dcab5dece55f87c5ad42f6c6e51c5fd83f1cd7c8deb6080bb51bbbce"
+        },
+        {
+          "name": "ao_2k.jpg-rough_2k.jpg",
+          "bytes": 22494,
+          "sha256": "1a308d0fe7efcf24face56bf26a31727ca06069ad364fb6b5b4bdfe4d5c47b2a"
+        },
+        {
+          "name": "diff_2k",
+          "bytes": 25617,
+          "sha256": "14bc15c86bd2274c180314c0a2608e75875d4fc1677bd369961d8533acb1780b"
+        }
+      ]
+    }
+  }
+}

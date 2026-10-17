@@ -1,0 +1,191 @@
+{
+  "date": "2026-10-17T11:26:36.779Z",
+  "browser": "155.0.8059.80",
+  "scenario": "mission",
+  "hardware": {
+    "backend": "WebGPU",
+    "resolution": [
+      1440,
+      900
+    ],
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "quality": "High",
+  "adaptive": false,
+  "uncapped": true,
+  "warmupSeconds": 30,
+  "method": "External requestAnimationFrame intervals; Chrome frame limiter and GPU vsync disabled; includes scheduling and CPU, not isolated GPU timestamps.",
+  "metrics": {
+    "seconds": 300.19119999999924,
+    "frames": 31182,
+    "p95": 10.89999999999418,
+    "max": 35.89999999999418,
+    "over50": 0,
+    "over100": 0,
+    "combatFrames": 26602,
+    "combatP95": 10.89999999999418,
+    "phases": {
+      "passage-fight": {
+        "frames": 22952,
+        "p95": 10.800000000017462,
+        "max": 35.89999999999418,
+        "over50": 0
+      },
+      "regulator": {
+        "frames": 2030,
+        "p95": 10.80000000000291,
+        "max": 35.10000000000582,
+        "over50": 0
+      },
+      "winch-approach": {
+        "frames": 69,
+        "p95": 17.39999999999418,
+        "max": 27.400000000001455,
+        "over50": 0
+      },
+      "winch-fight": {
+        "frames": 3650,
+        "p95": 11.200000000011642,
+        "max": 31.80000000000291,
+        "over50": 0
+      },
+      "install": {
+        "frames": 228,
+        "p95": 11.39999999999418,
+        "max": 27.20000000001164,
+        "over50": 0
+      },
+      "powering": {
+        "frames": 655,
+        "p95": 10.19999999999709,
+        "max": 16.19999999999709,
+        "over50": 0
+      },
+      "board": {
+        "frames": 173,
+        "p95": 10.19999999999709,
+        "max": 13.19999999999709,
+        "over50": 0
+      },
+      "departure": {
+        "frames": 1034,
+        "p95": 7.5,
+        "max": 27,
+        "over50": 0
+      },
+      "complete": {
+        "frames": 15,
+        "p95": 5.2999999999883585,
+        "max": 6.100000000005821,
+        "over50": 0
+      },
+      "quay": {
+        "frames": 376,
+        "p95": 11.39999999999418,
+        "max": 27.40000000000873,
+        "over50": 0
+      }
+    }
+  },
+  "loading": {
+    "seconds": 2.6495,
+    "frames": 250,
+    "p95": 17.800000000000182,
+    "max": 59.19999999999982,
+    "over50": 1
+  },
+  "samples": [
+    {
+      "elapsed": 30.012599999999626,
+      "bytes": 59938265,
+      "textures": 81,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 60.0305,
+      "bytes": 59938729,
+      "textures": 81,
+      "stage": "powering",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 90.04009999999963,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 120.06080000000074,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 150.08480000000074,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 180.1005,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 210.1105,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 240.13290000000038,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 270.1504000000004,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 300.172,
+      "bytes": 59939609,
+      "textures": 81,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 1
+    }
+  ],
+  "completions": 1,
+  "driverError": "Error: Medic must survive the mission fight: [{\"p\":[-2.816,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634658667341724,\"z\":18.6163125223062,\"health\":72,\"action\":\"approach\",\"actionTime\":5.316666666666653},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.19999999999999998}],\"action\":\"idle\",\"health\":40,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634658667341724,\"z\":18.6163125223062,\"health\":72,\"action\":\"approach\",\"actionTime\":5.399999999999986},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.2833333333333333}],\"action\":\"idle\",\"health\":40,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634658667341724,\"z\":18.6163125223062,\"health\":72,\"action\":\"approach\",\"actionTime\":5.499999999999986},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.3833333333333333}],\"action\":\"idle\",\"health\":40,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.616493999833057,\"health\":72,\"action\":\"approach\",\"actionTime\":5.616666666666652},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.49999999999999994}],\"action\":\"dodge\",\"health\":40,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.616806327022168,\"health\":72,\"action\":\"approach\",\"actionTime\":5.733333333333318},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.6166666666666669}],\"action\":\"dodge\",\"health\":40,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.616984688282898,\"health\":72,\"action\":\"approach\",\"actionTime\":5.833333333333318},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"active\",\"actionTime\":0.06666666666666667}],\"action\":\"hit\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.617107533128298,\"health\":72,\"action\":\"approach\",\"actionTime\":5.933333333333318},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.03333333333333333}],\"action\":\"hit\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.61718013857232,\"health\":72,\"action\":\"approach\",\"actionTime\":6.016666666666651},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.11666666666666665}],\"action\":\"hit\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.617233353055724,\"health\":72,\"action\":\"approach\",\"actionTime\":6.099999999999984},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.19999999999999998}],\"action\":\"hit\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.617272355713126,\"health\":72,\"action\":\"approach\",\"actionTime\":6.183333333333317},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.2833333333333333}],\"action\":\"hit\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.816,0.03,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1622129185432812,\"z\":18.617305668918522,\"health\":72,\"action\":\"approach\",\"actionTime\":6.283333333333316},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.3833333333333333}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.523],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1614625550687823,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.383333333333316},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.4833333333333333}],\"action\":\"walk\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.499999999999982},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.6000000000000002}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.599999999999982},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.7000000000000005}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.683333333333315},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.7833333333333341}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.783333333333315},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"recovery\",\"actionTime\":0.8833333333333344}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.866666666666648},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.05}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":6.949999999999981},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.13333333333333333}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":7.033333333333314},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.21666666666666665}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":7.116666666666647},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.3}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.845,0.03,17.563],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1634075847463548,\"z\":18.61731011083949,\"health\":72,\"action\":\"approach\",\"actionTime\":7.19999999999998},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.3833333333333333}],\"action\":\"idle\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.844,0.029,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1632692860051455,\"z\":18.61737425544794,\"health\":72,\"action\":\"approach\",\"actionTime\":7.333333333333313},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.5166666666666666}],\"action\":\"dodge\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.843,0.029,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1632692860051455,\"z\":18.61745438254597,\"health\":72,\"action\":\"approach\",\"actionTime\":7.449999999999979},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"windup\",\"actionTime\":0.6333333333333336}],\"action\":\"dodge\",\"health\":20,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"},{\"p\":[-2.843,0.029,17.295],\"enemies\":[{\"id\":\"zombie7-0\",\"generation\":5,\"x\":-2.1632692860051455,\"z\":18.61746323687333,\"health\":72,\"action\":\"idle\",\"actionTime\":0.06666666666666667},{\"id\":\"zombie7-1\",\"generation\":5,\"x\":-2.6646639907832723,\"z\":18.28622280016919,\"health\":24,\"action\":\"idle\",\"actionTime\":0.06666666666666667}],\"action\":\"dead\",\"health\":0,\"pressure\":9.666666666666526,\"hits\":\"3\",\"blocks\":\"5\",\"strikes\":\"3\"}]\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances."
+  ]
+}

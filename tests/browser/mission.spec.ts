@@ -7,11 +7,11 @@ import {clickSceneTool} from '../helpers/scene-menu';
 test('complete mission with real controls, pause, quality replacement and restart',async({page,browser},info)=>{
   const mobile=info.project.name.endsWith('mobile'),backend=info.project.name.endsWith('webgpu')?'webgpu-required':'webgl2';
   const errors:string[]=[],requests:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>requests.push(r.url()));
-  const folder='docs/qa/first-mission-polish';await mkdir(folder,{recursive:true});
+  const folder=process.env.VESPER_MISSION_QA??'docs/qa/first-mission-polish';await mkdir(folder,{recursive:true});
   await page.goto(`/?backend=${backend}`);await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();
   if(mobile){await page.locator('#settings-open').tap();await page.locator('#left-handed').check();await page.locator('#ui-scale').fill('1.4');await page.locator('#resume').tap();}
   await page.locator('#mission-start').click();await expect(page.locator('#app')).toHaveAttribute('data-mission','introduction');
-  await page.screenshot({path:`docs/qa/first-mission-polish/${info.project.name}-opening.png`});
+  await page.screenshot({path:`${folder}/${info.project.name}-opening.png`});
   await expect(page.locator('#app')).toHaveAttribute('data-mission','prepare');
   await page.screenshot({path:`${folder}/${info.project.name}-prepare.png`});
   if(mobile)await page.locator('#pickup').tap();else await page.keyboard.press('f');
@@ -75,7 +75,8 @@ test('failed and cancelled mission loads retain practice; inspection retains mis
     const snapshot=await page.evaluate(()=>window.__VESPER_DEBUG__!.snapshot());cycles.push(snapshot);
     expect(snapshot.references).toBe(baseline.references);expect(snapshot.resources).toBe(baseline.resources);expect(snapshot.listeners).toBe(baseline.listeners);
   }
-  await writeFile('docs/qa/first-mission-polish/lifecycle.json',JSON.stringify({baseline,cycles},null,2));
+  const folder=process.env.VESPER_MISSION_QA??'docs/qa/first-mission-polish';
+  await mkdir(folder,{recursive:true});await writeFile(`${folder}/lifecycle.json`,JSON.stringify({baseline,cycles},null,2));
 });
 
 test('cinematic pause, reduced motion, quality replacement and skip consume held input',async({page},info)=>{

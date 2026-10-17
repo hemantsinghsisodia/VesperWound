@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-17T11:32:55.085Z",
+  "browser": "155.0.8059.80",
+  "quality": "High",
+  "adaptive": false,
+  "uncapped": true,
+  "method": "External requestAnimationFrame intervals during cold mission loading, introduction and first resumed control; no warm-up.",
+  "backend": "WebGPU",
+  "resolution": [
+    1440,
+    900
+  ],
+  "adapterRequests": [
+    {
+      "powerPreference": "high-performance",
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "description": ""
+    }
+  ],
+  "phases": {
+    "inactive": {
+      "frames": 216,
+      "p95": 16.399999999999636,
+      "max": 49.80000000000018,
+      "over50": 0
+    },
+    "introduction": {
+      "frames": 466,
+      "p95": 13.200000000000728,
+      "max": 33.900000000000546,
+      "over50": 0
+    },
+    "prepare": {
+      "frames": 137,
+      "p95": 9.699999999998909,
+      "max": 10,
+      "over50": 0
+    }
+  },
+  "errors": []
+}

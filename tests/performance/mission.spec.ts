@@ -2,6 +2,7 @@ import {test,expect} from '@playwright/test';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {playMissionRoute} from '../helpers/mission-driver';
 import {clickSceneTool} from '../helpers/scene-menu';
+const folder=process.env.VESPER_MISSION_QA??'docs/qa/first-mission-polish';
 
 declare global {interface Window {__MISSION_COMBAT_FRAMES__?:number[];__MISSION_PHASE_FRAMES__?:Record<string,number[]>;__MISSION_LOAD__?:{start:number;last:number;frames:number[];done:boolean};__MISSION_ADAPTER_REQUESTS__?:{powerPreference:string;vendor:string;architecture:string;description:string}[]}}
 
@@ -17,7 +18,7 @@ for(const scenario of ['mission','inspection'] as const)test(`five-minute produc
   if(scenario==='inspection'){await clickSceneTool(page,'#inspection-toggle');await expect(page.locator('#app')).toHaveAttribute('data-inspection','active');}
   expect(await page.evaluate(()=>typeof window.__VESPER_DEBUG__)).toBe('undefined');
   let running=true,completions=0,driverError='';
-  const driver=scenario==='mission'?(async()=>{while(running){await playMissionRoute(page);completions++;if(running){await page.locator('#mission-replay').click();await expect(page.locator('#app')).toHaveAttribute('data-mission','quay');}}})().catch((error:unknown)=>{driverError=String(error);}):Promise.resolve();
+  const driver=scenario==='mission'?(async()=>{while(running){await playMissionRoute(page);completions++;if(running){await page.locator('#mission-replay').click();await expect(page.locator('#app')).toHaveAttribute('data-mission','quay');}}})().catch((error:unknown)=>{driverError=String(error);console.log(`Mission driver stopped: ${driverError.slice(0,200)}`);}):Promise.resolve();
   await page.waitForTimeout(30000);
   const hardware=await page.evaluate(async()=>{const c=document.querySelector('canvas')!,a=await navigator.gpu?.requestAdapter();return {backend:c.dataset.backend,resolution:[c.width,c.height],adapter:a?{vendor:a.info.vendor,architecture:a.info.architecture,device:a.info.device,description:a.info.description}:null};});
   expect(hardware.backend).toBe('WebGPU');expect(hardware.resolution).toEqual([1440,900]);
@@ -30,8 +31,8 @@ for(const scenario of ['mission','inspection'] as const)test(`five-minute produc
   }
   running=false;
   const metrics=await page.evaluate(()=>{const m=window.__PERFORMANCE_MEASUREMENT__!;m.stopped=true;const f=m.frames.sort((a,b)=>a-b),c=window.__MISSION_COMBAT_FRAMES__!.sort((a,b)=>a-b);return {seconds:(performance.now()-m.started)/1000,frames:f.length,p95:f[Math.floor((f.length-1)*.95)]!,max:f.at(-1),over50:f.filter(v=>v>50).length,over100:f.filter(v=>v>100).length,combatFrames:c.length,combatP95:c.length?c[Math.floor((c.length-1)*.95)]:null,phases:Object.fromEntries(Object.entries(window.__MISSION_PHASE_FRAMES__!).map(([stage,frames])=>{frames.sort((a,b)=>a-b);return [stage,{frames:frames.length,p95:frames[Math.floor((frames.length-1)*.95)],max:frames.at(-1),over50:frames.filter(v=>v>50).length}];}))};});
-  await driver;await mkdir('docs/qa/first-mission-polish',{recursive:true});
-  await writeFile(`docs/qa/first-mission-polish/${scenario}-performance.json`,JSON.stringify({date:new Date().toISOString(),browser:browser.version(),scenario,hardware,quality:'High',adaptive:false,uncapped:true,warmupSeconds:30,method:'External requestAnimationFrame intervals; Chrome frame limiter and GPU vsync disabled; includes scheduling and CPU, not isolated GPU timestamps.',metrics,loading,samples,completions,driverError,errors,warnings},null,2));
+  await driver;await mkdir(folder,{recursive:true});
+  await writeFile(`${folder}/${scenario}-performance.json`,JSON.stringify({date:new Date().toISOString(),browser:browser.version(),scenario,hardware,quality:'High',adaptive:false,uncapped:true,warmupSeconds:30,method:'External requestAnimationFrame intervals; Chrome frame limiter and GPU vsync disabled; includes scheduling and CPU, not isolated GPU timestamps.',metrics,loading,samples,completions,driverError,errors,warnings},null,2));
   expect(driverError).toBe('');expect(errors).toEqual([]);expect(metrics.seconds).toBeGreaterThanOrEqual(300);expect(metrics.p95).toBeLessThanOrEqual(scenario==='mission'?18.5:35);if(scenario==='mission'){expect(completions).toBeGreaterThanOrEqual(2);expect(metrics.combatFrames).toBeGreaterThan(0);expect(metrics.combatP95).toBeLessThanOrEqual(18.5);}
 });
 
@@ -54,6 +55,6 @@ test('production opening transition timing',async({page,browser})=>{
     window.__PERFORMANCE_MEASUREMENT__!.stopped=true;const canvas=document.querySelector('canvas')!;
     return {backend:canvas.dataset.backend,resolution:[canvas.width,canvas.height],adapterRequests:window.__MISSION_ADAPTER_REQUESTS__,phases:Object.fromEntries(Object.entries(window.__MISSION_PHASE_FRAMES__!).map(([phase,frames])=>{frames.sort((a,b)=>a-b);return [phase,{frames:frames.length,p95:frames[Math.floor((frames.length-1)*.95)],max:frames.at(-1),over50:frames.filter(v=>v>50).length}];}))};
   });
-  await mkdir('docs/qa/first-mission-polish',{recursive:true});await writeFile('docs/qa/first-mission-polish/opening-performance.json',JSON.stringify({date:new Date().toISOString(),browser:browser.version(),quality:'High',adaptive:false,uncapped:true,method:'External requestAnimationFrame intervals during cold mission loading, introduction and first resumed control; no warm-up.',...result,errors},null,2));
+  await mkdir(folder,{recursive:true});await writeFile(`${folder}/opening-performance.json`,JSON.stringify({date:new Date().toISOString(),browser:browser.version(),quality:'High',adaptive:false,uncapped:true,method:'External requestAnimationFrame intervals during cold mission loading, introduction and first resumed control; no warm-up.',...result,errors},null,2));
   expect(errors).toEqual([]);expect(result.backend).toBe('WebGPU');expect(result.resolution).toEqual([1440,900]);expect(result.phases.introduction?.frames).toBeGreaterThan(10);
 });

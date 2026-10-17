@@ -1,11 +1,12 @@
-import { Mesh, SkinnedMesh, Texture, SRGBColorSpace, NoColorSpace, RepeatWrapping, type Material, type BufferGeometry, type Skeleton, type WebGPURenderer } from 'three/webgpu';
+import { Mesh, SkinnedMesh, SRGBColorSpace, NoColorSpace, RepeatWrapping, type Texture, type Material, type BufferGeometry, type Skeleton, type WebGPURenderer } from 'three/webgpu';
 import { GLTFLoader, type GLTF } from 'three/addons/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { ResourceCache, type AssetHandle } from './resource-cache';
 import { validateManifest, type AssetManifest } from './manifest';
+import { SharedModelTextures } from './shared-model-textures';
 
-type Resource = { kind: 'model'; gltf: GLTF } | { kind: 'texture'; texture: Texture };
+type Resource = { kind: 'model'; gltf: GLTF; releaseTextures: () => void } | { kind: 'texture'; texture: Texture };
 
 export class AssetManager {
   private readonly ktx = new KTX2Loader().setTranscoderPath('/assets/decoders/basis/').setWorkerLimit(2);
@@ -17,6 +18,7 @@ export class AssetManager {
   private disposed = false;
   private decodes = 0;
   private preparations = 0;
+  private readonly modelTextures = new SharedModelTextures();
 
   constructor(readonly renderer: WebGPURenderer) {
     this.ktx.detectSupport(renderer);
@@ -46,7 +48,10 @@ export class AssetManager {
       if (this.disposed) throw new Error('Asset loading was cancelled.');
       this.decodes++;
       try {
-        if (definition.kind === 'model') return { kind: 'model', gltf: await this.gltf.parseAsync(bytes, new URL('.', url).href) };
+        if (definition.kind === 'model') {
+          const gltf = await this.gltf.parseAsync(bytes, new URL('.', url).href);
+          return { kind: 'model', gltf, releaseTextures: await this.modelTextures.retain(gltf.scene) };
+        }
         const texture = await new Promise<Texture>((resolve, reject) => this.ktx.parse(bytes, resolve, reject));
         texture.colorSpace = definition.colorSpace === 'srgb' ? SRGBColorSpace : NoColorSpace;
         texture.wrapS = texture.wrapT = RepeatWrapping;
@@ -78,13 +83,11 @@ export class AssetManager {
   }
   private destroy(resource: Resource): void {
     if (resource.kind === 'texture') { resource.texture.dispose(); return; }
-    const textures = new Set<Texture>();
     const geometries = new Set<BufferGeometry>(); const materials = new Set<Material>(); const skeletons = new Set<Skeleton>();
     resource.gltf.scene.traverse((object) => {
       if (!(object instanceof Mesh)) return;
       geometries.add(object.geometry);
       for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
-        for (const value of Object.values(material)) if (value instanceof Texture) textures.add(value);
         materials.add(material);
       }
       if (object instanceof SkinnedMesh) skeletons.add(object.skeleton);
@@ -92,10 +95,7 @@ export class AssetManager {
     for (const geometry of geometries) geometry.dispose();
     for (const material of materials) material.dispose();
     for (const skeleton of skeletons) skeleton.dispose();
-    for (const texture of textures) {
-      texture.dispose();
-      if (texture.source.data instanceof ImageBitmap) texture.source.data.close();
-    }
+    resource.releaseTextures();
   }
   get resourceCount(): number { return this.cache.size; }
   get referenceCount(): number { return this.cache.references; }

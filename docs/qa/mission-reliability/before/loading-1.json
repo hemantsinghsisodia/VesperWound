@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-16T15:35:31.722Z",
+  "browser": "155.0.8059.80",
+  "quality": "High",
+  "adaptive": false,
+  "uncapped": true,
+  "profile": false,
+  "method": "External requestAnimationFrame intervals from clicking Start mission to committed introduction, fresh browser context; includes scheduling and CPU.",
+  "loading": {
+    "seconds": 5.0315,
+    "frames": 226,
+    "p95": 68.5,
+    "max": 333.60000000000036,
+    "over50": 17,
+    "over100": 11,
+    "backend": "WebGPU",
+    "resolution": [
+      1440,
+      900
+    ]
+  },
+  "errors": []
+}
