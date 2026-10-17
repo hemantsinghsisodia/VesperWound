@@ -305,6 +305,7 @@ export class Application {
         if (this.started && !this.inspection && this.quality.observe(this.metrics.frameMs, time)) this.resize();
       }
       if (time - this.lastUiUpdate > 500) {
+        this.ui.frameRate(paused ? null : this.metrics.fps);
         this.debug?.update(this.snapshot()); this.lastUiUpdate = time;
         // Read-only evidence on the rendering surface, available in production
         // without exposing commands or enabling the development diagnostics.

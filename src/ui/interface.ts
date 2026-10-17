@@ -27,7 +27,7 @@ export class Interface {
         <canvas id="world" aria-label="The Ash Quay courtyard" tabindex="0"></canvas>
         <div class="vignette" aria-hidden="true"></div>
         <header class="masthead"><a class="wordmark" href="/" aria-label="Vesperwound home"><span class="sigil">V</span> VESPERWOUND</a>
-          <div class="header-actions"><button id="mute" class="icon-button" aria-label="Mute audio" aria-pressed="false">♪</button><button id="settings-open" class="icon-button" aria-label="Open settings">☰</button></div></header>
+          <div class="header-actions"><span id="fps-counter" class="fps-counter" aria-live="off">FPS —</span><button id="mute" class="icon-button" aria-label="Mute audio" aria-pressed="false">♪</button><button id="settings-open" class="icon-button" aria-label="Open settings">☰</button></div></header>
         <section id="entry" class="entry">
           <div class="entry-ornament" aria-hidden="true">✧</div>
           <p class="eyebrow">A CITY THAT FORGOT HOW TO DIE</p>
@@ -142,6 +142,9 @@ export class Interface {
     this.lifetime.listen(this.get('#mute'), 'click', () => callbacks.preferences({ muted: this.get<HTMLButtonElement>('#mute').getAttribute('aria-pressed') !== 'true' }));
   }
   loading(message: string): void { this.status.textContent = message; }
+  frameRate(fps: number | null): void {
+    this.get('#fps-counter').textContent = fps !== null && Number.isFinite(fps) && fps > 0 ? `${Math.round(fps)} FPS` : 'FPS —';
+  }
   prepare(): void {
     this.entry.hidden = false; this.errorPanel.hidden = true; this.start.disabled = true;
     this.start.innerHTML = 'OPENING THE INTAKE <span aria-hidden="true">↗</span>';

@@ -1,4 +1,5 @@
 @import url('/fonts.css');
+.fps-counter{display:none;align-items:center;justify-content:center;min-width:58px;padding:0 8px;border:1px solid #ad99643f;background:#0c171bcc;color:#c8b58a;font:11px/1 Consolas,monospace;font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}#app[data-state=running] .fps-counter,#app[data-state=paused] .fps-counter{display:inline-flex}
 #inspection-toggle,#inspection-controls{grid-column:1/-1}#inspection-controls{display:grid;grid-template-columns:auto auto;align-items:center;gap:10px}#inspection-controls small,#animation-pause{grid-column:1/-1}#inspection-controls small{color:#9daaa2;max-width:240px;line-height:1.5}#app[data-inspection=active] .vignette{display:none}
 .showcase-controls #art-status,.showcase-controls #inspection-status{max-width:310px;overflow-wrap:anywhere;line-height:1.5}
 .showcase-controls #inspection-status{grid-column:1/-1;font-size:10px;color:#d5ba80}.showcase-controls #inspection-status:empty{display:none}
