@@ -6,6 +6,23 @@ import { courtyardSolids } from '../../src/player/collision-math';
 import { GroundNavigation } from '../../src/enemies/navigation';
 import { initializePhysics, RapierPlayerCollision } from '../../src/player/player-collision';
 
+test('player capsule can leave the west canopy corner through the seaward lane', async () => {
+  await initializePhysics();
+  const collision = new RapierPlayerCollision(); collision.install(DISTRICT_BOXES);
+  let position = { x: -4.045, y: .03, z: 25.046 };
+  try {
+    for (const target of [{ x: -4.045, z: 27 }, { x: 3, z: 27 }, { x: 3, z: 24.4 }]) {
+      for (let frame = 0; frame < 600; frame++) {
+        const dx = target.x - position.x, dz = target.z - position.z, distance = Math.hypot(dx, dz);
+        if (distance < .1) break;
+        const step = Math.min(5 / 60, distance);
+        position = collision.move(position, { x: dx / distance * step, y: -.02, z: dz / distance * step }).position;
+      }
+      expect(Math.hypot(target.x - position.x, target.z - position.z)).toBeLessThan(.1);
+    }
+  } finally { collision.dispose(); }
+});
+
 test('section prefetch uses hysteresis and releases exactly one lease', async () => {
   const release = vi.fn(), attach = vi.fn(), detach = vi.fn();
   const load = vi.fn(async () => ({ value: 7, release }));

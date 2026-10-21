@@ -1,5 +1,7 @@
-import { Group, Mesh, BoxGeometry, CylinderGeometry, RingGeometry, MeshStandardNodeMaterial, MeshBasicNodeMaterial, Sprite, SpriteMaterial, CanvasTexture, type Material } from 'three/webgpu';
+import { Group, Mesh, BoxGeometry, CylinderGeometry, RingGeometry, MeshStandardNodeMaterial, MeshBasicNodeMaterial, type BufferGeometry, type Material, type Object3D } from 'three/webgpu';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { MISSION_POINTS, type FirstMission } from '../mission/first-mission';
+import type { WorldLabel, WorldLabels } from './world-labels';
 
 /** Original small mission props; all geometry/materials have this scene owner. */
 export class MissionPresentation {
@@ -9,11 +11,7 @@ export class MissionPresentation {
   private readonly winch=new Group();
   private readonly needle=new Group();
   private readonly wake=new Group();
-  private readonly labelTexture=new CanvasTexture(document.createElement('canvas'));
-  private readonly labelMaterial=new SpriteMaterial({map:this.labelTexture,transparent:true,depthTest:false});
-  private readonly label=new Sprite(this.labelMaterial);
-  private labelText='';
-  private readonly labelGeometry=this.label.geometry.clone();
+  private readonly label:WorldLabel;
   private readonly ramp=new Group();
   private readonly regulator=new Group();
   private readonly drum=new Group();
@@ -28,13 +26,15 @@ export class MissionPresentation {
   private readonly wakeMaterial=new MeshBasicNodeMaterial({color:0x9abbae,transparent:true,opacity:.14,depthWrite:false});
   private readonly lamp=new MeshBasicNodeMaterial({color:0x917c4a,toneMapped:false});
   private readonly marker=new Mesh(this.ring,this.amber);
+  private readonly batches:BufferGeometry[]=[];
   private disposed=false;
-  constructor(private readonly mission:FirstMission){
+  constructor(private readonly mission:FirstMission,labels:WorldLabels){
+    this.label=labels.create('mission');
+    const boxes:Mesh<BoxGeometry,Material>[]=[];
     const box=(parent:Group,x:number,y:number,z:number,sx:number,sy:number,sz:number,material:Material)=>{
-      const mesh=new Mesh(this.box,material);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
+      const mesh=new Mesh(this.box,material);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);boxes.push(mesh);return mesh;
     };
     this.group.add(this.quay);this.quay.add(this.regulator,this.ramp,this.winch,this.marker,this.ferry,this.wake,this.label);this.winch.add(this.drum,this.needle);
-    this.label.geometry=this.labelGeometry;this.label.scale.set(2.8,.4,1);this.label.renderOrder=8;
     const r=MISSION_POINTS.regulator,w=MISSION_POINTS.winch;
     // Open service case and brass pressure cartridge under the existing canopy.
     box(this.quay,r.x,.25,r.z-.55,.9,.45,.6,this.dark);
@@ -77,7 +77,31 @@ export class MissionPresentation {
       const a=box(this.group,-.12,.075,z,.06,.02,.4,this.brass);a.rotation.y=-.55;
       const b=box(this.group,.12,.075,z,.06,.02,.4,this.brass);b.rotation.y=.55;
     }
+    this.batchBoxes(boxes);
     this.marker.rotation.x=-Math.PI/2;this.update(false);
+  }
+  private batchBoxes(boxes:readonly Mesh<BoxGeometry,Material>[]):void {
+    // Only combine identical geometry/material under the same animated parent.
+    // Bake local transforms after construction. Geometry stays immutable while
+    // ferry/ramp/needle groups retain their existing motion.
+    const parents=new Map<Object3D,Map<Material,Mesh<BoxGeometry,Material>[]>>();
+    for(const mesh of boxes){
+      const parent=mesh.parent;if(!parent)continue;
+      let materials=parents.get(parent);if(!materials){materials=new Map();parents.set(parent,materials);}
+      const members=materials.get(mesh.material)??[];members.push(mesh);materials.set(mesh.material,members);
+    }
+    for(const [parent,materials] of parents)for(const [material,members] of materials){
+      if(members.length<2)continue;
+      const parts=members.map(mesh=>{mesh.updateMatrix();return this.box.clone().applyMatrix4(mesh.matrix);});
+      const geometry=mergeGeometries(parts);
+      for(const part of parts)part.dispose();
+      if(!geometry)throw new Error('Mission box geometry could not be combined');
+      const batch=new Mesh(geometry,material);
+      batch.castShadow=true;batch.receiveShadow=true;
+      for(const mesh of members)mesh.removeFromParent();
+      geometry.computeBoundingBox();geometry.computeBoundingSphere();
+      parent.add(batch);this.batches.push(geometry);
+    }
   }
   update(quayReady:boolean):void {
     this.group.visible=this.mission.active;this.quay.visible=quayReady;
@@ -87,10 +111,7 @@ export class MissionPresentation {
     if(target){
       this.marker.position.set(target.x,.1,target.z);this.label.position.set(target.x,1.55,target.z);
       const text=this.mission.stage==='regulator'?'REGULATOR · SAFE BAY':this.mission.stage==='board'?'BOARD FERRY':'WINCH SOCKET';
-      if(text!==this.labelText){
-        this.labelText=text;const canvas=this.labelTexture.image as HTMLCanvasElement;canvas.width=512;canvas.height=72;
-        const ctx=canvas.getContext('2d');if(ctx){ctx.fillStyle='#102329e8';ctx.fillRect(0,0,512,72);ctx.fillStyle=this.mission.stage==='board'?'#9ae0c7':'#f6c36b';ctx.font='bold 25px Arial';ctx.textAlign='center';ctx.fillText(text,256,46);this.labelTexture.needsUpdate=true;}
-      }
+      this.label.text(text,this.mission.stage==='board'?'mint':'amber');
     }
     this.ramp.rotation.x=-(1-this.mission.ramp)*Math.PI/2;
     this.drum.rotation.x=Math.max(0,this.mission.powerTime-2)*2.5;
@@ -100,6 +121,6 @@ export class MissionPresentation {
     this.marker.material.color.setHex(this.mission.stage==='board'?0x9ae0c7:0xf6c36b);
     this.lamp.color.setHex(this.mission.powerTime>=6?0x9ae0c7:this.mission.powerTime>0?0xf6c36b:0x917c4a);
   }
-  get ownedResources():number{return 13;}
-  dispose():void{if(this.disposed)return;this.disposed=true;this.group.removeFromParent();this.group.clear();this.labelGeometry.dispose();this.labelTexture.dispose();this.labelMaterial.dispose();this.box.dispose();this.cylinder.dispose();this.ring.dispose();for(const material of [this.steel,this.brass,this.dark,this.wood,this.amber,this.lamp,this.wakeMaterial])material.dispose();}
+  get ownedResources():number{return 11+this.batches.length;}
+  dispose():void{if(this.disposed)return;this.disposed=true;this.group.removeFromParent();this.group.clear();this.label.dispose();for(const batch of this.batches)batch.dispose();this.batches.length=0;this.box.dispose();this.cylinder.dispose();this.ring.dispose();for(const material of [this.steel,this.brass,this.dark,this.wood,this.amber,this.lamp,this.wakeMaterial])material.dispose();}
 }

@@ -24,9 +24,11 @@ import type { FirstMission } from '../mission/first-mission';
 import type { SectionLease } from '../assets/section-stream';
 import { MissionCamera } from '../camera/mission-camera';
 import { MissionPresentation } from './mission-presentation';
+import { WorldLabels } from './world-labels';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
+  readonly labels = new WorldLabels();
   readonly scene = new Scene();
   readonly missionCamera=new MissionCamera();
   private missionLease:SectionLease|null=null;
@@ -59,8 +61,8 @@ export class VisualShowcase implements WorldPresentation {
   setEnemy(view: EnemyPresentation | null): void { this.enemy?.dispose(); if (this.enemy) this.scene.remove(this.enemy.group); this.enemy = view; if (view) this.scene.add(view.group); }
 
   constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation, private readonly camera: Camera, private readonly mission?:FirstMission) {
-    this.missionView=mission?new MissionPresentation(mission):null;if(this.missionView)this.scene.add(this.missionView.group);
-    this.combat = new CombatPresentation(player); this.scene.add(this.combat.group);
+    this.missionView=mission?new MissionPresentation(mission, this.labels):null;if(this.missionView)this.scene.add(this.missionView.group);
+    this.combat = new CombatPresentation(player, this.labels); this.scene.add(this.combat.group);
     this.scene.background = new Color(0x1b2931);
     this.scene.fog = new FogExp2(0x1b2931, 0.025);
     this.actor.position.copy(this.target); this.actor.rotation.y = 0.25;
@@ -69,6 +71,9 @@ export class VisualShowcase implements WorldPresentation {
     this.key.castShadow = true;
     Object.assign(this.key.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12, near: 1, far: 40 });
     this.key.shadow.bias = -0.0006; this.key.shadow.normalBias = 0.035;
+    // Soften shadow texel steps with the existing five PCF samples. Preserve
+    // the full district/cinematic footprint and the quality-tier map budgets.
+    this.key.shadow.radius = 1.5;
     this.engine.position.set(0, 2.8, -2); this.gate.position.set(-5, 3.1, -6);
     this.scene.add(this.key, this.key.target, new HemisphereLight(0xa0b6cb, 0x39382e, 1.35), this.engine, this.gate);
   }
@@ -125,7 +130,6 @@ export class VisualShowcase implements WorldPresentation {
     this.time += dt; this.preview.update(animationDt);
     if (this.playing) this.combat.update(dt, reducedMotion);
     this.enemy?.update(animationDt, reducedMotion);
-    this.scene.updateMatrixWorld(true);
     this.engine.intensity = 12 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * .4);
     // Keep the shadow footprint around the current area, with a stable light direction.
     const lightZ = this.mission?.cinematic||this.mission?.stage==='complete'?24:Math.max(0, this.target.z - 4);
@@ -185,6 +189,7 @@ export class VisualShowcase implements WorldPresentation {
     this.releaseMissionSection();
     this.district?.dispose(); this.district = null;
     this.missionView?.dispose();
+    this.labels.dispose();
     this.baton?.dispose(); this.baton=null; this.preview.dispose(); this.combat.dispose(); this.enemy?.dispose(); this.enemy=null;
     this.scene.clear(); this.scene.environment = null; this.steam.length = 0;
     for (const handle of this.handles) handle.release(); this.handles.length = 0;

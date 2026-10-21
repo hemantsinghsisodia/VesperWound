@@ -1,4 +1,4 @@
-#mission-hud{position:absolute;right:28px;top:88px;width:268px;padding:14px 16px;background:linear-gradient(110deg,#0b1b20ed,#0b1b20b8);border-left:2px solid #ba985e;color:#dce2d7;pointer-events:auto}
+#mission-hud{position:absolute;right:28px;top:88px;width:268px;padding:14px 16px;background:linear-gradient(110deg,#0b1b20ed,#0b1b20b8);border-left:2px solid #ba985e;color:#dce2d7;pointer-events:auto;z-index:4}
 #mission-hud small{font:9px Arial,sans-serif;letter-spacing:1.6px;color:#cbb381}
 #mission-hud h2{font:21px/1.15 Georgia,serif;margin:9px 0}
 #mission-hud p{font:12px/1.5 Arial,sans-serif;margin:8px 0}

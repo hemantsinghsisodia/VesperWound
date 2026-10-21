@@ -1,0 +1,206 @@
+{
+  "date": "2026-10-21T02:48:09.276Z",
+  "browser": "155.0.8059.85",
+  "scenario": "mission",
+  "hardware": {
+    "backend": "WebGPU",
+    "resolution": [
+      1440,
+      900
+    ],
+    "adapterRequests": [
+      {
+        "powerPreference": "high-performance",
+        "vendor": "intel",
+        "architecture": "gen-12lp",
+        "description": ""
+      },
+      {
+        "powerPreference": "default",
+        "vendor": "intel",
+        "architecture": "gen-12lp",
+        "description": ""
+      }
+    ],
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "quality": "High",
+  "smoothEdges": true,
+  "adaptive": false,
+  "uncapped": true,
+  "warmupSeconds": 30,
+  "method": "External requestAnimationFrame intervals; Chrome frame limiter and GPU vsync disabled; includes scheduling and CPU, not isolated GPU timestamps.",
+  "metrics": {
+    "seconds": 300.215200000003,
+    "frames": 31067,
+    "p95": 11.400000000008731,
+    "max": 33,
+    "over50": 0,
+    "over100": 0,
+    "combatFrames": 16925,
+    "combatP95": 11.60000000000582,
+    "phases": {
+      "passage-fight": {
+        "frames": 5540,
+        "p95": 11.799999999988358,
+        "max": 28.900000000023283,
+        "over50": 0
+      },
+      "regulator": {
+        "frames": 6989,
+        "p95": 11.200000000011642,
+        "max": 28.5,
+        "over50": 0
+      },
+      "winch-approach": {
+        "frames": 202,
+        "p95": 27.5,
+        "max": 29.199999999982538,
+        "over50": 0
+      },
+      "winch-fight": {
+        "frames": 11385,
+        "p95": 11.599999999991269,
+        "max": 33,
+        "over50": 0
+      },
+      "install": {
+        "frames": 416,
+        "p95": 12,
+        "max": 28.69999999999709,
+        "over50": 0
+      },
+      "powering": {
+        "frames": 1845,
+        "p95": 10.80000000000291,
+        "max": 28,
+        "over50": 0
+      },
+      "board": {
+        "frames": 472,
+        "p95": 10.89999999999418,
+        "max": 27.699999999982538,
+        "over50": 0
+      },
+      "departure": {
+        "frames": 2996,
+        "p95": 8.299999999988358,
+        "max": 25.900000000023283,
+        "over50": 0
+      },
+      "complete": {
+        "frames": 142,
+        "p95": 5.80000000000291,
+        "max": 7.2999999999883585,
+        "over50": 0
+      },
+      "quay": {
+        "frames": 1080,
+        "p95": 11.39999999999418,
+        "max": 28,
+        "over50": 0
+      }
+    }
+  },
+  "loading": {
+    "seconds": 2.6286999999955296,
+    "frames": 249,
+    "p95": 26.5,
+    "max": 44.399999999999636,
+    "over50": 0
+  },
+  "samples": [
+    {
+      "elapsed": 30.0275,
+      "bytes": 62862106,
+      "textures": 76,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 60.03680000000447,
+      "bytes": 62862106,
+      "textures": 76,
+      "stage": "powering",
+      "visible": "visible",
+      "completions": 0
+    },
+    {
+      "elapsed": 90.0626000000015,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "regulator",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 120.08760000000149,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 150.106,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "powering",
+      "visible": "visible",
+      "completions": 1
+    },
+    {
+      "elapsed": 180.13,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 210.14240000000595,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 240.16220000000297,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "winch-fight",
+      "visible": "visible",
+      "completions": 2
+    },
+    {
+      "elapsed": 270.175900000006,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "passage-fight",
+      "visible": "visible",
+      "completions": 3
+    },
+    {
+      "elapsed": 300.196,
+      "bytes": 62862986,
+      "textures": 76,
+      "stage": "regulator",
+      "visible": "visible",
+      "completions": 3
+    }
+  ],
+  "completions": 4,
+  "driverError": "",
+  "errors": [],
+  "warnings": [
+    "The powerPreference option is currently ignored when calling requestAdapter() on Windows. See https://crbug.com/369219127",
+    "THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances."
+  ]
+}

@@ -73,7 +73,9 @@ export class PreviewActor {
     this.clip = selection;
   }
   turn(): void { this.group.rotation.y += Math.PI / 4; }
-  update(dt: number): void { if (!this.paused && this.clip.kind === 'clip') this.mixer?.update(dt); this.group.updateMatrixWorld(true); }
+  // The renderer propagates transforms after interpolation. Diagnostics below
+  // explicitly update them when a synchronous pose read is needed.
+  update(dt: number): void { if (!this.paused && this.clip.kind === 'clip') this.mixer?.update(dt); }
   inspection(): { feet: number[][]; gripDistances: number[] } {
     this.group.updateMatrixWorld(true);
     const feet = (this.definition.diagnostics?.feet ?? []).flatMap((name) => {

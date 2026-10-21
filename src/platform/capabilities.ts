@@ -16,7 +16,7 @@ export function defaultPreferences() {
   const mobile = matchMedia('(pointer: coarse)').matches && window.innerWidth < 1100;
   return {
     version: 1 as const, quality: mobile ? 'Mobile' as const : 'High' as const,
-    adaptive: true, muted: false, volume: 0.55,
+    adaptive: true, smoothEdges: true, muted: false, volume: 0.55,
     reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches,
     uiScale: 1, leftHanded: false,
   };

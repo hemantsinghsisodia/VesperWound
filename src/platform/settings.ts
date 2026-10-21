@@ -4,6 +4,7 @@ export interface Preferences {
   version: 1;
   quality: QualityName;
   adaptive: boolean;
+  smoothEdges: boolean;
   muted: boolean;
   volume: number;
   reducedMotion: boolean;
@@ -25,6 +26,7 @@ export function parsePreferences(raw: string | null, defaults: Preferences): Pre
       version: 1,
       quality: isQualityName(record.quality) ? record.quality : defaults.quality,
       adaptive: typeof record.adaptive === 'boolean' ? record.adaptive : defaults.adaptive,
+      smoothEdges: typeof record.smoothEdges === 'boolean' ? record.smoothEdges : defaults.smoothEdges,
       muted: typeof record.muted === 'boolean' ? record.muted : defaults.muted,
       volume: bounded(record.volume, defaults.volume, 0, 1),
       reducedMotion: typeof record.reducedMotion === 'boolean' ? record.reducedMotion : defaults.reducedMotion,

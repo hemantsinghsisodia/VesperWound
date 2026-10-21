@@ -1,6 +1,9 @@
 # VESPERWOUND project instructions
 
 ## Approved scope
+- Edge-quality and FPS follow-up review is approved on 2026-10-21, with explicit authorization to commit, merge into main and push. Retain sharp screen-space labels, measured rendering optimizations and the documented performance variability, guard-activation cost and touch/physical-phone validation limitations. Further milestones require new scope approval.
+- Edge-quality FPS follow-up is authorized: investigate and reduce the frame-time regression while retaining sharp screen-space text on `codex/edge-quality`. Preserve gameplay, assets and resolution budgets, measure the result, stop validation servers and stop for user review without merging.
+- Edge-quality pass is authorized on 2026-10-18 on `codex/edge-quality`: reduce visible aliasing with minimal FPS impact, compare anti-aliasing and shadow coverage in actual desktop/touch renders and five-minute production measurements. Preserve gameplay, assets and resolution budgets. Stop for review without merging and stop validation servers.
 - On-screen FPS counter review is approved on 2026-10-17, with explicit authorization to commit, merge into main and push.
 - On-screen FPS counter is authorized on 2026-10-17 on `codex/fps-counter`: add a compact desktop/touch display using existing frame measurements, validate and stop for review without merging. Stop validation servers.
 - Mission reliability review is approved on 2026-10-17, with explicit authorization to commit, merge into main and push. Retain the documented cold-loading hitches and brief guard-activation cost; first-time human pacing and physical-phone performance remain unverified. Further milestones require new scope approval.

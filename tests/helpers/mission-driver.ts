@@ -63,10 +63,11 @@ export async function winMissionFight(page:Page,touch=false):Promise<void>{
   expect(won,`Mission fight timed out: ${JSON.stringify(trace)}`).toBe(true);
 }
 
-/** Route around the solid crane plinth; combat can end on either side of it. */
+/** Route around the crane plinth and west canopy pier after combat dispersal. */
 export async function walkToMissionWinch(page:Page,touch=false):Promise<void>{
   const p=await observedPosition(page);
   if(p.x>3.5){const z=p.z>=24.4?27:22.5;await walkTo(page,{x:p.x,z},touch);await walkTo(page,{x:3,z},touch);}
+  else if(p.x<-3.2){const z=p.z>=24.9?27:22.8;await walkTo(page,{x:p.x,z},touch);await walkTo(page,{x:3,z},touch);}
   await walkTo(page,{x:3,z:24.4},touch);
 }
 

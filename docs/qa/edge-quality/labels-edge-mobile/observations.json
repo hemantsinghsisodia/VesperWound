@@ -1,0 +1,26 @@
+{
+  "observations": [
+    {
+      "enabled": false,
+      "width": 266,
+      "fontSize": "15.4px",
+      "pointerEvents": "none",
+      "text": "RESTLESSHP 120/120 · POSTURE 0"
+    },
+    {
+      "enabled": true,
+      "width": 266,
+      "fontSize": "15.4px",
+      "pointerEvents": "none",
+      "text": "STRIKE INCOMINGHP 120/120 · POSTURE 0"
+    },
+    {
+      "enabled": true,
+      "width": 266,
+      "fontSize": "15.4px",
+      "pointerEvents": "none",
+      "text": "RESTLESSHP 120/120 · POSTURE 0"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-20T15:41:30.737Z",
+  "browser": "155.0.8059.85",
+  "quality": "High",
+  "adaptive": false,
+  "smoothEdges": true,
+  "uncapped": true,
+  "method": "Ten-second instrumented static quay screening after real mission combat; not acceptance measurement.",
+  "sample": {
+    "seconds": 10.01380000000223,
+    "frames": 522,
+    "p95": 42.10000000000582,
+    "backend": "WebGPU",
+    "position": "3.021,0.029,24.608",
+    "bytes": "62843370",
+    "textures": "76",
+    "callsPerFrame": {
+      "writes": 246.22605363984675,
+      "draws": 336.64367816091954,
+      "passes": 5.009578544061303
+    }
+  }
+}

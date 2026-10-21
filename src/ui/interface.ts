@@ -1,3 +1,4 @@
+import { writeChanged } from './write-changed';
 import { Lifetime } from '../core/lifetime';
 import { QUALITY_NAMES, type QualityName } from '../performance/quality';
 import type { Preferences } from '../platform/settings';
@@ -20,12 +21,14 @@ export class Interface {
   private readonly rotate: HTMLElement;
   private readonly errorPanel: HTMLElement;
   private districtDisplay = '';
+  private readonly elements = new Map<string, HTMLElement>();
 
   constructor(readonly root: HTMLElement, preferences: Preferences) {
     root.innerHTML = `
       <main class="experience" aria-label="Vesperwound Ash Quay">
         <canvas id="world" aria-label="The Ash Quay courtyard" tabindex="0"></canvas>
         <div class="vignette" aria-hidden="true"></div>
+        <div id="world-labels"></div>
         <header class="masthead"><a class="wordmark" href="/" aria-label="Vesperwound home"><span class="sigil">V</span> VESPERWOUND</a>
           <div class="header-actions"><span id="fps-counter" class="fps-counter" aria-live="off">FPS —</span><button id="mute" class="icon-button" aria-label="Mute audio" aria-pressed="false">♪</button><button id="settings-open" class="icon-button" aria-label="Open settings">☰</button></div></header>
         <section id="entry" class="entry">
@@ -66,6 +69,7 @@ export class Interface {
           <div id="scene-tools-slot"><h3>Practice &amp; character</h3></div>
           <label class="setting-row">Graphics quality<select id="quality">${QUALITY_NAMES.map((name) => `<option>${name}</option>`).join('')}</select></label>
           <label class="setting-row">Adaptive resolution<input id="adaptive" type="checkbox" /></label>
+          <label class="setting-row">Smooth edges (FXAA)<input id="smooth-edges" type="checkbox" /></label>
           <label class="setting-row">Audio volume<input id="volume" type="range" min="0" max="1" step="0.05" /></label>
           <label class="setting-row">Reduced motion<input id="reduced-motion" type="checkbox" /></label>
           <label class="setting-row">Interface scale<input id="ui-scale" type="range" min="0.8" max="1.4" step="0.1" /></label>
@@ -79,20 +83,22 @@ export class Interface {
     this.entry = this.get('#entry'); this.start = this.get('#start'); this.status = this.get('#load-status');
     this.settings = this.get('#settings'); this.rotate = this.get('#rotate'); this.errorPanel = this.get('#error');
     this.get('#scene-tools-slot').append(this.get('#showcase-controls'), this.get('#reset-targets'), this.get('#combat-score'));
-    this.get('#view-character').textContent = MEDIC.displayName;
+    writeChanged(this.get('#view-character'), 'textContent', MEDIC.displayName);
     this.get('#turn-character').setAttribute('aria-label', `Turn ${MEDIC.displayName}`);
-    this.get<HTMLSelectElement>('#quality').value = preferences.quality;
+    writeChanged(this.get<HTMLSelectElement>('#quality'), 'value', preferences.quality);
     this.get<HTMLInputElement>('#adaptive').checked = preferences.adaptive;
-    this.get<HTMLInputElement>('#volume').value = String(preferences.volume);
+    this.get<HTMLInputElement>('#smooth-edges').checked = preferences.smoothEdges;
+    writeChanged(this.get<HTMLInputElement>('#volume'), 'value', String(preferences.volume));
     this.get<HTMLInputElement>('#reduced-motion').checked = preferences.reducedMotion;
-    this.get<HTMLInputElement>('#ui-scale').value = String(preferences.uiScale);
+    writeChanged(this.get<HTMLInputElement>('#ui-scale'), 'value', String(preferences.uiScale));
     this.get<HTMLInputElement>('#left-handed').checked = preferences.leftHanded;
     this.applyPreferences(preferences);
   }
   get<T extends HTMLElement>(selector: string): T {
-    const element = this.root.querySelector<T>(selector);
+    const element = this.elements.get(selector) ?? this.root.querySelector<T>(selector);
     if (!element) throw new Error(`Missing UI element: ${selector}`);
-    return element;
+    this.elements.set(selector, element);
+    return element as T;
   }
   bind(callbacks: {
     districtRetry(): void;
@@ -135,72 +141,74 @@ export class Interface {
     });
     this.lifetime.listen(this.get('#quality'), 'change', () => callbacks.preferences({ quality: this.get<HTMLSelectElement>('#quality').value as QualityName }));
     this.lifetime.listen(this.get('#adaptive'), 'change', () => callbacks.preferences({ adaptive: this.get<HTMLInputElement>('#adaptive').checked }));
+    this.lifetime.listen(this.get('#smooth-edges'), 'change', () => callbacks.preferences({ smoothEdges: this.get<HTMLInputElement>('#smooth-edges').checked }));
     this.lifetime.listen(this.get('#volume'), 'input', () => callbacks.preferences({ volume: Number(this.get<HTMLInputElement>('#volume').value) }));
     this.lifetime.listen(this.get('#reduced-motion'), 'change', () => callbacks.preferences({ reducedMotion: this.get<HTMLInputElement>('#reduced-motion').checked }));
     this.lifetime.listen(this.get('#ui-scale'), 'input', () => callbacks.preferences({ uiScale: Number(this.get<HTMLInputElement>('#ui-scale').value) }));
     this.lifetime.listen(this.get('#left-handed'), 'change', () => callbacks.preferences({ leftHanded: this.get<HTMLInputElement>('#left-handed').checked }));
     this.lifetime.listen(this.get('#mute'), 'click', () => callbacks.preferences({ muted: this.get<HTMLButtonElement>('#mute').getAttribute('aria-pressed') !== 'true' }));
   }
-  loading(message: string): void { this.status.textContent = message; }
+  loading(message: string): void { writeChanged(this.status, 'textContent', message); }
   frameRate(fps: number | null): void {
-    this.get('#fps-counter').textContent = fps !== null && Number.isFinite(fps) && fps > 0 ? `${Math.round(fps)} FPS` : 'FPS —';
+    writeChanged(this.get('#fps-counter'), 'textContent', fps !== null && Number.isFinite(fps) && fps > 0 ? `${Math.round(fps)} FPS` : 'FPS —');
   }
   prepare(): void {
-    this.entry.hidden = false; this.errorPanel.hidden = true; this.start.disabled = true;
+    writeChanged(this.entry, 'hidden', false); writeChanged(this.errorPanel, 'hidden', true); writeChanged(this.start, 'disabled', true);
     this.start.innerHTML = 'OPENING THE INTAKE <span aria-hidden="true">↗</span>';
-    this.root.dataset.state = 'loading';
+    writeChanged(this.root.dataset, 'state', 'loading');
   }
   replaceCanvas(): void {
     const fresh = this.canvas.cloneNode(false) as HTMLCanvasElement;
     this.canvas.replaceWith(fresh); this.canvas = fresh;
+    this.elements.clear();
   }
   openSettings(): void { if (!this.settings.open) this.settings.showModal(); }
-  ready(): void { this.start.disabled = false; this.start.innerHTML = 'ENTER THE WORKS <span aria-hidden="true">↗</span>'; this.status.textContent = 'The intake is open.'; this.root.dataset.state = 'ready'; }
+  ready(): void { writeChanged(this.start, 'disabled', false); this.start.innerHTML = 'ENTER THE WORKS <span aria-hidden="true">↗</span>'; writeChanged(this.status, 'textContent', 'The intake is open.'); writeChanged(this.root.dataset, 'state', 'ready'); }
   enter(): void {
-    this.entry.hidden = true;
+    writeChanged(this.entry, 'hidden', true);
     const showcase = this.root.dataset.scene === 'showcase';
-    this.get('#location').hidden = false; this.get('#controls-hint').hidden = false; this.get('#touch-controls').hidden = false;
-    this.get('#showcase-controls').hidden = !showcase;
-    this.get('#session-status').textContent = 'PRESSURE STABLE'; this.canvas.focus(); this.root.dataset.state = 'running';
+    writeChanged(this.get('#location'), 'hidden', false); writeChanged(this.get('#controls-hint'), 'hidden', false); writeChanged(this.get('#touch-controls'), 'hidden', false);
+    writeChanged(this.get('#showcase-controls'), 'hidden', !showcase);
+    writeChanged(this.get('#session-status'), 'textContent', 'PRESSURE STABLE'); this.canvas.focus(); writeChanged(this.root.dataset, 'state', 'running');
     this.get('#location').classList.remove('location-arrival');
     void this.get('#location').offsetWidth;
     this.get('#location').classList.add('location-arrival');
     if (showcase) this.mode('player');
   }
-  scene(name: 'foundation' | 'showcase'): void { this.root.dataset.scene = name; }
+  scene(name: 'foundation' | 'showcase'): void { writeChanged(this.root.dataset, 'scene', name); }
   mode(view: CameraView): void {
-    const playing = view === 'player'; this.root.dataset.mode = view;
+    const playing = view === 'player'; writeChanged(this.root.dataset, 'mode', view);
     for (const choice of ['player', 'courtyard', 'character']) this.get(`#view-${choice}`).setAttribute('aria-pressed', String(choice === view));
-    this.get('#player-hud').hidden = !playing; this.get('#touch-controls').hidden = !playing;
-    this.get('#controls-hint').hidden = !playing;
+    writeChanged(this.get('#player-hud'), 'hidden', !playing); writeChanged(this.get('#touch-controls'), 'hidden', !playing);
+    writeChanged(this.get('#controls-hint'), 'hidden', !playing);
     this.placeSceneTools();
     if (playing) {
-      this.pulse.setAttribute('aria-label', 'Attack'); this.pulse.querySelector('small')!.textContent = 'ATTACK';
+      this.pulse.setAttribute('aria-label', 'Attack'); writeChanged(this.pulse.querySelector('small')!, 'textContent', 'ATTACK');
       this.get('#controls-hint').innerHTML = '<span>W A S D <small>walk · SHIFT run</small></span><span>CLICK / RIGHT CLICK <small>light / heavy</small></span><span>SPACE / Q <small>dodge / Ward · T next target</small></span><span>ESC <small>settings</small></span>';
     }
   }
   player(state: PlayerState): void {
-    this.get<HTMLProgressElement>('#health').value = state.health;
-    this.get('#health-value').textContent = `${state.health} / 100`;
-    this.get<HTMLProgressElement>('#pressure').value = state.pressure;
-    this.get('#pressure-value').textContent = `${Math.floor(state.pressure)} / 100`;
-    this.get('#restart-player').hidden = state.action !== 'dead';
-    this.get('#reset-targets').hidden = state.action === 'dead';
-    this.get('#player-message').textContent = state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning && state.position.z < 8 ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.';
-    this.get('#combat-score').textContent = `HITS ${state.targetHits} · CRITICALS ${state.criticals} · BLOCKS ${state.blocks}`;
-    this.root.dataset.playerAction = state.action;
-    this.root.dataset.combatFeedback = String(state.action === 'dead' || state.wardRemaining > 0 || state.ventWarning);
+    writeChanged(this.get<HTMLProgressElement>('#health'), 'value', state.health);
+    writeChanged(this.get('#health-value'), 'textContent', `${state.health} / 100`);
+    writeChanged(this.get<HTMLProgressElement>('#pressure'), 'value', state.pressure);
+    writeChanged(this.get('#pressure-value'), 'textContent', `${Math.floor(state.pressure)} / 100`);
+    writeChanged(this.get('#restart-player'), 'hidden', state.action !== 'dead');
+    writeChanged(this.get('#reset-targets'), 'hidden', state.action === 'dead');
+    writeChanged(this.get('#player-message'), 'textContent', state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning && state.position.z < 8 ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.');
+    writeChanged(this.get('#combat-score'), 'textContent', `HITS ${state.targetHits} · CRITICALS ${state.criticals} · BLOCKS ${state.blocks}`);
+    writeChanged(this.root.dataset, 'playerAction', state.action);
+    writeChanged(this.root.dataset, 'combatFeedback', String(state.action === 'dead' || state.wardRemaining > 0 || state.ventWarning));
     // Read-only state also supports production measurements without dev commands.
-    this.canvas.dataset.playerPosition = `${state.position.x.toFixed(3)},${state.position.y.toFixed(3)},${state.position.z.toFixed(3)}`;
-    this.canvas.dataset.playerAction = state.action;
-    this.canvas.dataset.combatHits = String(state.targetHits); this.canvas.dataset.combatCriticals = String(state.criticals); this.canvas.dataset.combatStrikes = String(state.strikes); this.canvas.dataset.combatBlocks = String(state.blocks);
+    writeChanged(this.canvas.dataset, 'playerPosition', `${state.position.x.toFixed(3)},${state.position.y.toFixed(3)},${state.position.z.toFixed(3)}`);
+    writeChanged(this.canvas.dataset, 'playerAction', state.action);
+    writeChanged(this.canvas.dataset, 'combatHits', String(state.targetHits)); writeChanged(this.canvas.dataset, 'combatCriticals', String(state.criticals)); writeChanged(this.canvas.dataset, 'combatStrikes', String(state.strikes)); writeChanged(this.canvas.dataset, 'combatBlocks', String(state.blocks));
   }
   weapon(player:PlayerSimulation,pickup:WeaponPickup):void {
     const armed=player.state.weapon==='baton',eligible=player.canPickupBaton();
-    this.get('#equipped-weapon').textContent=armed?'Steel baton':'Unarmed';
-    this.get('#pickup-status').textContent=armed?'':pickup.status==='loading'||pickup.status==='ready'?'Preparing steel baton…':pickup.status==='failed'&&eligible?'Pickup failed · F to retry':eligible?'F — Pick up steel baton':'';
-    const button=this.get<HTMLButtonElement>('#pickup');button.hidden=armed||!eligible;button.disabled=pickup.status==='loading'||pickup.status==='ready';button.textContent=pickup.status==='failed'?'Retry pickup':button.disabled?'Loading…':'Pick up';
-    this.root.dataset.weapon=player.state.weapon;this.root.dataset.pickup=pickup.status;this.canvas.dataset.weapon=player.state.weapon;
+    writeChanged(this.get('#equipped-weapon'), 'textContent', armed?'Steel baton':'Unarmed');
+    writeChanged(this.get('#pickup-status'), 'textContent', armed?'':pickup.status==='loading'||pickup.status==='ready'?'Preparing steel baton…':pickup.status==='failed'&&eligible?'Pickup failed · F to retry':eligible?'F — Pick up steel baton':'');
+    const button=this.get<HTMLButtonElement>('#pickup');writeChanged(button, 'hidden', armed||!eligible);writeChanged(button, 'disabled', pickup.status==='loading'||pickup.status==='ready');writeChanged(button, 'textContent', pickup.status==='failed'?'Retry pickup':button.disabled?'Loading…':'Pick up');
+    writeChanged(this.root.dataset, 'weapon', player.state.weapon);writeChanged(this.root.dataset, 'pickup', pickup.status);writeChanged(this.canvas.dataset, 'weapon', player.state.weapon);
   }
   animationChoices(clips: readonly CharacterClip[]): void {
     const select = this.get<HTMLSelectElement>('#animation');
@@ -208,64 +216,64 @@ export class Interface {
   }
   encounter(simulation: EncounterSimulation | null, loading: boolean, error = ''): void {
     const active=simulation?.mode==='encounter';
-    this.get('#encounter-start').hidden=active;
-    this.get('#encounter-group').hidden=active||loading;
+    writeChanged(this.get('#encounter-start'), 'hidden', active);
+    writeChanged(this.get('#encounter-group'), 'hidden', active||loading);
     const living=simulation?.enemies.filter(e=>e.health>0)??[];
-    this.get('#target-cycle').hidden=!active||living.length<2;
-    this.get<HTMLButtonElement>('#target-cycle').disabled=simulation?.player.state.action==='dead';
-    this.get('#encounter-progress').textContent=active?`${simulation!.kind==='group'?'GROUP':'ENCOUNTER'} · ${living.length} / ${simulation!.enemies.length} remaining`:'';
-    this.get('#encounter-start').textContent=loading?'Cancel encounter load':error?'Retry encounter':'Start encounter';
-    this.get('#encounter-restart').hidden=!active;this.get('#encounter-return').hidden=!active;
-    this.get('#encounter-status').textContent=loading?'Preparing Zombie 7…':error;
-    this.get('#scene-encounter-feedback').textContent=loading?'Preparing encounter · Pause to cancel':error;
-    this.get('#reset-targets').hidden=active||simulation?.player.state.action==='dead';
-    if(active&&simulation?.victorious)this.get('#player-message').textContent=simulation.kind==='group'?'GROUP COMPLETE · All three defeated.':'ENCOUNTER COMPLETE · Restart to fight again.';
-    else if(active&&simulation?.player.state.action!=='dead'&&simulation?.player.state.action==='idle')this.get('#player-message').textContent=simulation?.kind==='group'?'Watch the attacker · T / Next target cycles living enemies.':'Watch the windup · step into striking range · dodge or Ward.';
-    this.root.dataset.encounter=active?'active':loading?'loading':error?'failed':'training';
-    this.root.dataset.victorious = String(active && simulation?.victorious);
-    this.canvas.dataset.encounter=this.root.dataset.encounter;
-    this.root.dataset.encounterKind=active?simulation!.kind:'none';
-    this.canvas.dataset.encounterKind=this.root.dataset.encounterKind;
-    this.canvas.dataset.enemiesRemaining=String(living.length);
-    this.canvas.dataset.enemyRoster=JSON.stringify(simulation?.enemies.map(e=>({id:e.id,generation:e.generation,x:e.position.x,z:e.position.z,health:e.health,action:e.action,actionTime:e.actionTime}))??[]);
-    this.canvas.dataset.focusTarget=simulation?.player.state.target?.id??'';
-    this.canvas.dataset.enemyState=simulation?.enemies[0]?.action??'none';
-    this.canvas.dataset.enemyHealth=String(simulation?.enemies[0]?.health??0);
-    this.canvas.dataset.enemyPosition=simulation?.enemies[0]?`${simulation.enemies[0].position.x.toFixed(3)},${simulation.enemies[0].position.z.toFixed(3)}`:'';
+    writeChanged(this.get('#target-cycle'), 'hidden', !active||living.length<2);
+    writeChanged(this.get<HTMLButtonElement>('#target-cycle'), 'disabled', simulation?.player.state.action==='dead');
+    writeChanged(this.get('#encounter-progress'), 'textContent', active?`${simulation!.kind==='group'?'GROUP':'ENCOUNTER'} · ${living.length} / ${simulation!.enemies.length} remaining`:'');
+    writeChanged(this.get('#encounter-start'), 'textContent', loading?'Cancel encounter load':error?'Retry encounter':'Start encounter');
+    writeChanged(this.get('#encounter-restart'), 'hidden', !active);writeChanged(this.get('#encounter-return'), 'hidden', !active);
+    writeChanged(this.get('#encounter-status'), 'textContent', loading?'Preparing Zombie 7…':error);
+    writeChanged(this.get('#scene-encounter-feedback'), 'textContent', loading?'Preparing encounter · Pause to cancel':error);
+    writeChanged(this.get('#reset-targets'), 'hidden', active||simulation?.player.state.action==='dead');
+    if(active&&simulation?.victorious)writeChanged(this.get('#player-message'), 'textContent', simulation.kind==='group'?'GROUP COMPLETE · All three defeated.':'ENCOUNTER COMPLETE · Restart to fight again.');
+    else if(active&&simulation?.player.state.action!=='dead'&&simulation?.player.state.action==='idle')writeChanged(this.get('#player-message'), 'textContent', simulation?.kind==='group'?'Watch the attacker · T / Next target cycles living enemies.':'Watch the windup · step into striking range · dodge or Ward.');
+    writeChanged(this.root.dataset, 'encounter', active?'active':loading?'loading':error?'failed':'training');
+    writeChanged(this.root.dataset, 'victorious', String(active && simulation?.victorious));
+    writeChanged(this.canvas.dataset, 'encounter', this.root.dataset.encounter);
+    writeChanged(this.root.dataset, 'encounterKind', active?simulation!.kind:'none');
+    writeChanged(this.canvas.dataset, 'encounterKind', this.root.dataset.encounterKind);
+    writeChanged(this.canvas.dataset, 'enemiesRemaining', String(living.length));
+    writeChanged(this.canvas.dataset, 'enemyRoster', JSON.stringify(simulation?.enemies.map(e=>({id:e.id,generation:e.generation,x:e.position.x,z:e.position.z,health:e.health,action:e.action,actionTime:e.actionTime}))??[]));
+    writeChanged(this.canvas.dataset, 'focusTarget', simulation?.player.state.target?.id??'');
+    writeChanged(this.canvas.dataset, 'enemyState', simulation?.enemies[0]?.action??'none');
+    writeChanged(this.canvas.dataset, 'enemyHealth', String(simulation?.enemies[0]?.health??0));
+    writeChanged(this.canvas.dataset, 'enemyPosition', simulation?.enemies[0]?`${simulation.enemies[0].position.x.toFixed(3)},${simulation.enemies[0].position.z.toFixed(3)}`:'');
   }
-  animation(clip: PreviewClip): void { this.get<HTMLSelectElement>('#animation').value = clip.kind === 'pose' ? 'pose' : `clip:${clip.name}`; }
+  animation(clip: PreviewClip): void { writeChanged(this.get<HTMLSelectElement>('#animation'), 'value', clip.kind === 'pose' ? 'pose' : `clip:${clip.name}`); }
   artLoading(loading: boolean, message = ''): void {
-    this.get('#art-status').textContent = message;
-    this.get('#scene-loading').textContent = message;
-    for (const selector of ['#animation', '#turn-character', '#quality', '#encounter-start', '#encounter-group', '#encounter-restart', '#encounter-return']) this.get<HTMLButtonElement | HTMLSelectElement>(selector).disabled = loading;
+    writeChanged(this.get('#art-status'), 'textContent', message);
+    writeChanged(this.get('#scene-loading'), 'textContent', message);
+    for (const selector of ['#animation', '#turn-character', '#quality', '#encounter-start', '#encounter-group', '#encounter-restart', '#encounter-return']) writeChanged(this.get<HTMLButtonElement | HTMLSelectElement>(selector), 'disabled', loading);
   }
   inspection(state: InspectionState, eligible: boolean): void {
     const active = state.status === 'active';
-    this.root.dataset.inspection = state.status;
+    writeChanged(this.root.dataset, 'inspection', state.status);
     this.placeSceneTools();
-    const button = this.get<HTMLButtonElement>('#inspection-toggle'); button.hidden = !eligible;
-    button.textContent = active ? 'Return to Ash Quay' : state.status === 'loading' ? 'Cancel inspection' : state.status === 'failed' ? 'Retry detailed inspection' : 'Detailed inspection';
-    this.get('#inspection-controls').hidden = !active;
-    this.get('.encounter-controls').hidden=active;
-    this.get('#view-courtyard').hidden = active; this.get('#view-character').hidden = active;
-    this.get('#view-player').hidden = active;
-    this.get('#player-hud').hidden = active || this.root.dataset.mode !== 'player';
+    const button = this.get<HTMLButtonElement>('#inspection-toggle'); writeChanged(button, 'hidden', !eligible);
+    writeChanged(button, 'textContent', active ? 'Return to Ash Quay' : state.status === 'loading' ? 'Cancel inspection' : state.status === 'failed' ? 'Retry detailed inspection' : 'Detailed inspection');
+    writeChanged(this.get('#inspection-controls'), 'hidden', !active);
+    writeChanged(this.get('.encounter-controls'), 'hidden', active);
+    writeChanged(this.get('#view-courtyard'), 'hidden', active); writeChanged(this.get('#view-character'), 'hidden', active);
+    writeChanged(this.get('#view-player'), 'hidden', active);
+    writeChanged(this.get('#player-hud'), 'hidden', active || this.root.dataset.mode !== 'player');
     if (this.root.dataset.scene === 'showcase') {
-      this.get('#touch-controls').hidden = active || this.root.dataset.mode !== 'player';
-      this.get('#controls-hint').hidden = active || this.root.dataset.mode !== 'player';
+      writeChanged(this.get('#touch-controls'), 'hidden', active || this.root.dataset.mode !== 'player');
+      writeChanged(this.get('#controls-hint'), 'hidden', active || this.root.dataset.mode !== 'player');
     }
-    this.get('#location').hidden = active || !['running', 'paused'].includes(this.root.dataset.state ?? '');
-    this.get('#inspection-status').textContent = state.status === 'loading' ? 'Preparing detailed Medic…' : state.status === 'failed' ? state.message : '';
-    this.get('#scene-inspection-feedback').textContent = state.status === 'loading' ? 'Preparing detailed Medic · Pause to cancel' : state.status === 'failed' ? state.message : '';
+    writeChanged(this.get('#location'), 'hidden', active || !['running', 'paused'].includes(this.root.dataset.state ?? ''));
+    writeChanged(this.get('#inspection-status'), 'textContent', state.status === 'loading' ? 'Preparing detailed Medic…' : state.status === 'failed' ? state.message : '');
+    writeChanged(this.get('#scene-inspection-feedback'), 'textContent', state.status === 'loading' ? 'Preparing detailed Medic · Pause to cancel' : state.status === 'failed' ? state.message : '');
     if (active) {
-      this.get<HTMLSelectElement>('#inspection-view').value = state.view;
-      this.get<HTMLSelectElement>('#inspection-lighting').value = state.lighting;
+      writeChanged(this.get<HTMLSelectElement>('#inspection-view'), 'value', state.view);
+      writeChanged(this.get<HTMLSelectElement>('#inspection-lighting'), 'value', state.lighting);
       this.get('#animation-pause').setAttribute('aria-pressed', String(state.paused));
-      this.get('#animation-pause').textContent = state.paused ? 'Resume animation' : 'Pause animation';
+      writeChanged(this.get('#animation-pause'), 'textContent', state.paused ? 'Resume animation' : 'Pause animation');
     }
   }
-  setPortrait(paused: boolean): void { this.rotate.hidden = !paused; }
-  setPaused(paused: boolean): void { if (this.root.dataset.state === 'running' || this.root.dataset.state === 'paused') this.root.dataset.state = paused ? 'paused' : 'running'; }
+  setPortrait(paused: boolean): void { writeChanged(this.rotate, 'hidden', !paused); }
+  setPaused(paused: boolean): void { if (this.root.dataset.state === 'running' || this.root.dataset.state === 'paused') writeChanged(this.root.dataset, 'state', paused ? 'paused' : 'running'); }
   applyPreferences(preferences: Preferences): void {
     this.root.style.setProperty('--ui-scale', String(preferences.uiScale));
     this.root.classList.toggle('reduced-motion', preferences.reducedMotion);
@@ -273,22 +281,22 @@ export class Interface {
     this.get<HTMLButtonElement>('#mute').setAttribute('aria-pressed', String(preferences.muted));
     this.get<HTMLButtonElement>('#mute').setAttribute('aria-label', preferences.muted ? 'Unmute audio' : 'Mute audio');
   }
-  storage(persistent: boolean): void { this.get('#storage-status').textContent = persistent ? 'Preferences are saved on this device.' : 'Device storage is unavailable. Preferences last for this session.'; }
+  storage(persistent: boolean): void { writeChanged(this.get('#storage-status'), 'textContent', persistent ? 'Preferences are saved on this device.' : 'Device storage is unavailable. Preferences last for this session.'); }
   error(reason: string): void {
-    this.entry.hidden = true; this.errorPanel.hidden = false; this.get('#error-detail').textContent = reason;
-    this.get('#session-status').textContent = 'INTAKE OFFLINE'; this.root.dataset.state = 'error';
+    writeChanged(this.entry, 'hidden', true); writeChanged(this.errorPanel, 'hidden', false); writeChanged(this.get('#error-detail'), 'textContent', reason);
+    writeChanged(this.get('#session-status'), 'textContent', 'INTAKE OFFLINE'); writeChanged(this.root.dataset, 'state', 'error');
   }
-  clearError(): void { this.errorPanel.hidden = true; }
+  clearError(): void { writeChanged(this.errorPanel, 'hidden', true); }
   district(area: string, status: SectionStatus): void {
     const display = `${area}/${status}/${this.root.dataset.mode}/${this.root.dataset.inspection}`;
     if (display === this.districtDisplay) return;
     this.districtDisplay = display;
-    this.root.dataset.district = status; this.canvas.dataset.district = status; this.canvas.dataset.area = area;
-    this.get('#district-guide').hidden = this.root.dataset.mode !== 'player' || this.root.dataset.inspection === 'active';
-    this.get('#district-area').textContent = area;
-    this.get('#district-direction').textContent = area === 'Arrival Quay' ? 'Loading bay · mooring overlook · return through Pump Alley' : area === 'Pump Alley' ? 'South: Arrival Quay · North: Pressure Court' : 'South passage → Arrival Quay';
-    this.get('#district-status').textContent = status === 'loading' ? 'Preparing quay passage…' : status === 'failed' ? 'Quay passage unavailable. You can stay in the court or retry.' : '';
-    this.get('#district-retry').hidden = status !== 'failed';
+    writeChanged(this.root.dataset, 'district', status); writeChanged(this.canvas.dataset, 'district', status); writeChanged(this.canvas.dataset, 'area', area);
+    writeChanged(this.get('#district-guide'), 'hidden', this.root.dataset.mode !== 'player' || this.root.dataset.inspection === 'active');
+    writeChanged(this.get('#district-area'), 'textContent', area);
+    writeChanged(this.get('#district-direction'), 'textContent', area === 'Arrival Quay' ? 'Loading bay · mooring overlook · return through Pump Alley' : area === 'Pump Alley' ? 'South: Arrival Quay · North: Pressure Court' : 'South passage → Arrival Quay');
+    writeChanged(this.get('#district-status'), 'textContent', status === 'loading' ? 'Preparing quay passage…' : status === 'failed' ? 'Quay passage unavailable. You can stay in the court or retry.' : '');
+    writeChanged(this.get('#district-retry'), 'hidden', status !== 'failed');
   }
   private placeSceneTools(): void {
     const preview = this.root.dataset.inspection === 'active' || ['courtyard', 'character'].includes(this.root.dataset.mode ?? '');
@@ -296,6 +304,6 @@ export class Interface {
     const tools = this.get('#showcase-controls');
     if (tools.parentElement !== parent) parent.append(tools);
   }
-  dispose(): void { this.lifetime.dispose(); this.settings.close(); this.root.replaceChildren(); }
+  dispose(): void { this.lifetime.dispose(); this.settings.close(); this.elements.clear(); this.root.replaceChildren(); }
   get listenerCount(): number { return this.lifetime.cleanupCount; }
 }

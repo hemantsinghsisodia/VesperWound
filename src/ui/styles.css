@@ -43,3 +43,18 @@
 @media(pointer:fine){.target-button{display:none;}}
 
 #app[data-encounter-kind=group] .pickup-button{bottom:calc(142px + env(safe-area-inset-bottom));}
+
+/* World-anchored UI is rasterized by the browser, outside scene FXAA/resolution. */
+#world-labels,.world-label-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#world-labels{z-index:2}
+.world-label{position:absolute;left:0;top:0;width:calc(190px * var(--ui-scale,1));padding:6px 9px;box-sizing:border-box;transform:translate(-50%,-100%);background:#102128ed;border:1px solid #9b89574d;color:#e8d4a7;text-align:center;font:12px/1.25 Arial,sans-serif;font-size:calc(12px * var(--ui-scale,1));font-variant-numeric:tabular-nums;pointer-events:none}
+.world-label-title{display:block;font-weight:600;overflow-wrap:anywhere}
+.world-label-detail{display:block;margin-top:4px;color:#d0d9cf;font-size:calc(11px * var(--ui-scale,1));white-space:nowrap}
+.world-label-meters{margin-top:5px}
+.world-label-health,.world-label-posture{height:6px;background:#283b3e;overflow:hidden}
+.world-label-posture{height:4px;margin-top:3px}
+.world-label-meters i{display:block;height:100%;background:#a7b79a}
+.world-label-posture i{background:#d1a559}
+.world-label[data-tone=amber]{color:#f0c375}.world-label[data-tone=mint]{color:#bce9df}
+.world-label[hidden],.world-label-layer[hidden],.world-label [hidden]{display:none}
+#app[data-state=loading] #world-labels,#app[data-state=ready] #world-labels,#app[data-state=error] #world-labels,#app[data-inspection=active] #world-labels{display:none}

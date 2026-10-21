@@ -28,6 +28,7 @@ import { DISTRICT_BOXES, DISTRICT_BOUNDS, districtGround, districtArea } from '.
 import type { SectionLease } from '../assets/section-stream';
 import { FirstMission } from '../mission/first-mission';
 import { MissionHud } from '../ui/mission-hud';
+import { writeChanged } from '../ui/write-changed';
 
 interface SessionEvents { pressureReleased: { x: number; z: number }; combat: CombatEvent }
 
@@ -35,6 +36,9 @@ export class Application {
   private readonly lifetime = new Lifetime();
   private readonly settings: SettingsStore;
   private readonly ui: Interface;
+  private readonly labelHost: HTMLElement;
+  private labelWidth = 0;
+  private labelHeight = 0;
   private readonly missionHud:MissionHud;
   private mission:FirstMission|null=null;
   private missionLoading=false;
@@ -87,6 +91,7 @@ export class Application {
     this.settings = new SettingsStore(storage, defaultPreferences());
     this.quality = new QualityManager(this.settings.values.quality, this.settings.values.adaptive);
     this.ui = new Interface(root, this.settings.values);
+    this.labelHost = this.ui.get('#world-labels');
     this.missionHud=new MissionHud(root,{start:()=>{if(this.missionLoading)this.cancelEnemyLoad();else void this.startEncounter('single',true);},restart:()=>this.restartMission(),skip:()=>this.skipMission(),leave:()=>{this.returnToTraining();this.ui.get<HTMLDialogElement>('#settings').close();}});
     this.ui.scene(this.options.scene);
     this.ui.storage(this.settings.persistent);
@@ -199,7 +204,7 @@ export class Application {
     } finally { this.booting = false; }
   }
   private async createRenderer(mode: BackendMode): Promise<void> {
-    const adapter = new RendererAdapter(this.ui.canvas, mode); this.adapter = adapter;
+    const adapter = new RendererAdapter(this.ui.canvas, mode, this.settings.values.smoothEdges); this.adapter = adapter;
     await adapter.init(mode, (reason) => { if (!this.disposed && this.adapter === adapter) this.fail(reason); });
   }
   private start(): void {
@@ -221,6 +226,10 @@ export class Application {
     this.settings.update(values); this.ui.applyPreferences(this.settings.values); this.ui.storage(this.settings.persistent);
     this.audio.setVolume(this.settings.values.volume, this.settings.values.muted);
     this.quality.adaptive = this.settings.values.adaptive;
+    if (values.smoothEdges !== undefined && this.adapter && this.courtyard) {
+      this.adapter.smoothEdges = this.settings.values.smoothEdges;
+      this.adapter.configure(this.inspection?.scene ?? this.courtyard.scene, this.inspection?.camera ?? this.camera.camera, this.inspection ? { ...this.quality.profile, bloom: false } : this.quality.profile);
+    }
     if (values.quality) {
       this.quality.select(values.quality);
       if (this.adapter && this.courtyard) {
@@ -239,6 +248,9 @@ export class Application {
     this.camera.resize(innerWidth, innerHeight);
     this.inspection?.resize(innerWidth, innerHeight);
     this.adapter?.resize(innerWidth, innerHeight, this.quality.profile, this.inspection ? 1 : this.quality.resolutionScale);
+    // Read layout only on resize, never after the per-frame HUD writes.
+    this.labelWidth = this.ui.canvas.clientWidth;
+    this.labelHeight = this.ui.canvas.clientHeight;
   }
   private frame(time: number): void {
     if (this.disposed || !this.adapter || !this.courtyard || !this.input) return;
@@ -291,7 +303,7 @@ export class Application {
         }
         const observedCamera = this.inspection?.camera ?? this.camera.camera;
         observedCamera.updateMatrixWorld(true);
-        this.ui.canvas.dataset.cameraProjection = JSON.stringify({ projection: observedCamera.projectionMatrix.elements, inverseWorld: observedCamera.matrixWorldInverse.elements });
+        writeChanged(this.ui.canvas.dataset, 'cameraProjection', JSON.stringify({ projection: observedCamera.projectionMatrix.elements, inverseWorld: observedCamera.matrixWorldInverse.elements }));
         if (this.preview) this.ui.animation(this.preview.clip);
         if (this.player) this.ui.player(this.player.state);
         this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);
@@ -300,6 +312,10 @@ export class Application {
         this.updateInspectionUi();
       }
       this.adapter.render();
+      if (this.courtyard instanceof VisualShowcase) this.courtyard.labels.render(
+        this.labelHost, this.camera.camera, this.courtyard.scene,
+        this.started && !this.inspection && this.courtyard.playing && !this.mission?.cinematic && this.mission?.stage !== 'complete',
+        this.labelWidth, this.labelHeight);
       if (!paused) {
         this.metrics.record(time, performance.now() - begin);
         if (this.started && !this.inspection && this.quality.observe(this.metrics.frameMs, time)) this.resize();
@@ -340,7 +356,7 @@ export class Application {
       if(replacement instanceof VisualShowcase&&this.armedClips)replacement.equipBaton(this.armedClips);
       if(replacement instanceof VisualShowcase && this.encounter?.mode==='encounter') {
         enemyAssets=new AssetManager(adapter.renderer);await enemyAssets.init(`/assets/encounter/${replacement.variant}/manifest.json`);
-        const {EnemyPresentation}=await import('../world/enemy-presentation');const view=new EnemyPresentation(this.encounter);
+        const {EnemyPresentation}=await import('../world/enemy-presentation');const view=new EnemyPresentation(this.encounter, replacement.labels);
         replacement.setEnemy(view);await view.load(enemyAssets);
       }
       if (replacement instanceof VisualShowcase) replacement.setPlaying(this.camera.view === 'player');
@@ -466,7 +482,7 @@ export class Application {
     try {
       const {EnemyPresentation}=await import('../world/enemy-presentation');if(!current())return;
       request.assets=new AssetManager(adapter.renderer);await request.assets.init(`/assets/encounter/${world.variant}/manifest.json`);if(!current())return;
-      request.view=new EnemyPresentation(simulation);await request.view.load(request.assets);if(!current())return;
+      request.view=new EnemyPresentation(simulation, world.labels);await request.view.load(request.assets);if(!current())return;
       if(mission){
         if(!world.district)throw new Error('Quay is unavailable');
         request.section=world.district.stream.acquire();await request.section.ready;if(!current())return;

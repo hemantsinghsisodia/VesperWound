@@ -88,12 +88,15 @@ describe('capabilities and validated configuration', () => {
   });
 });
 
-const defaults: Preferences = { version: 1, quality: 'High', adaptive: true, muted: false, volume: 0.5, reducedMotion: false, uiScale: 1, leftHanded: false };
+const defaults: Preferences = { version: 1, quality: 'High', adaptive: true, smoothEdges: true, muted: false, volume: 0.5, reducedMotion: false, uiScale: 1, leftHanded: false };
 describe('settings', () => {
   it('recovers corrupt/future settings and bounds numerical values', () => {
     expect(parsePreferences('{bad', defaults)).toEqual(defaults);
     expect(parsePreferences('{"version":2}', defaults)).toEqual(defaults);
     expect(parsePreferences('{"version":1,"quality":"wrong","volume":3,"uiScale":0}', defaults)).toMatchObject({ quality: 'High', volume: 1, uiScale: 0.8 });
+    expect(parsePreferences('{"version":1}', defaults).smoothEdges).toBe(true);
+    expect(parsePreferences('{"version":1,"smoothEdges":false}', defaults).smoothEdges).toBe(false);
+    expect(parsePreferences('{"version":1,"smoothEdges":"false"}', defaults).smoothEdges).toBe(true);
   });
   it('remains usable when local storage throws', () => {
     const store = new SettingsStore({ getItem: () => { throw new Error(); }, setItem: () => { throw new Error(); } }, defaults);

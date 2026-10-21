@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-19T08:34:36.011Z",
+  "browser": "155.0.8059.80",
+  "method": "Static training, WebGPU High, 1440x900, adaptive off, uncapped. ABBA visible/hidden HTML labels; 20s warmup, 20s per sample. CDP duration deltas per observed frame. Short diagnostic, not mission acceptance.",
+  "results": [
+    {
+      "visible": true,
+      "seconds": 20.00639999999963,
+      "frames": 818,
+      "p95": 46.400000000001455,
+      "mean": 24.482273838630807,
+      "max": 70.30000000000291,
+      "cpuMsPerFrame": {
+        "LayoutDuration": 0.39383985330073357,
+        "RecalcStyleDuration": 0.1702200488997555,
+        "ScriptDuration": 22.178614914425427,
+        "TaskDuration": 24.43069315403423
+      }
+    },
+    {
+      "visible": false,
+      "seconds": 20.029700000000375,
+      "frames": 1144,
+      "p95": 24.69999999999709,
+      "mean": 17.52229020979021,
+      "max": 48.19999999999709,
+      "cpuMsPerFrame": {
+        "LayoutDuration": 0.28849475524475526,
+        "RecalcStyleDuration": 0.1428216783216783,
+        "ScriptDuration": 15.84181555944056,
+        "TaskDuration": 17.481881993006994
+      }
+    },
+    {
+      "visible": false,
+      "seconds": 20.005599999999628,
+      "frames": 1082,
+      "p95": 36.80000000000291,
+      "mean": 18.50665434380776,
+      "max": 52.09999999999127,
+      "cpuMsPerFrame": {
+        "LayoutDuration": 0.3225462107208873,
+        "RecalcStyleDuration": 0.14846487985212567,
+        "ScriptDuration": 16.736717190388166,
+        "TaskDuration": 18.471591497227358
+      }
+    },
+    {
+      "visible": true,
+      "seconds": 20.00809999999925,
+      "frames": 1167,
+      "p95": 21.10000000000582,
+      "mean": 17.15235646958011,
+      "max": 49.30000000000291,
+      "cpuMsPerFrame": {
+        "LayoutDuration": 0.3134241645244216,
+        "RecalcStyleDuration": 0.1499485861182519,
+        "ScriptDuration": 15.402742930591259,
+        "TaskDuration": 17.116414738646103
+      }
+    }
+  ],
+  "errors": []
+}

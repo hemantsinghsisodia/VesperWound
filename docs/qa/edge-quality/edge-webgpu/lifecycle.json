@@ -1,0 +1,59 @@
+{
+  "samples": [
+    {
+      "cycle": 0,
+      "enabled": false,
+      "backend": "WebGPU",
+      "width": 1440,
+      "height": 900,
+      "textures": 72,
+      "bytes": 57506924
+    },
+    {
+      "cycle": 0,
+      "enabled": true,
+      "backend": "WebGPU",
+      "width": 1440,
+      "height": 900,
+      "textures": 71,
+      "bytes": 61395734
+    },
+    {
+      "cycle": 1,
+      "enabled": false,
+      "backend": "WebGPU",
+      "width": 1440,
+      "height": 900,
+      "textures": 72,
+      "bytes": 57506924
+    },
+    {
+      "cycle": 1,
+      "enabled": true,
+      "backend": "WebGPU",
+      "width": 1440,
+      "height": 900,
+      "textures": 71,
+      "bytes": 61395734
+    },
+    {
+      "cycle": 2,
+      "enabled": false,
+      "backend": "WebGPU",
+      "width": 1440,
+      "height": 900,
+      "textures": 72,
+      "bytes": 57506924
+    },
+    {
+      "cycle": 2,
+      "enabled": true,
+      "backend": "WebGPU",
+      "width": 1440,
+      "height": 900,
+      "textures": 71,
+      "bytes": 61395734
+    }
+  ],
+  "errors": []
+}

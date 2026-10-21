@@ -1,22 +1,22 @@
-import { Group, Mesh, CylinderGeometry, BoxGeometry, TorusGeometry, SphereGeometry, MeshStandardNodeMaterial, MeshBasicNodeMaterial, CanvasTexture, SpriteMaterial, Sprite, InstancedMesh, Object3D, SRGBColorSpace, type BufferGeometry, type Material } from 'three/webgpu';
+import { Group, Mesh, CylinderGeometry, BoxGeometry, TorusGeometry, SphereGeometry, MeshStandardNodeMaterial, MeshBasicNodeMaterial, InstancedMesh, Object3D, type BufferGeometry, type Material } from 'three/webgpu';
 import type { PlayerSimulation } from '../player/player-simulation';
 import { PRESSURE_VENT } from '../player/player-simulation';
 import { TRAINING_TARGETS, type CombatEvent } from '../player/combat-definitions';
+import type { WorldLabel, WorldLabels } from './world-labels';
 
 /** Owns a bounded visual pool; it never resolves hits or changes combat state. */
 export class CombatPresentation {
   readonly group = new Group();
   private readonly geometries: BufferGeometry[] = [];
   private readonly materials: Material[] = [];
-  private readonly textures: CanvasTexture[] = [];
-  private readonly targets: Array<{ group: Group; plate: Mesh; material: MeshStandardNodeMaterial; label: Sprite; canvas: HTMLCanvasElement; texture: CanvasTexture; key: string; flash: number; critical: number; damage: number }> = [];
+  private readonly targets: Array<{ group: Group; plate: Mesh; material: MeshStandardNodeMaterial; label: WorldLabel; flash: number; critical: number; damage: number }> = [];
   private readonly particles: InstancedMesh;
   private readonly pool = Array.from({ length: 48 }, () => ({ life: 0, x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0 }));
   private cursor = 0; private readonly matrix = new Object3D();
   private readonly ward: Mesh; private readonly vent: Mesh;
   private readonly wardMaterial = new MeshBasicNodeMaterial({ color: 0x9fe2d5, transparent: true, opacity: .12, depthWrite: false });
   private readonly ventMaterial = new MeshStandardNodeMaterial({ color: 0xb37a3d, emissive: 0x68310a, emissiveIntensity: .5, roughness: .65 });
-  constructor(private readonly player: PlayerSimulation) {
+  constructor(private readonly player: PlayerSimulation, labels: WorldLabels) {
     const post = new CylinderGeometry(.09, .15, 1.6, 10); const plate = new BoxGeometry(.65, .7, .2);
     const ring = new TorusGeometry(.82, .035, 6, 32); const sphere = new SphereGeometry(.82, 16, 10); const spark = new SphereGeometry(.025, 6, 4);
     const iron = new MeshStandardNodeMaterial({ color: 0x343b3b, metalness: .65, roughness: .5 });
@@ -26,11 +26,8 @@ export class CombatPresentation {
       const group = new Group(); const material = new MeshStandardNodeMaterial({ color: t.id === 'heavy' ? 0x687574 : 0xb09b79, emissive: 0x8a6030, emissiveIntensity: .08, roughness: .8, metalness: t.id === 'heavy' ? .6 : 0 });
       this.materials.push(material); const pole = new Mesh(post, iron); pole.position.y = .8; pole.castShadow = true;
       const face = new Mesh(plate, material); face.position.y = 1.2; face.castShadow = true; group.add(pole, face);
-      const canvas = document.createElement('canvas'); canvas.width = 256; canvas.height = 128;
-      const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; this.textures.push(texture);
-      const labelMaterial = new SpriteMaterial({ map: texture, depthTest: false, transparent: true }); this.materials.push(labelMaterial);
-      const label = new Sprite(labelMaterial); label.geometry = label.geometry.clone(); this.geometries.push(label.geometry); label.position.y = 2.1; label.scale.set(1.4, .7, 1);
-      group.add(label); this.group.add(group); this.targets.push({ group, plate: face, material, label, canvas, texture, key: '', flash: 0, critical: 0, damage: 0 });
+      const label = labels.create('training'); label.position.y = 2.1;
+      group.add(label); this.group.add(group); this.targets.push({ group, plate: face, material, label, flash: 0, critical: 0, damage: 0 });
     }
     this.ward = new Mesh(sphere, this.wardMaterial); this.ward.scale.set(1, 1.25, 1); this.group.add(this.ward);
     this.vent = new Mesh(ring, this.ventMaterial); this.vent.rotation.x = Math.PI / 2; this.vent.position.set(PRESSURE_VENT.x, .08, PRESSURE_VENT.z); this.group.add(this.vent);
@@ -55,18 +52,7 @@ export class CombatPresentation {
       view.plate.rotation.z = t.health === 0 ? Math.PI / 2 : t.exposedUntil > 0 ? .2 : Math.min(.12, Math.hypot(t.velocity.x, t.velocity.z) * .06);
       view.plate.position.y = t.health === 0 ? .15 : 1.2;
       const label = view.critical > 0 ? `CRITICAL · ${view.damage}` : t.health === 0 ? 'DEFEATED · RESETTING' : t.exposedUntil > 0 ? 'EXPOSED · HEAVY' : t.label;
-      const key = `${label}/${t.health}/${t.posture}`;
-      if (view.key !== key) {
-        const ctx = view.canvas.getContext('2d'); if (ctx) {
-          ctx.clearRect(0, 0, 256, 128); ctx.fillStyle = '#0d1c22e6'; ctx.fillRect(0, 0, 256, 128);
-          ctx.fillStyle = view.critical > 0 ? '#bce9df' : t.exposedUntil > 0 ? '#f0c375' : '#e8d4a7'; ctx.font = '20px Arial'; ctx.textAlign = 'center'; ctx.fillText(label, 128, 25);
-          ctx.fillStyle = '#273c3e'; ctx.fillRect(12, 42, 232, 14); ctx.fillRect(12, 72, 232, 12);
-          ctx.fillStyle = '#a7b79a'; ctx.fillRect(12, 42, 232 * t.health / t.maxHealth, 14);
-          ctx.fillStyle = '#d1a559'; ctx.fillRect(12, 72, 232 * t.posture / 100, 12);
-          ctx.fillStyle = '#ccd0bc'; ctx.font = '18px Arial'; ctx.fillText(`HP ${t.health}/${t.maxHealth} · POSTURE ${t.posture}`, 128, 108);
-          view.texture.needsUpdate = true;
-        } view.key = key;
-      }
+      view.label.combat(label,t.health,t.maxHealth,t.posture,view.critical>0?'mint':t.exposedUntil>0?'amber':'normal');
     });
     this.ward.visible = this.player.state.wardRemaining > 0; this.wardMaterial.opacity = reduced ? .06 : .12;
     this.vent.visible = this.player.training;
@@ -82,6 +68,6 @@ export class CombatPresentation {
     this.particles.instanceMatrix.needsUpdate = true;
   }
   interpolate(alpha: number): void { if (this.player.training) this.targets.forEach((v, i) => { const t = this.player.targets[i]!; v.group.position.set(t.previous.x + (t.position.x - t.previous.x) * alpha, t.position.y, t.previous.z + (t.position.z - t.previous.z) * alpha); }); }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length; }
-  dispose(): void { this.particles.dispose(); this.group.clear(); this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose()); this.textures.forEach(t => t.dispose()); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.targets.length; }
+  dispose(): void { this.particles.dispose(); this.targets.forEach(t => t.label.dispose()); this.group.clear(); this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose()); }
 }

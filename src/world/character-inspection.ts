@@ -86,7 +86,7 @@ export class CharacterInspection implements WorldPresentation {
     this.key.shadow.mapSize.set(profile.shadowSize, profile.shadowSize); this.key.shadow.needsUpdate = true;
   }
   update(dt: number): boolean {
-    this.actor.update(dt); this.scene.updateMatrixWorld(true);
+    this.actor.update(dt);
     this.controls.update(); return false;
   }
   interpolate(): void { /* Skeletal previews are in place. */ }

@@ -1,9 +1,11 @@
-import { WebGPURenderer, RenderPipeline, ACESFilmicToneMapping, SRGBColorSpace, type Scene, type Camera } from 'three/webgpu';
-import { pass, rtt, luminance, smoothstep } from 'three/tsl';
+import { WebGPURenderer, RenderPipeline, ACESFilmicToneMapping, SRGBColorSpace, UnsignedByteType, type Scene, type Camera } from 'three/webgpu';
+import { pass, rtt, luminance, smoothstep, renderOutput } from 'three/tsl';
 import { bloom } from 'three/addons/tsl/display/BloomNode.js';
 import { gaussianBlur } from 'three/addons/tsl/display/GaussianBlurNode.js';
+import { fxaa } from 'three/addons/tsl/display/FXAANode.js';
 import type { BackendMode } from '../platform/capabilities';
 import { effectivePixelRatio, type QualityProfile } from '../performance/quality';
+import { highlightGlow } from './highlight-glow';
 
 export class RendererAdapter {
   readonly renderer: WebGPURenderer;
@@ -13,9 +15,11 @@ export class RendererAdapter {
   private bloomPass: ReturnType<typeof bloom> | null = null;
   private glowThreshold: ReturnType<typeof rtt> | null = null;
   private glowBlur: ReturnType<typeof gaussianBlur> | null = null;
+  private edgeInput: ReturnType<typeof rtt> | null = null;
+  private fastGlow: ReturnType<typeof highlightGlow> | null = null;
   private width = 1;
   private height = 1;
-  constructor(canvas: HTMLCanvasElement, mode: BackendMode) {
+  constructor(canvas: HTMLCanvasElement, mode: BackendMode, public smoothEdges = true) {
     this.renderer = new WebGPURenderer({ canvas, antialias: false, alpha: false, forceWebGL: mode === 'webgl2', powerPreference: 'high-performance' });
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.25;
@@ -33,14 +37,23 @@ export class RendererAdapter {
     this.scenePass = pass(scene, camera);
     const output = this.scenePass.getTextureNode('output');
     this.bloomPass = profile.bloom && profile.name === 'Ultra' ? bloom(output, 0.18, 0.35, 1.1) : null;
-    if (profile.bloom && !this.bloomPass) {
+    if (profile.bloom && !this.bloomPass && this.smoothEdges) this.fastGlow = highlightGlow(output);
+    else if (profile.bloom && !this.bloomPass) {
       // High uses one highlight extraction and two blur passes. The full scene
       // stays at native resolution; avoid twelve submissions for restrained glow.
       this.glowThreshold = rtt(output.mul(smoothstep(1.1, 1.2, luminance(output.rgb))), null, null, { resolutionScale: .25, depthBuffer: false });
       this.glowBlur = gaussianBlur(this.glowThreshold, 1, 4);
     }
     this.pipeline = new RenderPipeline(this.renderer);
-    this.pipeline.outputNode = this.bloomPass ? output.add(this.bloomPass) : this.glowBlur ? output.add(this.glowBlur.mul(.18)) : output;
+    const glow = this.fastGlow ?? this.glowBlur;
+    const composite = this.bloomPass ? output.add(this.bloomPass) : glow ? output.add(glow.mul(.18)) : output;
+    if (this.smoothEdges) {
+      // FXAA needs display-referred sRGB. Convert exactly once, and keep its
+      // owned intermediate at 8 bits with no depth/MSAA or enlarged resolution.
+      this.edgeInput = rtt(renderOutput(composite, this.renderer.toneMapping, this.renderer.outputColorSpace), null, null, { type: UnsignedByteType, depthBuffer: false });
+      this.pipeline.outputColorTransform = false;
+      this.pipeline.outputNode = fxaa(this.edgeInput);
+    } else this.pipeline.outputNode = composite;
     this.renderer.shadowMap.enabled = true;
   }
   resize(width: number, height: number, profile: QualityProfile, scale: number): void {
@@ -52,7 +65,9 @@ export class RendererAdapter {
   render(): void { this.renderer.info.reset(); this.pipeline?.render(); }
   get resolution(): string { const ratio = this.renderer.getPixelRatio(); return `${Math.round(this.width * ratio)} × ${Math.round(this.height * ratio)}`; }
   private disposePasses(): void {
-    this.pipeline?.dispose(); this.bloomPass?.dispose(); this.glowBlur?.dispose(); this.glowThreshold?.dispose(); this.scenePass?.dispose();
+    this.pipeline?.dispose(); this.edgeInput?.dispose(); this.fastGlow?.dispose(); this.bloomPass?.dispose(); this.glowBlur?.dispose(); this.glowThreshold?.dispose(); this.scenePass?.dispose();
+    this.fastGlow = null;
+    this.edgeInput = null;
     this.glowBlur = null; this.glowThreshold = null;
     this.pipeline = null; this.bloomPass = null; this.scenePass = null;
   }
