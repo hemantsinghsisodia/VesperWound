@@ -195,6 +195,7 @@ export class Application {
           resetMetrics: () => this.metrics.resetMeasurements(),
           timeScale: (value) => { this.timeScale = value; },
           encounter: (count) => { if(this.enemyAssets)this.encounter?.start(count); },
+          inspectPose: (seconds) => { if(this.inspection) { this.inspection.actor.paused = true; this.inspection.actor.seek(seconds, true); } },
         });
       }
       this.refreshAnimationUi(); this.ui.ready();
@@ -552,7 +553,7 @@ export class Application {
       artLoading: this.reloading,
       ...(this.courtyard instanceof VisualShowcase ? { district: this.courtyard.district?.stream.status ?? 'closed', area: districtArea(this.courtyard.target.z), hiddenCutaways: this.courtyard.district?.hiddenCutaways ?? 0 } : {}),
       ...(import.meta.env.DEV && this.preview ? { rig: this.preview.inspection() } : {}),
-      ...(import.meta.env.DEV && this.courtyard instanceof VisualShowcase && this.courtyard.baton && this.player?.state.weapon==='baton' ? { weaponContact: this.courtyard.baton.diagnostics() } : {}),
+      ...(import.meta.env.DEV && this.courtyard instanceof VisualShowcase && this.courtyard.baton && this.player?.state.weapon==='baton' ? { weaponContact: { ...this.courtyard.baton.diagnostics(), time: this.courtyard.preview.sampledTime } } : {}),
       ...(this.player ? { player: structuredClone(this.player.state), targets: structuredClone(this.player.targets) } : {}),
       ...(this.encounter ? { encounter: this.encounter.mode, enemies: structuredClone(this.encounter.enemies), enemyLoading: !!this.pendingEnemy } : {}),
     };

@@ -57,8 +57,9 @@ for (const mode of ['group', 'cinematic', 'traversal']) test(`production sustain
     return { durationSeconds:(performance.now()-m.started)/1000, frameCount:f.length, fps:1000*f.length/f.reduce((s,v)=>s+v,0), p95FrameMs:f[Math.floor((f.length-1)*.95)]!,maxFrameMs:f.at(-1)!,intervalsOver50Ms:f.filter(v=>v>50).length,intervalsOver100Ms:f.filter(v=>v>100).length };
   });
   await driver;
-  await mkdir('docs/qa/ash-quay-checkpoint-c',{recursive:true});
-  await writeFile(`docs/qa/ash-quay-checkpoint-c/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
+  const qaRoot=process.env.VESPER_PERFORMANCE_QA??'docs/qa/ash-quay-checkpoint-c';
+  await mkdir(qaRoot,{recursive:true});
+  await writeFile(`${qaRoot}/${mode}-performance.json`,JSON.stringify({ date:new Date().toISOString(),browser:browser.version(),backend:'WebGPU',build:'production',mode,
     method:'External requestAnimationFrame intervals, Chrome --disable-frame-rate-limit --disable-gpu-vsync, no application limiter. CPU submission and scheduling included; not isolated GPU timestamp queries.',
     renderingUncapped:true,viewport:{width:1440,height:900},quality:'High',adaptiveResolution:false,warmupSeconds:30,exercise:mode==='group'?'Real-input three-zombie equipped baton pursuit, targeting, light/heavy sweeps, Ward, stagger, criticals, group victory and restart':mode==='traversal'?'Repeated real-input court, alley, quay and loading canopy traversal with section detach/warm re-entry':'Looped equipped Baton_Idle skeletal animation',totals,traversals,hardware,samples,metrics,errors,warnings },null,2));
   expect(errors).toEqual([]);expect(warnings.filter(m=>m.includes('Vertex attribute'))).toEqual([]); expect(metrics.durationSeconds).toBeGreaterThanOrEqual(300);expect(metrics.durationSeconds).toBeLessThan(330);

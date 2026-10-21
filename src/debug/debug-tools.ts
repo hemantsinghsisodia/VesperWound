@@ -8,6 +8,7 @@ export interface DebugActions {
   resetMetrics(): void;
   timeScale(value: number): void;
   encounter(count: number): void;
+  inspectPose(seconds: number): void;
 }
 export interface DevelopmentApi {
   snapshot(): FrameStatistics;
@@ -15,6 +16,7 @@ export interface DevelopmentApi {
   exportMetrics(): object;
   resetMetrics(): void;
   encounter(count: number): void;
+  inspectPose(seconds: number): void;
 }
 declare global { interface Window { __VESPER_DEBUG__?: DevelopmentApi } }
 

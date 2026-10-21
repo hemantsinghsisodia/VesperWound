@@ -6,7 +6,7 @@ import {walkTo} from '../helpers/district-driver';
 const baseline=process.env.VESPER_ARMED_BASELINE==='1';
 test('armed feet keep cycling and the full body supports weapon actions',async({page,browser},info)=>{
   const mobile=info.project.name.endsWith('mobile'),backend=info.project.name.endsWith('webgpu')?'webgpu-required':'webgl2';
-  const folder=`docs/qa/armed-animation-fix/${baseline?'before':'after'}/${info.project.name}`;
+  const folder=`${process.env.VESPER_ARMED_QA??'docs/qa/armed-animation-fix'}/${baseline?'before':'after'}/${info.project.name}`;
   await mkdir(folder,{recursive:true});const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(`/?backend=${backend}`);await expect(page.locator('#app')).toHaveAttribute('data-state','ready');await page.locator('#start').click();
   if(mobile)await page.locator('#pickup').tap();else await page.keyboard.press('f');

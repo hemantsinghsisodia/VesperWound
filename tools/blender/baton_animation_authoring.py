@@ -38,7 +38,7 @@ def bake_armed_actions(a, originals, grip, axis, source_fps):
         direction=(wrist-shoulder).normalized()
         distance=min((wrist-shoulder).length,upper_length+lower_length-.005)
         distance=max(distance,abs(upper_length-lower_length)+.005)
-        pole=Vector((-.8,.15,-.65))
+        pole=Vector((-1,-.6,-.25))
         bend=(pole-direction*pole.dot(direction)).normalized()
         along=(upper_length**2+distance**2-lower_length**2)/(2*distance)
         elbow=shoulder+direction*along+bend*math.sqrt(max(0,upper_length**2-along**2))
@@ -66,11 +66,14 @@ def bake_armed_actions(a, originals, grip, axis, source_fps):
         bpy.context.view_layer.update()
     bpy.ops.object.empty_add();thumb_target=bpy.context.object;thumb_target.name='Baton_Authoring_Thumb'
     thumb_constraint=a.pose.bones['RightHandThumb3'].constraints.new('IK');thumb_constraint.target=thumb_target;thumb_constraint.chain_count=3;thumb_constraint.use_tail=True;thumb_constraint.use_stretch=False
+    # Blender world axes: -Y is character forward, Z is height. Shared guard
+    # endpoints remove the previous discontinuity between individual swings.
+    guard_wrist=(-.30,-.22,1.12);guard_shaft=(.05,-.5,.86)
     paths={
-     'Baton_Light1':[(0,(-.38,.08,1.32),(-.8,.1,.4)),(.22,(-.42,-.12,1.32),(-.7,-.5,.2)),(.28,(-.18,-.50,1.16),(.08,-1,.05)),(.34,(.12,-.38,1.16),(.7,-.6,.1)),(.6,(-.30,-.18,1.1),(.1,-.5,.8))],
-     'Baton_Light2':[(0,(-.15,-.2,1.22),(.8,-.2,.2)),(.24,(.15,-.12,1.28),(.8,-.3,.1)),(.30,(-.10,-.52,1.18),(-.1,-1,.05)),(.37,(-.38,-.35,1.2),(-.8,-.5,.1)),(.65,(-.30,-.18,1.1),(.1,-.5,.8))],
-     'Baton_Light3':[(0,(-.38,.02,1.45),(-.7,.1,.6)),(.28,(-.40,-.10,1.42),(-.5,-.5,.4)),(.35,(-.10,-.52,1.22),(0,-1,-.1)),(.42,(.15,-.35,1.1),(.7,-.5,-.2)),(.75,(-.30,-.18,1.1),(.1,-.5,.8))],
-     'Baton_Heavy':[(0,(-.3,-.12,1.3),(0,-.4,.9)),(.30,(-.2,-.1,1.72),(0,.2,1)),(.44,(-.18,-.36,1.52),(0,-.6,.8)),(.52,(-.10,-.52,1.13),(0,-1,-.25)),(.59,(-.12,-.38,.94),(0,-.5,-.85)),(.95,(-.30,-.18,1.1),(.1,-.5,.8))],
+     'Baton_Light1':[(0,guard_wrist,guard_shaft),(.10,(-.37,-.17,1.26),(-.75,-.35,.55)),(.15,(-.32,-.30,1.24),(-.65,-.75,.12)),(.20,(.02,-.33,1.17),(.05,-1,0)),(.25,(.10,-.30,1.10),(.8,-.55,-.12)),(.45,guard_wrist,guard_shaft)],
+     'Baton_Light2':[(0,guard_wrist,guard_shaft),(.11,(.06,-.30,1.23),(.8,-.45,.4)),(10/60,(.08,-.32,1.22),(.7,-.7,.1)),(.225,(-.08,-.33,1.18),(-.1,-1,0)),(17/60,(-.34,-.30,1.13),(-.8,-.55,-.1)),(.5,guard_wrist,guard_shaft)],
+     'Baton_Light3':[(0,guard_wrist,guard_shaft),(.13,(-.35,-.16,1.42),(-.6,-.3,.75)),(.20,(-.32,-.28,1.34),(-.55,-.72,.42)),(16/60,(.02,-.33,1.16),(.1,-1,-.12)),(20/60,(.10,-.28,1.01),(.7,-.5,-.5)),(.6,guard_wrist,guard_shaft)],
+     'Baton_Heavy':[(0,guard_wrist,guard_shaft),(.22,(-.23,-.15,1.62),(0,-.05,1)),(.35,(-.22,-.27,1.48),(0,-.6,.8)),(.425,(-.10,-.33,1.18),(0,-1,-.18)),(.5,(-.19,-.28,.99),(0,-.5,-.86)),(.8,guard_wrist,guard_shaft)],
     }
     def sample(rows,time):
         for left,right in zip(rows,rows[1:]):
@@ -80,7 +83,7 @@ def bake_armed_actions(a, originals, grip, axis, source_fps):
         return Vector(rows[-1][1]),Vector(rows[-1][2]).normalized()
     clips=[('Baton_Idle','Sword_Idle',None),('Baton_Walk','Walk_Loop',None),('Baton_Run','Jog_Fwd_Loop',None),('Baton_Dodge','Roll',None),('Baton_Ward','Spell_Simple_Shoot',None),('Baton_Hit','Hit_Chest',None),('Baton_Death','Death01',None)]
     clips += [(n,'Sword_Attack',p[-1][0]) for n,p in paths.items()]
-    active={'Baton_Light1':(.22,.34),'Baton_Light2':(.24,.37),'Baton_Light3':(.28,.42),'Baton_Heavy':(.44,.59)}
+    active={'Baton_Light1':(.15,.25),'Baton_Light2':(10/60,17/60),'Baton_Light3':(.2,20/60),'Baton_Heavy':(.35,.5)}
 
     def attack_phase(name,time,duration):
         begin,end=active[name]
@@ -111,19 +114,22 @@ def bake_armed_actions(a, originals, grip, axis, source_fps):
             bpy.context.scene.frame_set(whole,subframe=source_frame-whole)
             bpy.context.view_layer.update()
             if name in paths:
-                # The broad source sword swing over-rotates the shoulders when
-                # compressed to a short one-handed baton strike. Keep its weight
-                # shift as a restrained additive motion around the armed guard.
+                # Keep the supporting stance planted. Source sword locomotion
+                # previously lifted a knee during the short baton attacks.
                 for bone in a.pose.bones:
                     if bone.name in ['RightArm','RightForeArm','RightHand'] or bone.name.startswith('RightHand'):continue
                     loc,rot,scale=bone.matrix_basis.decompose();g_loc,g_rot,g_scale=guard[bone.name]
-                    weight=.3 if bone.name.startswith('Spine') else .2
+                    weight=.3 if bone.name.startswith('Spine') else 0
                     if bone.name.startswith('LeftArm') or bone.name.startswith('LeftForeArm'):weight=.1
                     bone.rotation_mode='QUATERNION';bone.rotation_quaternion=g_rot.slerp(rot,weight)
-                    bone.location=g_loc.lerp(loc,.2);bone.scale=g_scale
+                    bone.location=g_loc;bone.scale=g_scale
                 bpy.context.view_layer.update()
                 wrist,shaft=sample(paths[name],time)
                 fit_arm(wrist,shaft)
+            elif name in ['Baton_Idle','Baton_Walk','Baton_Run']:
+                # Retain the complete accepted leg cycles while carrying the
+                # baton in front of the body, ready to enter the common guard.
+                fit_arm(Vector(guard_wrist),Vector(guard_shaft).normalized())
             # Fingers are baked with a closed grip; no runtime IK or skeleton edits.
             for finger in ['Index','Middle','Ring','Pinky']:
                 for joint,angle in [(1,.25),(2,.85),(3,.9)]:

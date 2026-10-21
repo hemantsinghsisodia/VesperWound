@@ -14,7 +14,7 @@ export interface PlayerCollision {
 export type PlayerAction = 'idle' | 'walk' | 'run' | 'attack' | 'heavy' | 'ward' | 'dodge' | 'hit' | 'dead';
 export interface PlayerState {
   target: EntityHandle | null; weapon: WeaponId; position: Position; previous: Position; facing: number; health: number; pressure: number;
-  action: PlayerAction; actionTime: number; actionSequence: number; attack: AttackId | null;
+  action: PlayerAction; actionTime: number; actionSequence: number; attack: AttackId | null; pendingAttack: 'attack' | 'heavy' | null;
   grounded: boolean; strikes: number; targetHits: number; invulnerable: boolean;
   wardRemaining: number; combo: number; criticals: number; blocks: number; defeats: number;
   ventWarning: boolean; ventRemaining: number;
@@ -26,7 +26,7 @@ const DURATIONS = { dodge: .72, hit: .42, ward: .8 };
 export class PlayerSimulation {
   readonly state: PlayerState = {
     target:null, weapon: 'unarmed', position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100,
-    action: 'idle', actionTime: 0, actionSequence: 0, attack: null, grounded: false,
+    action: 'idle', actionTime: 0, actionSequence: 0, attack: null, pendingAttack: null, grounded: false,
     strikes: 0, targetHits: 0, invulnerable: false, wardRemaining: 0, combo: 0,
     criticals: 0, blocks: 0, defeats: 0, ventWarning: false, ventRemaining: 2,
   };
@@ -42,7 +42,7 @@ export class PlayerSimulation {
     const attackInstance = 'instance' in event ? event.instance : incomingInstance ?? (source.id === 'medic' && this.state.attack ? this.state.actionSequence : null);
     this.events.push({ ...event, source, recipient, attackInstance });
   }
-  clearQueued(): void { this.queued.clear(); }
+  clearQueued(): void { this.queued.clear(); this.state.pendingAttack = null; }
   private clock = 0; private quietSince = 0; private chainUntil = -1;
   private readonly queued = new Map<'attack' | 'heavy' | 'ward' | 'dodge', number>();
   private readonly hitTargets = new Set<string>(); private pressureAwarded = false;
@@ -67,11 +67,19 @@ export class PlayerSimulation {
     const s = this.state; s.previous = { ...s.position }; this.clock += dt;
     this.updateTargets(dt);
     if (s.action === 'dead') return;
-    for (const action of ['attack', 'heavy', 'ward', 'dodge'] as const) if (input.pressed.has(action)) this.queued.set(action, this.clock + this.style.buffer);
+    for (const action of input.pressed) {
+      if (action !== 'attack' && action !== 'heavy' && action !== 'ward' && action !== 'dodge') continue;
+      if (s.attack && this.style.followUp === 'single' && (action === 'attack' || action === 'heavy')) s.pendingAttack = action;
+      else this.queued.set(action, this.clock + this.style.buffer);
+    }
     for (const [action, until] of this.queued) if (until < this.clock) this.queued.delete(action);
     s.actionTime += dt; s.wardRemaining = Math.max(0, s.wardRemaining - dt);
     const attack = s.attack ? this.attackDefinition(s.attack) : null;
-    if (attack && s.actionTime >= attack.duration) { this.chainUntil = this.clock + this.style.chainTimeout; this.action('idle'); }
+    if (attack && s.actionTime + 1e-9 >= attack.duration) {
+      this.chainUntil = this.clock + this.style.chainTimeout;
+      if (s.pendingAttack) this.queued.set(s.pendingAttack, this.clock + this.style.buffer);
+      s.pendingAttack = null; this.action('idle');
+    }
     else if ((s.action === 'dodge' || s.action === 'hit' || s.action === 'ward') && s.actionTime >= DURATIONS[s.action]) this.action('idle');
     if (this.clock > this.chainUntil && s.action !== 'attack') s.combo = 0;
     let x = (input.movement.x + input.movement.y) * Math.SQRT1_2;
@@ -81,7 +89,7 @@ export class PlayerSimulation {
     let free = ['idle', 'walk', 'run'].includes(s.action);
     const recovery = (s.action === 'attack' || s.action === 'heavy') && s.attack !== null && s.actionTime >= this.attackDefinition(s.attack).active[1];
     if ((free || recovery) && this.queued.has('dodge')) {
-      this.queued.clear(); s.combo = 0; this.action('dodge');
+      this.clearQueued(); s.combo = 0; this.action('dodge');
       this.dodgeDirection = magnitude > .08 ? { x: x / magnitude, z: z / magnitude } : { x: Math.sin(s.facing), z: Math.cos(s.facing) };
       s.facing = Math.atan2(this.dodgeDirection.x, this.dodgeDirection.z); free = false;
     }
@@ -91,7 +99,7 @@ export class PlayerSimulation {
         this.queued.delete('ward');
         if (s.pressure >= 25) { s.pressure -= 25; s.wardRemaining = .8; s.combo = 0; this.action('ward'); this.emit({ type: 'ward', position: { ...s.position } }); }
       } else if (this.queued.has('heavy') || this.queued.has('attack')) {
-        const heavy = this.queued.has('heavy'); this.queued.clear();
+        const heavy = this.queued.has('heavy'); this.clearQueued();
         if (aim && Math.hypot(aim.x - s.position.x, aim.z - s.position.z) > .1) s.facing = Math.atan2(aim.x - s.position.x, aim.z - s.position.z);
         const id = heavy ? this.style.heavy : this.style.light[s.combo % this.style.light.length]!;
         s.combo = heavy ? 0 : s.combo % this.style.light.length + 1; this.action(heavy ? 'heavy' : 'attack'); s.attack = id;
@@ -155,14 +163,14 @@ export class PlayerSimulation {
     this.quietSince = this.clock;
     if (s.wardRemaining > 0) { s.wardRemaining = 0; s.blocks++; this.emit({ type: 'block', position: { ...s.position } }, source, attackInstance); return false; }
     s.health = Math.max(0, s.health - amount); s.invulnerable = false; s.combo = 0; s.wardRemaining = 0;
-    this.queued.clear(); this.action(s.health ? 'hit' : 'dead'); this.emit({ type: 'damage', position: { ...s.position } }, source, attackInstance); return true;
+    this.clearQueued(); this.action(s.health ? 'hit' : 'dead'); this.emit({ type: 'damage', position: { ...s.position } }, source, attackInstance); return true;
   }
   private resetTarget(t: CombatantState): void { t.generation++; Object.assign(t, { position: { ...t.spawn }, previous: { ...t.spawn }, health: t.maxHealth, posture: 0, exposedUntil: 0, defeatedUntil: 0, velocity: { x: 0, z: 0 }, hits: 0 }); this.emit({ type: 'reset', target: t.id, position: { ...t.position } }); }
   resetTargets(): void { for (const t of this.targets) this.resetTarget(t); this.collision.syncTargets?.(this.targets); }
   reset(): void {
     this.generation++;this.targeting.clear();
     Object.assign(this.state, { target:null, position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100, action: 'idle', actionTime: 0, actionSequence: this.state.actionSequence + 1, attack: null, grounded: false, strikes: 0, targetHits: 0, invulnerable: false, wardRemaining: 0, combo: 0, criticals: 0, blocks: 0, defeats: 0, ventWarning: false, ventRemaining: 2 });
-    this.verticalSpeed = 0; this.queued.clear(); this.hitTargets.clear(); this.chainUntil = -1; this.quietSince = this.clock; this.ventAt = this.clock + 2; this.warned = false;
+    this.verticalSpeed = 0; this.clearQueued(); this.hitTargets.clear(); this.chainUntil = -1; this.quietSince = this.clock; this.ventAt = this.clock + 2; this.warned = false;
     this.resetTargets(); this.events.length = 0; this.collision.reset(PLAYER_SPAWN);
   }
   dispose(): void { if (!this.disposed) { this.disposed = true; this.events.length = 0; this.collision.dispose(); } }

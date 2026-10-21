@@ -1,7 +1,7 @@
 {
   "bootstrap": {
-    "rawBytes": 6934044,
-    "gzipBytes": 2591236,
+    "rawBytes": 6932553,
+    "gzipBytes": 2590702,
     "limitBytes": 5242880,
     "passed": true
   },
@@ -36,8 +36,8 @@
     "passed": true
   },
   "weaponAnimations": {
-    "rawBytes": 437932,
-    "gzipBytes": 78101,
+    "rawBytes": 419712,
+    "gzipBytes": 72780,
     "limitBytes": 524288,
     "passed": true
   },

@@ -54,6 +54,7 @@ export class VisualShowcase implements WorldPresentation {
   private readonly combat: CombatPresentation;
   private readonly missionView:MissionPresentation|null;
   private animationSequence = -1;
+  private attackFadeDelta = 0;
   baton: BatonPresentation | null = null;
   equipBaton(clips: readonly AnimationClip[]): void { this.baton?.equip(clips); }
   private enemy: EnemyPresentation | null = null;
@@ -108,7 +109,7 @@ export class VisualShowcase implements WorldPresentation {
   setPlaying(playing: boolean): void {
     this.playing = playing; this.preview.controlled = playing;
     this.combat.group.visible = playing;
-    if (playing) this.applyPlayer(1); else this.preview.playbackRate(1);
+    if (playing) this.applyPlayer(1); else this.preview.releaseControlled();
   }
   turn(): void { this.preview.turn(); }
   inspection(): { feet: number[][]; gripDistances: number[] } {
@@ -120,14 +121,16 @@ export class VisualShowcase implements WorldPresentation {
   }
   update(dt: number, input: InputFrame, reducedMotion: boolean): boolean {
     void input;
-    if (this.playing) this.applyPlayer(1);
+    if (this.playing) this.applyPlayer(1, false);
     this.baton?.update(this.player.state.weapon==='baton');
     this.missionView?.update(this.district?.stream.status==='ready');
     this.district?.setMission(this.mission?.active??false);
     if(!this.mission?.active)this.releaseMissionSection();
     this.actor.visible=!(this.mission?.snapshot.hidePlayer??false);
     const animationDt=this.mission?.cinematic||this.mission?.stage==='complete'?0:dt;
-    this.time += dt; this.preview.update(animationDt);
+    this.time += dt;
+    if (this.playing && this.player.state.weapon === 'baton' && this.player.state.attack) this.attackFadeDelta += animationDt;
+    else { this.attackFadeDelta = 0; this.preview.update(animationDt); }
     if (this.playing) this.combat.update(dt, reducedMotion);
     this.enemy?.update(animationDt, reducedMotion);
     this.engine.intensity = 12 + (reducedMotion ? 0 : Math.sin(this.time * 1.2) * .4);
@@ -145,13 +148,20 @@ export class VisualShowcase implements WorldPresentation {
   }
   combatEvent(event: CombatEvent, reducedMotion: boolean): void { this.combat.event(event, reducedMotion); this.enemy?.event(event); }
   interpolate(alpha: number): void { if (this.playing) { this.applyPlayer(alpha); this.combat.interpolate(alpha); this.enemy?.interpolate(alpha); } }
-  private applyPlayer(alpha: number): void {
+  private applyPlayer(alpha: number, sample = true): void {
     const s = this.player.state;
     this.target.set(s.previous.x + (s.position.x - s.previous.x) * alpha, s.previous.y + (s.position.y - s.previous.y) * alpha, s.previous.z + (s.position.z - s.previous.z) * alpha);
     this.actor.position.copy(this.target); this.actor.rotation.y = s.facing;
     this.preview.controlled = true;
     const name = s.attack ? this.player.attackDefinition(s.attack).clip : s.weapon==='baton' && s.action!=='attack' && s.action!=='heavy' ? this.player.style.animations[s.action] : PLAYER_CLIPS[s.action];
-    if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) { this.preview.selectClip({ kind: 'clip', name }); this.animationSequence = s.actionSequence; }
+    if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) { this.preview.selectClip({ kind: 'clip', name }, s.attack && s.weapon === 'baton' ? .05 : .18); this.animationSequence = s.actionSequence; }
+    if (sample && s.attack && s.weapon === 'baton') {
+      // Advance only the fractional render interval beyond the latest CPU pose.
+      // Damage still resolves exclusively at fixed ticks. One mixer evaluation
+      // per rendered strike also avoids evaluating the rig twice per tick.
+      this.preview.sampleControlled(s.actionTime + alpha / 60, this.attackFadeDelta);
+      this.attackFadeDelta = 0;
+    }
     this.preview.playbackRate(s.attack ? attackPlaybackRate(this.player.attackDefinition(s.attack), s.actionTime, this.preview.duration(name)) : s.action === 'ward' ? this.preview.duration(name) / .8 : PLAYER_CLIP_RATES[s.action]);
   }
   private reflectionEnvironment(renderer: WebGPURenderer, texture: Texture): void {

@@ -1,7 +1,8 @@
 import { clickSceneTool } from '../helpers/scene-menu';
 import {test,expect} from '@playwright/test';
 import {exerciseEncounter,type ExerciseTotals} from '../helpers/encounter-driver';
-import paths from '../../src/player/baton-contact.json' with { type:'json' };
+import { BATON } from '../../src/player/weapon-definitions';
+import { sampleWeaponContact } from '../../src/player/weapon-contact';
 import {mkdir,writeFile} from 'node:fs/promises';
 const qaRoot=process.env.VESPER_WEAPON_QA??'docs/qa/baton-highlight';
 
@@ -30,9 +31,10 @@ test('armed combat demonstration and exported contact alignment',async({page})=>
   const contacts:{time:number;error:number}[]=[];
   for(let i=0;i<100&&totals.victories<1;i++){
     const s=await page.evaluate(()=>window.__VESPER_DEBUG__!.snapshot());
-    if(s.player?.attack==='baton-heavy'&&s.player.actionTime>.44&&s.player.actionTime<.58&&s.weaponContact){
-      const p=s.player,row=paths.Baton_Heavy[Math.min(paths.Baton_Heavy.length-1,Math.round((p.actionTime+1/60)*60))]!;
-      const expected=[p.position.x+row.tip[0]!*Math.cos(p.facing)+row.tip[2]!*Math.sin(p.facing),p.position.y+row.tip[1]!,p.position.z+row.tip[2]!*Math.cos(p.facing)-row.tip[0]!*Math.sin(p.facing)];
+    const a=BATON.attacks['baton-heavy']!,time=s.weaponContact?.time;
+    if(s.player?.attack==='baton-heavy'&&time!=null&&time>=a.active[0]&&time<a.active[1]&&s.weaponContact){
+      const p=s.player,row=sampleWeaponContact(a.contact!,time);
+      const expected=[p.position.x+row.tip.x*Math.cos(p.facing)+row.tip.z*Math.sin(p.facing),p.position.y+row.tip.y,p.position.z+row.tip.z*Math.cos(p.facing)-row.tip.x*Math.sin(p.facing)];
       contacts.push({time:p.actionTime,error:Math.hypot(...s.weaponContact.tip.map((v,k)=>v-expected[k]!))});
     }
     await page.waitForTimeout(70);
@@ -50,7 +52,10 @@ test('pickup failure, late cancellation, retry and resource ownership',async({pa
   await page.route('**/weapons/baton/animations.glb',async route=>{await new Promise(r=>setTimeout(r,700));await route.continue().catch(()=>{});});await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-pickup','loading');
   await page.keyboard.down('w');await page.waitForTimeout(650);await page.keyboard.up('w');await page.waitForTimeout(700);await expect(page.locator('#app')).toHaveAttribute('data-weapon','unarmed');
   expect((await page.evaluate(()=>window.__VESPER_DEBUG__!.snapshot())).resources).toBe(baseline.resources);await page.unroute('**/weapons/baton/animations.glb');
-  await clickSceneTool(page, '#encounter-start');await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');await clickSceneTool(page, '#encounter-return');await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');
+  await clickSceneTool(page, '#encounter-start');await expect(page.locator('#app')).toHaveAttribute('data-encounter','active');await clickSceneTool(page, '#encounter-return');
+  await expect(page.locator('#app')).toHaveAttribute('data-encounter','training');
+  await expect(page.locator('#pickup-status')).toContainText('Pick up steel baton');
+  await page.keyboard.press('f');await expect(page.locator('#app')).toHaveAttribute('data-weapon','baton');
   const equipped=await page.evaluate(()=>window.__VESPER_DEBUG__!.snapshot()),cycles=[];
   for(let i=0;i<3;i++){await clickSceneTool(page, '#inspection-toggle');await expect(page.locator('#app')).toHaveAttribute('data-inspection','active');await clickSceneTool(page, '#inspection-toggle');await page.evaluate(()=>window.__VESPER_DEBUG__!.reloadFixture());cycles.push(await page.evaluate(()=>window.__VESPER_DEBUG__!.snapshot()));}
   expect(cycles.every(c=>c.resources===equipped.resources&&c.references===equipped.references)).toBe(true);await writeFile(`${qaRoot}/browser/lifecycle.json`,JSON.stringify({baseline,equipped,cycles},null,2));

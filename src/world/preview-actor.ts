@@ -10,6 +10,7 @@ export class PreviewActor {
   clips: CharacterClip[] = [];
   paused = false;
   controlled = false;
+  sampledTime: number | null = null;
   private mixer: AnimationMixer | null = null;
   private root: GLTF['scene'] | null = null;
   private readonly actions = new Map<string, AnimationAction>();
@@ -50,12 +51,36 @@ export class PreviewActor {
   };
   playbackRate(rate: number): void { if (this.clip.kind === 'clip') this.actions.get(this.clip.name)?.setEffectiveTimeScale(rate); }
   duration(name: string): number { return this.actions.get(name)?.getClip().duration ?? 1; }
-  seek(seconds: number): void {
+  /** CPU attack time owns the selected pose; mixer time only advances fades. */
+  sampleControlled(seconds: number, fadeDelta: number): void {
+    if (this.clip.kind !== 'clip' || !this.mixer) return;
+    const action = this.actions.get(this.clip.name);
+    if (!action) return;
+    action.paused = true;
+    action.time = Math.min(action.getClip().duration, Math.max(0, seconds));
+    this.sampledTime = action.time;
+    this.mixer.update(Math.max(0, fadeDelta));
+  }
+  releaseControlled(): void {
+    this.sampledTime = null;
+    if (this.clip.kind === 'clip') {
+      const action = this.actions.get(this.clip.name);
+      if (action) { action.paused = false; action.setEffectiveTimeScale(1); }
+    }
+  }
+  seek(seconds: number, isolate = false): void {
     if (this.clip.kind !== 'clip') return;
     const action = this.actions.get(this.clip.name);
-    if (action) { action.time = Math.min(action.getClip().duration, Math.max(0, seconds)); this.mixer?.update(0); }
+    if (action) {
+      if (isolate) {
+        for (const other of this.actions.values()) if (other !== action) other.stop();
+        action.stopFading().setEffectiveWeight(1).play();
+      }
+      action.time = Math.min(action.getClip().duration, Math.max(0, seconds)); this.mixer?.update(0);
+    }
   }
-  selectClip(selection: PreviewClip): void {
+  selectClip(selection: PreviewClip, transitionSeconds = 0.18): void {
+    this.sampledTime = null;
     if (selection.kind === 'pose') {
       this.mixer?.stopAllAction();
       const idle = this.defaultClip();
@@ -69,7 +94,7 @@ export class PreviewActor {
     const previous = this.clip.kind === 'clip' ? this.actions.get(this.clip.name) : idle.kind === 'clip' ? this.actions.get(idle.name) : this.actions.values().next().value as AnimationAction | undefined;
     next.reset().setLoop(descriptor.loop ? LoopRepeat : LoopOnce, descriptor.loop ? Infinity : 1);
     next.paused = false; next.clampWhenFinished = true; next.enabled = true; next.setEffectiveTimeScale(1).setEffectiveWeight(1).play();
-    if (previous && previous !== next) { previous.paused = false; next.crossFadeFrom(previous, 0.18, false); }
+    if (previous && previous !== next) { previous.paused = false; next.crossFadeFrom(previous, transitionSeconds, false); }
     this.clip = selection;
   }
   turn(): void { this.group.rotation.y += Math.PI / 4; }

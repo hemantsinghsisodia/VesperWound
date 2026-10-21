@@ -37,13 +37,46 @@ describe('steel baton',()=>{
     for(let i=0;i<3;i++){p.state.position={x:0,y:.035,z:0};t.position={...t.spawn};t.velocity={x:0,z:0};p.update(1/60,frame(['attack']),{x:0,z:1});ids.push(p.state.attack);tick(p,Math.ceil(p.attackDefinition(p.state.attack!).duration*60)+1);}
     expect(ids).toEqual(BATON.light);expect(t.health).toBe(160-21-27-36);expect(t.hits).toBe(3);expect(p.state.pressure).toBe(80);
   });
-  it('expires early armed input, buffers the next swing for 120 ms and resets the chain after 600 ms',()=>{
+  it('starts on the next update, retains one early follow-up and resets the chain after 600 ms',()=>{
     const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
-    p.update(1/60,frame(['attack']));tick(p,6);p.update(1/60,frame(['attack']));tick(p,36);
+    p.update(1/60,frame(['attack']));expect(p.state.attack).toBe('baton-light1');expect(p.state.actionTime).toBe(0);
+    tick(p,3);p.update(1/60,frame(['attack']));expect(p.state.pendingAttack).toBe('attack');tick(p,22);
+    expect(p.state.strikes).toBe(1);tick(p,1);expect(p.state.attack).toBe('baton-light2');expect(p.state.actionTime).toBe(0);
+    p.update(1/60,frame(['attack']));tick(p,29);expect(p.state.strikes).toBe(3);expect(p.state.attack).toBe('baton-light3');
+    tick(p,73);p.update(1/60,frame(['attack']));expect(p.state.attack).toBe('baton-light1');
+  });
+  it('replaces the single choice with the latest press and starts fresh repeated heavy instances',()=>{
+    const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
+    p.update(1/60,frame(['heavy']));const sequence=p.state.actionSequence;
+    p.update(1/60,frame(['attack']));expect(p.state.pendingAttack).toBe('attack');
+    p.update(1/60,frame(['heavy']));expect(p.state.pendingAttack).toBe('heavy');
+    tick(p,46);expect(p.state.attack).toBe('baton-heavy');expect(p.state.actionTime).toBe(0);
+    expect(p.state.actionSequence).toBeGreaterThan(sequence);expect(p.state.strikes).toBe(2);expect(p.state.pendingAttack).toBeNull();
+    tick(p,49);expect(p.state.strikes).toBe(2);
+  });
+  it('preserves press order when light and heavy arrive in the same fixed tick',()=>{
+    const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
+    p.update(1/60,frame(['attack']));
+    p.update(1/60,frame(['heavy','attack']));expect(p.state.pendingAttack).toBe('attack');
+    p.update(1/60,frame(['attack','heavy']));expect(p.state.pendingAttack).toBe('heavy');
+  });
+  it('never repeats a held button and clears pending strikes on interruption, reset and suspension',()=>{
+    const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
+    p.update(1/60,frame(['attack']));
+    for(let i=0;i<60;i++)p.update(1/60,{...frame(),held:new Set(['attack'])});
     expect(p.state.strikes).toBe(1);
-    p.update(1/60,frame(['attack']));expect(p.state.attack).toBe('baton-light2');tick(p,32);
-    p.update(1/60,frame(['attack']));tick(p,9);expect(p.state.strikes).toBe(3);expect(p.state.attack).toBe('baton-light3');
-    tick(p,50);tick(p,36);p.update(1/60,frame(['attack']));expect(p.state.attack).toBe('baton-light1');
+    for(const clear of [()=>p.damage(1),()=>p.clearQueued(),()=>p.reset()]){
+      tick(p,60);p.update(1/60,frame(['attack']));p.update(1/60,frame(['heavy']));expect(p.state.pendingAttack).toBe('heavy');
+      clear();expect(p.state.pendingAttack).toBeNull();const strikes=p.state.strikes;tick(p,60);expect(p.state.strikes).toBe(strikes);
+    }
+    p.update(1/60,frame(['attack']));p.update(1/60,frame(['attack']));p.damage(100);tick(p,60);expect(p.state.action).toBe('dead');expect(p.state.pendingAttack).toBeNull();
+  });
+  it('lets a recovery dodge win over the queued follow-up but commits windup and active frames',()=>{
+    const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
+    p.update(1/60,frame(['attack']));p.update(1/60,frame(['heavy','dodge']));
+    expect(p.state.action).toBe('attack');tick(p,11);expect(p.state.action).toBe('attack');
+    tick(p,3);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('dodge');expect(p.state.pendingAttack).toBeNull();
+    tick(p,60);expect(p.state.strikes).toBe(1);
   });
   it('has contact boundaries and cannot hit through solids',()=>{
     for(const id of [...BATON.light,BATON.heavy]){
@@ -54,7 +87,7 @@ describe('steel baton',()=>{
   });
   it('keeps windup committed, permits recovery dodge and consumes heavy critical',()=>{
     const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;const t=p.targets[1]!;p.targets.splice(0,p.targets.length,t);p.state.position={x:0,y:.035,z:0};t.position={x:0,y:.035,z:.85};
-    t.exposedUntil=2;t.posture=100;p.update(1/60,frame(['heavy']),{x:0,z:1});tick(p,12);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('heavy');tick(p,22);
+    t.exposedUntil=2;t.posture=100;p.update(1/60,frame(['heavy']),{x:0,z:1});tick(p,8);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('heavy');tick(p,19);
     expect(t.health).toBe(64);expect(t.exposedUntil).toBe(0);expect(p.state.criticals).toBe(1);tick(p,2);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('dodge');
   });
 });

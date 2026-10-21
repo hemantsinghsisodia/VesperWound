@@ -1,7 +1,8 @@
 """Explicit source repair. Never called by the normal, read-only asset build.
 
 Rebake the saved CC0 source actions across their complete frame ranges. Preserve
-the accepted mesh, rig, hand attachment and manually authored strike paths.
+the accepted mesh, rig, hand attachment and full locomotion cycles. Repair the
+four strike paths, forward guard and planted attack stance explicitly.
 """
 import bpy, json, sys
 from pathlib import Path
@@ -25,6 +26,6 @@ for track in a.animation_data.nla_tracks:track.mute=True
 grip=json.loads(a['baton_grip'])
 axis=Quaternion(grip['quaternion'])@Vector((0,0,1))
 bake_armed_actions(a,originals,Vector(grip['position']),axis,source_fps)
-a['armed_motion_repair']='Full source-frame evaluation, stable elbow plane, forearm-aligned wrist twist and closed grip, 2026-10-14'
+a['armed_motion_repair']='Shared forward guard, planted strikes, compact forehand/backhand/diagonal/overhead paths at revised CPU timings, 2026-10-21'
 bpy.ops.wm.save_as_mainfile(filepath=str(path))
 print('BATON_MOTION_REPAIR_COMPLETE')

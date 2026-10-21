@@ -1,0 +1,196 @@
+{
+  "backend": "WebGL2",
+  "quality": "High",
+  "resolution": "1440 × 900",
+  "frameMs": 6.799999999999272,
+  "cpuMs": 5,
+  "fps": 80.38585209003219,
+  "p95": 20.799999999999272,
+  "draws": 104,
+  "triangles": 260617,
+  "textures": 71,
+  "estimatedGpuBytes": 60234381,
+  "resources": 53,
+  "references": 6,
+  "voices": 3,
+  "overruns": 1,
+  "fixtureLoads": 1,
+  "markerX": 0.9039220906987969,
+  "markerZ": 3.398154000000043,
+  "listeners": 70,
+  "audioState": "running",
+  "scene": "showcase",
+  "variant": "desktop",
+  "animation": "Baton_Idle",
+  "camera": "player",
+  "characterTier": "desktop",
+  "inspection": "courtyard",
+  "inspectionPaused": false,
+  "artLoading": false,
+  "district": "closed",
+  "area": "Pressure Court",
+  "hiddenCutaways": 0,
+  "rig": {
+    "feet": [
+      [
+        1.1455016820542523,
+        0.12219407302570606,
+        3.2345840291335053
+      ],
+      [
+        0.7011108073222736,
+        0.11740183085443684,
+        3.6182565938893245
+      ]
+    ],
+    "gripDistances": []
+  },
+  "weaponContact": {
+    "base": [
+      1.2299290097954128,
+      1.1409285832208995,
+      3.6268910098077267
+    ],
+    "tip": [
+      1.4223509717369507,
+      1.4810783246619712,
+      3.612289968780482
+    ],
+    "grip": 0.13420291314821672,
+    "time": null
+  },
+  "player": {
+    "target": {
+      "id": "isolated",
+      "generation": 0
+    },
+    "weapon": "baton",
+    "position": {
+      "x": 0.9039218800594204,
+      "y": 0.028839621980441738,
+      "z": 3.3981537893606664
+    },
+    "previous": {
+      "x": 0.9039222370753128,
+      "y": 0.028939720421622045,
+      "z": 3.3981541463765588
+    },
+    "facing": 1.5361984993803985,
+    "health": 100,
+    "pressure": 100,
+    "action": "idle",
+    "actionTime": 0.11666666666666665,
+    "actionSequence": 9,
+    "attack": null,
+    "pendingAttack": null,
+    "grounded": true,
+    "strikes": 3,
+    "targetHits": 3,
+    "invulnerable": false,
+    "wardRemaining": 0,
+    "combo": 3,
+    "criticals": 0,
+    "blocks": 0,
+    "defeats": 0,
+    "ventWarning": false,
+    "ventRemaining": 1.3666666666666685
+  },
+  "targets": [
+    {
+      "id": "isolated",
+      "label": "COMBO TARGET",
+      "position": {
+        "x": 1.8774440586237027,
+        "y": 0.035,
+        "z": 3.4011679244249153
+      },
+      "maxHealth": 100,
+      "mass": 1,
+      "generation": 0,
+      "previous": {
+        "x": 1.8768701495438507,
+        "y": 0.035,
+        "z": 3.4011661481384805
+      },
+      "spawn": {
+        "x": 1.5,
+        "y": 0.035,
+        "z": 3.4
+      },
+      "health": 16,
+      "posture": 65,
+      "exposedUntil": 0,
+      "defeatedUntil": 0,
+      "velocity": {
+        "x": 0.030136194854583093,
+        "z": 0.00009327350968774936
+      },
+      "hits": 3
+    },
+    {
+      "id": "heavy",
+      "label": "HEAVY TARGET",
+      "position": {
+        "x": 3.8,
+        "y": 0.035,
+        "z": 1.8
+      },
+      "maxHealth": 160,
+      "mass": 2,
+      "generation": 0,
+      "previous": {
+        "x": 3.8,
+        "y": 0.035,
+        "z": 1.8
+      },
+      "spawn": {
+        "x": 3.8,
+        "y": 0.035,
+        "z": 1.8
+      },
+      "health": 160,
+      "posture": 0,
+      "exposedUntil": 0,
+      "defeatedUntil": 0,
+      "velocity": {
+        "x": 0,
+        "z": 0
+      },
+      "hits": 0
+    },
+    {
+      "id": "grouped",
+      "label": "GROUP TARGET",
+      "position": {
+        "x": 4.5,
+        "y": 0.035,
+        "z": 1.9
+      },
+      "maxHealth": 100,
+      "mass": 1,
+      "generation": 0,
+      "previous": {
+        "x": 4.5,
+        "y": 0.035,
+        "z": 1.9
+      },
+      "spawn": {
+        "x": 4.5,
+        "y": 0.035,
+        "z": 1.9
+      },
+      "health": 100,
+      "posture": 0,
+      "exposedUntil": 0,
+      "defeatedUntil": 0,
+      "velocity": {
+        "x": 0,
+        "z": 0
+      },
+      "hits": 0
+    }
+  ],
+  "encounter": "training",
+  "enemies": [],
+  "enemyLoading": false
+}

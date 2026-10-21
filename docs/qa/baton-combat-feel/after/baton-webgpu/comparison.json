@@ -1,0 +1,204 @@
+{
+  "browser": "155.0.8059.85",
+  "backend": "webgpu-required",
+  "totals": {
+    "encounters": 2,
+    "victories": 2,
+    "hits": 6,
+    "criticals": 2,
+    "blocks": 4,
+    "strikes": 6,
+    "damageTaken": 0
+  },
+  "errors": [],
+  "snapshot": {
+    "backend": "WebGPU",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 14.099999999998545,
+    "cpuMs": 3.400000000372529,
+    "fps": 79.62840079628401,
+    "p95": 20.900000000001455,
+    "draws": 97,
+    "triangles": 271655,
+    "textures": 76,
+    "estimatedGpuBytes": 61572310,
+    "resources": 69,
+    "references": 7,
+    "voices": 3,
+    "overruns": 3,
+    "fixtureLoads": 1,
+    "markerX": 0.3766490466758637,
+    "markerZ": 3.4562779517125,
+    "listeners": 70,
+    "audioState": "running",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Baton_Idle",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "district": "closed",
+    "area": "Pressure Court",
+    "hiddenCutaways": 0,
+    "rig": {
+      "feet": [
+        [
+          0.5952671582001816,
+          0.12043733947177243,
+          3.247662437502973
+        ],
+        [
+          0.20400030762134383,
+          0.11651470128797276,
+          3.6888440320679883
+        ]
+      ],
+      "gripDistances": []
+    },
+    "weaponContact": {
+      "base": [
+        0.7321097311813759,
+        1.1378842191889569,
+        3.640334861906473
+      ],
+      "tip": [
+        0.9216676948503117,
+        1.4772607661703985,
+        3.597537074144344
+      ],
+      "grip": 0.13420270243018342,
+      "time": null
+    },
+    "player": {
+      "target": {
+        "id": "zombie7-0",
+        "generation": 4
+      },
+      "weapon": "baton",
+      "position": {
+        "x": 0.3766492491595468,
+        "y": 0.029331881287507716,
+        "z": 3.4562778504706584
+      },
+      "previous": {
+        "x": 0.37664876241992395,
+        "y": 0.02923188129003393,
+        "z": 3.45627809384047
+      },
+      "facing": 1.6727042106905194,
+      "health": 100,
+      "pressure": 70,
+      "action": "idle",
+      "actionTime": 0.26666666666666666,
+      "actionSequence": 51,
+      "attack": null,
+      "pendingAttack": null,
+      "grounded": true,
+      "strikes": 2,
+      "targetHits": 2,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 0,
+      "blocks": 2,
+      "defeats": 0,
+      "ventWarning": false,
+      "ventRemaining": 0
+    },
+    "targets": [
+      {
+        "id": "zombie7-0",
+        "generation": 4,
+        "label": "Zombie 7",
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "position": {
+          "x": 1.5372228769790826,
+          "y": 0.035,
+          "z": 3.3290284361490383
+        },
+        "previous": {
+          "x": 1.536977821301,
+          "y": 0.035,
+          "z": 3.32905530470642
+        },
+        "health": 24,
+        "maxHealth": 120,
+        "posture": 100,
+        "exposedUntil": 18.63333333333367,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0.012867971468278182,
+          "z": -0.001410878672505217
+        },
+        "hits": 2,
+        "action": "stagger",
+        "actionTime": 0.7166666666666672,
+        "facing": -1.5321761050144485,
+        "sequence": 9,
+        "attackInstance": 2,
+        "hitPlayer": true,
+        "attackRecipient": {
+          "id": "medic",
+          "generation": 3
+        },
+        "unreachable": 0,
+        "lastAttackOrder": 2
+      }
+    ],
+    "encounter": "encounter",
+    "enemies": [
+      {
+        "id": "zombie7-0",
+        "generation": 4,
+        "label": "Zombie 7",
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "position": {
+          "x": 1.5372228769790826,
+          "y": 0.035,
+          "z": 3.3290284361490383
+        },
+        "previous": {
+          "x": 1.536977821301,
+          "y": 0.035,
+          "z": 3.32905530470642
+        },
+        "health": 24,
+        "maxHealth": 120,
+        "posture": 100,
+        "exposedUntil": 18.63333333333367,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0.012867971468278182,
+          "z": -0.001410878672505217
+        },
+        "hits": 2,
+        "action": "stagger",
+        "actionTime": 0.7166666666666672,
+        "facing": -1.5321761050144485,
+        "sequence": 9,
+        "attackInstance": 2,
+        "hitPlayer": true,
+        "attackRecipient": {
+          "id": "medic",
+          "generation": 3
+        },
+        "unreachable": 0,
+        "lastAttackOrder": 2
+      }
+    ],
+    "enemyLoading": false
+  }
+}

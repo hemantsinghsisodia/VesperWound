@@ -1,9 +1,10 @@
 import type { Page } from '@playwright/test';
 import { clickSceneTool, projectGround } from './scene-menu';
-export interface ExerciseTotals { encounters: number; victories: number; hits: number; criticals: number; blocks: number; strikes: number }
+export interface ExerciseTotals { encounters: number; victories: number; hits: number; criticals: number; blocks: number; strikes: number; damageTaken?: number }
 /** Drives real production controls; reads only UI state, never mutates simulation. */
 export async function exerciseEncounter(page: Page, running: () => boolean, totals: ExerciseTotals): Promise<void> {
   const keys = new Set<string>();
+  let previousHealth = 100;
   const move = async (wanted: string[]) => {
     for (const key of keys) if (!wanted.includes(key)) { await page.keyboard.up(key); keys.delete(key); }
     for (const key of wanted) if (!keys.has(key)) { await page.keyboard.down(key); keys.add(key); }
@@ -17,6 +18,8 @@ export async function exerciseEncounter(page: Page, running: () => boolean, tota
           health: document.querySelector<HTMLProgressElement>('#health')!.value, pressure: document.querySelector<HTMLProgressElement>('#pressure')!.value,
           hits: Number(c.dataset.combatHits), criticals: Number(c.dataset.combatCriticals), blocks: Number(c.dataset.combatBlocks), strikes: Number(c.dataset.combatStrikes) };
       });
+      if (totals.damageTaken !== undefined) totals.damageTaken += Math.max(0, previousHealth - s.health);
+      previousHealth = s.health;
       if (s.enemyHealth === 0 || s.health === 0) {
         await move([]); totals.encounters++; totals.victories += Number(s.enemyHealth === 0);
         totals.hits += s.hits; totals.criticals += s.criticals; totals.blocks += s.blocks; totals.strikes += s.strikes;
