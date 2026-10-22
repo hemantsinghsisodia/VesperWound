@@ -25,6 +25,9 @@ export class AudioManager {
   private master: GainNode | null = null;
   private readonly buses = new Map<AudioBus, GainNode>();
   private readonly sources = new Set<AudioScheduledSourceNode>();
+  private readonly combatSources = new Set<AudioScheduledSourceNode>();
+  private readonly warnings = new Map<string, AudioScheduledSourceNode>();
+  private readonly combatKeys = new Set<string>();
   private readonly missionSources=new Map<AudioScheduledSourceNode,GainNode>();
   private ambienceStarted = false;
   private panner: PannerNode | null = null;
@@ -86,22 +89,34 @@ export class AudioManager {
     this.sources.add(oscillator); oscillator.start(); oscillator.stop(context.currentTime + 0.5);
   }
   combat(event: CombatEvent): void {
+    if(event.type==='stagger'||event.type==='defeat'){
+      const key=`${event.recipient?.id}/${event.recipient?.generation}`;
+      const warning=this.warnings.get(key);if(warning){warning.stop();this.warnings.delete(key);}
+    }
     const context = this.context; const bus = this.buses.get('effects');
     if (!context || !bus || context.state !== 'running' || this.sources.size >= 22) return;
-    if (!['swing', 'hit', 'block', 'ward', 'damage', 'vent-warning', 'vent-pulse', 'enemy-warning'].includes(event.type)) return;
+    if (!['swing', 'hit', 'block', 'evade', 'ward', 'damage', 'vent-warning', 'vent-pulse', 'enemy-warning'].includes(event.type)) return;
+    if(['enemy-warning','block','evade'].includes(event.type)&&event.attackInstance!==null){
+      const key=`${event.type}/${event.source.id}/${event.source.generation}/${event.recipient?.generation}/${event.attackInstance}`;
+      if(this.combatKeys.has(key))return;this.combatKeys.add(key);
+      if(this.combatKeys.size>32)this.combatKeys.delete(this.combatKeys.values().next().value!);
+    }
     const hit = event.type === 'hit'; const swing = event.type === 'swing';
     const heavy = (hit || swing) && (event.attack === 'heavy' || event.attack === 'baton-heavy');
     const baton=(hit||swing)&&event.attack.startsWith('baton-');
-    const frequency = baton&&hit ? heavy?105:170 : baton&&swing ? 290 : event.type === 'enemy-warning' ? 330 : event.type === 'block' ? 850 : event.type === 'ward' ? 420 : event.type === 'vent-warning' ? 660 : heavy ? 75 : hit ? 120 : swing ? 220 : 55;
+    const frequency = event.type==='evade'?1200:baton&&hit ? heavy?105:170 : baton&&swing ? 290 : event.type === 'enemy-warning' ? 330 : event.type === 'block' ? 850 : event.type === 'ward' ? 420 : event.type === 'vent-warning' ? 660 : heavy ? 75 : hit ? 120 : swing ? 220 : 55;
     const duration = swing ? .12 : event.type === 'ward' ? .3 : .18;
     const oscillator = context.createOscillator(); const gain = context.createGain();
-    oscillator.type = event.type === 'block' || event.type === 'ward' || event.type === 'vent-warning' ? 'sine' : 'triangle';
+    oscillator.type = event.type === 'block' || event.type === 'evade' || event.type === 'ward' || event.type === 'vent-warning' ? 'sine' : 'triangle';
     oscillator.frequency.setValueAtTime(frequency, context.currentTime);
     oscillator.frequency.exponentialRampToValueAtTime(event.type === 'ward' ? 850 : Math.max(35, frequency * .45), context.currentTime + duration);
     gain.gain.setValueAtTime(0, context.currentTime); gain.gain.linearRampToValueAtTime(swing ? .025 : .065, context.currentTime + .008);
     gain.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration);
     oscillator.connect(gain); gain.connect(bus); this.sources.add(oscillator);
-    oscillator.onended = () => { this.sources.delete(oscillator); oscillator.disconnect(); gain.disconnect(); };
+    this.combatSources.add(oscillator);
+    const warningKey=`${event.source.id}/${event.source.generation}`;
+    if(event.type==='enemy-warning')this.warnings.set(warningKey,oscillator);
+    oscillator.onended = () => { this.sources.delete(oscillator);this.combatSources.delete(oscillator);if(this.warnings.get(warningKey)===oscillator)this.warnings.delete(warningKey); oscillator.disconnect(); gain.disconnect(); };
     oscillator.start(); oscillator.stop(context.currentTime + duration);
     if (hit || swing || event.type === 'damage') {
       if (!this.noise) {
@@ -113,7 +128,8 @@ export class AudioManager {
       const filter = context.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = baton ? swing?2800:2000 : swing ? 1800 : heavy ? 650 : 1000;
       const envelope = context.createGain(); envelope.gain.setValueAtTime(swing ? .035 : hit && event.critical ? .1 : .065, context.currentTime); envelope.gain.exponentialRampToValueAtTime(.001, context.currentTime + duration);
       source.connect(filter); filter.connect(envelope); envelope.connect(bus); this.sources.add(source);
-      source.onended = () => { this.sources.delete(source); source.disconnect(); filter.disconnect(); envelope.disconnect(); };
+      this.combatSources.add(source);
+      source.onended = () => { this.sources.delete(source);this.combatSources.delete(source); source.disconnect(); filter.disconnect(); envelope.disconnect(); };
       source.start(); source.stop(context.currentTime + duration);
     }
   }
@@ -149,10 +165,13 @@ export class AudioManager {
     if (this.master && this.context) this.master.gain.setTargetAtTime(this.muted ? 0 : this.volume, this.context.currentTime, 0.03);
   }
   async suspend(): Promise<void> {
+    this.stopCombat();
     if (this.context?.state === 'running') { await this.context.suspend(); this.status = 'suspended'; }
   }
+  stopCombat():void {for(const source of this.combatSources){source.stop();source.disconnect();this.sources.delete(source);}this.combatSources.clear();this.warnings.clear();}
   get voiceCount(): number { return this.sources.size; }
   async dispose(): Promise<void> {
+    this.stopCombat();this.combatKeys.clear();
     this.stopMission();
     for (const source of this.sources) { source.onended = null; source.stop(); source.disconnect(); }
     this.sources.clear(); this.buses.clear(); this.panner?.disconnect(); this.master?.disconnect();

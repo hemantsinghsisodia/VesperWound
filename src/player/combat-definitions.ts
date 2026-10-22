@@ -24,7 +24,7 @@ export type CombatEventPayload =
   | { type: 'swing'; attack: CombatAttackId; instance: number; position: Position }
   | { type: 'hit'; attack: CombatAttackId; target: string; instance: number; damage: number; posture: number; critical: boolean; position: Position }
   | { type: 'stagger' | 'critical' | 'defeat' | 'reset'; target: string; position: Position }
-  | { type: 'block' | 'damage' | 'ward' | 'vent-warning' | 'vent-pulse' | 'enemy-warning'; position: Position };
+  | { type: 'block' | 'evade' | 'damage' | 'ward' | 'vent-warning' | 'vent-pulse' | 'enemy-warning'; position: Position };
 export type CombatEvent = CombatEventPayload & { source: EntityHandle; recipient: EntityHandle | null; attackInstance: number | null };
 export function attackTouches(attack: AttackDefinition, origin: Position, facing: number, target: Position, hurtRadius = .3): boolean {
   if (Math.abs(origin.y - target.y) > .65) return false;

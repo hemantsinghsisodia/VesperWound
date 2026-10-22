@@ -1,11 +1,14 @@
 import type { InputFrame } from '../core/input-frame';
 import { PlayerSimulation, type PlayerCollision } from '../player/player-simulation';
-import { TRAINING_TARGETS, attackTouches, type CombatEvent, type CombatantState, type EntityHandle, type Position } from '../player/combat-definitions';
+import { TRAINING_TARGETS, type CombatEvent, type CombatantState, type EntityHandle, type Position } from '../player/combat-definitions';
+import { sweptContact } from '../player/weapon-contact';
+import { ENEMY_MOTION } from './enemy-attack';
 import { courtyardSolids, type CollisionBox } from '../player/collision-math';
 import { GroundNavigation, type NavigationBounds } from './navigation';
 import { ZOMBIE7, type EnemyDefinition, type EnemyAction } from './enemy-definition';
 export interface EnemyState extends CombatantState {
   action: EnemyAction; actionTime: number; facing: number; sequence: number; attackInstance: number;
+  attackElapsed: number; previousAttackElapsed: number;
   hitPlayer: boolean; attackRecipient: EntityHandle | null; unreachable: number; lastAttackOrder: number;
 }
 export type EncounterKind = 'single' | 'group';
@@ -38,7 +41,7 @@ export class EncounterSimulation {
     this.generation++;this.mode='encounter';this.player.training=false;this.enemies.length=0;this.attackOrder=0;this.attackCandidate=null;
     for(let i=0;i<count;i++) {
       const spawn=placements?{...placements[i]!}:{...this.definition.spawn,x:this.definition.spawn.x+(i===0?0:.8),z:this.definition.spawn.z+(i===1?-.7:i===2?.7:0)};
-      this.enemies.push({id:`zombie7-${i}`,generation:this.generation,label:count===1?this.definition.displayName:`${this.definition.displayName} · ${i+1}`,spawn,position:{...spawn},previous:{...spawn},health:this.definition.maxHealth,maxHealth:this.definition.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,mass:1,velocity:{x:0,z:0},hits:0,action:'idle',actionTime:0,facing:-Math.PI/2,sequence:0,attackInstance:0,hitPlayer:false,attackRecipient:null,unreachable:0,lastAttackOrder:0});
+      this.enemies.push({id:`zombie7-${i}`,generation:this.generation,label:count===1?this.definition.displayName:`${this.definition.displayName} · ${i+1}`,spawn,position:{...spawn},previous:{...spawn},health:this.definition.maxHealth,maxHealth:this.definition.maxHealth,posture:0,exposedUntil:0,defeatedUntil:0,mass:1,velocity:{x:0,z:0},hits:0,action:'idle',actionTime:0,facing:-Math.PI/2,sequence:0,attackInstance:0,attackElapsed:0,previousAttackElapsed:0,hitPlayer:false,attackRecipient:null,unreachable:0,lastAttackOrder:0});
     }
     this.player.targets.splice(0,this.player.targets.length,...this.enemies);if(resetPlayer)this.player.reset();this.collision.syncTargets?.(this.enemies);this.player.clearQueued();this.slot=null;this.events=[];
   }
@@ -70,12 +73,16 @@ export class EncounterSimulation {
     this.enemies.forEach((e,i)=>{e.previous=previous[i]!;});
     // Collect enemy contacts before applying Medic's hits. A lethal/stagger hit
     // does not retroactively erase a strike already active on this same tick.
-    const contacts=this.enemies.filter(e=>e.health>0&&e.action==='active'&&!e.hitPlayer&&e.attackRecipient?.generation===this.player.generation&&this.player.state.action!=='dead'&&attackTouches(this.definition.attack,e.position,e.facing,this.player.state.position,.28)&&!this.obstructed(e.position,this.player.state.position)).map(e=>({enemy:e,source:{id:e.id,generation:e.generation}}));
+    const contacts=this.enemies.flatMap(e=>{
+      if(e.health<=0||!['active','recovery'].includes(e.action)||e.hitPlayer||e.attackRecipient?.generation!==this.player.generation||this.player.state.action==='dead')return [];
+      const contact=sweptContact(this.definition.attack,e.position,e.facing,this.player.state.position,e.attackElapsed,e.previousAttackElapsed,this.collision.blocked?.bind(this.collision),.28,this.player.state.previous);
+      return contact?[{enemy:e,source:{id:e.id,generation:e.generation},contact}]:[];
+    });
     this.player.resolveAttack();
     // Waiting guards still have hurt volumes. A real hit wakes the whole group.
     if(this.waiting&&this.enemies.some(e=>e.hits>0))this.activate();
     this.events.push(...this.player.drainEvents());
-    for(const {enemy,source} of contacts){enemy.hitPlayer=true;if(this.player.damage(this.definition.attack.damage,source,enemy.attackInstance))this.events.push({type:'hit',attack:'enemy-strike',target:'medic',instance:enemy.attackInstance,damage:this.definition.attack.damage,posture:0,critical:false,position:{...this.player.state.position},source,recipient:this.player.handle,attackInstance:enemy.attackInstance});}
+    for(const {enemy,source,contact} of contacts){enemy.hitPlayer=true;if(this.player.damage(this.definition.attack.damage,source,enemy.attackInstance,contact))this.events.push({type:'hit',attack:'enemy-strike',target:'medic',instance:enemy.attackInstance,damage:this.definition.attack.damage,posture:0,critical:false,position:{...this.player.state.position},source,recipient:this.player.handle,attackInstance:enemy.attackInstance});}
     this.events.push(...this.player.drainEvents());
     for(const e of this.enemies){
       if(e.health===0&&e.action!=='dead')this.action(e,'dead');
@@ -90,6 +97,7 @@ export class EncounterSimulation {
     e.action=action;e.actionTime=0;e.sequence++;
   }
   private advance(e:EnemyState,dt:number,time:number):void {
+    e.previousAttackElapsed=e.attackElapsed;
     e.actionTime+=dt;
     if(e.health<=0){this.action(e,'dead');return;}
     if(this.waiting)return;
@@ -103,17 +111,20 @@ export class EncounterSimulation {
       const index=this.enemies.indexOf(e);const nav=this.homeNavigation[index]!;nav.plan(e.spawn,time);
       this.move(e,nav.direction(e.position,e.spawn),dt);return;
     }
-    if(e.action==='windup') {
-      if(e.actionTime<.4)e.facing=Math.atan2(this.player.state.position.x-e.position.x,this.player.state.position.z-e.position.z);
-      if(e.actionTime>=this.definition.attack.active[0]){this.action(e,'active');this.events.push({type:'swing',attack:'enemy-strike',instance:e.attackInstance,position:{...e.position},source:{id:e.id,generation:e.generation},recipient:e.attackRecipient,attackInstance:e.attackInstance});}return;
+    if(['windup','active','recovery'].includes(e.action)) {
+      const attack=this.definition.attack;e.attackElapsed=Math.min(attack.duration,e.attackElapsed+dt);
+      if(e.attackElapsed+1e-9<attack.active[0]-ENEMY_MOTION.directionLock)e.facing=Math.atan2(this.player.state.position.x-e.position.x,this.player.state.position.z-e.position.z);
+      const phase=e.attackElapsed+1e-9>=attack.duration?'approach':e.attackElapsed+1e-9>=attack.active[1]?'recovery':e.attackElapsed+1e-9>=attack.active[0]?'active':'windup';
+      if(e.action==='windup'&&phase==='active')this.events.push({type:'swing',attack:'enemy-strike',instance:e.attackInstance,position:{...e.position},source:{id:e.id,generation:e.generation},recipient:e.attackRecipient,attackInstance:e.attackInstance});
+      this.action(e,phase);
+      if(phase!=='approach')e.actionTime=e.attackElapsed-(phase==='active'?attack.active[0]:phase==='recovery'?attack.active[1]:0);
+      return;
     }
-    if(e.action==='active'){if(e.actionTime>=this.definition.attack.active[1]-this.definition.attack.active[0])this.action(e,'recovery');return;}
-    if(e.action==='recovery'){if(e.actionTime>=this.definition.attack.duration-this.definition.attack.active[1])this.action(e,'approach');return;}
     if(e.action==='idle'){if(d<=this.definition.detection&&this.navigation.reachable(e.position)&&!this.obstructed(e.position,this.player.state.position))this.action(e,'approach');else return;}
     if(!this.navigation.reachable(e.position)){e.unreachable+=dt;if(e.unreachable>=2)this.action(e,'return');return;}e.unreachable=0;
     const aim=Math.atan2(this.player.state.position.x-e.position.x,this.player.state.position.z-e.position.z);e.facing=aim;
     if(d<1.05&&!this.obstructed(e.position,this.player.state.position)&&this.slot===null&&this.attackCandidate===e.id) {
-      this.slot=e.id;e.lastAttackOrder=++this.attackOrder;e.hitPlayer=false;e.attackInstance++;e.attackRecipient=this.player.handle;this.action(e,'windup');
+      this.slot=e.id;e.lastAttackOrder=++this.attackOrder;e.hitPlayer=false;e.attackInstance++;e.attackElapsed=0;e.previousAttackElapsed=0;e.attackRecipient=this.player.handle;this.action(e,'windup');
       this.events.push({type:'enemy-warning',position:{...e.position},source:{id:e.id,generation:e.generation},recipient:this.player.handle,attackInstance:e.attackInstance});return;
     }
     if(d<.7){this.move(e,{x:0,z:0},dt);return;}

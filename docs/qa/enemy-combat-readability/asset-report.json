@@ -1,0 +1,44 @@
+[
+  {
+    "tier": "desktop",
+    "triangles": 5867,
+    "bytes": 3571240,
+    "sha256": "013fcff7a49603ec695b66dcc9d182832e1b346b6c23b18322d91738aa787226",
+    "clips": [
+      "Attack",
+      "Biting_1",
+      "Biting_2",
+      "Crawl",
+      "Death",
+      "Dying",
+      "Idle",
+      "Neck_Bite",
+      "Run",
+      "Scream",
+      "T-Pose",
+      "Walk"
+    ],
+    "bones": 65
+  },
+  {
+    "tier": "mobile",
+    "triangles": 1855,
+    "bytes": 3528764,
+    "sha256": "8ead88f58267203a5426f82e2b101d0de2b85ecf9f80dfb3aaf1a6df8eae8840",
+    "clips": [
+      "Attack",
+      "Biting_1",
+      "Biting_2",
+      "Crawl",
+      "Death",
+      "Dying",
+      "Idle",
+      "Neck_Bite",
+      "Run",
+      "Scream",
+      "T-Pose",
+      "Walk"
+    ],
+    "bones": 65
+  }
+]

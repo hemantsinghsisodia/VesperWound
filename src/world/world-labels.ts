@@ -12,7 +12,7 @@ export class WorldLabel extends Object3D {
   private readonly meters = document.createElement('div');
   private key = '';
   private disposed = false;
-  constructor(kind: 'enemy' | 'training' | 'mission', private readonly release: () => void) {
+  constructor(kind: 'enemy' | 'training' | 'mission' | 'defense', private readonly release: () => void) {
     super();
     this.element.className = 'world-label'; this.element.dataset.kind = kind;
     this.element.hidden = true; this.element.setAttribute('role', 'group');
@@ -51,7 +51,7 @@ export class WorldLabels {
   private readonly point = new Vector3();
   private disposed = false;
   constructor() { this.root.className = 'world-label-layer'; }
-  create(kind: 'enemy' | 'training' | 'mission'): WorldLabel {
+  create(kind: 'enemy' | 'training' | 'mission' | 'defense'): WorldLabel {
     if (this.disposed) throw new Error('Label layer is disposed');
     const label = new WorldLabel(kind, () => this.entries.delete(label));
     this.entries.add(label); this.root.append(label.element); return label;

@@ -49,6 +49,7 @@
 #world-labels{z-index:2}
 .world-label{position:absolute;left:0;top:0;width:calc(190px * var(--ui-scale,1));padding:6px 9px;box-sizing:border-box;transform:translate(-50%,-100%);background:#102128ed;border:1px solid #9b89574d;color:#e8d4a7;text-align:center;font:12px/1.25 Arial,sans-serif;font-size:calc(12px * var(--ui-scale,1));font-variant-numeric:tabular-nums;pointer-events:none}
 .world-label-title{display:block;font-weight:600;overflow-wrap:anywhere}
+.world-label[data-kind=defense]{width:auto;min-width:64px;padding:4px 8px;z-index:1;border-color:#bce9df66;white-space:nowrap}
 .world-label-detail{display:block;margin-top:4px;color:#d0d9cf;font-size:calc(11px * var(--ui-scale,1));white-space:nowrap}
 .world-label-meters{margin-top:5px}
 .world-label-health,.world-label-posture{height:6px;background:#283b3e;overflow:hidden}

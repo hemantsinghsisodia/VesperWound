@@ -15,14 +15,20 @@ function overlaps(a:Position,b:Position,target:Position,radius:number):boolean {
 }
 /** Offline sampled poses only. Substeps bound a swept segment between fixed ticks. */
 export function weaponTouches(attack:AttackDefinition,origin:Position,facing:number,target:Position,time:number,previousTime:number,blocked?:(a:Position,b:Position)=>boolean):boolean {
-  if(!attack.contact)return false;
+  return sweptContact(attack,origin,facing,target,time,previousTime,blocked)!==null;
+}
+export function sweptContact(attack:AttackDefinition,origin:Position,facing:number,target:Position,time:number,previousTime:number,blocked?:(a:Position,b:Position)=>boolean,hurtRadius=.3,previousTarget=target):Position|null {
+  if(!attack.contact)return null;
   const from=Math.max(attack.active[0],previousTime),to=Math.min(attack.active[1],time);
-  if(to<from||time<attack.active[0]||previousTime>=attack.active[1])return false;
+  if(to<from||time<attack.active[0]||previousTime>=attack.active[1])return null;
   for(let i=0;i<=4;i++) {
-    const pose=sampleWeaponContact(attack.contact,from+(to-from)*i/4),base=world(pose.base,origin,facing),tip=world(pose.tip,origin,facing);
-    if(!overlaps(base,tip,target,attack.radius+.3))continue;
+    const sampleTime=from+(to-from)*i/4;
+    const pose=sampleWeaponContact(attack.contact,sampleTime),base=world(pose.base,origin,facing),tip=world(pose.tip,origin,facing);
+    const fraction=time>previousTime?Math.max(0,Math.min(1,(sampleTime-previousTime)/(time-previousTime))):1;
+    const recipient={x:previousTarget.x+(target.x-previousTarget.x)*fraction,y:previousTarget.y+(target.y-previousTarget.y)*fraction,z:previousTarget.z+(target.z-previousTarget.z)*fraction};
+    if(!overlaps(base,tip,recipient,attack.radius+hurtRadius))continue;
     const chest={x:origin.x,y:base.y,z:origin.z};
-    if(!blocked?.(chest,base)&&!blocked?.(base,tip)&&!blocked?.(base,{x:target.x,y:base.y,z:target.z}))return true;
+    if(!blocked?.(chest,base)&&!blocked?.(base,tip)&&!blocked?.(base,{x:recipient.x,y:base.y,z:recipient.z}))return {x:(base.x+tip.x)/2,y:(base.y+tip.y)/2,z:(base.z+tip.z)/2};
   }
-  return false;
+  return null;
 }

@@ -130,11 +130,11 @@ export class Application {
       inspectionView: (view) => { this.inspection?.selectView(view); this.updateInspectionUi(); },
       inspectionLighting: (lighting) => { this.inspection?.selectLighting(lighting); this.updateInspectionUi(); },
       inspectionPause: () => { if (this.inspection) this.inspection.actor.paused = !this.inspection.actor.paused; this.updateInspectionUi(); },
-      restart: () => { if(this.mission?.active){this.restartMission();return;}this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
+      restart: () => { if(this.mission?.active){this.restartMission();return;}this.audio.stopCombat();this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       resetTargets: () => { this.player?.resetTargets(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterStart: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter(); },
       encounterGroup: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter('group'); },
-      encounterRestart: () => { this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
+      encounterRestart: () => { this.audio.stopCombat();this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterReturn: () => this.returnToTraining(),
     });
     this.lifetime.listen(window, 'resize', () => { this.resize(); this.synchronizePause(); });
@@ -464,6 +464,7 @@ export class Application {
   }
   private restartMission():void {
     if(!this.mission?.active||this.reloading||this.missionLoading)return;
+    this.audio.stopCombat();
     this.closeInspection();this.cancelWeaponLoad();this.audio.stopMission();this.mission.start(false);
     this.input?.clear();this.clock.reset();this.lastFrame=0;
     if(this.courtyard instanceof VisualShowcase){this.courtyard.setPlaying(true);const p=this.player!.state.position;this.courtyard.target.set(p.x,p.y,p.z);this.camera.selectView('player',this.courtyard.target,true);}
@@ -490,7 +491,7 @@ export class Application {
         if(world.district.stream.status!=='ready')throw new Error('Quay preparation was cancelled');
         world.retainMissionSection(request.section);request.section=null;
       }
-      this.audio.stopMission();if(mission)this.mission?.start();else {this.mission?.leave();simulation.start(kind==='group'?3:1);}
+      this.audio.stopCombat();this.audio.stopMission();if(mission)this.mission?.start();else {this.mission?.leave();simulation.start(kind==='group'?3:1);}
       world.setEnemy(request.view);this.enemyAssets?.dispose();this.enemyAssets=request.assets;request.view=null;request.assets=null;
       this.input?.clear();this.camera.selectView('player',world.target,true);world.setPlaying(true);this.ui.mode('player');this.ui.canvas.focus();
       this.clock.reset();this.metrics.resetTiming();this.lastFrame=0;
@@ -499,6 +500,7 @@ export class Application {
   }
   private returnToTraining():void {
     if(this.reloading)return;
+    this.audio.stopCombat();
     this.closeInspection();this.mission?.leave();this.audio.stopMission();this.collision?.setFerryReady(false,false);
     if(this.courtyard instanceof VisualShowcase){this.courtyard.releaseMissionSection();this.courtyard.setPlaying(true);this.camera.selectView('player',this.courtyard.target,true);this.ui.mode('player');}
     this.cancelWeaponLoad();this.cancelEnemyLoad();if(this.courtyard instanceof VisualShowcase)this.courtyard.setEnemy(null);
@@ -554,6 +556,7 @@ export class Application {
       ...(this.courtyard instanceof VisualShowcase ? { district: this.courtyard.district?.stream.status ?? 'closed', area: districtArea(this.courtyard.target.z), hiddenCutaways: this.courtyard.district?.hiddenCutaways ?? 0 } : {}),
       ...(import.meta.env.DEV && this.preview ? { rig: this.preview.inspection() } : {}),
       ...(import.meta.env.DEV && this.courtyard instanceof VisualShowcase && this.courtyard.baton && this.player?.state.weapon==='baton' ? { weaponContact: { ...this.courtyard.baton.diagnostics(), time: this.courtyard.preview.sampledTime } } : {}),
+      ...(import.meta.env.DEV && this.courtyard instanceof VisualShowcase ? { enemyContact: this.courtyard.enemyDiagnostics() } : {}),
       ...(this.player ? { player: structuredClone(this.player.state), targets: structuredClone(this.player.targets) } : {}),
       ...(this.encounter ? { encounter: this.encounter.mode, enemies: structuredClone(this.encounter.enemies), enemyLoading: !!this.pendingEnemy } : {}),
     };

@@ -1,0 +1,65 @@
+{
+  "title": "Zombie Number 7 - Animated",
+  "author": "Tony Flanagan",
+  "listing": "https://www.fab.com/listings/a5710c50-a98e-4b55-98f8-c0a0f8318a84",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "acquired": "2026-10-06",
+  "inspected": "2026-10-21",
+  "originalZipSha256": "8c8c62b8bc77800c72aa98a288cf6a8cbb208f6f3ab0a0a2bb08bd654cd456a2",
+  "originalGlbSha256": "55c90eae41474222a8c989528c86e20eb0948fefd1c9bd88f2718ccce9de36e2",
+  "masterSha256": "aaf09f3c7223903ba964c7c54925457fe5016335b43de78c2e99c8cab63195ca",
+  "notices": "No separate notice file supplied. License verified in Fab download dialog.",
+  "modifications": [
+    "Uniform height/ground normalization to 1.8 metres",
+    "In-place hip translation with original vertical motion",
+    "Derivative seam welding followed by anatomical weighted reduction preserving face/hands",
+    "Semantic KTX2 texture compression and Meshopt geometry compression",
+    "Supplied Attack revised in saved Blender master: 60 Hz retiming, held anticipation, planted hips/feet, hand-contact samples; original rig and appearance retained (2026-10-21)"
+  ],
+  "additionalAnimations": [],
+  "exports": [
+    {
+      "tier": "desktop",
+      "triangles": 5867,
+      "bytes": 3571240,
+      "sha256": "013fcff7a49603ec695b66dcc9d182832e1b346b6c23b18322d91738aa787226",
+      "clips": [
+        "Attack",
+        "Biting_1",
+        "Biting_2",
+        "Crawl",
+        "Death",
+        "Dying",
+        "Idle",
+        "Neck_Bite",
+        "Run",
+        "Scream",
+        "T-Pose",
+        "Walk"
+      ],
+      "bones": 65
+    },
+    {
+      "tier": "mobile",
+      "triangles": 1855,
+      "bytes": 3528764,
+      "sha256": "8ead88f58267203a5426f82e2b101d0de2b85ecf9f80dfb3aaf1a6df8eae8840",
+      "clips": [
+        "Attack",
+        "Biting_1",
+        "Biting_2",
+        "Crawl",
+        "Death",
+        "Dying",
+        "Idle",
+        "Neck_Bite",
+        "Run",
+        "Scream",
+        "T-Pose",
+        "Walk"
+      ],
+      "bones": 65
+    }
+  ]
+}

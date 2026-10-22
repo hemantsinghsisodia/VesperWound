@@ -1,0 +1,30 @@
+{
+  "duration": 1.67,
+  "active": [
+    0.65,
+    0.77
+  ],
+  "directionLock": 0.25,
+  "clipDuration": 1.6833333333333333,
+  "mapping": [
+    [
+      0,
+      0
+    ],
+    [
+      0.65,
+      0.65
+    ],
+    [
+      0.77,
+      0.7666666666666667
+    ],
+    [
+      1.67,
+      1.6833333333333333
+    ]
+  ],
+  "bone": "mixamorigRightHand",
+  "tipBone": "mixamorigRightHandMiddle1",
+  "radius": 0.08
+}

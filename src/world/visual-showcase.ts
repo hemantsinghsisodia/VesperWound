@@ -147,6 +147,7 @@ export class VisualShowcase implements WorldPresentation {
     return false; // Foundation's pressure pulse is separate from typed combat events.
   }
   combatEvent(event: CombatEvent, reducedMotion: boolean): void { this.combat.event(event, reducedMotion); this.enemy?.event(event); }
+  enemyDiagnostics() { return this.enemy?.diagnostics() ?? []; }
   interpolate(alpha: number): void { if (this.playing) { this.applyPlayer(alpha); this.combat.interpolate(alpha); this.enemy?.interpolate(alpha); } }
   private applyPlayer(alpha: number, sample = true): void {
     const s = this.player.state;

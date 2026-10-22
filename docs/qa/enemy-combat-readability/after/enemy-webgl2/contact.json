@@ -1,0 +1,7 @@
+{
+  "backend": "webgl2",
+  "browser": "155.0.8059.85",
+  "samples": 50,
+  "maxError": 0.0026111059869989074,
+  "errors": []
+}

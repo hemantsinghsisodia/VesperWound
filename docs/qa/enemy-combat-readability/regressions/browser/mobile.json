@@ -1,0 +1,579 @@
+{
+  "frozen": {
+    "backend": "WebGL2",
+    "quality": "Mobile",
+    "resolution": "324 × 720",
+    "frameMs": 124.89999999999782,
+    "cpuMs": 14.299999997019768,
+    "fps": 0,
+    "p95": 0,
+    "draws": 98,
+    "triangles": 267964,
+    "textures": 74,
+    "estimatedGpuBytes": 25470110,
+    "resources": 71,
+    "references": 7,
+    "voices": 3,
+    "overruns": 5,
+    "fixtureLoads": 1,
+    "markerX": -1.3523522220516186,
+    "markerZ": 3.1471353928128,
+    "listeners": 70,
+    "audioState": "suspended",
+    "scene": "showcase",
+    "variant": "mobile",
+    "animation": "Baton_Idle",
+    "camera": "player",
+    "characterTier": "mobile",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "district": "closed",
+    "area": "Pressure Court",
+    "hiddenCutaways": 0,
+    "rig": {
+      "feet": [
+        [
+          -1.091336820261506,
+          0.1203368676011537,
+          3.3147104996856513
+        ],
+        [
+          -1.6013219705276631,
+          0.11696321718489672,
+          3.019625063979505
+        ]
+      ],
+      "gripDistances": []
+    },
+    "weaponContact": {
+      "base": [
+        -1.4642642611201444,
+        1.1290107020265039,
+        3.5352127504667363
+      ],
+      "tip": [
+        -1.387503648296488,
+        1.4657243525085994,
+        3.718715844771928
+      ],
+      "grip": 0.13420234363319733,
+      "time": null
+    },
+    "enemyContact": [
+      {
+        "id": "zombie7-0",
+        "generation": 2,
+        "instance": 1,
+        "time": 1.6693333333333307,
+        "base": [
+          -0.2910444076539187,
+          1.333906006582691,
+          3.90003229140848
+        ],
+        "tip": [
+          -0.19696230016624938,
+          1.280104145850152,
+          3.906120083164219
+        ]
+      },
+      {
+        "id": "zombie7-1",
+        "generation": 2,
+        "instance": 1,
+        "time": 1.5816666666666643,
+        "base": [
+          -1.2852976481162584,
+          1.1991180507763808,
+          2.6729709732037903
+        ],
+        "tip": [
+          -1.3362480448858676,
+          1.2275942585370518,
+          2.764493258186011
+        ]
+      },
+      {
+        "id": "zombie7-2",
+        "generation": 2,
+        "instance": 0,
+        "time": 0,
+        "base": [
+          -2.179505310135672,
+          1.2624269410419189,
+          3.9076942707389963
+        ],
+        "tip": [
+          -2.2257299826070187,
+          1.198931666880462,
+          3.9826260236577307
+        ]
+      }
+    ],
+    "player": {
+      "target": {
+        "id": "zombie7-2",
+        "generation": 2
+      },
+      "weapon": "baton",
+      "position": {
+        "x": -1.3523522220516186,
+        "y": 0.02927786856222156,
+        "z": 3.1471353928128
+      },
+      "previous": {
+        "x": -1.3523522220516186,
+        "y": 0.029177868564747772,
+        "z": 3.1471353928128
+      },
+      "facing": 0.30532737470722904,
+      "health": 80,
+      "pressure": 85,
+      "action": "idle",
+      "actionTime": 0.4333333333333333,
+      "actionSequence": 8,
+      "attack": null,
+      "pendingAttack": null,
+      "grounded": true,
+      "strikes": 1,
+      "targetHits": 1,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 0,
+      "blocks": 1,
+      "defeats": 0,
+      "ventWarning": false,
+      "ventRemaining": 0
+    },
+    "targets": [
+      {
+        "id": "zombie7-0",
+        "generation": 2,
+        "label": "Zombie 7 · 1",
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "position": {
+          "x": -0.7290536011902201,
+          "y": 0.035,
+          "z": 3.474429829777231
+        },
+        "previous": {
+          "x": -0.7324045949700889,
+          "y": 0.035,
+          "z": 3.4710695975334422
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 1.5833333333333326,
+        "facing": 0.7840215955315598,
+        "sequence": 5,
+        "attackInstance": 1,
+        "attackElapsed": 1.67,
+        "previousAttackElapsed": 1.67,
+        "hitPlayer": true,
+        "attackRecipient": {
+          "id": "medic",
+          "generation": 1
+        },
+        "unreachable": 0,
+        "lastAttackOrder": 1
+      },
+      {
+        "id": "zombie7-1",
+        "generation": 2,
+        "label": "Zombie 7 · 2",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 2.7
+        },
+        "position": {
+          "x": -0.9635548962948525,
+          "y": 0.035,
+          "z": 2.6943515391768287
+        },
+        "previous": {
+          "x": -0.9635548962948525,
+          "y": 0.035,
+          "z": 2.6943515391768287
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "recovery",
+        "actionTime": 0.796666666666666,
+        "facing": -0.7095044211404455,
+        "sequence": 4,
+        "attackInstance": 1,
+        "attackElapsed": 1.566666666666666,
+        "previousAttackElapsed": 1.5499999999999994,
+        "hitPlayer": true,
+        "attackRecipient": {
+          "id": "medic",
+          "generation": 1
+        },
+        "unreachable": 0,
+        "lastAttackOrder": 2
+      },
+      {
+        "id": "zombie7-2",
+        "generation": 2,
+        "label": "Zombie 7 · 3",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 4.1
+        },
+        "position": {
+          "x": -1.5134332256805332,
+          "y": 0.035,
+          "z": 3.823138682038949
+        },
+        "previous": {
+          "x": -1.5114325134857853,
+          "y": 0.035,
+          "z": 3.8222492325538355
+        },
+        "health": 72,
+        "maxHealth": 120,
+        "posture": 50,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0.000015230009579395016,
+          "z": 0.00020694176013127656
+        },
+        "hits": 1,
+        "action": "approach",
+        "actionTime": 4.649999999999989,
+        "facing": -1.1524701345803652,
+        "sequence": 1,
+        "attackInstance": 0,
+        "attackElapsed": 0,
+        "previousAttackElapsed": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      }
+    ],
+    "encounter": "encounter",
+    "enemies": [
+      {
+        "id": "zombie7-0",
+        "generation": 2,
+        "label": "Zombie 7 · 1",
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "position": {
+          "x": -0.7290536011902201,
+          "y": 0.035,
+          "z": 3.474429829777231
+        },
+        "previous": {
+          "x": -0.7324045949700889,
+          "y": 0.035,
+          "z": 3.4710695975334422
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "approach",
+        "actionTime": 1.5833333333333326,
+        "facing": 0.7840215955315598,
+        "sequence": 5,
+        "attackInstance": 1,
+        "attackElapsed": 1.67,
+        "previousAttackElapsed": 1.67,
+        "hitPlayer": true,
+        "attackRecipient": {
+          "id": "medic",
+          "generation": 1
+        },
+        "unreachable": 0,
+        "lastAttackOrder": 1
+      },
+      {
+        "id": "zombie7-1",
+        "generation": 2,
+        "label": "Zombie 7 · 2",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 2.7
+        },
+        "position": {
+          "x": -0.9635548962948525,
+          "y": 0.035,
+          "z": 2.6943515391768287
+        },
+        "previous": {
+          "x": -0.9635548962948525,
+          "y": 0.035,
+          "z": 2.6943515391768287
+        },
+        "health": 120,
+        "maxHealth": 120,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0,
+        "action": "recovery",
+        "actionTime": 0.796666666666666,
+        "facing": -0.7095044211404455,
+        "sequence": 4,
+        "attackInstance": 1,
+        "attackElapsed": 1.566666666666666,
+        "previousAttackElapsed": 1.5499999999999994,
+        "hitPlayer": true,
+        "attackRecipient": {
+          "id": "medic",
+          "generation": 1
+        },
+        "unreachable": 0,
+        "lastAttackOrder": 2
+      },
+      {
+        "id": "zombie7-2",
+        "generation": 2,
+        "label": "Zombie 7 · 3",
+        "spawn": {
+          "x": 2.3,
+          "y": 0.035,
+          "z": 4.1
+        },
+        "position": {
+          "x": -1.5134332256805332,
+          "y": 0.035,
+          "z": 3.823138682038949
+        },
+        "previous": {
+          "x": -1.5114325134857853,
+          "y": 0.035,
+          "z": 3.8222492325538355
+        },
+        "health": 72,
+        "maxHealth": 120,
+        "posture": 50,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "mass": 1,
+        "velocity": {
+          "x": 0.000015230009579395016,
+          "z": 0.00020694176013127656
+        },
+        "hits": 1,
+        "action": "approach",
+        "actionTime": 4.649999999999989,
+        "facing": -1.1524701345803652,
+        "sequence": 1,
+        "attackInstance": 0,
+        "attackElapsed": 0,
+        "previousAttackElapsed": 0,
+        "hitPlayer": false,
+        "attackRecipient": null,
+        "unreachable": 0,
+        "lastAttackOrder": 0
+      }
+    ],
+    "enemyLoading": false
+  },
+  "requests": [
+    "http://127.0.0.1:5173/?backend=webgl2",
+    "http://127.0.0.1:5173/@vite/client",
+    "http://127.0.0.1:5173/src/main.ts",
+    "http://127.0.0.1:5173/src/app/application.ts",
+    "http://127.0.0.1:5173/src/ui/styles.css",
+    "http://127.0.0.1:5173/src/ui/ash-quay.css",
+    "http://127.0.0.1:5173/src/ui/mission.css",
+    "http://127.0.0.1:5173/node_modules/vite/dist/client/env.mjs",
+    "http://127.0.0.1:5173/src/core/lifetime.ts",
+    "http://127.0.0.1:5173/src/core/events.ts",
+    "http://127.0.0.1:5173/src/core/clock.ts",
+    "http://127.0.0.1:5173/src/platform/settings.ts",
+    "http://127.0.0.1:5173/src/platform/capabilities.ts",
+    "http://127.0.0.1:5173/src/ui/interface.ts",
+    "http://127.0.0.1:5173/src/input/input-manager.ts",
+    "http://127.0.0.1:5173/src/audio/audio-manager.ts",
+    "http://127.0.0.1:5173/src/performance/quality.ts",
+    "http://127.0.0.1:5173/src/performance/metrics.ts",
+    "http://127.0.0.1:5173/src/rendering/renderer-adapter.ts",
+    "http://127.0.0.1:5173/src/player/weapon-pickup.ts",
+    "http://127.0.0.1:5173/src/player/weapon-definitions.ts",
+    "http://127.0.0.1:5173/src/assets/asset-manager.ts",
+    "http://127.0.0.1:5173/src/world/visual-showcase.ts",
+    "http://127.0.0.1:5173/src/world/presentation.ts",
+    "http://127.0.0.1:5173/src/camera/courtyard-camera.ts",
+    "http://127.0.0.1:5173/src/enemies/encounter-simulation.ts",
+    "http://127.0.0.1:5173/src/world/district-definition.ts",
+    "http://127.0.0.1:5173/src/mission/first-mission.ts",
+    "http://127.0.0.1:5173/src/ui/mission-hud.ts",
+    "http://127.0.0.1:5173/src/ui/write-changed.ts",
+    "http://127.0.0.1:5173/src/world/character-definition.ts",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_webgpu.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_tsl.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_tsl_display_BloomNode__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_tsl_display_GaussianBlurNode__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_tsl_display_FXAANode__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/src/rendering/highlight-glow.ts",
+    "http://127.0.0.1:5173/src/player/baton-contact.json?import",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_loaders_GLTFLoader__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_loaders_KTX2Loader__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_libs_meshopt___decoder__module__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/src/assets/resource-cache.ts",
+    "http://127.0.0.1:5173/src/assets/manifest.ts",
+    "http://127.0.0.1:5173/src/assets/shared-model-textures.ts",
+    "http://127.0.0.1:5173/src/world/baton-presentation.ts",
+    "http://127.0.0.1:5173/src/world/preview-actor.ts",
+    "http://127.0.0.1:5173/src/player/player-animation.ts",
+    "http://127.0.0.1:5173/src/player/player-simulation.ts",
+    "http://127.0.0.1:5173/src/player/combat-definitions.ts",
+    "http://127.0.0.1:5173/src/world/combat-presentation.ts",
+    "http://127.0.0.1:5173/src/world/district-presentation.ts",
+    "http://127.0.0.1:5173/src/world/environment-mesh.ts",
+    "http://127.0.0.1:5173/src/camera/mission-camera.ts",
+    "http://127.0.0.1:5173/src/world/mission-presentation.ts",
+    "http://127.0.0.1:5173/src/world/world-labels.ts",
+    "http://127.0.0.1:5173/src/player/courtyard-collision.json?import",
+    "http://127.0.0.1:5173/src/world/district-layout.json?import",
+    "http://127.0.0.1:5173/src/player/weapon-contact.ts",
+    "http://127.0.0.1:5173/src/enemies/enemy-attack.ts",
+    "http://127.0.0.1:5173/src/player/collision-math.ts",
+    "http://127.0.0.1:5173/src/enemies/navigation.ts",
+    "http://127.0.0.1:5173/src/enemies/enemy-definition.ts",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three.core-BTfOrhf1.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three.module-9ILK-mrG.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_utils_BufferGeometryUtils__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/three_addons_utils_SkeletonUtils__js.js?v=958d8bc7",
+    "http://127.0.0.1:5173/src/world/baton-grip.json?import",
+    "http://127.0.0.1:5173/src/player/combat-targeting.ts",
+    "http://127.0.0.1:5173/src/assets/section-stream.ts",
+    "http://127.0.0.1:5173/src/rendering/prepare-model.ts",
+    "http://127.0.0.1:5173/src/enemies/enemy-attack-motion.json?import",
+    "http://127.0.0.1:5173/src/enemies/enemy-hand-contact.json?import",
+    "http://127.0.0.1:5173/assets/showcase/mobile/manifest.json",
+    "http://127.0.0.1:5173/mark.svg",
+    "http://127.0.0.1:5173/src/player/player-collision.ts",
+    "http://127.0.0.1:5173/node_modules/.vite/deps/@dimforge_rapier3d-compat.js?v=958d8bc7",
+    "http://127.0.0.1:5173/assets/showcase/mobile/character.glb",
+    "http://127.0.0.1:5173/assets/showcase/mobile/ash-quay.glb",
+    "http://127.0.0.1:5173/assets/showcase/shared/animations.glb",
+    "http://127.0.0.1:5173/assets/weapons/baton/baton.glb",
+    "blob:http://127.0.0.1:5173/805afe85-d15f-4156-b382-7aa80609d3b5",
+    "blob:http://127.0.0.1:5173/43897744-7e96-47c1-91e6-987f5fd26d7f",
+    "blob:http://127.0.0.1:5173/47e98b1a-c396-4820-9a59-d5052cdeafc3",
+    "blob:http://127.0.0.1:5173/efc8b690-cfb0-4849-a3bd-9752d7fb3083",
+    "blob:http://127.0.0.1:5173/8785f7b1-3aa7-44c9-b6a5-ee0bc35629b9",
+    "blob:http://127.0.0.1:5173/1fc343b6-4416-438d-a71e-661f56a19d77",
+    "blob:http://127.0.0.1:5173/ab6a2439-0355-4d76-90fd-26503c16da67",
+    "blob:http://127.0.0.1:5173/46546b26-fc88-485b-b0fd-564835836bd3",
+    "blob:http://127.0.0.1:5173/f03b1c05-581c-426f-b437-9dce7fceed31",
+    "blob:http://127.0.0.1:5173/20d64a52-b382-41f9-abd8-0a052a221eb8",
+    "blob:http://127.0.0.1:5173/8ba9ebc6-7a1e-48bb-9150-52efcc68cc84",
+    "blob:http://127.0.0.1:5173/f01c22b9-4b02-4c31-a867-9c508512112f",
+    "blob:http://127.0.0.1:5173/24694eba-cabe-4a20-b2ce-00ac213b0ecd",
+    "blob:http://127.0.0.1:5173/4f154f1b-6b2a-4265-a159-edc673d16d5b",
+    "blob:http://127.0.0.1:5173/daf3caff-ead0-445e-9069-350ad58b632b",
+    "blob:http://127.0.0.1:5173/b6c8a3d6-ac04-457e-a75b-1a400e4484fc",
+    "blob:http://127.0.0.1:5173/43fedaf3-8ab1-48ac-952a-7eac5177c5d9",
+    "blob:http://127.0.0.1:5173/8a17cab5-ce15-4854-8daf-88a63ecce401",
+    "blob:http://127.0.0.1:5173/ea239f0d-1f5e-41a9-a7f9-712191092f91",
+    "blob:http://127.0.0.1:5173/7ba7ca6b-9c93-4843-aa21-5e7012860aa7",
+    "blob:http://127.0.0.1:5173/afd39f98-6d23-4a27-915f-4881da0ac447",
+    "blob:http://127.0.0.1:5173/0a0bd34f-58a4-446d-9884-111cb77aab30",
+    "blob:http://127.0.0.1:5173/5edab51f-3ed5-4d5c-833c-d0aab9066a3e",
+    "blob:http://127.0.0.1:5173/714009d0-ed84-48e9-a2cf-ab72e27657f0",
+    "blob:http://127.0.0.1:5173/8af94628-e833-419b-a1e7-b9c5ab994823",
+    "blob:http://127.0.0.1:5173/25af3d78-d902-4eca-8d90-da7cb6477667",
+    "blob:http://127.0.0.1:5173/3df20ec6-8d56-4306-9a67-ef6952d6649a",
+    "blob:http://127.0.0.1:5173/4d6303e8-d8ee-4302-97ef-27095e5e944e",
+    "blob:http://127.0.0.1:5173/1686d9ea-7297-4b60-bfd5-96fabb7c3a1c",
+    "blob:http://127.0.0.1:5173/c03f7c14-d685-4d39-9f5d-9cd7b9bfd117",
+    "blob:http://127.0.0.1:5173/2a9662e3-a21f-420b-93c8-e152d390d615",
+    "blob:http://127.0.0.1:5173/35b53359-b145-4e2f-acf8-9994ca396d03",
+    "blob:http://127.0.0.1:5173/ab7621aa-fc4b-4ba4-ac86-f217f5c5ee1a",
+    "blob:http://127.0.0.1:5173/cc40c6ea-0500-4ea1-a710-2ebc03e33110",
+    "blob:http://127.0.0.1:5173/06f83717-15fd-473d-aeed-50c3adc6f7b2",
+    "blob:http://127.0.0.1:5173/15ebb3c1-729c-4165-b04b-2be96b8d654d",
+    "blob:http://127.0.0.1:5173/5ed2d8ca-34a3-4378-ada8-4ed84ce00eca",
+    "blob:http://127.0.0.1:5173/c7a95200-6873-410e-ac41-bb62bc23b4fd",
+    "blob:http://127.0.0.1:5173/d25a0fc4-7229-48c3-8faa-69cdb883c51b",
+    "blob:http://127.0.0.1:5173/df0ce0f4-cd00-4c3e-b5a8-0f232947de36",
+    "blob:http://127.0.0.1:5173/b20f9e29-c18d-40de-9b47-5c2b2eef808e",
+    "blob:http://127.0.0.1:5173/4e981932-7623-423d-b2ed-817856711151",
+    "blob:http://127.0.0.1:5173/5e0be277-f29c-408d-9902-04658c65e7dc",
+    "blob:http://127.0.0.1:5173/035f87c6-bb12-4a42-912e-100551330c6f",
+    "blob:http://127.0.0.1:5173/9e5f818f-fc42-4c97-bbfc-55f05945ec3a",
+    "blob:http://127.0.0.1:5173/39cc697f-b409-4a35-9cd7-70ce223909ec",
+    "blob:http://127.0.0.1:5173/48b36e66-cfa3-49fc-b398-2f4ff3bc3b8b",
+    "blob:http://127.0.0.1:5173/bbed6bdd-d63a-4016-9d0f-83ec3606d7fc",
+    "blob:http://127.0.0.1:5173/88818e96-ad97-4603-bd2f-39267ff61504",
+    "blob:http://127.0.0.1:5173/8b596170-bfd4-4868-81b2-3ee76c5dd9ea",
+    "blob:http://127.0.0.1:5173/a90fcd24-647f-402d-ab2c-42c8f67f87d4",
+    "blob:http://127.0.0.1:5173/d32d1379-988e-44ab-ac4b-b3dc6dfd7038",
+    "blob:http://127.0.0.1:5173/d960ee5b-971f-4418-ad2b-cfac2cd1eec0",
+    "blob:http://127.0.0.1:5173/85965544-2e0b-4199-b4ee-a700f969d674",
+    "blob:http://127.0.0.1:5173/2a45bb53-bd42-47c0-9b46-0021ab5722b6",
+    "http://127.0.0.1:5173/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5173/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5173/a4eb6a1b-5237-4888-8f58-af87e5a55cba",
+    "blob:http://127.0.0.1:5173/a4eb6a1b-5237-4888-8f58-af87e5a55cba",
+    "http://127.0.0.1:5173/assets/showcase/mobile/reflection.ktx2",
+    "http://127.0.0.1:5173/src/debug/debug-tools.ts",
+    "http://127.0.0.1:5173/assets/weapons/baton/manifest.json",
+    "http://127.0.0.1:5173/mark.svg",
+    "http://127.0.0.1:5173/assets/weapons/baton/animations.glb",
+    "http://127.0.0.1:5173/src/world/enemy-presentation.ts",
+    "http://127.0.0.1:5173/assets/encounter/mobile/manifest.json",
+    "http://127.0.0.1:5173/assets/encounter/mobile/zombie7.glb",
+    "blob:http://127.0.0.1:5173/1fb022e1-0eba-421d-b177-94c7372599b6",
+    "blob:http://127.0.0.1:5173/38b55062-a8f6-424d-b561-04c5a2c4ba4b",
+    "blob:http://127.0.0.1:5173/871166c3-c77d-42b8-950d-46d45264e0dd",
+    "blob:http://127.0.0.1:5173/3ab21198-565b-492b-98bd-d480f085c497",
+    "blob:http://127.0.0.1:5173/1c42a4cc-1287-4fc6-9d11-cc89061945e0",
+    "http://127.0.0.1:5173/assets/decoders/basis/basis_transcoder.js",
+    "http://127.0.0.1:5173/assets/decoders/basis/basis_transcoder.wasm",
+    "blob:http://127.0.0.1:5173/64731a28-0b05-421a-acaf-09acc4747d57",
+    "blob:http://127.0.0.1:5173/64731a28-0b05-421a-acaf-09acc4747d57"
+  ],
+  "errors": []
+}

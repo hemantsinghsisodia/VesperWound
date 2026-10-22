@@ -14,6 +14,8 @@ export class CombatPresentation {
   private readonly pool = Array.from({ length: 48 }, () => ({ life: 0, x: 0, y: 0, z: 0, vx: 0, vy: 0, vz: 0 }));
   private cursor = 0; private readonly matrix = new Object3D();
   private readonly ward: Mesh; private readonly vent: Mesh;
+  private readonly defense: WorldLabel;
+  private defenseTime=0; private defenseGeneration=-1; private defenseKey=''; private defenseBlock=false;
   private readonly wardMaterial = new MeshBasicNodeMaterial({ color: 0x9fe2d5, transparent: true, opacity: .12, depthWrite: false });
   private readonly ventMaterial = new MeshStandardNodeMaterial({ color: 0xb37a3d, emissive: 0x68310a, emissiveIntensity: .5, roughness: .65 });
   constructor(private readonly player: PlayerSimulation, labels: WorldLabels) {
@@ -30,10 +32,21 @@ export class CombatPresentation {
       group.add(label); this.group.add(group); this.targets.push({ group, plate: face, material, label, flash: 0, critical: 0, damage: 0 });
     }
     this.ward = new Mesh(sphere, this.wardMaterial); this.ward.scale.set(1, 1.25, 1); this.group.add(this.ward);
+    this.defense=labels.create('defense');this.defense.visible=false;this.group.add(this.defense);
     this.vent = new Mesh(ring, this.ventMaterial); this.vent.rotation.x = Math.PI / 2; this.vent.position.set(PRESSURE_VENT.x, .08, PRESSURE_VENT.z); this.group.add(this.vent);
     this.particles = new InstancedMesh(spark, sparkMaterial, this.pool.length); this.particles.frustumCulled = false; this.group.add(this.particles); this.update(0, true); this.interpolate(1);
   }
   event(event: CombatEvent, reduced: boolean): void {
+    if(event.type==='block'||event.type==='evade'){
+      if(event.recipient?.id!=='medic'||event.recipient.generation!==this.player.generation)return;
+      const key=`${event.source.id}/${event.source.generation}/${event.attackInstance}/${event.type}`;
+      if(key===this.defenseKey&&this.defenseGeneration===this.player.generation)return;
+      this.defenseKey=key;this.defenseGeneration=this.player.generation;this.defenseTime=.6;this.defenseBlock=event.type==='block';
+      this.defense.text(event.type==='block'?'Blocked':'Evaded','mint');
+      this.ward.position.set(event.position.x,event.position.y,event.position.z);
+      // The existing barrier owner supplies the brief, bounded contact effect.
+      return;
+    }
     if (event.type === 'hit') {
       const index = this.player.targets.findIndex(t => t.id === event.target);
       if (index >= 0) { const target = this.targets[index]!; target.flash = reduced ? 0 : .16; if (event.critical) { target.critical = 1; target.damage = event.damage; } }
@@ -54,9 +67,14 @@ export class CombatPresentation {
       const label = view.critical > 0 ? `CRITICAL · ${view.damage}` : t.health === 0 ? 'DEFEATED · RESETTING' : t.exposedUntil > 0 ? 'EXPOSED · HEAVY' : t.label;
       view.label.combat(label,t.health,t.maxHealth,t.posture,view.critical>0?'mint':t.exposedUntil>0?'amber':'normal');
     });
-    this.ward.visible = this.player.state.wardRemaining > 0; this.wardMaterial.opacity = reduced ? .06 : .12;
+    if(this.defenseGeneration!==this.player.generation||this.player.state.health<=0)this.defenseTime=0;
+    this.defenseTime=Math.max(0,this.defenseTime-dt);this.defense.visible=this.defenseTime>0;
+    this.defense.position.set(this.player.state.position.x,this.player.state.position.y+1.65,this.player.state.position.z);
+    const contact=this.defenseTime>.4&&this.defenseBlock;
+    this.ward.visible = this.player.state.wardRemaining > 0||contact; this.wardMaterial.opacity = contact?(reduced?.08:.22):reduced ? .06 : .12;
+    this.ward.scale.setScalar(contact?.2:1);if(!contact)this.ward.scale.y=1.25;
     this.vent.visible = this.player.training;
-    this.ward.position.set(this.player.state.position.x, this.player.state.position.y + .9, this.player.state.position.z);
+    if(!contact)this.ward.position.set(this.player.state.position.x, this.player.state.position.y + .9, this.player.state.position.z);
     this.ventMaterial.emissiveIntensity = reduced ? .5 : this.player.state.ventWarning ? 1.8 : .5;
     this.vent.scale.setScalar(this.player.state.ventWarning ? 1.05 : 1);
     for (let i = 0; i < this.pool.length; i++) {
@@ -68,6 +86,6 @@ export class CombatPresentation {
     this.particles.instanceMatrix.needsUpdate = true;
   }
   interpolate(alpha: number): void { if (this.player.training) this.targets.forEach((v, i) => { const t = this.player.targets[i]!; v.group.position.set(t.previous.x + (t.position.x - t.previous.x) * alpha, t.position.y, t.previous.z + (t.position.z - t.previous.z) * alpha); }); }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.targets.length; }
-  dispose(): void { this.particles.dispose(); this.targets.forEach(t => t.label.dispose()); this.group.clear(); this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose()); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.targets.length + 1; }
+  dispose(): void { this.defense.dispose();this.particles.dispose(); this.targets.forEach(t => t.label.dispose()); this.group.clear(); this.geometries.forEach(g => g.dispose()); this.materials.forEach(m => m.dispose()); }
 }

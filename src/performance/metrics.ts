@@ -11,6 +11,7 @@ export interface FrameStatistics {
   characterTier: string; inspection: string; inspectionPaused: boolean;
   rig?: { feet: number[][]; gripDistances: number[] };
   weaponContact?: { base:number[];tip:number[];grip:number; time: number | null };
+  enemyContact?: Array<{id:string;generation:number;instance:number;time:number;base:number[];tip:number[]}>;
   player?: PlayerState;
   targets?: CombatantState[];
   encounter?: 'training'|'encounter'; enemies?: EnemyState[]; enemyLoading?: boolean;

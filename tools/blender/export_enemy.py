@@ -1,8 +1,11 @@
 """Read-only exports from the saved authored enemy master."""
-import bpy, json
+import bpy, json, sys
 from pathlib import Path
 base = Path.cwd()
+sys.path.insert(0,str(base/'tools/blender'))
+from enemy_contact import export_contact
 bpy.ops.wm.open_mainfile(filepath=str(base/'art/source/zombie7-master.blend'), load_ui=False)
+export_contact()
 out = base/'art/source/zombie7'; out.mkdir(parents=True,exist_ok=True)
 for tier in ['source','desktop','mobile']:
     for obj in bpy.context.scene.objects:

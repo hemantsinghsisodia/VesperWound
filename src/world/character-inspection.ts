@@ -41,8 +41,8 @@ export class CharacterInspection implements WorldPresentation {
     this.controls.dampingFactor = 0.12; this.controls.maxPolarAngle = Math.PI * 0.85;
     this.selectView('full-body');
   }
-  async load(assets: AssetManager): Promise<void> {
-    const loaded = await Promise.allSettled([assets.model('character'), assets.model('animations'), assets.model('baton')]);
+  async load(assets: AssetManager, withBaton = true): Promise<void> {
+    const loaded = await Promise.allSettled([assets.model('character'), assets.model('animations'), ...(withBaton ? [assets.model('baton')] : [])]);
     for (const result of loaded) if (result.status === 'fulfilled') { if (this.disposed) result.value.release(); else this.handles.push(result.value); }
     if (this.disposed) throw new Error('Inspection was cancelled.');
     const character = loaded[0]; const animations = loaded[1];
@@ -50,7 +50,7 @@ export class CharacterInspection implements WorldPresentation {
     if (failed?.status === 'rejected') throw failed.reason;
     if (character?.status !== 'fulfilled' || animations?.status !== 'fulfilled') throw new Error('Inspection is incomplete.');
     this.actor.attach({ scene: character.value.value.scene, animations: animations.value.value.animations });
-    const baton=loaded[2];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.actor,baton.value.value,true);
+    if(withBaton){const baton=loaded[2];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.actor,baton.value.value,true);}
     // A soft, owned reflection field makes the imported materials readable.
     const faces = Array.from({ length: 6 }, () => {
       const canvas = document.createElement('canvas'); canvas.width = canvas.height = 32;

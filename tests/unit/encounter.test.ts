@@ -33,7 +33,7 @@ describe('first enemy encounter',()=>{
   });
   it('permits simultaneous lethal contacts collected at the start of resolution',()=>{
     const e=create();e.start();const enemy=e.enemies[0]!;e.player.state.position={x:enemy.position.x-.75,y:.035,z:enemy.position.z};e.player.state.facing=Math.PI/2;
-    e.player.state.action='heavy';e.player.state.attack='heavy';e.player.state.actionTime=.43;enemy.health=30;enemy.action='active';enemy.attackRecipient=e.player.handle;enemy.facing=-Math.PI/2;
+    e.player.state.action='heavy';e.player.state.attack='heavy';e.player.state.actionTime=.43;enemy.health=30;enemy.action='active';enemy.attackElapsed=.73;enemy.attackRecipient=e.player.handle;enemy.facing=-Math.PI/2;
     e.update(1/60,frame());expect(enemy.health).toBe(0);expect(enemy.action).toBe('dead');expect(e.player.state.health).toBe(80);expect(e.victorious).toBe(true);tick(e,5);expect(enemy.health).toBe(0);
   });
   it('stagger cancels windup and critical consumes exactly one opening',()=>{

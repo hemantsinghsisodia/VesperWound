@@ -73,7 +73,7 @@ describe('group encounter', () => {
     e.player.state.action = defense; e.player.state.actionTime = .05; e.player.state.wardRemaining = defense === 'ward' ? .7 : 0;
     e.enemies.forEach((enemy, index) => {
       if (index === 2) { enemy.health = 0; return; }
-      enemy.position = { x: index * .3, y: .035, z: .85 }; enemy.action = 'active'; enemy.facing = Math.atan2(-enemy.position.x, -enemy.position.z); enemy.attackRecipient = e.player.handle;
+      enemy.position = { x: index * .3, y: .035, z: .85 }; enemy.action = 'active'; enemy.attackElapsed=.73; enemy.facing = Math.atan2(-enemy.position.x, -enemy.position.z); enemy.attackRecipient = e.player.handle;
     });
     tick(e, 1); expect(e.player.state.health).toBe(defense === 'ward' ? 80 : 100); expect(e.player.state.blocks).toBe(defense === 'ward' ? 1 : 0); e.dispose();
   });

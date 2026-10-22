@@ -1,0 +1,7 @@
+{
+  "backend": "webgpu-required",
+  "browser": "155.0.8059.85",
+  "samples": 52,
+  "maxError": 0.001454475760329243,
+  "errors": []
+}

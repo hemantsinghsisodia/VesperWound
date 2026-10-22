@@ -38,7 +38,7 @@ export class PlayerSimulation {
   get handle(): EntityHandle { return { id: 'medic', generation: this.generation }; }
   private emit(event: CombatEventPayload, source = this.handle, incomingInstance: number | null = null): void {
     const target = 'target' in event ? this.targets.find(t => t.id === event.target) : null;
-    const recipient = target ? { id: target.id, generation: target.generation } : event.type === 'block' || event.type === 'damage' ? this.handle : null;
+    const recipient = target ? { id: target.id, generation: target.generation } : event.type === 'block' || event.type === 'evade' || event.type === 'damage' ? this.handle : null;
     const attackInstance = 'instance' in event ? event.instance : incomingInstance ?? (source.id === 'medic' && this.state.attack ? this.state.actionSequence : null);
     this.events.push({ ...event, source, recipient, attackInstance });
   }
@@ -157,11 +157,15 @@ export class PlayerSimulation {
     this.collision.syncTargets?.(this.targets);
   }
   private action(action: PlayerAction): void { if (this.state.action !== action) { this.state.action = action; this.state.actionTime = 0; this.state.actionSequence++; this.state.attack = null; } }
-  damage(amount: number, source: EntityHandle = { id: 'vent', generation: 0 }, attackInstance: number | null = null): boolean {
+  damage(amount: number, source: EntityHandle = { id: 'vent', generation: 0 }, attackInstance: number | null = null, contact?: Position): boolean {
     const s = this.state;
-    if (s.invulnerable || s.action === 'dead' || !Number.isFinite(amount) || amount <= 0) return false;
+    if (s.action === 'dead' || !Number.isFinite(amount) || amount <= 0) return false;
+    if (s.invulnerable) {
+      if (contact && attackInstance !== null && s.action === 'dodge') this.emit({ type: 'evade', position: { ...contact } }, source, attackInstance);
+      return false;
+    }
     this.quietSince = this.clock;
-    if (s.wardRemaining > 0) { s.wardRemaining = 0; s.blocks++; this.emit({ type: 'block', position: { ...s.position } }, source, attackInstance); return false; }
+    if (s.wardRemaining > 0) { s.wardRemaining = 0; s.blocks++; this.emit({ type: 'block', position: contact ? { ...contact } : { ...s.position, y: s.position.y + 1 } }, source, attackInstance); return false; }
     s.health = Math.max(0, s.health - amount); s.invulnerable = false; s.combo = 0; s.wardRemaining = 0;
     this.clearQueued(); this.action(s.health ? 'hit' : 'dead'); this.emit({ type: 'damage', position: { ...s.position } }, source, attackInstance); return true;
   }
