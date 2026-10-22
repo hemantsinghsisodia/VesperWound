@@ -43,8 +43,8 @@ export async function exerciseGroup(page: Page, running: () => boolean, totals: 
         await move([]);
         if (free && !living.some(e => e.action === 'active' && distance(e) < 1.3)) {
           const neighbour=[...living].filter(e=>e!==enemy&&distance(e)<1.2).sort((a,b)=>distance(a)-distance(b))[0];
-          // Open with one cleaving light, then create a heavy exposure. A full
-          // stronger light chain can defeat a guard before posture reaches 100.
+          // Open with a cleaving light, then use heavy strikes. Increased damage
+          // defeats standard guards before posture reaches 100.
           const light=(s.strikes===0||s.criticals>0)&&!!neighbour&&enemy.action!=='stagger'&&s.strikes%4!==3;
           const point=light?{x:(enemy.x+neighbour!.x)/2,z:(enemy.z+neighbour!.z)/2}:enemy;
           const projected = await projectGround(page, { x: point.x, y: s.p[1]!, z: point.z });

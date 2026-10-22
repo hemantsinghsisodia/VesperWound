@@ -35,7 +35,7 @@ describe('steel baton',()=>{
     const t=p.targets[1]!;p.targets.splice(0,p.targets.length,t);t.position={x:0,y:.035,z:.85};t.spawn={...t.position};
     const ids=[];
     for(let i=0;i<3;i++){p.state.position={x:0,y:.035,z:0};t.position={...t.spawn};t.velocity={x:0,z:0};p.update(1/60,frame(['attack']),{x:0,z:1});ids.push(p.state.attack);tick(p,Math.ceil(p.attackDefinition(p.state.attack!).duration*60)+1);}
-    expect(ids).toEqual(BATON.light);expect(t.health).toBe(160-21-27-36);expect(t.hits).toBe(3);expect(p.state.pressure).toBe(80);
+    expect(ids).toEqual(BATON.light);expect(t.health).toBe(160-32-41-54);expect(t.hits).toBe(3);expect(p.state.pressure).toBe(80);
   });
   it('starts on the next update, retains one early follow-up and resets the chain after 600 ms',()=>{
     const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
@@ -71,13 +71,6 @@ describe('steel baton',()=>{
     }
     p.update(1/60,frame(['attack']));p.update(1/60,frame(['attack']));p.damage(100);tick(p,60);expect(p.state.action).toBe('dead');expect(p.state.pendingAttack).toBeNull();
   });
-  it('lets a recovery dodge win over the queued follow-up but commits windup and active frames',()=>{
-    const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;
-    p.update(1/60,frame(['attack']));p.update(1/60,frame(['heavy','dodge']));
-    expect(p.state.action).toBe('attack');tick(p,11);expect(p.state.action).toBe('attack');
-    tick(p,3);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('dodge');expect(p.state.pendingAttack).toBeNull();
-    tick(p,60);expect(p.state.strikes).toBe(1);
-  });
   it('has contact boundaries and cannot hit through solids',()=>{
     for(const id of [...BATON.light,BATON.heavy]){
       const a=BATON.attacks[id]!,origin={x:0,y:.035,z:0};
@@ -85,9 +78,9 @@ describe('steel baton',()=>{
       expect(hits({x:0,y:.035,z:.85})).toBe(true);expect(hits({x:0,y:.035,z:1.8})).toBe(false);expect(hits({x:1.6,y:.035,z:.85})).toBe(false);expect(hits({x:0,y:.035,z:-.8})).toBe(false);expect(hits({x:0,y:.035,z:.85},true)).toBe(false);
     }
   });
-  it('keeps windup committed, permits recovery dodge and consumes heavy critical',()=>{
+  it('consumes heavy critical and permits subsequent dodge',()=>{
     const p=new PlayerSimulation(new Ground());p.equipBaton();p.training=false;const t=p.targets[1]!;p.targets.splice(0,p.targets.length,t);p.state.position={x:0,y:.035,z:0};t.position={x:0,y:.035,z:.85};
-    t.exposedUntil=2;t.posture=100;p.update(1/60,frame(['heavy']),{x:0,z:1});tick(p,8);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('heavy');tick(p,19);
-    expect(t.health).toBe(64);expect(t.exposedUntil).toBe(0);expect(p.state.criticals).toBe(1);tick(p,2);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('dodge');
+    t.exposedUntil=2;t.posture=100;p.update(1/60,frame(['heavy']),{x:0,z:1});tick(p,28);
+    expect(t.health).toBe(16);expect(t.exposedUntil).toBe(0);expect(p.state.criticals).toBe(1);tick(p,2);p.update(1/60,frame(['dodge']));expect(p.state.action).toBe('dodge');
   });
 });

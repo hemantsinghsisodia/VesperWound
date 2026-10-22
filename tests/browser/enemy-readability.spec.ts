@@ -7,7 +7,7 @@ import { sampleWeaponContact } from '../../src/player/weapon-contact';
 import type { FrameStatistics } from '../../src/performance/metrics';
 import { execFileSync } from 'node:child_process';
 const baseline = process.env.VESPER_ENEMY_BASELINE === '1';
-const root = `docs/qa/enemy-combat-readability/${baseline ? 'before' : 'after'}`;
+const root = `${process.env.VESPER_COMBAT_QA ?? 'docs/qa/enemy-combat-readability'}/${baseline ? 'before' : 'after'}`;
 test.use({ video: { mode: 'on', size: { width: 1440, height: 900 } } });
 test('matched real-control defense and combat', async ({ page, browser }, info) => {
   test.skip(info.project.name.endsWith('mobile'), 'Desktop comparison.');

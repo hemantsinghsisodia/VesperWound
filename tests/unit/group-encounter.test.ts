@@ -87,9 +87,9 @@ describe('group encounter', () => {
   it('consumes only the exposed target opening during a multi-target heavy', () => {
     const p = new PlayerSimulation(new Ground()); p.equipBaton(); p.training = false; p.state.position = { x: 0, y: .035, z: 0 };
     p.targets[0]!.position = { x: -.3, y: .035, z: .85 }; p.targets[1]!.position = { x: .3, y: .035, z: .85 }; p.targets[2]!.health = 0;
-    p.targets[0]!.posture = 100; p.targets[0]!.exposedUntil = 2; p.targets[1]!.posture = 50;
+    p.targets[0]!.health = 200; p.targets[0]!.maxHealth = 200; p.targets[0]!.posture = 100; p.targets[0]!.exposedUntil = 2; p.targets[1]!.posture = 50;
     p.update(1 / 60, frame(['heavy']), { x: 0, z: 1 }); for (let i = 0; i < 40; i++) p.update(1 / 60, frame());
-    expect(p.targets[0]!.health).toBe(4); expect(p.targets[1]!.health).toBe(112); expect(p.state.criticals).toBe(1);
+    expect(p.targets[0]!.health).toBe(56); expect(p.targets[1]!.health).toBe(88); expect(p.state.criticals).toBe(1);
     expect(p.targets[0]!.exposedUntil).toBe(0); expect(p.targets[1]!.exposedUntil).toBeGreaterThan(0); p.dispose();
   });
   it('produces identical group combat snapshots and events across presentation qualities', () => {

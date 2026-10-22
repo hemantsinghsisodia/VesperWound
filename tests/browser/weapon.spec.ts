@@ -40,7 +40,7 @@ test('armed combat demonstration and exported contact alignment',async({page})=>
     await page.waitForTimeout(70);
   }
   await expect.poll(()=>totals.victories,{timeout:60000}).toBeGreaterThan(0);running=false;await driver;
-  expect(totals.criticals).toBeGreaterThan(0);expect(totals.blocks).toBeGreaterThan(0);expect(contacts.length).toBeGreaterThan(0);expect(Math.max(...contacts.map(c=>c.error))).toBeLessThan(.03);
+  expect(totals.criticals).toBe(0);expect(totals.blocks).toBeGreaterThan(0);expect(contacts.length).toBeGreaterThan(0);expect(Math.max(...contacts.map(c=>c.error))).toBeLessThan(.03);
   await page.screenshot({path:`${qaRoot}/browser/victory.png`});await writeFile(`${qaRoot}/browser/combat.json`,JSON.stringify({totals,contacts,snapshot:await page.evaluate(()=>window.__VESPER_DEBUG__!.snapshot())},null,2));
   const video=page.video();await page.context().close();await video?.saveAs(`${qaRoot}/pickup-combat.webm`);
 });

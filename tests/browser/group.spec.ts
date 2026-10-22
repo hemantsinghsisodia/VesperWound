@@ -20,8 +20,8 @@ for (const backend of ['webgpu-required', 'webgl2']) test(`group combat, targeti
   await expect.poll(async()=>(await snapshot(page)).player!.target?.id).not.toBe(first?.id); await page.screenshot({ path: `${root}/browser/${backend}-group.png` });
   const totals: GroupTotals = { encounters: 0, victories: 0, hits: 0, criticals: 0, blocks: 0, strikes: 0, multiTargetAttacks: 0, defeated: 0 };
   let running = true; const driver = exerciseGroup(page, () => running, totals);
-  await expect.poll(() => totals.victories, { timeout: 100000, intervals: [100] }).toBeGreaterThan(0); running = false; await driver;
-  expect(totals.multiTargetAttacks).toBeGreaterThan(0); expect(totals.blocks).toBeGreaterThan(0); expect(totals.criticals).toBeGreaterThan(0); expect(totals.defeated).toBeGreaterThanOrEqual(3);
+  await expect.poll(async () => totals.victories > 0 && totals.multiTargetAttacks > 0 && totals.blocks > 0 && (await page.locator('#player-message').textContent())?.includes('GROUP COMPLETE'), { timeout: 100000, intervals: [100] }).toBe(true); running = false; await driver;
+  expect(totals.multiTargetAttacks).toBeGreaterThan(0); expect(totals.blocks).toBeGreaterThan(0); expect(totals.criticals).toBe(0); expect(totals.defeated).toBeGreaterThanOrEqual(3);
   await expect(page.locator('#player-message')).toContainText('GROUP COMPLETE'); await expect(page.locator('#encounter-progress')).toContainText('0 / 3 remaining');
   await page.screenshot({ path: `${root}/browser/${backend}-victory.png` }); const victory = await snapshot(page);
   await clickSceneTool(page, '#encounter-restart'); const restart = await snapshot(page);

@@ -12,8 +12,8 @@ export const ATTACKS: Record<'jab' | 'cross' | 'finisher' | 'heavy', AttackDefin
 };
 export type WeaponId = 'unarmed' | 'baton';
 export type LocomotionAction = 'idle' | 'walk' | 'run' | 'dodge' | 'ward' | 'hit' | 'dead';
-export interface CombatStyleDefinition { id: string; light: readonly AttackId[]; heavy: AttackId; buffer: number; chainTimeout: number; followUp?: 'single'; attacks: Readonly<Partial<Record<AttackId, AttackDefinition>>>; animations: Readonly<Record<LocomotionAction, string>> }
-export const UNARMED: CombatStyleDefinition = { id: 'unarmed', light: ['jab', 'cross', 'finisher'], heavy: 'heavy', buffer: .12, chainTimeout: .6, attacks: ATTACKS, animations: { idle:'Idle_Loop', walk:'Walk_Loop', run:'Jog_Fwd_Loop', dodge:'Roll', ward:'Spell_Simple_Shoot', hit:'Hit_Chest', dead:'Death01' } };
+export interface CombatStyleDefinition { id: string; light: readonly AttackId[]; heavy: AttackId; dodgeCancel: 'recovery' | 'any-phase'; buffer: number; chainTimeout: number; followUp?: 'single'; attacks: Readonly<Partial<Record<AttackId, AttackDefinition>>>; animations: Readonly<Record<LocomotionAction, string>> }
+export const UNARMED: CombatStyleDefinition = { id: 'unarmed', dodgeCancel: 'recovery', light: ['jab', 'cross', 'finisher'], heavy: 'heavy', buffer: .12, chainTimeout: .6, attacks: ATTACKS, animations: { idle:'Idle_Loop', walk:'Walk_Loop', run:'Jog_Fwd_Loop', dodge:'Roll', ward:'Spell_Simple_Shoot', hit:'Hit_Chest', dead:'Death01' } };
 export const TRAINING_TARGETS = [
   { id: 'isolated', label: 'COMBO TARGET', position: { x: 1.5, y: .035, z: 3.4 }, maxHealth: 100, mass: 1 },
   { id: 'heavy', label: 'HEAVY TARGET', position: { x: 3.8, y: .035, z: 1.8 }, maxHealth: 160, mass: 2 },

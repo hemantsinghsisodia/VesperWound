@@ -1,0 +1,451 @@
+{
+  "browser": "156.0.8078.48",
+  "backend": "webgl2",
+  "traces": [
+    {
+      "name": "Light1",
+      "delay": 40,
+      "observedWallMs": 85,
+      "before": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6000057374532988,
+          "y": 0.02931093625025824,
+          "z": 3.3999923429526415
+        },
+        "previous": {
+          "x": -1.6000056492252996,
+          "y": 0.029424167598481293,
+          "z": 3.3999925665775788
+        },
+        "facing": 1.7732501864394348,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.03333333333333333,
+        "actionSequence": 2,
+        "attack": "baton-light1",
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 1,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 1,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": true,
+        "ventRemaining": 0.11666666666666847
+      },
+      "after": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -0.8163508539493849,
+          "y": 0.0300767733171233,
+          "z": 3.2391377313005716
+        },
+        "previous": {
+          "x": -1.0122660761173536,
+          "y": 0.02998103783844272,
+          "z": 3.2793526982831747
+        },
+        "facing": 1.7732501864394348,
+        "health": 100,
+        "pressure": 100,
+        "action": "dodge",
+        "actionTime": 0.05,
+        "actionSequence": 3,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 1,
+        "targetHits": 0,
+        "invulnerable": true,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": true,
+        "ventRemaining": 0.033333333333335435
+      },
+      "animation": "Baton_Dodge",
+      "contactTime": null
+    },
+    {
+      "name": "Light2",
+      "delay": 190,
+      "observedWallMs": 46,
+      "before": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 1.1437686158359182,
+          "y": 0.028763034792209513,
+          "z": 2.8365558866444287
+        },
+        "previous": {
+          "x": 1.1437687715838305,
+          "y": 0.029163652161660142,
+          "z": 2.836555916399253
+        },
+        "facing": 1.7732384986566807,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.21666666666666665,
+        "actionSequence": 7,
+        "attack": "baton-light2",
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 3,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 2,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.2500000000000027
+      },
+      "after": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 1.3396838082015645,
+          "y": 0.02896911631629337,
+          "z": 2.796343195814198
+        },
+        "previous": {
+          "x": 1.3396838082015645,
+          "y": 0.02886911632609554,
+          "z": 2.796343195814198
+        },
+        "facing": 1.7732384986566807,
+        "health": 100,
+        "pressure": 100,
+        "action": "dodge",
+        "actionTime": 0.016666666666666666,
+        "actionSequence": 8,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 3,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.2166666666666694
+      },
+      "animation": "Baton_Dodge",
+      "contactTime": null
+    },
+    {
+      "name": "Light3",
+      "delay": 230,
+      "observedWallMs": 49,
+      "before": {
+        "target": {
+          "id": "grouped",
+          "generation": 0
+        },
+        "weapon": "baton",
+        "position": {
+          "x": 3.656467752476579,
+          "y": 0.028650030563003387,
+          "z": 2.388797076132074
+        },
+        "previous": {
+          "x": 3.6564677559659087,
+          "y": 0.02865001777914586,
+          "z": 2.3887970770044062
+        },
+        "facing": 1.7730991828672689,
+        "health": 100,
+        "pressure": 100,
+        "action": "attack",
+        "actionTime": 0.24999999999999997,
+        "actionSequence": 14,
+        "attack": "baton-light3",
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 6,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 3,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.86666666666666
+      },
+      "after": {
+        "target": {
+          "id": "grouped",
+          "generation": 0
+        },
+        "weapon": "baton",
+        "position": {
+          "x": 4.244230644722825,
+          "y": 0.028965384332113903,
+          "z": 2.268242248978391
+        },
+        "previous": {
+          "x": 4.0483093428810895,
+          "y": 0.028864696094533432,
+          "z": 2.3084271491429953
+        },
+        "facing": 1.7730991828672689,
+        "health": 100,
+        "pressure": 100,
+        "action": "dodge",
+        "actionTime": 0.03333333333333333,
+        "actionSequence": 15,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 6,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.8166666666666575
+      },
+      "animation": "Baton_Dodge",
+      "contactTime": null
+    },
+    {
+      "name": "Heavy",
+      "delay": 50,
+      "observedWallMs": 45,
+      "before": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 6.239400146398123,
+          "y": 0.02883364949289899,
+          "z": 2.096699203514169
+        },
+        "previous": {
+          "x": 6.239400622278663,
+          "y": 0.02883386184172196,
+          "z": 2.0967001552752498
+        },
+        "facing": 1.773269709270704,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.05,
+        "actionSequence": 17,
+        "attack": "baton-heavy",
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 7,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.7166666666666526
+      },
+      "after": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 6.631228826506455,
+          "y": 0.02913585671982219,
+          "z": 2.016262825402044
+        },
+        "previous": {
+          "x": 6.435314334495385,
+          "y": 0.029035322143190573,
+          "z": 2.056480891826175
+        },
+        "facing": 1.773269709270704,
+        "health": 100,
+        "pressure": 100,
+        "action": "dodge",
+        "actionTime": 0.016666666666666666,
+        "actionSequence": 18,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 7,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.66666666666665
+      },
+      "animation": "Baton_Dodge",
+      "contactTime": null
+    },
+    {
+      "name": "Heavy",
+      "delay": 400,
+      "observedWallMs": 54,
+      "before": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 7.364952933969616,
+          "y": 0.029017277168484984,
+          "z": 1.533414175699797
+        },
+        "previous": {
+          "x": 7.364952903259067,
+          "y": 0.02901727227176551,
+          "z": 1.533414175699797
+        },
+        "facing": 1.7733312218151895,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.39999999999999997,
+        "actionSequence": 20,
+        "attack": "baton-heavy",
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 8,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.2833333333332977
+      },
+      "after": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 7.365063871768652,
+          "y": 0.029211705249643533,
+          "z": 1.413076588849869
+        },
+        "previous": {
+          "x": 7.3651638419565275,
+          "y": 0.02911691999647545,
+          "z": 1.453306956182566
+        },
+        "facing": 1.7733312218151895,
+        "health": 100,
+        "pressure": 100,
+        "action": "dodge",
+        "actionTime": 0.03333333333333333,
+        "actionSequence": 21,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 8,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.2333333333332952
+      },
+      "animation": "Baton_Dodge",
+      "contactTime": null
+    },
+    {
+      "name": "Heavy",
+      "delay": 580,
+      "observedWallMs": 45,
+      "before": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 7.364997052977498,
+          "y": 0.028999033986185058,
+          "z": 0.9701489747226426
+        },
+        "previous": {
+          "x": 7.364997052977498,
+          "y": 0.02899900187010815,
+          "z": 0.9701489781249306
+        },
+        "facing": 1.7732191415750993,
+        "health": 100,
+        "pressure": 100,
+        "action": "heavy",
+        "actionTime": 0.5833333333333335,
+        "actionSequence": 23,
+        "attack": "baton-heavy",
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 9,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 0.6833333333332696
+      },
+      "after": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": 7.364962646225064,
+          "y": 0.029110384251925442,
+          "z": 0.8496477185293636
+        },
+        "previous": {
+          "x": 7.365062644781898,
+          "y": 0.029009015770515706,
+          "z": 0.8898558719560108
+        },
+        "facing": 1.7732191415750993,
+        "health": 100,
+        "pressure": 100,
+        "action": "dodge",
+        "actionTime": 0.03333333333333333,
+        "actionSequence": 24,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 9,
+        "targetHits": 4,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 0.6166666666665996
+      },
+      "animation": "Baton_Dodge",
+      "contactTime": null
+    }
+  ],
+  "errors": []
+}

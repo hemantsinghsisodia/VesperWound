@@ -18,5 +18,10 @@ it('samples a controlled strike at CPU time regardless of mixer advancement and 
   expect(hand.quaternion.clone().normalize().angleTo(new Quaternion().slerp(q, .5))).toBeLessThan(.0001);
   actor.selectClip({ kind: 'clip', name: 'Baton_Heavy' }, .05); actor.sampleControlled(0, 0);
   expect(hand.quaternion.angleTo(new Quaternion())).toBeLessThan(.0001);
+  actor.addClips([new AnimationClip('Baton_Dodge', 1, [new QuaternionKeyframeTrack('RightHand.quaternion', [0,1], [...q.toArray(),0,0,0,1])])]);
+  actor.sampleControlled(.4, 0); actor.releaseControlled();
+  actor.selectClip({kind:'clip',name:'Baton_Dodge'},.05); actor.update(.06);
+  expect(actor.sampledTime).toBeNull();
+  expect(hand.quaternion.clone().normalize().angleTo(new Quaternion().slerp(q,.94))).toBeLessThan(.0001);
   actor.dispose();
 });

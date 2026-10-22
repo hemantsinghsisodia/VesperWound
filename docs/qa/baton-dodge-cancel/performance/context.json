@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-22",
+  "mainBaseline": "3dceadf",
+  "baselinePath": "../../enemy-combat-readability/performance",
+  "baselineBrowser": "156.0.8078.48",
+  "baselinePowerStatus": "not recorded",
+  "initialGroupPower": {
+    "windowsBatteryStatus": 1,
+    "chargePercent": 71
+  },
+  "userRequestedMainsRerun": true,
+  "confirmedMains": {
+    "windowsBatteryStatus": 2,
+    "chargePercent": 70,
+    "localTimeApprox": "2026-10-22T22:25:00+05:30"
+  },
+  "note": "Initial group failure is retained in battery/. Inspection sampling began after mains confirmation. Final group run is a requested mains-power rerun."
+}

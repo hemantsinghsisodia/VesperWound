@@ -87,8 +87,8 @@ export class PlayerSimulation {
     const length = Math.hypot(x, z); if (length > 1) { x /= length; z /= length; }
     const magnitude = Math.min(1, Math.hypot(x, z));
     let free = ['idle', 'walk', 'run'].includes(s.action);
-    const recovery = (s.action === 'attack' || s.action === 'heavy') && s.attack !== null && s.actionTime >= this.attackDefinition(s.attack).active[1];
-    if ((free || recovery) && this.queued.has('dodge')) {
+    const canCancel = (s.action === 'attack' || s.action === 'heavy') && s.attack !== null && (this.style.dodgeCancel === 'any-phase' || s.actionTime >= this.attackDefinition(s.attack).active[1]);
+    if ((free || canCancel) && this.queued.has('dodge')) {
       this.clearQueued(); s.combo = 0; this.action('dodge');
       this.dodgeDirection = magnitude > .08 ? { x: x / magnitude, z: z / magnitude } : { x: Math.sin(s.facing), z: Math.cos(s.facing) };
       s.facing = Math.atan2(this.dodgeDirection.x, this.dodgeDirection.z); free = false;

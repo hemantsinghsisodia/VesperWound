@@ -155,7 +155,13 @@ export class VisualShowcase implements WorldPresentation {
     this.actor.position.copy(this.target); this.actor.rotation.y = s.facing;
     this.preview.controlled = true;
     const name = s.attack ? this.player.attackDefinition(s.attack).clip : s.weapon==='baton' && s.action!=='attack' && s.action!=='heavy' ? this.player.style.animations[s.action] : PLAYER_CLIPS[s.action];
-    if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) { this.preview.selectClip({ kind: 'clip', name }, s.attack && s.weapon === 'baton' ? .05 : .18); this.animationSequence = s.actionSequence; }
+    if (this.animationSequence !== s.actionSequence || this.clip.kind !== 'clip' || this.clip.name !== name) {
+      const previousClip = this.clip.kind === 'clip' ? this.clip.name : '';
+      const cancelling = s.weapon === 'baton' && s.action === 'dodge' && Object.values(this.player.style.attacks).some(attack => attack.clip === previousClip);
+      if (cancelling) { this.preview.releaseControlled(); this.attackFadeDelta = 0; }
+      this.preview.selectClip({ kind: 'clip', name }, cancelling || (s.attack && s.weapon === 'baton') ? .05 : .18);
+      this.animationSequence = s.actionSequence;
+    }
     if (sample && s.attack && s.weapon === 'baton') {
       // Advance only the fractional render interval beyond the latest CPU pose.
       // Damage still resolves exclusively at fixed ticks. One mixer evaluation

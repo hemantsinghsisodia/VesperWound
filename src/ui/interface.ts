@@ -194,7 +194,7 @@ export class Interface {
     writeChanged(this.get('#pressure-value'), 'textContent', `${Math.floor(state.pressure)} / 100`);
     writeChanged(this.get('#restart-player'), 'hidden', state.action !== 'dead');
     writeChanged(this.get('#reset-targets'), 'hidden', state.action === 'dead');
-    writeChanged(this.get('#player-message'), 'textContent', state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning && state.position.z < 8 ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? 'Heavy strike · committed windup.' : state.action === 'attack' ? `Light chain ${state.combo} / 3` : 'Light combo → heavy → exposed → critical heavy.');
+    writeChanged(this.get('#player-message'), 'textContent', state.action === 'dead' ? 'The pressure took you. Return to try again.' : state.wardRemaining > 0 ? 'Ward active · absorbs one hit.' : state.ventWarning && state.position.z < 8 ? 'VENT PULSE INCOMING · dodge or use Ward.' : state.action === 'heavy' ? (state.weapon === 'baton' ? 'Heavy strike · dodge to cancel.' : 'Heavy strike · committed windup.') : state.action === 'attack' ? `Light chain ${state.combo} / 3` : state.weapon === 'baton' ? 'Dodge can interrupt any baton swing.' : 'Light combo → heavy → exposed → critical heavy.');
     writeChanged(this.get('#combat-score'), 'textContent', `HITS ${state.targetHits} · CRITICALS ${state.criticals} · BLOCKS ${state.blocks}`);
     writeChanged(this.root.dataset, 'playerAction', state.action);
     writeChanged(this.root.dataset, 'combatFeedback', String(state.action === 'dead' || state.wardRemaining > 0 || state.ventWarning));
