@@ -9,7 +9,9 @@ import { MeshoptEncoder, MeshoptDecoder } from 'meshoptimizer';
 import { encodeToKTX2 } from 'ktx2-encoder';
 import sharp from 'sharp';
 
-const master = 'art/source/ash-quay-district.blend';
+const master = 'art/source/chapter-art-proof.blend';
+const courtMaster = 'art/source/ash-quay-district.blend';
+const quayOnly = process.argv.includes('--quay-only');
 // Stage complete artifacts before replacement; Windows file scanners can briefly
 // hold an existing GLB/KTX2 open during an export.
 async function publish(path, bytes) {
@@ -27,9 +29,11 @@ async function publish(path, bytes) {
 }
 const hash = async p => createHash('sha256').update(await readFile(p)).digest('hex');
 const before = await hash(master);
+const courtBefore = await hash(courtMaster);
 await mkdir('art/cache', { recursive: true });
 const blender = process.env.BLENDER_PATH ?? 'C:/Program Files/Blender Foundation/Blender 5.2/blender.exe';
 const environment = { ...process.env }; delete environment.SSLKEYLOGFILE;
+if (quayOnly) environment.VESPER_ENVIRONMENT_SECTION = 'quay';
 await new Promise((resolve, reject) => {
   let output = '';
   const child = spawn(blender, ['-b', '--factory-startup', '--disable-autoexec', '--python', 'tools/blender/export_environment.py'], { windowsHide: true, env: environment, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -39,17 +43,17 @@ await new Promise((resolve, reject) => {
 if (before !== await hash(master)) throw new Error('Environment export modified the authored master');
 let probeHash;
 try { probeHash = await readFile('art/cache/environment-probe-master.txt', 'utf8'); } catch { /* First bake. */ }
-if (probeHash !== before) {
+if (!quayOnly && probeHash !== courtBefore) {
   await new Promise((resolve,reject) => {
     let output='';const child=spawn(blender,['-b','--factory-startup','--disable-autoexec','--python','tools/blender/bake_environment_probe.py'],{windowsHide:true,env:environment,stdio:['ignore','pipe','pipe']});
     child.stdout.on('data',b=>{output+=b;});child.stderr.on('data',b=>{output+=b;});child.on('error',reject);child.on('exit',code=>code===0&&output.includes('ENVIRONMENT_PROBE_COMPLETE')?resolve():reject(new Error(output.slice(-3000))));
   });
-  await writeFile('art/cache/environment-probe-master.txt',before);
+  await writeFile('art/cache/environment-probe-master.txt',courtBefore);
 }
 await MeshoptEncoder.ready;
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.encoder': MeshoptEncoder, 'meshopt.decoder': MeshoptDecoder });
 const reports = [];
-for (const tier of ['desktop', 'mobile']) for (const section of ['court', 'quay']) {
+for (const tier of ['desktop', 'mobile']) for (const section of quayOnly ? ['quay'] : ['court', 'quay']) {
   const doc = await io.read(`art/source/environment/${section === 'court' ? 'ash-quay' : 'arrival-quay'}.glb`);
   // The proof courtyard is one visible room. Batch its static materials together
   // instead of submitting the same material in every small cell. The backdrop
@@ -75,6 +79,7 @@ for (const tier of ['desktop', 'mobile']) for (const section of ['court', 'quay'
     if (material.getName() === 'District / dock limestone warm') material.setBaseColorFactor([.65, .62, .54, 1]);
     if (material.getName() === 'District / dock limestone cool') material.setBaseColorFactor([.56, .59, .57, 1]);
     if (material.getName() === 'District / dock limestone worn') material.setBaseColorFactor([.60, .59, .54, 1]);
+    if (material.getName() === 'Chapter / wet service cobbles') material.setBaseColorFactor([.42, .49, .47, 1]);
   }
   await doc.transform(dedup(), join({ keepNamed: false }), prune());
   for (const texture of doc.getRoot().listTextures()) {
@@ -100,21 +105,35 @@ for (const tier of ['desktop', 'mobile']) for (const section of ['court', 'quay'
   await mkdir(`public/assets/district/${tier}`, { recursive: true });
   const output = section === 'court' ? `public/assets/showcase/${tier}/ash-quay.glb` : `public/assets/district/${tier}/arrival-quay.glb`;
   await publish(output, await io.writeBinary(doc));
+  let probe;
+  if (!quayOnly) {
   const reflection = await sharp('art/source/environment/reflection.png').ensureAlpha().raw().toBuffer({resolveWithObject:true});
-  const probe = await encodeToKTX2(reflection.data,{imageDecoder:async()=>({data:reflection.data,width:reflection.info.width,height:reflection.info.height}),isUASTC:false,isPerceptual:true,isSetKTX2SRGBTransferFunc:true,generateMipmap:true,qualityLevel:240,compressionLevel:2});
+  probe = await encodeToKTX2(reflection.data,{imageDecoder:async()=>({data:reflection.data,width:reflection.info.width,height:reflection.info.height}),isUASTC:false,isPerceptual:true,isSetKTX2SRGBTransferFunc:true,generateMipmap:true,qualityLevel:240,compressionLevel:2});
   await publish(`public/assets/showcase/${tier}/reflection.ktx2`,probe);
   const manifestPath=`public/assets/showcase/${tier}/manifest.json`;
   const manifest=JSON.parse(await readFile(manifestPath,'utf8'));manifest.assets.reflection={kind:'texture',url:'reflection.ktx2',colorSpace:'srgb'};
   manifest.assets.quayside={kind:'model',url:`../../district/${tier}/arrival-quay.glb`};
   await publish(manifestPath,JSON.stringify(manifest,null,2));
+  } else probe = await readFile(`public/assets/showcase/${tier}/reflection.ktx2`);
   const triangles = doc.getRoot().listMeshes().reduce((n,m) => n + m.listPrimitives().reduce((s,p) => s + p.getIndices().getCount()/3,0),0);
   reports.push({ tier, section, output, bytes: (await readFile(output)).length, triangles, meshes: doc.getRoot().listMeshes().length, textures: doc.getRoot().listTextures().length, maximumTexture: tier === 'desktop' ? 1024 : 512, reflectionBytes: probe.length, sha256: await hash(output) });
   console.log(JSON.stringify(reports.at(-1)));
 }
 const sources = JSON.parse(await readFile('art/imports/environment/acquisition.json', 'utf8'));
 if (before !== await hash(master)) throw new Error('Environment build modified the authored master');
+if (courtBefore !== await hash(courtMaster)) throw new Error('Environment build modified the retained court master');
 const record = { milestone: 'First mission / paving depth review', status: 'Awaiting browser art review', master, masterSha256: before, sourceAssets: sources, retainedSources: 'Existing verified Poly Haven materials, including Rusty Metal 04, and wooden crate in art/provenance.json', originalWork: ['Pressure vessel, flanges, handwheels, gauges and sight glass', 'Architecture composition, signs, harbour and skyline', 'Arrival quay crane, loading canopy, mooring furniture and ground flags', 'Checkpoint C paving repairs, loading marks, freight construction and crane fittings'], modifications: ['Curated factory facade and pipe modules with retained UVs', 'Packed textures in editable master; Checkpoint A source retained separately and B preserved in Git', 'Shared runtime bounds for collision and authored solids', 'Room static batching with spatial backdrop cells, native-resolution tier compression and mipmaps', 'Source-scene panoramic reflection bake', 'Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime', 'Repositioned sign and loading lamps for visibility; varied quay paving UVs and restrained tints', 'Recessed the retained court base to 0.015 m below 0.04 m flag tops to remove coplanar depth artifacts'], exports: reports };
+record.milestone = 'Last Departure / Milestone A / dockside and warehouse visual proof';
+record.retainedCourt = { master: courtMaster, sha256: courtBefore };
+record.sourceAssets.push(...JSON.parse(await readFile('art/imports/chapter/acquisition.json', 'utf8')));
+record.originalWork.push('Two-storey workshop and bonded warehouse composition, rooflines, clerestories, enamel signage, loading canopy, service cabinets and pipe supports');
+record.modifications.push('CC0 facade loading-bay modules composed with retained UVs; supplied cobblestone scan AO; separate proof master and optional quay payload, with unchanged initial court assets');
+record.discovery = { repository: 'https://github.com/arielshad/3d-asset-server', revision: 'd0047733617ca0c1031c03ecb0f002289234b00b', scope: 'Development-only catalog search; original source pages independently checked; no game dependency', record: 'art/imports/chapter/discovery.json' };
+if (quayOnly) {
+  const prior = JSON.parse(await readFile('art/environment-provenance.json', 'utf8'));
+  record.exports = [...prior.exports.filter(e => e.section === 'court'), ...reports];
+}
 await publish('art/environment-provenance.json', JSON.stringify(record, null, 2));
 await publish('public/assets/licenses/environment-provenance.json', JSON.stringify(record, null, 2));
-await mkdir('docs/qa/first-mission/paving', { recursive: true });
-await publish('docs/qa/first-mission/paving/assets.json', JSON.stringify(reports, null, 2));
+await mkdir('docs/qa/chapter-art-proof', { recursive: true });
+await publish('docs/qa/chapter-art-proof/assets.json', JSON.stringify(reports, null, 2));

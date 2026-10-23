@@ -1,7 +1,7 @@
 {
   "bootstrap": {
-    "rawBytes": 6948836,
-    "gzipBytes": 2597006,
+    "rawBytes": 6951669,
+    "gzipBytes": 2597891,
     "limitBytes": 5242880,
     "passed": true
   },
@@ -42,14 +42,14 @@
     "passed": true
   },
   "quayDesktop": {
-    "rawBytes": 7938508,
-    "gzipBytes": 7525981,
+    "rawBytes": 9490352,
+    "gzipBytes": 8931009,
     "limitBytes": 12582912,
     "passed": true
   },
   "quayMobile": {
-    "rawBytes": 2270968,
-    "gzipBytes": 1860168,
+    "rawBytes": 2860968,
+    "gzipBytes": 2304009,
     "limitBytes": 6291456,
     "passed": true
   }

@@ -1,0 +1,43 @@
+[
+  {
+    "id": "cobblestone_floor_04",
+    "title": "Cobblestone Floor 04",
+    "authors": [
+      "Rob Tuytel"
+    ],
+    "source": "https://polyhaven.com/a/cobblestone_floor_04",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "verified": "2026-10-23",
+    "files": [
+      {
+        "path": "art/imports/chapter/cobblestone_floor_04/Diffuse.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_diff_1k.jpg",
+        "bytes": 575440,
+        "md5": "b57737026948ed8b4fce9b0cb3c91e81",
+        "sha256": "b0662eaec38a2056ef00abc66d1a0e8da421d704ed3ff8f9e268ad4c7b2aa58c"
+      },
+      {
+        "path": "art/imports/chapter/cobblestone_floor_04/nor_gl.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_nor_gl_1k.jpg",
+        "bytes": 781854,
+        "md5": "583a0f00ea8cb54ed38265ff2db6f022",
+        "sha256": "a5c71dffb3f25b8b33cfeeb1bfc2fc0f158b8ebc04f3987d68f64343868d1065"
+      },
+      {
+        "path": "art/imports/chapter/cobblestone_floor_04/Rough.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_rough_1k.jpg",
+        "bytes": 416114,
+        "md5": "a3a7d7660d212d8d59058451116eae44",
+        "sha256": "2f62e01aa5c2051cd700c20c21ed791ee2d4ab88274b5724dfd852c4bd2264dc"
+      },
+      {
+        "path": "art/imports/chapter/cobblestone_floor_04/AO.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_ao_1k.jpg",
+        "bytes": 398036,
+        "md5": "828c452e4f72a6b086f391dbcbc0e4d6",
+        "sha256": "fdef7f183b479da3863ce098b6d03a84d4cb14878a62f854542c9ddf7271dc2e"
+      }
+    ]
+  }
+]

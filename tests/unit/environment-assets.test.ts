@@ -7,9 +7,10 @@ import { MeshoptDecoder } from 'meshoptimizer';
 import { read } from 'ktx-parse';
 
 test('authored environment exports preserve source, spatial batches, tier and texture limits', async () => {
-  const record = JSON.parse(await readFile('art/environment-provenance.json', 'utf8')) as { master: string; masterSha256: string };
+  const record = JSON.parse(await readFile('art/environment-provenance.json', 'utf8')) as { master: string; masterSha256: string; retainedCourt: { master: string; sha256: string } };
   const master = await readFile(record.master);
   expect(createHash('sha256').update(master).digest('hex')).toBe(record.masterSha256);
+  expect(createHash('sha256').update(await readFile(record.retainedCourt.master)).digest('hex')).toBe(record.retainedCourt.sha256);
   const io = new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({ 'meshopt.decoder': MeshoptDecoder });
   for (const tier of ['desktop', 'mobile']) for (const section of ['court', 'quay']) {
     const root = (await io.read(section === 'court' ? `public/assets/showcase/${tier}/ash-quay.glb` : `public/assets/district/${tier}/arrival-quay.glb`)).getRoot();
@@ -36,6 +37,8 @@ test('authored environment exports preserve source, spatial batches, tier and te
       for(const top of flagTops)expect(top-baseTop).toBeGreaterThan(.02);
     }
     if (section === 'quay') {
+      const cobbles = root.listMaterials().find(m => m.getName() === 'Chapter / wet service cobbles');
+      expect(cobbles?.getBaseColorTexture()).toBeTruthy(); expect(cobbles?.getNormalTexture()).toBeTruthy(); expect(cobbles?.getOcclusionTexture()).toBeTruthy();
       expect(root.listNodes().some(n => n.getName().includes('Cutaway canopy'))).toBe(true);
       const paving = root.listMaterials().filter(m => m.getName().startsWith('District / dock limestone'));
       expect(paving).toHaveLength(3);

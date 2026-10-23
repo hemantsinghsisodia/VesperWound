@@ -1,0 +1,26 @@
+[
+  {
+    "tier": "desktop",
+    "section": "quay",
+    "output": "public/assets/district/desktop/arrival-quay.glb",
+    "bytes": 9490352,
+    "triangles": 53366,
+    "meshes": 141,
+    "textures": 31,
+    "maximumTexture": 1024,
+    "reflectionBytes": 26315,
+    "sha256": "c14852c97cd329da53d7438b318dd7159a9939f966e62412f6d934d239e7f3f9"
+  },
+  {
+    "tier": "mobile",
+    "section": "quay",
+    "output": "public/assets/district/mobile/arrival-quay.glb",
+    "bytes": 2860968,
+    "triangles": 53366,
+    "meshes": 141,
+    "textures": 31,
+    "maximumTexture": 512,
+    "reflectionBytes": 26315,
+    "sha256": "7a54c3ab09197cd52cc3b489600aa0641230fb6744bcedd005f9b8dc3fb425c6"
+  }
+]

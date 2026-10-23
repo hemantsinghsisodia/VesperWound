@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-23",
+  "tool": {
+    "repository": "https://github.com/arielshad/3d-asset-server",
+    "revision": "d0047733617ca0c1031c03ecb0f002289234b00b",
+    "license": "Apache-2.0",
+    "installation": ".cache/3d-asset-server",
+    "build": "npm ci --ignore-scripts --no-audit --no-fund; npm run build:server",
+    "scope": "Development CLI only. No production dependency, hosted service, credentials or global MCP registration.",
+    "reviewed": ["package.json", "src/cli.ts", "src/core/service.ts", "src/providers/polyhaven.ts", "src/core/download.ts"],
+    "telemetry": false
+  },
+  "queries": [
+    {"query": "industrial brick", "providers": ["polyhaven", "ambientcg"], "results": ["polyhaven:red_brick_03", "ambientcg:Bricks097", "polyhaven:brick_wall_001", "polyhaven:factory_brick", "polyhaven:church_bricks_02", "polyhaven:church_bricks_03"]},
+    {"query": "modular factory", "providers": ["polyhaven"], "results": ["polyhaven:modular_factory_facade", "polyhaven:modular_industrial_pipes_01", "polyhaven:industrial_caged_sconce", "polyhaven:factory_wall", "polyhaven:factory_brick"]},
+    {"query": "cobblestone", "providers": ["polyhaven"], "results": ["polyhaven:cobblestone_street_night", "polyhaven:cobblestone_floor_04", "polyhaven:grassy_cobblestone", "polyhaven:cobblestone_floor_08", "polyhaven:cobblestone_color"]}
+  ],
+  "selected": [
+    {"id": "polyhaven:modular_factory_facade", "author": "James Ray Cock", "source": "https://polyhaven.com/a/modular_factory_facade", "license": "CC0-1.0", "reason": "Retain consistent masonry; use previously unused recessed loading-bay modules and complete facades.", "originals": "art/imports/environment/acquisition.json"},
+    {"id": "polyhaven:cobblestone_floor_04", "author": "Rob Tuytel", "source": "https://polyhaven.com/a/cobblestone_floor_04", "license": "CC0-1.0", "reason": "Wet service street distinct from broad apron flags, with supplied normal, roughness and AO.", "originals": "art/imports/chapter/acquisition.json"}
+  ],
+  "retained": ["Verified factory/pipes/concrete acquisition in art/imports/environment/acquisition.json", "Rusty Metal 04 and wooden crate provenance in art/provenance.json"],
+  "rejected": [{"id": "polyhaven:industrial_caged_sconce", "reason": "27K source triangles and additional maps offer limited benefit at the gameplay camera. Original simple caged fittings reuse existing materials."}],
+  "licenseVerification": {"source": "https://polyhaven.com/license", "license": "https://creativecommons.org/publicdomain/zero/1.0/", "commercialUse": true, "redistribution": true, "checked": "2026-10-23", "note": "Original asset pages checked independently. Discovery software license does not license its search results."}
+}

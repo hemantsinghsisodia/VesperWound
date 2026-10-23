@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Last Departure — Milestone A review</title>
+<style>
+body{margin:0;background:#111c20;color:#e5decb;font:16px/1.5 system-ui}main{max-width:1500px;margin:auto;padding:24px}h1{font:32px Georgia;margin:0 0 10px}p{max-width:900px;color:#b8c7c3}nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}button{background:#253b3d;color:inherit;border:1px solid #738477;border-radius:3px;padding:12px 18px;font:inherit;cursor:pointer}button[aria-pressed=true]{background:#675632}figure{margin:0}figcaption{padding:8px 0;color:#cbbd9a}.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}img{width:100%;display:block;border:1px solid #3c4c4b;box-sizing:border-box}.note{font-size:14px}a{color:#d7ba7c}@media(max-width:850px){.pair{grid-template-columns:1fr}}
+</style>
+<main><h1>Ash Quay — Dockside visual proof</h1>
+<p>Matched gameplay-camera captures from the accepted main branch and the Milestone A proof. Medic, collision, combat, mission and camera remain the same. The proof adds complete workshop and warehouse facades, recessed doors, wet cobbles, loading detail and route lighting.</p>
+<nav aria-label="Comparison location"><button data-view="lane" aria-pressed="true">Service street</button><button data-view="canopy" aria-pressed="false">Warehouse entrance</button><button data-view="quay" aria-pressed="false">Apron</button><button data-view="court" aria-pressed="false">Retained court</button></nav>
+<div class="pair"><figure><figcaption>Before — main 311d88b</figcaption><img id="before" src="before/district-webgpu-lane.png" alt="Original service street at the gameplay camera"></figure><figure><figcaption>After — chapter-art-proof / WebGPU</figcaption><img id="after" src="after/district-webgpu-lane.png" alt="Authored service street at the same gameplay camera"></figure></div>
+<p class="note">These are actual browser captures, not concept renders. Character pose, FPS and contextual hint timing vary. WebGL2 and mobile captures, traversal recordings and technical results are supplied alongside this review. The warehouse interior and expanded district belong to later milestones.</p>
+<p><a href="after/district-webgpu.webm">WebGPU traversal recording</a> · <a href="after/district-webgl2.webm">WebGL2 recording</a> · <a href="after/district-mobile.webm">Mobile controls recording</a> · <a href="validation.md">Validation report</a></p>
+<p>Review: Does the street read as a working dock? Is BONDED / 03 an understandable landmark? Can you see Medic and nearby threats beneath the canopy? Are the surfaces and lighting a sufficient improvement to apply across the chapter?</p>
+</main>
+<script>
+for(const button of document.querySelectorAll('button[data-view]'))button.addEventListener('click',()=>{for(const b of document.querySelectorAll('button[data-view]'))b.setAttribute('aria-pressed',String(b===button));for(const side of ['before','after']){const image=document.getElementById(side);image.src=`${side}/district-webgpu-${button.dataset.view}.png`;image.alt=`${side}: ${button.textContent}, matched gameplay camera`;}});
+</script></html>

@@ -1,8 +1,8 @@
 {
-  "milestone": "First mission / paving depth review",
+  "milestone": "Last Departure / Milestone A / dockside and warehouse visual proof",
   "status": "Awaiting browser art review",
-  "master": "art/source/ash-quay-district.blend",
-  "masterSha256": "b97f33953581f886d52fa1810c81015dd5d96d6a142728819d456b8c94ae9060",
+  "master": "art/source/chapter-art-proof.blend",
+  "masterSha256": "e2c3f1cf049446a1f4357a6a0054f8daf915f07df6cd6e60e5416c444aea07b5",
   "sourceAssets": [
     {
       "id": "modular_factory_facade",
@@ -269,6 +269,47 @@
       "modifications": [
         "Metre-scaled UV projection, subtle material tint, tier compression and mipmaps"
       ]
+    },
+    {
+      "id": "cobblestone_floor_04",
+      "title": "Cobblestone Floor 04",
+      "authors": [
+        "Rob Tuytel"
+      ],
+      "source": "https://polyhaven.com/a/cobblestone_floor_04",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "verified": "2026-10-23",
+      "files": [
+        {
+          "path": "art/imports/chapter/cobblestone_floor_04/Diffuse.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_diff_1k.jpg",
+          "bytes": 575440,
+          "md5": "b57737026948ed8b4fce9b0cb3c91e81",
+          "sha256": "b0662eaec38a2056ef00abc66d1a0e8da421d704ed3ff8f9e268ad4c7b2aa58c"
+        },
+        {
+          "path": "art/imports/chapter/cobblestone_floor_04/nor_gl.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_nor_gl_1k.jpg",
+          "bytes": 781854,
+          "md5": "583a0f00ea8cb54ed38265ff2db6f022",
+          "sha256": "a5c71dffb3f25b8b33cfeeb1bfc2fc0f158b8ebc04f3987d68f64343868d1065"
+        },
+        {
+          "path": "art/imports/chapter/cobblestone_floor_04/Rough.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_rough_1k.jpg",
+          "bytes": 416114,
+          "md5": "a3a7d7660d212d8d59058451116eae44",
+          "sha256": "2f62e01aa5c2051cd700c20c21ed791ee2d4ab88274b5724dfd852c4bd2264dc"
+        },
+        {
+          "path": "art/imports/chapter/cobblestone_floor_04/AO.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/cobblestone_floor_04/cobblestone_floor_04_ao_1k.jpg",
+          "bytes": 398036,
+          "md5": "828c452e4f72a6b086f391dbcbc0e4d6",
+          "sha256": "fdef7f183b479da3863ce098b6d03a84d4cb14878a62f854542c9ddf7271dc2e"
+        }
+      ]
     }
   ],
   "retainedSources": "Existing verified Poly Haven materials, including Rusty Metal 04, and wooden crate in art/provenance.json",
@@ -276,7 +317,8 @@
     "Pressure vessel, flanges, handwheels, gauges and sight glass",
     "Architecture composition, signs, harbour and skyline",
     "Arrival quay crane, loading canopy, mooring furniture and ground flags",
-    "Checkpoint C paving repairs, loading marks, freight construction and crane fittings"
+    "Checkpoint C paving repairs, loading marks, freight construction and crane fittings",
+    "Two-storey workshop and bonded warehouse composition, rooflines, clerestories, enamel signage, loading canopy, service cabinets and pipe supports"
   ],
   "modifications": [
     "Curated factory facade and pipe modules with retained UVs",
@@ -286,7 +328,8 @@
     "Source-scene panoramic reflection bake",
     "Read-only saved-source export; separate optional quay delivery; 64m blockout excluded from runtime",
     "Repositioned sign and loading lamps for visibility; varied quay paving UVs and restrained tints",
-    "Recessed the retained court base to 0.015 m below 0.04 m flag tops to remove coplanar depth artifacts"
+    "Recessed the retained court base to 0.015 m below 0.04 m flag tops to remove coplanar depth artifacts",
+    "CC0 facade loading-bay modules composed with retained UVs; supplied cobblestone scan AO; separate proof master and optional quay payload, with unchanged initial court assets"
   ],
   "exports": [
     {
@@ -302,18 +345,6 @@
       "sha256": "60f998fcccd0e35b2457278f366b0dd50e1330db5c6d03373d5ca43376863d1f"
     },
     {
-      "tier": "desktop",
-      "section": "quay",
-      "output": "public/assets/district/desktop/arrival-quay.glb",
-      "bytes": 7938508,
-      "triangles": 31826,
-      "meshes": 104,
-      "textures": 25,
-      "maximumTexture": 1024,
-      "reflectionBytes": 26315,
-      "sha256": "ac08de0032282dc7615644e653fa8767be8560edde9de6134ac15c889da7f535"
-    },
-    {
       "tier": "mobile",
       "section": "court",
       "output": "public/assets/showcase/mobile/ash-quay.glb",
@@ -326,16 +357,38 @@
       "sha256": "76493ff438cd1401254308b97e8d0f1db0a276792385f9e45307c661ca000d10"
     },
     {
+      "tier": "desktop",
+      "section": "quay",
+      "output": "public/assets/district/desktop/arrival-quay.glb",
+      "bytes": 9490352,
+      "triangles": 53366,
+      "meshes": 141,
+      "textures": 31,
+      "maximumTexture": 1024,
+      "reflectionBytes": 26315,
+      "sha256": "c14852c97cd329da53d7438b318dd7159a9939f966e62412f6d934d239e7f3f9"
+    },
+    {
       "tier": "mobile",
       "section": "quay",
       "output": "public/assets/district/mobile/arrival-quay.glb",
-      "bytes": 2270968,
-      "triangles": 31826,
-      "meshes": 104,
-      "textures": 25,
+      "bytes": 2860968,
+      "triangles": 53366,
+      "meshes": 141,
+      "textures": 31,
       "maximumTexture": 512,
       "reflectionBytes": 26315,
-      "sha256": "1c9b760040b536a3d34c32ca8cf81832a9ecc1c357da0ce966828745d36d8ab6"
+      "sha256": "7a54c3ab09197cd52cc3b489600aa0641230fb6744bcedd005f9b8dc3fb425c6"
     }
-  ]
+  ],
+  "retainedCourt": {
+    "master": "art/source/ash-quay-district.blend",
+    "sha256": "b97f33953581f886d52fa1810c81015dd5d96d6a142728819d456b8c94ae9060"
+  },
+  "discovery": {
+    "repository": "https://github.com/arielshad/3d-asset-server",
+    "revision": "d0047733617ca0c1031c03ecb0f002289234b00b",
+    "scope": "Development-only catalog search; original source pages independently checked; no game dependency",
+    "record": "art/imports/chapter/discovery.json"
+  }
 }

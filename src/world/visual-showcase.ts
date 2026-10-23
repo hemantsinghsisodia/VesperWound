@@ -137,6 +137,10 @@ export class VisualShowcase implements WorldPresentation {
     // Keep the shadow footprint around the current area, with a stable light direction.
     const lightZ = this.mission?.cinematic||this.mission?.stage==='complete'?24:Math.max(0, this.target.z - 4);
     this.key.position.set(-6, 15, 8 + lightZ); this.key.target.position.set(0, 0, -2 + lightZ);
+    // Reuse the two local lights across the retained route; no extra lights or passes.
+    const dockLight = Math.max(0, Math.min(1, (this.target.z - 7) / 4));
+    this.engine.position.set(-1.8 * dockLight, 2.8, -2 + 15 * dockLight);
+    this.gate.position.set(-5 - .8 * dockLight, 3.1, -6 + 28 * dockLight);
     this.steam.forEach((puff, index) => {
       const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
       const flue = index % 3;
