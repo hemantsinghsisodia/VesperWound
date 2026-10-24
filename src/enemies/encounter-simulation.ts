@@ -18,8 +18,8 @@ export class EncounterSimulation {
   readonly player: PlayerSimulation;
   readonly enemies: EnemyState[] = [];
   mode: 'training'|'encounter' = 'training';
-  private readonly navigation: GroundNavigation;
-  private readonly homeNavigation: GroundNavigation[];
+  private navigation: GroundNavigation;
+  private homeNavigation: GroundNavigation[];
   private generation = 0;
   private events: CombatEvent[] = [];
   private slot: string|null = null;
@@ -29,11 +29,15 @@ export class EncounterSimulation {
   get awaitingActivation(): boolean { return this.waiting; }
   activate(): void { this.waiting = false; }
   get kind(): EncounterKind { return this.enemies.length > 1 ? 'group' : 'single'; }
-  constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7, private readonly bounds: NavigationBounds = {minX:-7.5,maxX:7.5,minZ:-7.5,maxZ:7.5}, walkable?: (p: Position) => boolean) {
+  constructor(private readonly collision: PlayerCollision, boxes: readonly CollisionBox[], readonly definition: EnemyDefinition = ZOMBIE7, private bounds: NavigationBounds = {minX:-7.5,maxX:7.5,minZ:-7.5,maxZ:7.5}, walkable?: (p: Position) => boolean) {
     this.player=new PlayerSimulation(collision);this.navigation=new GroundNavigation(courtyardSolids(boxes),bounds,walkable);
     this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes),bounds,walkable));
   }
   get victorious(): boolean {return this.mode==='encounter'&&this.enemies.length>0&&this.enemies.every(e=>e.health===0);}
+  configureNavigation(boxes:readonly CollisionBox[],bounds:NavigationBounds,walkable:(p:Position)=>boolean):void {
+    this.bounds=bounds;this.navigation=new GroundNavigation(courtyardSolids(boxes),bounds,walkable);
+    this.homeNavigation=Array.from({length:3},()=>new GroundNavigation(courtyardSolids(boxes),bounds,walkable));
+  }
   start(count=1, placements?:readonly Position[], resetPlayer=true, waiting=false): void {
     if(count<1||count>3||!Number.isInteger(count)) throw new Error('Encounter capacity is three');
     if(placements && placements.length!==count)throw new Error('Encounter placements must match its capacity');

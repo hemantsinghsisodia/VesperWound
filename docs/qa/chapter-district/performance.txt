@@ -1,0 +1,33 @@
+[WebServer] (node:35148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:29196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+traversal: 30s p95 5.5ms, apron, 1 circuits
+traversal: 60s p95 6.8ms, pump, 2 circuits
+traversal: 90s p95 5.7ms, street, 3 circuits
+traversal: 120s p95 5.8ms, street, 4 circuits
+traversal: 150s p95 5.3ms, street, 4 circuits
+traversal: 180s p95 5.7ms, apron, 5 circuits
+traversal: 210s p95 6.8ms, pump, 6 circuits
+traversal: 240s p95 5.5ms, warehouse, 7 circuits
+traversal: 270s p95 5.4ms, street, 8 circuits
+traversal: 300s p95 5.0ms, street, 8 circuits
+  ok 1 tests\performance\chapter.spec.ts:7:59 › five-minute chapter traversal (5.8m)
+inspection: 30s p95 3.3ms, court, 0 circuits
+inspection: 60s p95 3.1ms, court, 0 circuits
+inspection: 90s p95 3.0ms, court, 0 circuits
+inspection: 120s p95 3.3ms, court, 0 circuits
+inspection: 150s p95 3.4ms, court, 0 circuits
+inspection: 180s p95 3.6ms, court, 0 circuits
+inspection: 210s p95 3.3ms, court, 0 circuits
+inspection: 240s p95 3.2ms, court, 0 circuits
+inspection: 270s p95 3.3ms, court, 0 circuits
+inspection: 300s p95 3.4ms, court, 0 circuits
+  ok 2 tests\performance\chapter.spec.ts:7:59 › five-minute chapter inspection (6.0m)
+
+  Slow test file: tests\performance\chapter.spec.ts (11.8m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  2 passed (11.9m)

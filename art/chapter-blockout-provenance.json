@@ -1,0 +1,12 @@
+{
+  "milestone": "B — District and persistence",
+  "authorship": "Original project blockout authored for VESPERWOUND",
+  "source": "src/chapter/definition.ts",
+  "exporter": "tools/build-chapter-blockout.mjs",
+  "runtime": "public/assets/chapter/{desktop,mobile}/*.json",
+  "components": ["Five ground-floor sector layouts", "Portal openings and shortcut gates", "Cargo rail and hoist collision path", "Checkpoint and interaction markers"],
+  "externalImports": [],
+  "modificationsToRetainedModels": "None. Existing Medic, baton, armed animations and Zombie Number 7 are reused unchanged.",
+  "retainedProvenance": ["art/medic-provenance.json", "art/animation-provenance.json", "art/baton-provenance.json", "art/enemy-provenance.json"],
+  "note": "These are original editable blockout definitions, not finished Blender environment art. Milestone A saved art sources and provenance remain intact; final district dressing is a later review milestone."
+}

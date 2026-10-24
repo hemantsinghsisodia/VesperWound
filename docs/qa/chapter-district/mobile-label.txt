@@ -1,0 +1,11 @@
+[WebServer] (node:34364) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+
+(node:5844) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 1:44:47 am [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 1 [chapter-mobile] › tests\browser\chapter.spec.ts:110:1 › mobile interaction label leaves Medic visible (26.5s)
+
+  1 passed (29.9s)

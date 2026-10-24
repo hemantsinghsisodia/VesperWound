@@ -1,7 +1,7 @@
 {
   "bootstrap": {
-    "rawBytes": 6951669,
-    "gzipBytes": 2597891,
+    "rawBytes": 6987331,
+    "gzipBytes": 2607574,
     "limitBytes": 5242880,
     "passed": true
   },
@@ -51,6 +51,18 @@
     "rawBytes": 2860968,
     "gzipBytes": 2304009,
     "limitBytes": 6291456,
+    "passed": true
+  },
+  "chapterDesktop": {
+    "rawBytes": 3574817,
+    "gzipBytes": 3035672,
+    "limitBytes": 67108864,
+    "passed": true
+  },
+  "chapterMobile": {
+    "rawBytes": 3532341,
+    "gzipBytes": 2998585,
+    "limitBytes": 33554432,
     "passed": true
   }
 }

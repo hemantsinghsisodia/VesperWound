@@ -1,0 +1,17 @@
+
+> vesperwound@0.1.0 test:production
+> playwright test --config playwright.production.config.ts
+
+[WebServer] (node:16676) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 4 tests using 1 worker
+
+(node:39708) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 tests\production\production.spec.ts:6:1 › production ignores development flags and excludes diagnostics (10.6s)
+  ok 2 tests\production\production.spec.ts:27:1 › production loads the enemy only on selection and completes a real encounter (13.9s)
+  ok 3 tests\production\production.spec.ts:38:1 › production requests armed clips only on pickup and retains the baton through encounter and inspection (12.2s)
+  ok 4 tests\production\production.spec.ts:47:1 › production three-zombie encounter uses one selected payload and wins through real input (19.5s)
+
+  4 passed (59.0s)

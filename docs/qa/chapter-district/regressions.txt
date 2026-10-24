@@ -1,0 +1,29 @@
+[WebServer] (node:1576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 8 tests using 1 worker
+
+(node:29536) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ok 1 [mission-webgpu] › tests\browser\foundation.spec.ts:4:3 › entry stays playable with legacy spatial audio positioning (3.8s)
+  ok 2 [mission-webgpu] › tests\browser\foundation.spec.ts:4:3 › entry stays playable with unavailable spatial audio positioning (2.3s)
+  -  3 [mission-webgpu] › tests\browser\foundation.spec.ts:91:1 › movement cancels on blur and resumes after closing settings
+  -  4 [mission-webgpu] › tests\browser\foundation.spec.ts:113:1 › simultaneous touch inputs release on pointer cancellation
+[WebServer] 4:23:22 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:23:57 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:24:02 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:25:04 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:25:14 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 5 [mission-webgpu] › tests\browser\mission.spec.ts:7:1 › complete mission with real controls, pause, quality replacement and restart (2.1m)
+  ok 6 [mission-webgpu] › tests\browser\mission.spec.ts:52:1 › failed and cancelled mission loads retain practice; inspection retains mission (40.5s)
+[WebServer] 4:26:10 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:26:15 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:26:20 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 7 [mission-webgpu] › tests\browser\mission.spec.ts:82:1 › cinematic pause, reduced motion, quality replacement and skip consume held input (28.3s)
+[WebServer] 4:26:38 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:26:39 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:26:45 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 8 [mission-webgpu] › tests\browser\mission.spec.ts:103:1 › quay preparation failure and cancellation keep practice and release late leases (18.4s)
+
+  2 skipped
+  6 passed (3.7m)

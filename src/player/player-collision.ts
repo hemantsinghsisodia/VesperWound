@@ -17,6 +17,10 @@ export class RapierPlayerCollision implements PlayerCollision {
   private installed = false;
   private disposed = false;
   private boxes: readonly CollisionBox[] = [];
+  private readonly staticColliders:RAPIER.Collider[]=[];
+  private dynamicBoxes:readonly CollisionBox[]=[];
+  private readonly dynamicColliders:RAPIER.Collider[]=[];
+  private ground:(p:Position)=>boolean=districtGround;
   private districtGate: RAPIER.Collider | null = null;
   private districtReady = true;
   private ferryGate:RAPIER.Collider|null=null;
@@ -34,8 +38,17 @@ export class RapierPlayerCollision implements PlayerCollision {
     if (this.installed) return; this.installed = true;
     // The legacy practice-post collider is replaced by live target colliders.
     this.boxes = courtyardSolids(boxes);
-    for (const { position: p, half: h } of this.boxes) this.world.createCollider(RAPIER.ColliderDesc.cuboid(h.x, h.y, h.z).setTranslation(p.x, p.y, p.z));
+    for (const { position: p, half: h } of this.boxes) this.staticColliders.push(this.world.createCollider(RAPIER.ColliderDesc.cuboid(h.x, h.y, h.z).setTranslation(p.x, p.y, p.z)));
     this.world.step();
+  }
+  replace(boxes:readonly CollisionBox[],ground:(p:Position)=>boolean):void {
+    for(const c of this.staticColliders)this.world.removeCollider(c,true);this.staticColliders.length=0;this.installed=false;
+    this.setDynamic([]);this.ground=ground;this.setDistrictReady(true);this.setFerryReady(false,false);this.install(boxes);
+  }
+  setDynamic(boxes:readonly CollisionBox[]):void {
+    this.dynamicBoxes=boxes;
+    boxes.forEach(({position:p,half:h},i)=>{let c=this.dynamicColliders[i];if(!c){c=this.world.createCollider(RAPIER.ColliderDesc.cuboid(h.x,h.y,h.z));this.dynamicColliders.push(c);}c.setHalfExtents(h);c.setTranslation(p);c.setEnabled(true);});
+    for(let i=boxes.length;i<this.dynamicColliders.length;i++)this.dynamicColliders[i]!.setEnabled(false);
   }
   setDistrictReady(ready: boolean): void {
     if (ready === this.districtReady) return;
@@ -60,7 +73,7 @@ export class RapierPlayerCollision implements PlayerCollision {
     this.ferryGate.setEnabled(blocked);
   }
   reset(position: Position): void { this.body.setTranslation({ x: position.x, y: position.y + 0.87, z: position.z }, true); this.world.step(); }
-  blocked(from: Position, to: Position): boolean { return segmentBlocked(from, to, this.boxes) || !this.districtReady && segmentBlocked(from, to, [DISTRICT_GATE]) || this.ferryBlocked&&segmentBlocked(from,to,[this.ferryBox]); }
+  blocked(from: Position, to: Position): boolean { return segmentBlocked(from, to, this.boxes) || segmentBlocked(from,to,this.dynamicBoxes) || !this.districtReady && segmentBlocked(from, to, [DISTRICT_GATE]) || this.ferryBlocked&&segmentBlocked(from,to,[this.ferryBox]); }
   syncTargets(states: readonly CombatantState[]): void {
     const activeIds = new Set(states.map(t => t.id));
     for (const [id, entry] of this.targets) if (!activeIds.has(id)) { entry.active = false; entry.collider.setEnabled(false); }
@@ -73,7 +86,7 @@ export class RapierPlayerCollision implements PlayerCollision {
   }
   moveTarget(id: string, position: Position, displacement: Position): Position {
     const p = { ...position }; const steps = Math.max(1, Math.ceil(Math.hypot(displacement.x, displacement.z) / .08));
-    const blocked = (next: Position) => !districtGround(next) || discBlocked(next, this.boxes) || !this.districtReady && discBlocked(next, [DISTRICT_GATE]) || this.ferryBlocked&&discBlocked(next,[this.ferryBox]) || [...this.targets].some(([other, t]) => other !== id && t.active && Math.hypot(t.position.x - next.x, t.position.z - next.z) < .6) || Math.hypot(this.body.translation().x - next.x, this.body.translation().z - next.z) < .58;
+    const blocked = (next: Position) => !this.ground(next) || discBlocked(next, this.boxes) || discBlocked(next,this.dynamicBoxes) || !this.districtReady && discBlocked(next, [DISTRICT_GATE]) || this.ferryBlocked&&discBlocked(next,[this.ferryBox]) || [...this.targets].some(([other, t]) => other !== id && t.active && Math.hypot(t.position.x - next.x, t.position.z - next.z) < .6) || Math.hypot(this.body.translation().x - next.x, this.body.translation().z - next.z) < .58;
     for (let i = 0; i < steps; i++) {
       const x = { ...p, x: p.x + displacement.x / steps }; if (!blocked(x)) p.x = x.x;
       const z = { ...p, z: p.z + displacement.z / steps }; if (!blocked(z)) p.z = z.z;

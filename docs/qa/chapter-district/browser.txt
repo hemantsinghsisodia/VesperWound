@@ -1,0 +1,56 @@
+[WebServer] (node:13776) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 18 tests using 1 worker
+
+(node:37444) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 4:14:05 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:04 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  1 [chapter-webgpu] › tests\browser\chapter.spec.ts:13:1 › chapter navigation, streamed sectors, machinery, save and checkpoint restore (1.2m)
+[WebServer] 4:15:13 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:22 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  2 [chapter-webgpu] › tests\browser\chapter.spec.ts:39:1 › new chapter, failure, cancellation and backup recovery retain practice (18.8s)
+[WebServer] 4:15:32 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:38 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:39 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:45 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:46 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:15:49 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  3 [chapter-webgpu] › tests\browser\chapter.spec.ts:46:1 › real intake combat, save retention, inspection and quality replacement (29.3s)
+[WebServer] 4:16:08 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  4 [chapter-webgpu] › tests\browser\chapter.spec.ts:57:1 › cancelled chapter readiness disposes late results and failed adjacent sectors block traversal (19.6s)
+[WebServer] 4:16:28 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:16:30 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:16:31 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:16:33 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:16:42 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:16:50 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  5 [chapter-webgpu] › tests\browser\chapter.spec.ts:71:1 › chapter pauses, repeated ownership, aborted writes and unavailable storage (38.9s)
+[WebServer] 4:17:00 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  6 [chapter-webgpu] › tests\browser\chapter.spec.ts:87:1 › complete chapter route with real combat and no progression fixture (2.2m)
+(node:34264) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 4:19:18 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:20:12 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok  7 [chapter-webgl2] › tests\browser\chapter.spec.ts:13:1 › chapter navigation, streamed sectors, machinery, save and checkpoint restore (1.2m)
+  -   8 [chapter-webgl2] › tests\browser\chapter.spec.ts:39:1 › new chapter, failure, cancellation and backup recovery retain practice
+  -   9 [chapter-webgl2] › tests\browser\chapter.spec.ts:46:1 › real intake combat, save retention, inspection and quality replacement
+  -  10 [chapter-webgl2] › tests\browser\chapter.spec.ts:57:1 › cancelled chapter readiness disposes late results and failed adjacent sectors block traversal
+  -  11 [chapter-webgl2] › tests\browser\chapter.spec.ts:71:1 › chapter pauses, repeated ownership, aborted writes and unavailable storage
+  -  12 [chapter-webgl2] › tests\browser\chapter.spec.ts:87:1 › complete chapter route with real combat and no progression fixture
+(node:39672) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 4:20:30 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:22:10 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 13 [chapter-mobile] › tests\browser\chapter.spec.ts:13:1 › chapter navigation, streamed sectors, machinery, save and checkpoint restore (1.9m)
+  -  14 [chapter-mobile] › tests\browser\chapter.spec.ts:39:1 › new chapter, failure, cancellation and backup recovery retain practice
+  -  15 [chapter-mobile] › tests\browser\chapter.spec.ts:46:1 › real intake combat, save retention, inspection and quality replacement
+  -  16 [chapter-mobile] › tests\browser\chapter.spec.ts:57:1 › cancelled chapter readiness disposes late results and failed adjacent sectors block traversal
+  -  17 [chapter-mobile] › tests\browser\chapter.spec.ts:71:1 › chapter pauses, repeated ownership, aborted writes and unavailable storage
+  -  18 [chapter-mobile] › tests\browser\chapter.spec.ts:87:1 › complete chapter route with real combat and no progression fixture
+
+  Slow test file: [chapter-webgpu] › tests\browser\chapter.spec.ts (5.2m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  10 skipped
+  8 passed (8.4m)

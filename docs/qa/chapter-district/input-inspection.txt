@@ -1,0 +1,23 @@
+[WebServer] (node:24788) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:15872) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 4:22:40 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+[WebServer] 4:22:42 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 1 [chapter-webgpu] › tests\browser\chapter.spec.ts:99:1 › fresh chapter inspection does not equip a cached baton (14.7s)
+  -  2 [chapter-webgpu] › tests\browser\chapter.spec.ts:104:1 › chapter touch cancellation and portrait suspension clear movement
+(node:2056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  3 [chapter-webgl2] › tests\browser\chapter.spec.ts:99:1 › fresh chapter inspection does not equip a cached baton
+  -  4 [chapter-webgl2] › tests\browser\chapter.spec.ts:104:1 › chapter touch cancellation and portrait suspension clear movement
+(node:37984) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  -  5 [chapter-mobile] › tests\browser\chapter.spec.ts:99:1 › fresh chapter inspection does not equip a cached baton
+[WebServer] 4:23:00 pm [vite] (client) [console.warn] THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues. Use a single KTX2Loader instance, or call .dispose() on old instances.
+  ok 6 [chapter-mobile] › tests\browser\chapter.spec.ts:104:1 › chapter touch cancellation and portrait suspension clear movement (12.8s)
+
+  4 skipped
+  2 passed (33.6s)
