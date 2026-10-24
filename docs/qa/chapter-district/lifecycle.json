@@ -1,0 +1,25 @@
+{
+  "samples": [
+    {
+      "labels": 5,
+      "textures": 71,
+      "bytes": 61210976
+    },
+    {
+      "labels": 5,
+      "textures": 71,
+      "bytes": 61210976
+    },
+    {
+      "labels": 5,
+      "textures": 71,
+      "bytes": 61211136
+    },
+    {
+      "labels": 5,
+      "textures": 71,
+      "bytes": 61211296
+    }
+  ],
+  "abortedWriteRetained": true
+}

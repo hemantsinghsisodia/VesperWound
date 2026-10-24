@@ -8,7 +8,7 @@ Target: an unhurried first completion of 20–30 active minutes, excluding loadi
 
 | Stage | Branch | Scope | Gate |
 | --- | --- | --- | --- |
-| A | `codex/chapter-art-proof` | Curated verified art, saved street/warehouse entrance proof, matched browser captures and measurements | Art review; current work stops here |
+| A | `codex/chapter-art-proof` | Curated verified art, saved street/warehouse entrance proof, matched browser captures and measurements | Art review approved and merged; retained as visual target |
 | B | `codex/chapter-district` | Connected blockout, sector readiness/streaming, objective route, shortcuts, discovery map, checkpoints and save recovery | Navigation review |
 | C | `codex/chapter-enemies` | Original pressure sentry and Counterweight, practice tests, authored contact and mixed coordination | Combat review |
 | D | `codex/ash-quay-chapter` | Approved art across the district, final encounters, machinery, optional reward/records, ambience and ferry ending | Complete chapter playtesting |

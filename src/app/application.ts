@@ -29,6 +29,10 @@ import type { SectionLease } from '../assets/section-stream';
 import { FirstMission } from '../mission/first-mission';
 import { MissionHud } from '../ui/mission-hud';
 import { writeChanged } from '../ui/write-changed';
+import { ChapterSession } from '../chapter/session';
+import { ChapterHud } from '../chapter/hud';
+import { ChapterPresentation } from '../chapter/presentation';
+import { CHECKPOINTS, CHAPTER_BOXES, chapterGround } from '../chapter/definition';
 
 interface SessionEvents { pressureReleased: { x: number; z: number }; combat: CombatEvent }
 
@@ -40,6 +44,11 @@ export class Application {
   private labelWidth = 0;
   private labelHeight = 0;
   private readonly missionHud:MissionHud;
+  private readonly chapterHud:ChapterHud;
+  private chapter:ChapterSession|null=null;
+  private chapterLoading=false;
+  private chapterRequest=0;
+  private chapterPreparation:ChapterPresentation|null=null;
   private mission:FirstMission|null=null;
   private missionLoading=false;
   private missionError='';
@@ -93,6 +102,7 @@ export class Application {
     this.ui = new Interface(root, this.settings.values);
     this.labelHost = this.ui.get('#world-labels');
     this.missionHud=new MissionHud(root,{start:()=>{if(this.missionLoading)this.cancelEnemyLoad();else void this.startEncounter('single',true);},restart:()=>this.restartMission(),skip:()=>this.skipMission(),leave:()=>{this.returnToTraining();this.ui.get<HTMLDialogElement>('#settings').close();}});
+    this.chapterHud=new ChapterHud(root,{start:fresh=>{void this.startChapter(fresh);},restart:()=>{void this.restoreChapter();},leave:()=>{this.returnToTraining();this.ui.get<HTMLDialogElement>('#settings').close();},retry:()=>{if(this.courtyard instanceof VisualShowcase)this.courtyard.chapterView?.retry();this.ui.canvas.focus();},map:()=>{this.modalPaused=true;this.synchronizePause();this.ui.openSettings();},cancel:()=>this.cancelChapterLoad()});
     this.ui.scene(this.options.scene);
     this.ui.storage(this.settings.persistent);
     this.audio.setVolume(this.settings.values.volume, this.settings.values.muted);
@@ -130,7 +140,7 @@ export class Application {
       inspectionView: (view) => { this.inspection?.selectView(view); this.updateInspectionUi(); },
       inspectionLighting: (lighting) => { this.inspection?.selectLighting(lighting); this.updateInspectionUi(); },
       inspectionPause: () => { if (this.inspection) this.inspection.actor.paused = !this.inspection.actor.paused; this.updateInspectionUi(); },
-      restart: () => { if(this.mission?.active){this.restartMission();return;}this.audio.stopCombat();this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
+      restart: () => { if(this.chapter?.simulation.active){void this.restoreChapter();return;}if(this.mission?.active){this.restartMission();return;}this.audio.stopCombat();this.cancelWeaponLoad(); this.encounter?.restart(); this.input?.clear(); this.ui.canvas.focus(); },
       resetTargets: () => { this.player?.resetTargets(); this.input?.clear(); this.ui.canvas.focus(); },
       encounterStart: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter(); },
       encounterGroup: () => { if(this.pendingEnemy)this.cancelEnemyLoad();else void this.startEncounter('group'); },
@@ -171,6 +181,7 @@ export class Application {
         const collision: RapierPlayerCollision = new physics.RapierPlayerCollision(); collision.install(DISTRICT_BOXES); collision.setDistrictReady(false); this.collision = collision;
         this.encounter = new EncounterSimulation(collision, DISTRICT_BOXES, undefined, DISTRICT_BOUNDS, districtGround); this.player=this.encounter.player;
         this.mission=new FirstMission(this.encounter,collision);
+        this.chapter=new ChapterSession(this.encounter,collision);void this.chapter.read();
       }
       this.courtyard = await this.createWorld(); await this.courtyard.load(assets, this.options.missingFixture);
       if (this.disposed) return;
@@ -268,9 +279,10 @@ export class Application {
           if (world instanceof VisualShowcase) {
             world.aim = this.player?.combatAim(input.aimActive ? this.camera.aim(input.aim, world.target.y) : undefined,input.pressed.has('target'));
             if(world.playing&&!this.pendingInspection){
-              world.district?.update(this.player?.state.position.z ?? 0);
+              if(this.chapter?.simulation.active){world.chapterView?.update();this.collision?.setDynamic(world.chapterView?.blockers??[]);}
+              else {world.district?.update(this.player?.state.position.z ?? 0);
               this.collision?.setDistrictReady(world.district?.stream.status === 'ready');
-              this.collision?.setFerryReady(this.mission?.active??false,(this.mission?.ramp??0)>=1);
+              this.collision?.setFerryReady(this.mission?.active??false,(this.mission?.ramp??0)>=1);}
               const gameplay=this.mission?.gameplayEnabled??true;
               if(!gameplay){
                 if(input.pressed.has('dodge')&&this.mission?.cinematic)this.skipMission();
@@ -286,6 +298,7 @@ export class Application {
                   world.equipBaton(this.armedClips);this.refreshAnimationUi();
                 }
                 this.mission?.update(dt,input.pressed.has('interact'),world.district?.stream.status==='ready');
+                this.chapter?.simulation.update(dt,input.pressed.has('interact'));this.chapter?.update();
               }
               for(const cue of this.mission?.drainCues()??[]){if(cue==='complete')this.audio.stopMission();this.audio.missionCue(cue);}
             }
@@ -310,6 +323,7 @@ export class Application {
         this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);
         if(this.player)this.ui.weapon(this.player,this.pickup);
         this.missionHud.update(this.mission,this.missionLoading,this.missionError);
+        this.chapterHud.update(this.chapter?.simulation??null,this.courtyard instanceof VisualShowcase?this.courtyard.chapterView:null,this.chapterLoading,!!this.chapter?.saved,this.chapter?.message??'');
         this.updateInspectionUi();
       }
       this.adapter.render();
@@ -341,6 +355,7 @@ export class Application {
   private async reloadFixture(): Promise<void> {
     if (this.reloading || !this.assets || !this.adapter) return;
     this.closeInspection();
+    this.cancelChapterLoad();
     this.cancelWeaponLoad();
     this.cancelEnemyLoad();this.encounter?.clearQueued();
     this.reloading = true; this.ui.artLoading(true, 'Preparing the art collection…');
@@ -402,7 +417,7 @@ export class Application {
   }
   private async enterInspection(): Promise<void> {
     if (!this.inspectionEligible || !this.adapter || this.reloading || this.pendingInspection || this.inspection || this.disposed) return;
-    this.audio.stopMission();this.cancelWeaponLoad();this.cancelEnemyLoad();this.encounter?.clearQueued();
+    this.cancelChapterLoad();this.audio.stopMission();this.cancelWeaponLoad();this.cancelEnemyLoad();this.encounter?.clearQueued();
     const adapter = this.adapter;
     const request = { world: null as CharacterInspection | null, assets: null as AssetManager | null, cancelled: false };
     this.pendingInspection = request; this.inspectionState = { status: 'loading' }; this.updateInspectionUi();
@@ -415,7 +430,7 @@ export class Application {
       if (!current()) return;
       request.world = new CharacterInspection(this.ui.canvas);
       await request.world.load(request.assets);
-      if(this.armedClips)request.world.equipBaton(this.armedClips);
+      if(this.armedClips&&this.player?.state.weapon==='baton')request.world.equipBaton(this.armedClips);
       if (!current()) return;
       request.world.configure(this.quality.profile); request.world.resize(innerWidth, innerHeight);
       await adapter.compile(request.world.scene, request.world.camera);
@@ -457,6 +472,41 @@ export class Application {
     return `/assets/showcase/${artVariant(this.quality.selected)}/manifest.json`;
   }
   private updateEncounterUi():void {this.ui.encounter(this.encounter,!!this.pendingEnemy,this.encounterError);}
+  private cancelChapterLoad():void {this.chapterRequest++;this.chapterLoading=false;this.chapterPreparation?.dispose();this.chapterPreparation=null;}
+  private async startChapter(fresh:boolean):Promise<void>{
+    if(!this.chapter||!this.encounter||!this.collision||!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.chapterLoading||this.reloading||this.inspection||this.pendingEnemy)return;
+    const chapter=this.chapter,world=this.courtyard,adapter=this.adapter,token=++this.chapterRequest;
+    this.chapterLoading=true;chapter.message='';
+    let view:ChapterPresentation|null=null,enemyAssets:AssetManager|null=null,enemy:EnemyPresentation|null=null,armedAssets:AssetManager|null=null,armedHandle:AssetHandle<GLTF>|null=null;
+    const current=()=>!this.disposed&&token===this.chapterRequest&&world===this.courtyard;
+    try {
+      const progress=await chapter.progress(fresh);if(!current())return;
+      view=new ChapterPresentation(chapter.simulation,world.variant,world.labels);this.chapterPreparation=view;
+      await view.prepare(CHECKPOINTS[progress.checkpoint].sector);if(!current())return;
+      enemyAssets=new AssetManager(adapter.renderer);await enemyAssets.init(`/assets/encounter/${world.variant}/manifest.json`);if(!current())return;
+      const {EnemyPresentation}=await import('../world/enemy-presentation');enemy=new EnemyPresentation(this.encounter,world.labels);await enemy.load(enemyAssets);if(!current())return;
+      if(progress.baton&&!this.armedClips){armedAssets=new AssetManager(adapter.renderer);await armedAssets.init('/assets/weapons/baton/manifest.json');armedHandle=await armedAssets.model('animations');if(!current())return;}
+      this.cancelWeaponLoad();this.mission?.leave();world.releaseMissionSection();this.audio.stopCombat();this.audio.stopMission();
+      this.collision.replace(CHAPTER_BOXES,chapterGround);chapter.start(progress);
+      world.setChapter(view);view=null;this.chapterPreparation=null;world.setEnemy(enemy);enemy=null;
+      this.enemyAssets?.dispose();this.enemyAssets=enemyAssets;enemyAssets=null;
+      if(armedHandle){this.weaponHandle?.release();this.weaponAssets?.dispose();this.weaponAssets=armedAssets;this.weaponHandle=armedHandle;this.armedClips=armedHandle.value.animations;armedAssets=null;armedHandle=null;}
+      if(this.armedClips)world.equipBaton(this.armedClips);
+      this.pickup.status=progress.baton?'equipped':'available';world.chapterView!.update();this.collision.setDynamic(world.chapterView!.blockers);
+      world.setPlaying(true);world.target.copy(this.player!.state.position);this.camera.selectView('player',world.target,true);
+      this.input?.clear();this.clock.reset();this.lastFrame=0;this.ui.mode('player');this.refreshAnimationUi();this.ui.canvas.focus();
+    }catch(error){if(current())chapter.message=`Chapter could not be loaded. Current play retained. ${error instanceof Error?error.message:String(error)}`;}
+    finally{view?.dispose();enemy?.dispose();enemyAssets?.dispose();armedHandle?.release();armedAssets?.dispose();if(current()){this.chapterLoading=false;this.chapterPreparation=null;}}
+  }
+  private async restoreChapter():Promise<void>{
+    if(!this.chapter?.simulation.active||!(this.courtyard instanceof VisualShowcase)||this.reloading)return;
+    this.closeInspection();this.cancelWeaponLoad();this.input?.clear();this.encounter?.clearQueued();this.audio.stopCombat();
+    const world=this.courtyard,chapter=this.chapter;
+    this.reloading=true;
+    try {await world.chapterView?.destination(CHECKPOINTS[chapter.simulation.progress.checkpoint].sector);if(this.disposed||this.courtyard!==world)return;chapter.simulation.restore();world.chapterView?.update();this.collision?.setDynamic(world.chapterView?.blockers??[]);world.target.copy(this.player!.state.position);this.camera.selectView('player',world.target,true);this.ui.get<HTMLDialogElement>('#settings').close();this.modalPaused=false;this.synchronizePause();this.ui.canvas.focus();}
+    catch{chapter.message='Checkpoint area could not be loaded. Retry restart from checkpoint.';}
+    finally{this.reloading=false;this.clock.reset();this.lastFrame=0;}
+  }
   private skipMission():void {
     if(!this.mission?.cinematic||this.modalPaused||this.visibilityPaused||this.portrait||this.reloading)return;
     this.audio.stopMission();this.mission.skip();this.input?.clear();this.encounter?.clearQueued();this.ui.canvas.focus();
@@ -475,6 +525,7 @@ export class Application {
     this.encounterError='';this.missionLoading=false;this.missionError='';this.updateEncounterUi();
   }
   private async startEncounter(kind:EncounterKind='single',mission=false):Promise<void> {
+    if(this.chapter?.simulation.active||this.chapterLoading)return;
     if(!this.encounter||!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.reloading||this.inspection||this.pendingEnemy)return;
     this.cancelWeaponLoad();
     this.missionLoading=mission;this.missionError='';
@@ -500,11 +551,14 @@ export class Application {
   }
   private returnToTraining():void {
     if(this.reloading)return;
+    this.cancelChapterLoad();
+    if(this.chapter?.simulation.active){this.chapter.leave();this.collision?.replace(DISTRICT_BOXES,districtGround);this.encounter?.configureNavigation(DISTRICT_BOXES,DISTRICT_BOUNDS,districtGround);if(this.courtyard instanceof VisualShowcase)this.courtyard.setChapter(null);this.ui.get<HTMLProgressElement>('#pressure').max=100;}
     this.audio.stopCombat();
     this.closeInspection();this.mission?.leave();this.audio.stopMission();this.collision?.setFerryReady(false,false);
     if(this.courtyard instanceof VisualShowcase){this.courtyard.releaseMissionSection();this.courtyard.setPlaying(true);this.camera.selectView('player',this.courtyard.target,true);this.ui.mode('player');}
     this.cancelWeaponLoad();this.cancelEnemyLoad();if(this.courtyard instanceof VisualShowcase)this.courtyard.setEnemy(null);
     this.enemyAssets?.dispose();this.enemyAssets=null;this.encounter?.training();this.input?.clear();this.updateEncounterUi();this.ui.canvas.focus();
+    if(this.courtyard&&this.player){this.courtyard.target.copy(this.player.state.position);this.camera.selectView('player',this.courtyard.target,true);}
   }
   private cancelWeaponLoad():void {
     const request=this.pendingWeapon;
@@ -513,6 +567,7 @@ export class Application {
   }
   private async loadBaton(id:number):Promise<void> {
     if(!this.adapter||!(this.courtyard instanceof VisualShowcase)||this.pendingWeapon)return;
+    if(this.armedClips){this.pickup.complete(id);return;}
     const world=this.courtyard,assets=new AssetManager(this.adapter.renderer),request={id,assets,handle:null as AssetHandle<GLTF>|null,cancelled:false};
     this.pendingWeapon=request;
     const current=()=>!request.cancelled&&!this.disposed&&this.pendingWeapon===request&&this.pickup.requestId===id&&this.courtyard===world;
@@ -532,7 +587,7 @@ export class Application {
       const { Courtyard } = await import('../world/courtyard'); return new Courtyard();
     }
     if (!this.player) throw new Error('Player simulation is unavailable.');
-    return new VisualShowcase(artVariant(this.quality.selected), this.player, this.camera.camera,this.mission??undefined);
+    return new VisualShowcase(artVariant(this.quality.selected), this.player, this.camera.camera,this.mission??undefined,this.chapter?.simulation);
   }
   private snapshot(): FrameStatistics {
     const info = this.adapter?.renderer.info;
@@ -562,6 +617,7 @@ export class Application {
     };
   }
   private stopSession(): void {
+    this.cancelChapterLoad();this.chapter?.dispose();this.chapter=null;
     this.mission?.leave();this.mission=null;this.audio.stopMission();
     this.cancelWeaponLoad();
     this.weaponHandle?.release();this.weaponHandle=null;this.weaponAssets?.dispose();this.weaponAssets=null;this.armedClips=null;
@@ -581,6 +637,6 @@ export class Application {
   async dispose(): Promise<void> {
     if (this.disposed) return;
     this.disposed = true; this.stopSession(); this.lifetime.dispose(); this.events.dispose();
-    this.debug?.dispose(); this.debug = null;this.missionHud.dispose(); this.ui.dispose(); await this.audio.dispose();
+    this.debug?.dispose(); this.debug = null;this.missionHud.dispose();this.chapterHud.dispose(); this.ui.dispose(); await this.audio.dispose();
   }
 }

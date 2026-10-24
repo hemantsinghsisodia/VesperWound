@@ -1,0 +1,780 @@
+{
+  "baseline": {
+    "backend": "WebGPU",
+    "quality": "High",
+    "resolution": "1440 × 900",
+    "frameMs": 13.799999999995634,
+    "cpuMs": 4.599999997764826,
+    "fps": 57.80346820809492,
+    "p95": 20.80000000000291,
+    "draws": 106,
+    "triangles": 260621,
+    "textures": 74,
+    "estimatedGpuBytes": 63201926,
+    "resources": 55,
+    "references": 7,
+    "voices": 3,
+    "overruns": 4,
+    "fixtureLoads": 1,
+    "markerX": -1.600000004945782,
+    "markerZ": 3.399999990108436,
+    "listeners": 70,
+    "audioState": "suspended",
+    "scene": "showcase",
+    "variant": "desktop",
+    "animation": "Baton_Idle",
+    "camera": "player",
+    "characterTier": "desktop",
+    "inspection": "courtyard",
+    "inspectionPaused": false,
+    "artLoading": false,
+    "district": "closed",
+    "area": "Pressure Court",
+    "hiddenCutaways": 0,
+    "rig": {
+      "feet": [
+        [
+          -1.4330429262803153,
+          0.12253274337198011,
+          3.639068234070791
+        ],
+        [
+          -1.8315182204164757,
+          0.11898633245710072,
+          3.205057685055416
+        ]
+      ],
+      "gripDistances": []
+    },
+    "weaponContact": {
+      "base": [
+        -1.8204636192034922,
+        1.1375270457402262,
+        3.734980790906064
+      ],
+      "tip": [
+        -1.8000032423597039,
+        1.476522810251229,
+        3.928896683446997
+      ],
+      "grip": 0.1342027710721546,
+      "time": null
+    },
+    "enemyContact": [],
+    "player": {
+      "target": null,
+      "weapon": "baton",
+      "position": {
+        "x": -1.6000000650760797,
+        "y": 0.02932436691131443,
+        "z": 3.3999998698478406
+      },
+      "previous": {
+        "x": -1.6,
+        "y": 0.02995710572227836,
+        "z": 3.4
+      },
+      "facing": 0,
+      "health": 100,
+      "pressure": 100,
+      "action": "idle",
+      "actionTime": 0.03333333333333333,
+      "actionSequence": 17,
+      "attack": null,
+      "pendingAttack": null,
+      "grounded": true,
+      "strikes": 0,
+      "targetHits": 0,
+      "invulnerable": false,
+      "wardRemaining": 0,
+      "combo": 0,
+      "criticals": 0,
+      "blocks": 0,
+      "defeats": 0,
+      "ventWarning": false,
+      "ventRemaining": 1.9666666666666686
+    },
+    "targets": [
+      {
+        "id": "isolated",
+        "label": "COMBO TARGET",
+        "position": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 5,
+        "previous": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "spawn": {
+          "x": 1.5,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "heavy",
+        "label": "HEAVY TARGET",
+        "position": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "maxHealth": 160,
+        "mass": 2,
+        "generation": 6,
+        "previous": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "spawn": {
+          "x": 3.8,
+          "y": 0.035,
+          "z": 1.8
+        },
+        "health": 160,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      },
+      {
+        "id": "grouped",
+        "label": "GROUP TARGET",
+        "position": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "maxHealth": 100,
+        "mass": 1,
+        "generation": 7,
+        "previous": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "spawn": {
+          "x": 4.5,
+          "y": 0.035,
+          "z": 1.9
+        },
+        "health": 100,
+        "posture": 0,
+        "exposedUntil": 0,
+        "defeatedUntil": 0,
+        "velocity": {
+          "x": 0,
+          "z": 0
+        },
+        "hits": 0
+      }
+    ],
+    "encounter": "training",
+    "enemies": [],
+    "enemyLoading": false
+  },
+  "cycles": [
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 20.599999999998545,
+      "cpuMs": 5.900000002235174,
+      "fps": 48.54368932039178,
+      "p95": 20.599999999998545,
+      "draws": 106,
+      "triangles": 260621,
+      "textures": 74,
+      "estimatedGpuBytes": 63201926,
+      "resources": 55,
+      "references": 7,
+      "voices": 3,
+      "overruns": 4,
+      "fixtureLoads": 1,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 70,
+      "audioState": "suspended",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            -1.4342784445432215,
+            0.12627547471723566,
+            3.6398965507304273
+          ],
+          [
+            -1.8326583237116443,
+            0.12304981731300713,
+            3.2050911407432072
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.820597505118461,
+          1.1393769605258859,
+          3.734998011193718
+        ],
+        "tip": [
+          -1.800576199496186,
+          1.4776969005925014,
+          3.9301357951449334
+        ],
+        "grip": 0.13420274976248717,
+        "time": null
+      },
+      "enemyContact": [],
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6,
+          "y": 0.02995710572227836,
+          "z": 3.4
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0.016666666666666666,
+        "actionSequence": 19,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.9833333333333343
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 9,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 10,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 11,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 13.69999999999709,
+      "cpuMs": 6.300000000745058,
+      "fps": 57.80346820809492,
+      "p95": 20.900000000001455,
+      "draws": 106,
+      "triangles": 260621,
+      "textures": 74,
+      "estimatedGpuBytes": 63201926,
+      "resources": 55,
+      "references": 7,
+      "voices": 3,
+      "overruns": 4,
+      "fixtureLoads": 1,
+      "markerX": -1.600000004945782,
+      "markerZ": 3.399999990108436,
+      "listeners": 70,
+      "audioState": "suspended",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            -1.4330429262803153,
+            0.12253274337198011,
+            3.639068234070791
+          ],
+          [
+            -1.8315182204164757,
+            0.11898633245710072,
+            3.205057685055416
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.8204636192034922,
+          1.1375270457402262,
+          3.734980790906064
+        ],
+        "tip": [
+          -1.8000032423597039,
+          1.476522810251229,
+          3.928896683446997
+        ],
+        "grip": 0.1342027710721546,
+        "time": null
+      },
+      "enemyContact": [],
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6000000650760797,
+          "y": 0.02932436691131443,
+          "z": 3.3999998698478406
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.02995710572227836,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0.03333333333333333,
+        "actionSequence": 21,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": true,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 1.9666666666666686
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 13,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 14,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 15,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    },
+    {
+      "backend": "WebGPU",
+      "quality": "High",
+      "resolution": "1440 × 900",
+      "frameMs": 13.80000000000291,
+      "cpuMs": 5.300000000745058,
+      "fps": 72.46376811592674,
+      "p95": 13.80000000000291,
+      "draws": 94,
+      "triangles": 259685,
+      "textures": 74,
+      "estimatedGpuBytes": 63201926,
+      "resources": 55,
+      "references": 7,
+      "voices": 3,
+      "overruns": 4,
+      "fixtureLoads": 1,
+      "markerX": -1.6,
+      "markerZ": 3.4,
+      "listeners": 70,
+      "audioState": "suspended",
+      "scene": "showcase",
+      "variant": "desktop",
+      "animation": "Baton_Idle",
+      "camera": "player",
+      "characterTier": "desktop",
+      "inspection": "courtyard",
+      "inspectionPaused": false,
+      "artLoading": false,
+      "district": "closed",
+      "area": "Pressure Court",
+      "hiddenCutaways": 0,
+      "rig": {
+        "feet": [
+          [
+            -1.429323711436616,
+            0.12812680214123123,
+            3.636560147613293
+          ],
+          [
+            -1.8280663946248321,
+            0.12361827072065223,
+            3.2049589373882275
+          ]
+        ],
+        "gripDistances": []
+      },
+      "weaponContact": {
+        "base": [
+          -1.8200396423555558,
+          1.148763366080354,
+          3.7349130346533177
+        ],
+        "tip": [
+          -1.7982751942955204,
+          1.4897515300546695,
+          3.9251597188864564
+        ],
+        "grip": 0.13420282461010452,
+        "time": null
+      },
+      "enemyContact": [],
+      "player": {
+        "target": null,
+        "weapon": "baton",
+        "position": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "previous": {
+          "x": -1.6,
+          "y": 0.035,
+          "z": 3.4
+        },
+        "facing": 0,
+        "health": 100,
+        "pressure": 100,
+        "action": "idle",
+        "actionTime": 0,
+        "actionSequence": 23,
+        "attack": null,
+        "pendingAttack": null,
+        "grounded": false,
+        "strikes": 0,
+        "targetHits": 0,
+        "invulnerable": false,
+        "wardRemaining": 0,
+        "combo": 0,
+        "criticals": 0,
+        "blocks": 0,
+        "defeats": 0,
+        "ventWarning": false,
+        "ventRemaining": 2
+      },
+      "targets": [
+        {
+          "id": "isolated",
+          "label": "COMBO TARGET",
+          "position": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 17,
+          "previous": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "spawn": {
+            "x": 1.5,
+            "y": 0.035,
+            "z": 3.4
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "heavy",
+          "label": "HEAVY TARGET",
+          "position": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "maxHealth": 160,
+          "mass": 2,
+          "generation": 18,
+          "previous": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "spawn": {
+            "x": 3.8,
+            "y": 0.035,
+            "z": 1.8
+          },
+          "health": 160,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        },
+        {
+          "id": "grouped",
+          "label": "GROUP TARGET",
+          "position": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "maxHealth": 100,
+          "mass": 1,
+          "generation": 19,
+          "previous": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "spawn": {
+            "x": 4.5,
+            "y": 0.035,
+            "z": 1.9
+          },
+          "health": 100,
+          "posture": 0,
+          "exposedUntil": 0,
+          "defeatedUntil": 0,
+          "velocity": {
+            "x": 0,
+            "z": 0
+          },
+          "hits": 0
+        }
+      ],
+      "encounter": "training",
+      "enemies": [],
+      "enemyLoading": false
+    }
+  ]
+}

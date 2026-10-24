@@ -1,0 +1,10 @@
+{
+  "clientDate": "2026-10-25",
+  "PowerOnline": true,
+  "Discharging": false,
+  "EstimatedChargeRemaining": 93,
+  "method": "Win32_Battery and root/wmi BatteryStatus queried at the production benchmark start; the execution host timestamps are retained in individual run files.",
+  "cpu": "13th Gen Intel Core i7-13620H",
+  "installedGpus": ["Intel UHD Graphics (32.0.101.6078)", "NVIDIA GeForce RTX 4050 Laptop GPU (32.0.16.2101)"],
+  "note": "The benchmark records an adapter requested with the renderer's high-performance power preference. It is not an isolated GPU timestamp measurement."
+}

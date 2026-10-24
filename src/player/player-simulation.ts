@@ -24,6 +24,7 @@ export const PRACTICE_TARGET: Position = { ...TRAINING_TARGETS[0].position };
 export const PRESSURE_VENT: Position = { x: -4.2, y: 0, z: 1.2 };
 const DURATIONS = { dodge: .72, hit: .42, ward: .8 };
 export class PlayerSimulation {
+  maximumPressure = 100;
   readonly state: PlayerState = {
     target:null, weapon: 'unarmed', position: { ...PLAYER_SPAWN }, previous: { ...PLAYER_SPAWN }, facing: 0, health: 100, pressure: 100,
     action: 'idle', actionTime: 0, actionSequence: 0, attack: null, pendingAttack: null, grounded: false,
@@ -124,7 +125,7 @@ export class PlayerSimulation {
       this.ventAt = this.clock + 2; this.warned = false;
     }
     } else { s.ventWarning = false; s.ventRemaining = 0; }
-    if (this.clock - this.quietSince >= 3) s.pressure = Math.min(100, s.pressure + 5 * dt);
+    if (this.clock - this.quietSince >= 3) s.pressure = Math.min(this.maximumPressure, s.pressure + 5 * dt);
   }
   resolveAttack(): void {
     const s = this.state; if (!s.attack) return;
@@ -135,7 +136,7 @@ export class PlayerSimulation {
       if (this.collision.blocked?.({ ...s.position, y: s.position.y + 1 }, { ...t.position, y: t.position.y + 1 })) continue;
       this.hitTargets.add(key); const critical = a.kind === 'heavy' && t.exposedUntil > this.clock;
       const damage = a.damage * (critical ? 2 : 1); t.health = Math.max(0, t.health - damage); t.hits++; s.targetHits++;
-      if (!this.pressureAwarded) { s.pressure = Math.min(100, s.pressure + 10); this.pressureAwarded = true; }
+      if (!this.pressureAwarded) { s.pressure = Math.min(this.maximumPressure, s.pressure + 10); this.pressureAwarded = true; }
       const position = { ...t.position };
       this.emit({ type: 'hit', attack: a.id, target: t.id, instance: s.actionSequence, damage, posture: a.posture, critical, position });
       if (critical) { t.exposedUntil = 0; t.posture = 0; s.criticals++; this.emit({ type: 'critical', target: t.id, position }); }

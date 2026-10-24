@@ -1,0 +1,130 @@
+{
+  "date": "2026-10-24T20:13:53.474Z",
+  "browser": "156.0.8078.48",
+  "hardware": {
+    "backend": "WebGPU",
+    "resolution": [
+      1440,
+      900
+    ],
+    "adapter": {
+      "vendor": "intel",
+      "architecture": "gen-12lp",
+      "device": "",
+      "description": ""
+    }
+  },
+  "scenario": "inspection",
+  "chapterLoadMs": 1399,
+  "powerState": "External power verified before the run; battery 93%. See ../power-and-device.json.",
+  "uncapped": true,
+  "adaptive": false,
+  "quality": "High",
+  "warmup": 30,
+  "method": "External requestAnimationFrame intervals; frame limiter and GPU vsync disabled; includes CPU and scheduling. Traversal uses a saved cleared-encounter fixture.",
+  "samples": [
+    {
+      "elapsed": 30.017,
+      "p95": 3.3000000000029104,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 60.03760000000149,
+      "p95": 3.1000000000058208,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 90.053,
+      "p95": 3,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 120.06139999999851,
+      "p95": 3.3000000000174623,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 150.07019999999554,
+      "p95": 3.3999999999941792,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 180.08119999999553,
+      "p95": 3.599999999976717,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 210.1003999999985,
+      "p95": 3.2999999999883585,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 240.10979999999702,
+      "p95": 3.2000000000116415,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 270.11839999999853,
+      "p95": 3.2999999999883585,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    },
+    {
+      "elapsed": 300.13869999999554,
+      "p95": 3.3999999999650754,
+      "bytes": 79448590,
+      "textures": 92,
+      "area": "court",
+      "sectors": 2,
+      "visible": "visible"
+    }
+  ],
+  "metrics": {
+    "duration": 300.1631999999955,
+    "frames": 114268,
+    "fps": 380.713890186473,
+    "p95": 3.2999999999883585,
+    "max": 26.29999999998836,
+    "over50": 0,
+    "over100": 0
+  },
+  "circuits": 0,
+  "driverError": "",
+  "errors": [],
+  "metadataNote": "Corrected a stale 100% harness literal using the recorded WMI observation. Frame measurements are unchanged."
+}

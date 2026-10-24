@@ -1,0 +1,19 @@
+#chapter-hud{position:absolute;right:20px;top:90px;width:300px;max-width:34vw;background:#102326ed;border:1px solid #415851;padding:14px;z-index:5;color:#ddd9c8}
+#chapter-hud h2{font-size:19px;margin:8px 0}#chapter-hud p{font-size:13px;line-height:1.4}#chapter-hud small{font-size:10px;letter-spacing:1px;color:#d2b478}
+#chapter-hud button,#chapter-menu button{min-height:44px;margin:4px}#chapter-map{width:100%;max-height:280px;background:#0d1b20}
+#chapter-hud,#chapter-menu{font-family:Arial,sans-serif}#chapter-hud h2{font-family:Georgia,serif}
+#chapter-hud button,#chapter-menu button,#chapter-new,#chapter-continue,#chapter-confirm-new,#chapter-keep-save,#chapter-cancel{background:#293e3d;border:1px solid #8a805c;color:#eee6cc;padding:10px 12px;min-height:44px;font:inherit;cursor:pointer}
+#chapter-new,#chapter-confirm-new{background:#675630}#chapter-launch-status{font-size:12px}
+#app[data-chapter]:not([data-chapter="inactive"]) #mission-hud,#app[data-chapter]:not([data-chapter="inactive"]) #district-guide,#app[data-chapter]:not([data-chapter="inactive"]) #reset-targets,#app[data-chapter]:not([data-chapter="inactive"]) .encounter-controls{display:none!important}
+@media(pointer:coarse){#chapter-hud{top:8px;right:74px;width:260px;max-width:36vw;padding:7px}#chapter-hud h2{font-size:14px;margin:4px 0}#chapter-hud p{font-size:11px;margin:4px 0}#chapter-hud small{font-size:8px}#chapter-map-open{font-size:11px}#chapter-hud #chapter-save-status{max-height:28px;overflow:auto}}
+/* Keep chapter guidance clear of the header and enlarged touch actions. */
+@media(pointer:coarse){
+  #chapter-hud{top:64px;right:12px;width:250px;max-width:29vw;padding:6px}
+  #chapter-hud small{display:none}
+  #chapter-hud h2{font-size:13px}
+  #chapter-hud p{font-size:10px;margin:3px 0}
+  #chapter-hud #chapter-save-status{font-size:9px}
+  #chapter-hud button{padding:6px;min-height:44px;font-size:11px}
+  #app[data-chapter]:not([data-chapter="inactive"]) .pickup-button{font:11px Arial,sans-serif;max-width:125px;bottom:calc(72px + env(safe-area-inset-bottom))}
+  #app[data-chapter]:not([data-chapter="inactive"]) .world-label[data-kind=mission]{width:calc(125px * var(--ui-scale,1));font-size:calc(10px * var(--ui-scale,1));padding:4px}
+}

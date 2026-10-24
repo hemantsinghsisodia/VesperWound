@@ -1,0 +1,57 @@
+
+> vesperwound@0.1.0 check
+> npm run typecheck && npm run lint && npm run test && npm run build
+
+
+> vesperwound@0.1.0 typecheck
+> tsc --noEmit
+
+
+> vesperwound@0.1.0 lint
+> eslint src tests tools
+
+
+> vesperwound@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 C:/Hemant/Prj/Learning/WebGPUGame
+
+
+ Test Files  26 passed (26)
+      Tests  166 passed (166)
+   Start at  01:44:17
+   Duration  3.74s (tests 71%, transform 17%, import 10%, worker 1%)
+
+    Isolate  26 workers spawned · ~474ms startup each (spawn + environment, per file)
+             at least ~348ms faster with isolate: false — reuses workers across files instead of one per file
+
+
+> vesperwound@0.1.0 prebuild
+> node tools/sync-runtime.mjs
+
+Synchronized runtime transcoder and notices to C:\Hemant\Prj\Learning\WebGPUGame\public\assets\decoders\basis\
+
+> vesperwound@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 91 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                   0.66 kB │ gzip:     0.39 kB
+dist/assets/basis_transcoder-o4Hde_L7.js         57.52 kB
+dist/assets/basis_transcoder-VXdx5NbI.wasm      527.33 kB │ gzip:   248.94 kB
+dist/assets/index-DmAEtTgH.css                   26.26 kB │ gzip:     6.17 kB
+dist/assets/enemy-presentation-DGqVBwie.js        5.51 kB │ gzip:     2.25 kB
+dist/assets/character-inspection-BWIbuAYE.js     24.12 kB │ gzip:     6.09 kB
+dist/assets/index-q-WNvOa3.js                 1,295.70 kB │ gzip:   369.55 kB
+dist/assets/player-collision-TMtlkklm.js      4,336.71 kB │ gzip: 1,670.70 kB
+
+✓ built in 459ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 1600 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

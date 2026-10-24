@@ -1,0 +1,38 @@
+{
+  "progress": {
+    "version": 1,
+    "chapter": "last-departure",
+    "checkpoint": "pump-exit",
+    "baton": true,
+    "upgrade": false,
+    "cleared": [
+      "intake",
+      "workers",
+      "sentry-site",
+      "freight",
+      "pump-workers",
+      "pump-mixed",
+      "guardian-site"
+    ],
+    "discovered": [
+      "court",
+      "street",
+      "warehouse",
+      "apron",
+      "pump"
+    ],
+    "shortcuts": [
+      "pump"
+    ],
+    "hoist": 2,
+    "leakClosed": true,
+    "supplyOpen": true,
+    "pressureRestored": true,
+    "regulator": true,
+    "installed": true,
+    "complete": true,
+    "activeSeconds": 117.28333333332796
+  },
+  "health": "100",
+  "method": "Actual keyboard/mouse combat and interactions; no progression fixture or state mutation."
+}

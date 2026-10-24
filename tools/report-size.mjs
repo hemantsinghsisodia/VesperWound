@@ -8,12 +8,15 @@ groups.encounterMobile = { raw: 0, gzip: 0, limit: 4 * 1024 * 1024 };
 groups.weaponAnimations = { raw: 0, gzip: 0, limit: 512 * 1024 };
 groups.quayDesktop = { raw: 0, gzip: 0, limit: 12 * 1024 * 1024 };
 groups.quayMobile = { raw: 0, gzip: 0, limit: 6 * 1024 * 1024 };
+groups.chapterDesktop = { raw: 0, gzip: 0, limit: 64 * 1024 * 1024 };
+groups.chapterMobile = { raw: 0, gzip: 0, limit: 32 * 1024 * 1024 };
 async function visit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = `${directory}/${entry.name}`;
     if (entry.isDirectory()) await visit(path);
     else {
       const bytes = await readFile(path);
+      if(path.includes('/chapter/')) {const desktop=path.includes('/chapter/desktop/'),group=desktop?groups.chapterDesktop:groups.chapterMobile;if(bytes.length>(desktop?12:6)*1024*1024)throw new Error(`Chapter section exceeds its ceiling: ${path}`);group.raw+=bytes.length;group.gzip+=gzipSync(bytes).byteLength;continue;}
       if (path.includes('/district/')) { const group = path.includes('/district/desktop/') ? groups.quayDesktop : groups.quayMobile; group.raw += bytes.length; group.gzip += gzipSync(bytes).byteLength; continue; }
       if (path.includes('/weapons/baton/animations.glb') || path.includes('/weapons/baton/manifest.json')) { groups.weaponAnimations.raw += bytes.length; groups.weaponAnimations.gzip += gzipSync(bytes).byteLength; continue; }
       if (path.includes('/weapons/baton/baton.glb')) { for (const tier of ['desktop','mobile','cinematic']) { groups[tier].raw += bytes.length; groups[tier].gzip += gzipSync(bytes).byteLength; } continue; }
@@ -28,6 +31,8 @@ async function visit(directory) {
   }
 }
 await visit(root);
+// Existing optional enemy delivery is shared with chapter preview encounters.
+for(const [chapter,enemy] of [['chapterDesktop','encounterDesktop'],['chapterMobile','encounterMobile']]){groups[chapter].raw+=groups[enemy].raw;groups[chapter].gzip+=groups[enemy].gzip;}
 const report = Object.fromEntries(Object.entries(groups).map(([name, value]) => [name, { rawBytes: value.raw, gzipBytes: value.gzip, limitBytes: value.limit, passed: name === 'bootstrap' ? value.gzip <= value.limit : value.raw <= value.limit }]));
 console.log(JSON.stringify(report, null, 2));
 await writeFile('docs/qa/visual-delivery.json.partial', JSON.stringify(report, null, 2));

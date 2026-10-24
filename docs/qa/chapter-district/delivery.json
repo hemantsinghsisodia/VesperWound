@@ -1,0 +1,68 @@
+{
+  "bootstrap": {
+    "rawBytes": 6987331,
+    "gzipBytes": 2607574,
+    "limitBytes": 5242880,
+    "passed": true
+  },
+  "desktop": {
+    "rawBytes": 18999728,
+    "gzipBytes": 17597901,
+    "limitBytes": 20971520,
+    "passed": true
+  },
+  "mobile": {
+    "rawBytes": 10470363,
+    "gzipBytes": 9071679,
+    "limitBytes": 10485760,
+    "passed": true
+  },
+  "cinematic": {
+    "rawBytes": 6768730,
+    "gzipBytes": 6235734,
+    "limitBytes": 41943040,
+    "passed": true
+  },
+  "encounterDesktop": {
+    "rawBytes": 3571348,
+    "gzipBytes": 3034709,
+    "limitBytes": 8388608,
+    "passed": true
+  },
+  "encounterMobile": {
+    "rawBytes": 3528872,
+    "gzipBytes": 2997622,
+    "limitBytes": 4194304,
+    "passed": true
+  },
+  "weaponAnimations": {
+    "rawBytes": 419712,
+    "gzipBytes": 72780,
+    "limitBytes": 524288,
+    "passed": true
+  },
+  "quayDesktop": {
+    "rawBytes": 9490352,
+    "gzipBytes": 8931009,
+    "limitBytes": 12582912,
+    "passed": true
+  },
+  "quayMobile": {
+    "rawBytes": 2860968,
+    "gzipBytes": 2304009,
+    "limitBytes": 6291456,
+    "passed": true
+  },
+  "chapterDesktop": {
+    "rawBytes": 3574817,
+    "gzipBytes": 3035672,
+    "limitBytes": 67108864,
+    "passed": true
+  },
+  "chapterMobile": {
+    "rawBytes": 3532341,
+    "gzipBytes": 2998585,
+    "limitBytes": 33554432,
+    "passed": true
+  }
+}

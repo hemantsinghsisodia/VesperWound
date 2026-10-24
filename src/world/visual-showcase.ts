@@ -1,5 +1,5 @@
 import {
-  Scene, Color, FogExp2, Mesh,
+  Scene, Color, FogExp2, Mesh, Group,
   DirectionalLight, HemisphereLight, PointLight, Vector3, EquirectangularReflectionMapping,
   Sprite, SpriteMaterial, CanvasTexture,
   PlaneGeometry, MeshStandardNodeMaterial,
@@ -25,11 +25,19 @@ import type { SectionLease } from '../assets/section-stream';
 import { MissionCamera } from '../camera/mission-camera';
 import { MissionPresentation } from './mission-presentation';
 import { WorldLabels } from './world-labels';
+import { ChapterPresentation } from '../chapter/presentation';
+import type { ChapterSimulation } from '../chapter/simulation';
 
 /** Presentation observes the fixed-clock player; preview mode freezes simulation. */
 export class VisualShowcase implements WorldPresentation {
   readonly labels = new WorldLabels();
   readonly scene = new Scene();
+  private readonly environment=new Group();
+  chapterView:ChapterPresentation|null=null;
+  setChapter(view:ChapterPresentation|null):void {
+    this.chapterView?.dispose();this.chapterView=view;if(view)this.scene.add(view.group);
+    this.environment.visible=!view;if(this.district)this.district.group.visible=!view;
+  }
   readonly missionCamera=new MissionCamera();
   private missionLease:SectionLease|null=null;
   retainMissionSection(lease:SectionLease):void {this.missionLease?.release();this.missionLease=lease;}
@@ -61,7 +69,8 @@ export class VisualShowcase implements WorldPresentation {
   district: DistrictPresentation | null = null;
   setEnemy(view: EnemyPresentation | null): void { this.enemy?.dispose(); if (this.enemy) this.scene.remove(this.enemy.group); this.enemy = view; if (view) this.scene.add(view.group); }
 
-  constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation, private readonly camera: Camera, private readonly mission?:FirstMission) {
+  constructor(readonly variant: ArtVariant, readonly player: PlayerSimulation, private readonly camera: Camera, private readonly mission?:FirstMission,private readonly chapter?:ChapterSimulation) {
+    this.scene.add(this.environment);
     this.missionView=mission?new MissionPresentation(mission, this.labels):null;if(this.missionView)this.scene.add(this.missionView.group);
     this.combat = new CombatPresentation(player, this.labels); this.scene.add(this.combat.group);
     this.scene.background = new Color(0x1b2931);
@@ -93,7 +102,7 @@ export class VisualShowcase implements WorldPresentation {
     this.handles.push(reflection);
     this.reflectionEnvironment(assets.renderer, reflection.value);
     const animations = loaded[2]; if (animations?.status !== 'fulfilled') throw new Error('The player animations are incomplete.');
-    this.preview.attach({ scene: hero.value.value.scene, animations: animations.value.value.animations }); this.scene.add(court.value.value.scene);
+    this.preview.attach({ scene: hero.value.value.scene, animations: animations.value.value.animations }); this.environment.add(court.value.value.scene);
     const baton=loaded[3];if(baton?.status!=='fulfilled')throw new Error('Baton model missing');this.baton=new BatonPresentation(this.preview,baton.value.value);this.scene.add(this.baton.ground);
     this.scene.traverse((object) => {
       if (object instanceof Mesh) { configureEnvironmentMesh(object); object.frustumCulled = !('isSkinnedMesh' in object); }
@@ -101,7 +110,8 @@ export class VisualShowcase implements WorldPresentation {
     this.surfaceDetails(); this.applyPlayer(1);
     this.district = new DistrictPresentation(assets, this.scene, this.camera); this.scene.add(this.district.group);
     if(this.mission?.active){this.retainMissionSection(this.district.stream.acquire());await this.missionLease!.ready;}
-    else if (this.player.state.position.z > 5.5) await this.district.stream.prepare();
+    else if (!this.chapter?.active&&this.player.state.position.z > 5.5) await this.district.stream.prepare();
+    if(this.chapter?.active){const view=new ChapterPresentation(this.chapter,this.variant,this.labels);this.setChapter(view);await view.prepare(this.chapter.sector);view.update();}
     if (this.disposed) throw new Error('Showcase load was cancelled.');
     this.update(0, { movement: { x: 0, y: 0 }, aim: { x: 0, y: 0 }, pressed: new Set(), held: new Set() }, true);
   }
@@ -141,6 +151,7 @@ export class VisualShowcase implements WorldPresentation {
     const dockLight = Math.max(0, Math.min(1, (this.target.z - 7) / 4));
     this.engine.position.set(-1.8 * dockLight, 2.8, -2 + 15 * dockLight);
     this.gate.position.set(-5 - .8 * dockLight, 3.1, -6 + 28 * dockLight);
+    if(this.chapterView){this.chapterView.update();this.key.position.set(this.target.x-6,15,this.target.z+8);this.key.target.position.set(this.target.x,0,this.target.z-2);this.engine.position.set(this.target.x-3,2.8,this.target.z-3);this.gate.position.set(this.target.x+3,3.1,this.target.z+3);}
     this.steam.forEach((puff, index) => {
       const phase = ((reducedMotion ? 0 : this.time * 0.12) + index / 12) % 1;
       const flue = index % 3;
@@ -187,7 +198,7 @@ export class VisualShowcase implements WorldPresentation {
     const material = new MeshStandardNodeMaterial({ color: 0x18282c, roughness: 0.12, metalness: 0.4, transparent: true, opacity: 0.32, depthWrite: false });
     this.materials.push(material);
     for (const [x, z, sx, sz] of [[-3, 2, 2, 0.5], [3, 3, 1.4, 0.6], [-1, -3, 0.8, 1.2], [4, -4, 1, 0.5]]) {
-      const puddle = new Mesh(geometry, material); puddle.rotation.x = -Math.PI / 2; puddle.position.set(x!, 0.045, z!); puddle.scale.set(sx!, sz!, 1); this.scene.add(puddle);
+      const puddle = new Mesh(geometry, material); puddle.rotation.x = -Math.PI / 2; puddle.position.set(x!, 0.045, z!); puddle.scale.set(sx!, sz!, 1); this.environment.add(puddle);
     }
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 64;
     const context = canvas.getContext('2d'); if (!context) return;
@@ -201,13 +212,14 @@ export class VisualShowcase implements WorldPresentation {
     const quad = new Sprite(steamMaterial).geometry.clone(); this.geometries.push(quad);
     for (let i = 0; i < 12; i++) {
       const puff = new Sprite(steamMaterial); puff.geometry = quad;
-      this.steam.push(puff); this.scene.add(puff);
+      this.steam.push(puff); this.environment.add(puff);
     }
   }
-  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton?.ownedResources ?? 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0) + (this.missionView?.ownedResources??0); }
+  get ownedResources(): number { return this.geometries.length + this.materials.length + this.textures.length + (this.reflection ? 1 : 0) + 1 + this.combat.ownedResources + (this.baton?.ownedResources ?? 0) + (this.district ? 2 : 0) + (this.enemy?.ownedResources ?? 0) + (this.missionView?.ownedResources??0) + (this.chapterView?.ownedResources??0); }
   dispose(): void {
     if (this.disposed) return; this.disposed = true;
     this.releaseMissionSection();
+    this.chapterView?.dispose();this.chapterView=null;
     this.district?.dispose(); this.district = null;
     this.missionView?.dispose();
     this.labels.dispose();

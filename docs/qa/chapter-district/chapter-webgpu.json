@@ -1,0 +1,52 @@
+{
+  "errors": [],
+  "requests": [
+    "http://127.0.0.1:5186/assets/chapter/desktop/court.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/street.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/warehouse.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/pump.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/apron.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/street.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/pump.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/apron.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/pump.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/pump.json",
+    "http://127.0.0.1:5186/assets/chapter/desktop/apron.json"
+  ],
+  "progress": {
+    "version": 1,
+    "chapter": "last-departure",
+    "checkpoint": "pump-exit",
+    "baton": true,
+    "upgrade": false,
+    "cleared": [
+      "intake",
+      "workers",
+      "sentry-site",
+      "freight",
+      "pump-workers",
+      "pump-mixed",
+      "guardian-site",
+      "side-room"
+    ],
+    "discovered": [
+      "court",
+      "street",
+      "warehouse",
+      "pump",
+      "apron"
+    ],
+    "shortcuts": [
+      "warehouse",
+      "pump"
+    ],
+    "hoist": 2,
+    "leakClosed": true,
+    "supplyOpen": true,
+    "pressureRestored": true,
+    "regulator": true,
+    "installed": true,
+    "complete": true,
+    "activeSeconds": 50.28333333333176
+  }
+}
